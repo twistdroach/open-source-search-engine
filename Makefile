@@ -89,7 +89,7 @@ OS_DEB := true
 # let's remove static now by default to be safe because we don't always
 # detect red hat installs like on aws. do 'make static' to make as static.
 #STATIC := -static
-STATIC :=
+STATIC := -Wno-misleading-indentation
 # MDW: i get some parsing inconsistencies when running the first qa injection
 # test if this is -O3. strange.
 # Debian Jessie doesn't like -O3, it will core right away when spidering
