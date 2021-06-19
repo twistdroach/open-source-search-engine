@@ -172,7 +172,7 @@ void SearchInput::test ( ) {
 		}
 		if ( ! name ) continue;
 		log("query: Got uncovered SearchInput parm at offset "
-		    "%"INT32" in SearchInput. name=%s.",off,name);
+		    "%" INT32 " in SearchInput. name=%s.",off,name);
 	}
 }
 
@@ -717,7 +717,7 @@ bool SearchInput::setQueryBuffers ( HttpRequest *hr ) {
 		timestamp -= m_secsBack;
 		if ( timestamp <= 0 ) timestamp = 0;
 		if ( m_sbuf1.length() ) m_sbuf1.pushChar(' ');
-		m_sbuf1.safePrintf("gbminint:gbspiderdate:%"UINT32"",timestamp);
+		m_sbuf1.safePrintf("gbminint:gbspiderdate:%" UINT32 "",timestamp);
 	}
 
 	if ( m_sortBy == 1 ) {
@@ -789,8 +789,8 @@ bool SearchInput::setQueryBuffers ( HttpRequest *hr ) {
 	if( gblang >= 0 ) {
 	 	if ( m_sbuf1.length() ) m_sbuf1.pushChar(' ');
 	 	if ( m_sbuf2.length() ) m_sbuf2.pushChar(' ');
-	 	m_sbuf1.safePrintf( "+gblang:%"INT32"", gblang );
-	 	m_sbuf2.safePrintf( "+gblang:%"INT32"", gblang );
+	 	m_sbuf1.safePrintf( "+gblang:%" INT32 "", gblang );
+	 	m_sbuf2.safePrintf( "+gblang:%" INT32 "", gblang );
 		if ( ! boolq ) {
 			m_sbuf1.safeStrcpy(" |");
 			m_sbuf2.safeStrcpy(" |");
@@ -1105,8 +1105,8 @@ bool SearchInput::setQueryBuffers ( HttpRequest *hr ) {
 	// get the final query
 	char *q =m_sbuf1.getBufStart();
 
-	if ( q ) sscanf(q,"gbpcatid:%"INT32"",&pcatId);
-	if ( q ) sscanf(q,"gbcatid:%"INT32"",&dcatId);
+	if ( q ) sscanf(q,"gbpcatid:%" INT32 "",&pcatId);
+	if ( q ) sscanf(q,"gbcatid:%" INT32 "",&dcatId);
 	// pick the one that is valid
 	int32_t catId = -1;
 	if ( pcatId >= 0 ) catId = pcatId;

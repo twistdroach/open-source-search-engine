@@ -258,7 +258,7 @@ void sendReply ( void *state ) {
 
 	// make the query string
 	char qs[1024];
-	sprintf(qs,"&date_period=%"INT32"&date_units=%"INT32"&samples=%"INT32"",
+	sprintf(qs,"&date_period=%" INT32 "&date_units=%" INT32 "&samples=%" INT32 "",
 		st->m_datePeriod,
 		st->m_dateUnits,
 		st->m_samples);
@@ -327,7 +327,7 @@ void writeControls ( SafeBuf *buf, StateStatsdb *st ) {
 		"<tr>"
 		"<td>Moving Average Samples</td>"
 		"<td>"
-		"<input type=text name=samples length=20 value=\"%"INT32"\">"
+		"<input type=text name=samples length=20 value=\"%" INT32 "\">"
 		"</td>"
 		"</tr>"
 		"<tr class=\"show\" id=\"e_date_start\">\n"

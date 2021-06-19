@@ -663,7 +663,7 @@ class EventIdBits {
 			if ( ! first )
 				pe += sprintf(pe,",");
 			first = false;
-			pe += sprintf(pe,"%"INT32"",j);
+			pe += sprintf(pe,"%" INT32 "",j);
 		}
 	};
 

@@ -538,7 +538,7 @@ void Conf::setRootIps ( ) {
 	for ( int32_t i = 0 ; i < n ; i++ ) {
 		m_rnsIps  [i] = atoip(rootIps[i],gbstrlen(rootIps[i]));
 		m_rnsPorts[i] = 53;
-		log(LOG_INIT,"dns: Using root nameserver #%"INT32" %s.",
+		log(LOG_INIT,"dns: Using root nameserver #%" INT32 " %s.",
 		    i,iptoa(m_rnsIps[i]));
 	}
 }

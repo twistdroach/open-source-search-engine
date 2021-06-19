@@ -77,7 +77,7 @@ void handleRequest39 ( UdpSlot *slot , int32_t netnice ) {
 	try { THIS = new ( Msg39 ); }
 	catch ( ... ) {
 		g_errno = ENOMEM;
-		log("msg39: new(%"INT32"): %s", 
+		log("msg39: new(%" INT32 "): %s", 
 		    (int32_t)sizeof(Msg39),mstrerror(g_errno));
 		sendReply ( slot , NULL , NULL , 0 , 0 ,true);
 		return;
@@ -95,8 +95,8 @@ void sendReply ( UdpSlot *slot , Msg39 *msg39 , char *reply , int32_t replyLen ,
 		 int32_t replyMaxSize , bool hadError ) {
 	// debug msg
 	if ( g_conf.m_logDebugQuery || (msg39&&msg39->m_debug) ) 
-		logf(LOG_DEBUG,"query: msg39: [%"PTRFMT"] "
-		     "Sending reply len=%"INT32".",
+		logf(LOG_DEBUG,"query: msg39: [%" PTRFMT "] "
+		     "Sending reply len=%" INT32 ".",
 		     (PTRTYPE)msg39,replyLen);
 
 	// sanity
@@ -242,7 +242,7 @@ void Msg39::getDocIds2 ( Msg39Request *req ) {
 		g_errno = EBADENGINEER;
 		log("query: Query parsing inconsistency for q=%s. "
 		    "%i != %i. "
-		    "langid=%"INT32". Check langids and m_queryExpansion parms "
+		    "langid=%" INT32 ". Check langids and m_queryExpansion parms "
 		    "which are the only parms that could be different in "
 		    "Query::set2(). You probably have different mysynoyms.txt "
 		    "files on two different hosts! check that!!"
@@ -256,7 +256,7 @@ void Msg39::getDocIds2 ( Msg39Request *req ) {
 	}
 	// debug
 	if ( m_debug )
-		logf(LOG_DEBUG,"query: msg39: [%"PTRFMT"] Got request "
+		logf(LOG_DEBUG,"query: msg39: [%" PTRFMT "] Got request "
 		     "for q=%s", (PTRTYPE) this,m_tmpq.m_orig);
 
 	// reset this
@@ -383,7 +383,7 @@ bool Msg39::controlLoop ( ) {
 		reset2();
 		// debug log
 		if ( ! m_r->m_forSectionStats && m_debug )
-			log("msg39: docid split phase %"INT64"-%"INT64"",d0,d1);
+			log("msg39: docid split phase %" INT64 "-%" INT64 "",d0,d1);
 		// wtf?
 		//if ( d0 >= d1 ) break;
 		// load termlists for these docid ranges using msg2 from posdb
@@ -486,7 +486,7 @@ bool Msg39::doDocIdSplitLoop ( ) {
 		// reset ourselves, partially, anyway, not tmpq etc.
 		reset2();
 		// debug log
-		log("msg39: docid split phase %"INT64"-%"INT64"",d0,d1);
+		log("msg39: docid split phase %" INT64 "-%" INT64 "",d0,d1);
 		// wtf?
 		if ( d0 >= d1 ) break;
 		// use this
@@ -497,7 +497,7 @@ bool Msg39::doDocIdSplitLoop ( ) {
 		// . it will also intersect the termlists to get the search
 		//   results and accumulate the winners into the "tree"
 		if ( ! getLists() ) return false;
-		//log("call2 g_errno=%"INT32"",(int32_t)g_errno);
+		//log("call2 g_errno=%" INT32 "",(int32_t)g_errno);
 		// if there was an error, stop!
 		if ( g_errno ) break;
 	}
@@ -634,8 +634,8 @@ bool Msg39::getLists () {
 		//}
 		// debug
 		if ( m_debug )
-			log("query: setting sk/ek for docids %"INT64""
-			    " to %"INT64" for termid=%"INT64""
+			log("query: setting sk/ek for docids %" INT64 ""
+			    " to %" INT64 " for termid=%" INT64 ""
 			    , docIdStart
 			    , docIdEnd
 			    , tid
@@ -686,32 +686,32 @@ bool Msg39::getLists () {
 			//tt[ttlen]='\0';
 			//if ( c == '\0' ) c = ' ';
 			sb.safePrintf(
-			     "query: msg39: [%"PTRFMT"] "
-			     "query term #%"INT32" \"%s\" "
-			     "phr=%"INT32" termId=%"UINT64" rawTermId=%"UINT64" "
-			     //"estimatedTermFreq=%"INT64" (+/- ~16000) "
+			     "query: msg39: [%" PTRFMT "] "
+			     "query term #%" INT32 " \"%s\" "
+			     "phr=%" INT32 " termId=%" UINT64 " rawTermId=%" UINT64 " "
+			     //"estimatedTermFreq=%" INT64 " (+/- ~16000) "
 			     "tfweight=%.02f "
 			     "sign=%c "
 			     "numPlusses=%hhu "
-			     "required=%"INT32" "
-			     "fielcode=%"INT32" "
+			     "required=%" INT32 " "
+			     "fielcode=%" INT32 " "
 
-			     "ebit=0x%0"XINT64" "
-			     "impBits=0x%0"XINT64" "
+			     "ebit=0x%0" XINT64 " "
+			     "impBits=0x%0" XINT64 " "
 
-			     "wikiphrid=%"INT32" "
-			     "leftwikibigram=%"INT32" "
-			     "rightwikibigram=%"INT32" "
+			     "wikiphrid=%" INT32 " "
+			     "leftwikibigram=%" INT32 " "
+			     "rightwikibigram=%" INT32 " "
 			     //"range.startTermNum=%hhi range.endTermNum=%hhi "
-			     //"minRecSizes=%"INT32" "
-			     "readSizeInBytes=%"INT32" "
-			     //"ebit=0x%"XINT64" "
-			     //"impBits=0x%"XINT64" "
-			     "hc=%"INT32" "
-			     "component=%"INT32" "
-			     "otermLen=%"INT32" "
-			     "isSynonym=%"INT32" "
-			     "querylangid=%"INT32" " ,
+			     //"minRecSizes=%" INT32 " "
+			     "readSizeInBytes=%" INT32 " "
+			     //"ebit=0x%" XINT64 " "
+			     //"impBits=0x%" XINT64 " "
+			     "hc=%" INT32 " "
+			     "component=%" INT32 " "
+			     "otermLen=%" INT32 " "
+			     "isSynonym=%" INT32 " "
+			     "querylangid=%" INT32 " " ,
 			     (PTRTYPE)this ,
 			     i          ,
 			     qt->m_term,//bb ,
@@ -742,16 +742,16 @@ bool Msg39::getLists () {
 			*tpc = tmp;
 			if ( st ) {
 				int32_t stnum = st - m_tmpq.m_qterms;
-				sb.safePrintf("synofterm#=%"INT32"",stnum);
+				sb.safePrintf("synofterm#=%" INT32 "",stnum);
 				//sb.safeMemcpy(st->m_term,st->m_termLen);
 				sb.pushChar(' ');
-				sb.safePrintf("synwid0=%"INT64" ",qt->m_synWids0);
-				sb.safePrintf("synwid1=%"INT64" ",qt->m_synWids1);
-				sb.safePrintf("synalnumwords=%"INT32" ",
+				sb.safePrintf("synwid0=%" INT64 " ",qt->m_synWids0);
+				sb.safePrintf("synwid1=%" INT64 " ",qt->m_synWids1);
+				sb.safePrintf("synalnumwords=%" INT32 " ",
 					      qt->m_numAlnumWordsInSynonym);
 				// like for synonym "nj" it's base,
 				// "new jersey" has 2 alnum words!
-				sb.safePrintf("synbasealnumwords=%"INT32" ",
+				sb.safePrintf("synbasealnumwords=%" INT32 " ",
 					      qt->m_numAlnumWordsInBase);
 			}
 			logf(LOG_DEBUG,"%s",sb.getBufStart());
@@ -761,8 +761,8 @@ bool Msg39::getLists () {
 	}
 	// timestamp log
 	if ( m_debug ) 
-		log(LOG_DEBUG,"query: msg39: [%"PTRFMT"] "
-		    "Getting %"INT32" index lists ",
+		log(LOG_DEBUG,"query: msg39: [%" PTRFMT "] "
+		    "Getting %" INT32 " index lists ",
 		     (PTRTYPE)this,m_tmpq.getNumTerms());
 	// . now get the index lists themselves
 	// . return if it blocked
@@ -893,8 +893,8 @@ bool Msg39::intersectLists ( ) { // bool updateReadInfo ) {
 	}
 	// timestamp log
 	if ( m_debug ) {
-		log(LOG_DEBUG,"query: msg39: [%"PTRFMT"] "
-		    "Got %"INT32" lists in %"INT64" ms"
+		log(LOG_DEBUG,"query: msg39: [%" PTRFMT "] "
+		    "Got %" INT32 " lists in %" INT64 " ms"
 		    , (PTRTYPE)this,m_tmpq.getNumTerms(),
 		     gettimeofdayInMilliseconds() - m_startTime);
 		m_startTime = gettimeofdayInMilliseconds();
@@ -976,8 +976,8 @@ bool Msg39::intersectLists ( ) { // bool updateReadInfo ) {
 		char  tmp = *tpc;
 		*tpc = '\0';
 		SafeBuf sb;
-		sb.safePrintf("query: msg39: BITNUM query term #%"INT32" \"%s\" "
-			      "bitnum=%"INT32" ", i , qt->m_term, qt->m_bitNum );
+		sb.safePrintf("query: msg39: BITNUM query term #%" INT32 " \"%s\" "
+			      "bitnum=%" INT32 " ", i , qt->m_term, qt->m_bitNum );
 		// put it back
 		*tpc = tmp;
 		logf(LOG_DEBUG,"%s",sb.getBufStart());
@@ -986,9 +986,9 @@ bool Msg39::intersectLists ( ) { // bool updateReadInfo ) {
 
 	// timestamp log
 	if ( m_debug ) {
-		log(LOG_DEBUG,"query: msg39: [%"PTRFMT"] "
+		log(LOG_DEBUG,"query: msg39: [%" PTRFMT "] "
 		    "Preparing to intersect "
-		     "took %"INT64" ms",
+		     "took %" INT64 " ms",
 		     (PTRTYPE)this, 
 		    gettimeofdayInMilliseconds() - m_startTime );
 		m_startTime = gettimeofdayInMilliseconds();
@@ -1045,7 +1045,7 @@ bool Msg39::intersectLists ( ) { // bool updateReadInfo ) {
 
 	// time it
 	diff = gettimeofdayInMilliseconds() - start;
-	if ( diff > 10 ) log("query: Took %"INT64" ms for intersection",diff);
+	if ( diff > 10 ) log("query: Took %" INT64 " ms for intersection",diff);
 
 	// returns false if blocked, true otherwise
 	//return addedLists ();
@@ -1323,7 +1323,7 @@ bool Msg39::gotClusterRecs ( ) {
 		if ( t->m_clusterLevel == CR_OK ) m_numVisible++;
 	}
 
-	log(LOG_DEBUG,"query: msg39: %"INT32" docids out of %"INT32" are visible",
+	log(LOG_DEBUG,"query: msg39: %" INT32 " docids out of %" INT32 " are visible",
 	    m_numVisible,nd);
 
 	// free this junk now
@@ -1477,7 +1477,7 @@ void Msg39::estimateHitsAndSendReply ( ) {
 			// limit for memory
 			if ( used > (int32_t)MAX_FACETS ) {
 				log("msg39: truncating facet list to 20000 "
-				    "from %"INT32" for %s",used,qt->m_term);
+				    "from %" INT32 " for %s",used,qt->m_term);
 				used = (int32_t)MAX_FACETS;
 			}
 			// store query term id 64 bit
@@ -1674,8 +1674,8 @@ void Msg39::estimateHitsAndSendReply ( ) {
 		if ( docCount <= 50 ) m_topScore50 = t->m_score;
 		
 		if ( m_debug ) {
-			logf(LOG_DEBUG,"query: msg39: [%"PTRFMT"] "
-			    "%03"INT32") docId=%012"UINT64" sum=%.02f",
+			logf(LOG_DEBUG,"query: msg39: [%" PTRFMT "] "
+			    "%03" INT32 ") docId=%012" UINT64 " sum=%.02f",
 			    (PTRTYPE)this, docCount,
 			    t->m_docId,t->m_score);
 		}
@@ -1683,15 +1683,15 @@ void Msg39::estimateHitsAndSendReply ( ) {
 		if ( docCount >= numDocIds ) break;
 	}
  	if ( docCount > 300 && m_debug )
-		log("query: Had %"INT32" nodes in top tree",docCount);
+		log("query: Had %" INT32 " nodes in top tree",docCount);
 
 	// this is sensitive info
 	if ( m_debug ) {
 		log(LOG_DEBUG,
-		    "query: msg39: [%"PTRFMT"] "
-		    "Intersected lists took %"INT64" (%"INT64") "
+		    "query: msg39: [%" PTRFMT "] "
+		    "Intersected lists took %" INT64 " (%" INT64 ") "
 		    "ms "
-		    "docIdsToGet=%"INT32" docIdsGot=%"INT32" "
+		    "docIdsToGet=%" INT32 " docIdsGot=%" INT32 " "
 		    "q=%s",
 		    (PTRTYPE)this                        ,
 		    m_posdbTable.m_addListsTime       ,

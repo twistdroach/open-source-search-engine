@@ -109,7 +109,7 @@ void handleRequestSpeller ( UdpSlot *slot , int32_t netnice ) {
 
 	int64_t end = gettimeofdayInMilliseconds();
 	if ( end - start > 1 )
-		log (LOG_INFO,"speller: took %"INT64" ms to spellcheck "
+		log (LOG_INFO,"speller: took %" INT64 " ms to spellcheck "
 		     "fragment %s", end-  start, request);
 	g_udpServer.sendReply_ass ( reply   ,
 				    replySize, 
@@ -679,7 +679,7 @@ bool Speller::gotSpellerReply( StateFrag *st ){
 
 		if ( recommendation ){
 			log ( LOG_DEBUG,"speller: Received reco %s, "
-			      "score=%"INT32", pop=%"INT32"", p, score, pop );
+			      "score=%" INT32 ", pop=%" INT32 "", p, score, pop );
 
 			// we have a recommendation with score and pop
 			// choose the one with the lowest score, and if the
@@ -968,7 +968,7 @@ void Speller::gotFrags( void *state ){
 	
 	int64_t now = gettimeofdayInMilliseconds();
 	if ( now - st->m_start > 50 )
-		log(LOG_INFO,"speller: Took %"INT64" ms to spell check %s",
+		log(LOG_INFO,"speller: Took %" INT64 " ms to spell check %s",
 		    now - st->m_start, st->m_q->getQuery() );
 	return;
 }
@@ -1045,7 +1045,7 @@ bool Speller::loadUnifiedDict() {
 			log("gb: unifiedDict-buf.txt or "
 			    "unifiedDict-map.dat "
 			    "checksum is not approved for "
-			    "live service (%"INT64" != %"INT64")" ,h,n);
+			    "live service (%" INT64 " != %" INT64 ")" ,h,n);
 			//return false;
 		}
 
@@ -1157,7 +1157,7 @@ bool Speller::loadUnifiedDict() {
 		if(gbstrlen(phrase) < 1) {
 			log(LOG_WARN,
 				"spell: Got zero length entry in unifiedDict "
-			    "at line %"UINT64", skipping\n",
+			    "at line %" UINT64 ", skipping\n",
 				atline);
 			p += gbstrlen(p) + 1;
 			continue;
@@ -1168,7 +1168,7 @@ bool Speller::loadUnifiedDict() {
 		if(gbstrlen(phrase) == 1 && (phrase[0] < 'a')) {
 			log(LOG_WARN,
 				"spell: Got questionable entry in "
-			    "unifiedDict at line %"UINT64", skipping: %s\n",
+			    "unifiedDict at line %" UINT64 ", skipping: %s\n",
 				atline,p);
 			p += gbstrlen(p) + 1;
 			continue;
@@ -1258,7 +1258,7 @@ bool Speller::loadUnifiedDict() {
 			if ( pops[i] == 0 ) continue;
 			// skip "unknown" what does that really mean?
 			if ( i == 0 ) continue;
-			m_unifiedBuf.safePrintf("%"INT32"\t%"INT32"\t",
+			m_unifiedBuf.safePrintf("%" INT32 "\t%" INT32 "\t",
 						i,(int32_t)pops[i]);
 			count++;
 		}
@@ -1282,7 +1282,7 @@ bool Speller::loadUnifiedDict() {
 		p += gbstrlen(p) + 1;
 	}
 
-	log (LOG_WARN,"spell: got %"INT32" TOTAL collisions in unified dict",
+	log (LOG_WARN,"spell: got %" INT32 " TOTAL collisions in unified dict",
 	     totalCollisions);
 
 
@@ -1364,7 +1364,7 @@ bool Speller::loadUnifiedDict() {
 			if ( pops[i] == 0 ) continue;
 			// skip "unknown" what does that really mean?
 			if ( i == 0 ) continue;
-			m_unifiedBuf.safePrintf("%"INT32"\t%"INT32"\t",
+			m_unifiedBuf.safePrintf("%" INT32 "\t%" INT32 "\t",
 						i,(int32_t)pops[i]);
 			count++;
 		}
@@ -1792,7 +1792,7 @@ bool Speller::createUnifiedDict (){
 		populateHashTable(ff, &ht[i], i);
 
 		for ( int32_t j = 0; j < NUM_CHARS; j++ ){
-			sprintf ( ff , "%sdict/%s/%s.dict.%"INT32"", g_hostdb.m_dir,
+			sprintf ( ff , "%sdict/%s/%s.dict.%" INT32 "", g_hostdb.m_dir,
 				  getLanguageAbbr(i), getLanguageAbbr(i), j );
 			populateHashTable(ff, &ht[i], i);
 		}
@@ -1858,7 +1858,7 @@ bool Speller::createUnifiedDict (){
 				char *val = *(char **)ht[k].getValueFromSlot(slot);
 				int32_t pop = atoi(val);
 				if ( fromTitleRec ) pop *= -1;
-				sprintf(p,"\t%"INT32"\t%"INT32"",k,pop);
+				sprintf(p,"\t%" INT32 "\t%" INT32 "",k,pop);
 				p += gbstrlen(p);
 			}
 			// write out the trailing \n as well
@@ -1938,7 +1938,7 @@ char *Speller::getPhraseRecord(char *phrase, int len ) {
 	//char *rv = NULL;
 	int64_t h = hash64d(phrase, len);
 	int32_t slot = m_unifiedDict.getSlot(&h);
-	//log("speller: h=%"UINT64" len=%i slot=%"INT32"",h,len,slot);
+	//log("speller: h=%" UINT64 " len=%i slot=%" INT32 "",h,len,slot);
 	if ( slot < 0 ) return NULL;
 	//rv = *(char **)m_unifiedDict.getValueFromSlot(slot);
 	int32_t offset =  *(int32_t *)m_unifiedDict.getValueFromSlot(slot);
@@ -2244,8 +2244,8 @@ void Speller::dictLookupTest ( char *ff ){
 		}
 		count++;
 	}
-	log ( LOG_WARN,"speller: dictLookupTest took %"INT64" ms to do "
-	      "%"INT32" words. Compare against 46-66ms taken for dict/words file.",
+	log ( LOG_WARN,"speller: dictLookupTest took %" INT64 " ms to do "
+	      "%" INT32 " words. Compare against 46-66ms taken for dict/words file.",
 	      gettimeofdayInMilliseconds() - start, count );
 	fclose(fd);
 }

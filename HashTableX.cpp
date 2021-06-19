@@ -195,7 +195,7 @@ bool HashTableX::addKey ( void *key , void *val , int32_t *slot ) {
 	if ( m_ks <= 0 ){ char *xx=NULL; *xx=0; }
 
 	if ( ! m_allowGrowth && m_numSlotsUsed + 1 > m_numSlots ) {
-		log("hashtable: hit max ceiling of hashtable of %"INT32" slots. "
+		log("hashtable: hit max ceiling of hashtable of %" INT32 " slots. "
 		    "and can not grow because in thread.",m_numSlotsUsed);
 		return false;
 	}
@@ -407,8 +407,8 @@ bool HashTableX::setTableSize ( int32_t oldn , char *buf , int32_t bufSize ) {
 		//if ( name && strcmp(name,"HashTableX")==0 )
 		//	log("hey");
 		int64_t now = gettimeofdayInMilliseconds();
-		logf(LOG_DEBUG,"table: grewtable %s from %"INT32" to %"INT32" slots "
-		     "in %"INT64" ms (this=0x%"PTRFMT") (used=%"INT32")",  
+		logf(LOG_DEBUG,"table: grewtable %s from %" INT32 " to %" INT32 " slots "
+		     "in %" INT64 " ms (this=0x%" PTRFMT ") (used=%" INT32 ")",  
 		     name,old,m_numSlots ,now - startTime,(PTRTYPE)this,oldUsed);
 	}
 
@@ -466,7 +466,7 @@ bool HashTableX::load ( char *dir, char *filename, char **tbuf, int32_t *tsize )
 		if ( strstr(filename,"ipstouseproxiesfor.dat") )
 			return false;
 		log("htable: reading hashtable from %s%s: "
-		    "bogus keysize of %"INT32"",
+		    "bogus keysize of %" INT32 "",
 		    dir,filename,ks );
 		return false;
 	}
@@ -510,7 +510,7 @@ bool HashTableX::load ( char *dir, char *filename, char **tbuf, int32_t *tsize )
         f.close();
 	m_needsSave = false;
 	int32_t totalMem = *tsize+m_numSlots*(m_ks+m_ds);
-	log(LOG_INFO,"admin: Loaded hashtablex from %s%s %"INT32" total mem",
+	log(LOG_INFO,"admin: Loaded hashtablex from %s%s %" INT32 " total mem",
 	    pdir,filename, totalMem);
         return true;
 }

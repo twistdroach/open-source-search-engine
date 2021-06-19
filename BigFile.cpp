@@ -160,8 +160,8 @@ bool BigFile::addParts ( char *dirname ) {
 		else part = atoi ( filename + blen + 5 );
 		// ensure not too big
 		// if ( part >= MAX_PART_FILES ) {
-		// 	log ("disk: Part number of %"INT32" is too big for "
-		// 	     "\"%s\". Should be less than %"INT32".", 
+		// 	log ("disk: Part number of %" INT32 " is too big for "
+		// 	     "\"%s\". Should be less than %" INT32 ".", 
 		// 	     (int32_t)part,filename,(int32_t)MAX_PART_FILES);
 		// 	continue;
 		// }
@@ -179,7 +179,7 @@ bool BigFile::addParts ( char *dirname ) {
 // and realloc on that.
 bool BigFile::addPart ( int32_t n ) {
 	// if ( n >= MAX_PART_FILES ) 
-	// 	return log("disk: Part number %"INT32" > %"INT32".",
+	// 	return log("disk: Part number %" INT32 " > %" INT32 ".",
 	// 		   n,(int32_t)MAX_PART_FILES);
 	// . grow our dynamic array and return ptr to last element
 	// . n's come in NOT necessarily in order!!!
@@ -330,7 +330,7 @@ void BigFile::makeFilename_r ( char *baseFilename    ,
 		char *xx=NULL; *xx=0;
 	}
 	// return if it fit into "buf"
-	r = snprintf ( buf, bufSize, "%s/%s.part%"INT32,dir,baseFilename,n);
+	r = snprintf ( buf, bufSize, "%s/%s.part%" INT32 ,dir,baseFilename,n);
 	if ( r < bufSize ) return;
 	// truncation is bad
 	char *xx=NULL; *xx=0;
@@ -346,7 +346,7 @@ int BigFile::getfd ( int32_t n , bool forReading ) { // , int64_t *vfd ) {
 
 	// boundary check
 	if ( n >= m_maxParts && ! addPart ( n ) ) {
-		log("disk: Part number %"INT32" > %"INT32". fd "
+		log("disk: Part number %" INT32 " > %" INT32 ". fd "
 		    "not available.",
 		    n,m_maxParts);
 		// return -1 to indicate can't do it
@@ -364,7 +364,7 @@ int BigFile::getfd ( int32_t n , bool forReading ) { // , int64_t *vfd ) {
 	// open it if not opened
 	if ( ! f->calledOpen() ) {
 		if ( ! f->open ( m_flags , getFileCreationFlags() ) ) {
-			log("disk: Failed to open file part #%"INT32".",n);
+			log("disk: Failed to open file part #%" INT32 ".",n);
 			return -1;
 		}
 	}
@@ -519,7 +519,7 @@ bool BigFile::readwrite ( void         *buf      ,
 	// . when our offset was just a int32_t 2gig+ files, when dumped,
 	//   had negative offsets, bad engineer
 	if ( offset < 0 ) {
-		log(LOG_LOGIC,"disk: readwrite() offset is %"INT64" "
+		log(LOG_LOGIC,"disk: readwrite() offset is %" INT64 " "
 		    "< 0. filename=%s/%s. dumping core. try deleting "
 		    "the .map file for it and restarting.",offset,
 		    m_dir.getBufStart(),m_baseFilename.getBufStart());
@@ -552,12 +552,12 @@ bool BigFile::readwrite ( void         *buf      ,
 		fstate->m_bytesToGo = size;
 		// sanity
 		if ( m_vfd == -1 ) { char *xx=NULL;*xx=0; }
-		//log("getting pages off=%"INT64" size=%"INT32"",offset,size);
+		//log("getting pages off=%" INT64 " size=%" INT32 "",offset,size);
 		// now we pass in a ptr to the buf ptr, because if buf is NULL
 		// this will allocate one for us if it has some pages in the
 		// cache that we can use.
 		char *readBuf = m_pc->getPages ( m_vfd, offset, size );
-		//log("got     pages off=%"INT64" size=%"INT32"",offset,size);
+		//log("got     pages off=%" INT64 " size=%" INT32 "",offset,size);
 		//bufOff = offset - oldOff;
 		// comment out for test
 		if ( readBuf ) {
@@ -581,7 +581,7 @@ bool BigFile::readwrite ( void         *buf      ,
 	// us to check the page cache! silly bean!
 	if ( ! allowPageCache && ! hitDisk ) { char*xx=NULL;*xx=0; }
 	//if ( m_pc && m_pc->m_isOverriden )
-	//	log ( LOG_INFO, "bigfile: HITTING DISK!! %"INT32"",
+	//	log ( LOG_INFO, "bigfile: HITTING DISK!! %" INT32 "",
 	//			(int32_t)allowPageCache );
 	// set up fstate
 	fstate->m_this        = this;
@@ -612,7 +612,7 @@ bool BigFile::readwrite ( void         *buf      ,
 	fstate->m_usePartFiles = m_usePartFiles;
 	// sanity
 	if ( fstate->m_bytesToGo > 150000000 )
-		log("file: huge read of %"INT64" bytes",(int64_t)size);
+		log("file: huge read of %" INT64 " bytes",(int64_t)size);
 	// . set our fd's before entering the thread in case RdbMerge
 	//   calls our unlinkPart() 
 	// . it's thread-UNsafe to call getfd() from within the thread
@@ -741,7 +741,7 @@ bool BigFile::readwrite ( void         *buf      ,
 			     "disk: Doing blocking disk access. "
 			     //"This will hurt "
 			     //"performance. "
-			     "isWrite=%"INT32". (%s)",(int32_t)doWrite,
+			     "isWrite=%" INT32 ". (%s)",(int32_t)doWrite,
 			     mstrerror(saved));
 		}
 	}
@@ -767,7 +767,7 @@ bool BigFile::readwrite ( void         *buf      ,
 			fs->m_allocSize = need;
 		}
 		else 
-			log("disk: read buf alloc failed for %"INT32" "
+			log("disk: read buf alloc failed for %" INT32 " "
 			    "bytes.",need);
 	}
 
@@ -882,8 +882,8 @@ bool BigFile::readwrite ( void         *buf      ,
 	int32_t      rate  = 100000;
 	if ( took  > 500 ) rate = fstate->m_bytesDone / took ;
 	if ( rate < 8000 && fstate->m_niceness <= 0 ) {
-		log(LOG_INFO,"disk: Read %"INT64" bytes in %"INT64" "
-		    "ms (%"INT32"KB/s).",
+		log(LOG_INFO,"disk: Read %" INT64 " bytes in %" INT64 " "
+		    "ms (%" INT32 "KB/s).",
 		    fstate->m_bytesDone,took,rate);
 		g_stats.m_slowDiskReads++;
 	}
@@ -935,14 +935,14 @@ bool BigFile::readwrite ( void         *buf      ,
 		int32_t fn1 = fstate->m_filenum1;
 		int32_t fn2 = fstate->m_filenum2;
 		char *s = getFilename();
-		log(LOG_DEBUG,"disk: Closing old fd1 (%s,%"INT32")",s,fn1);
-		log(LOG_DEBUG,"disk: Closing old fd2 (%s,%"INT32")",s,fn2);
+		log(LOG_DEBUG,"disk: Closing old fd1 (%s,%" INT32 ")",s,fn1);
+		log(LOG_DEBUG,"disk: Closing old fd2 (%s,%" INT32 ")",s,fn2);
 		// get the File ptr from the table
 		File *f1 = getFile(fn1);
 		File *f2 = getFile(fn2);
 		if ( f2 == f1 ) f2 = NULL;
-		log(LOG_DEBUG,"disk: Closing old fd1 (%s,%"INT32")",s,fn1);
-		if ( f2) log(LOG_DEBUG,"disk: Closing old fd2 (%s,%"INT32")",s,fn2);
+		log(LOG_DEBUG,"disk: Closing old fd1 (%s,%" INT32 ")",s,fn1);
+		if ( f2) log(LOG_DEBUG,"disk: Closing old fd2 (%s,%" INT32 ")",s,fn2);
 		if ( f1 ) f1->close();
 		if ( f2 ) f2->close();
 	}
@@ -983,8 +983,8 @@ void doneWrapper ( void *state , ThreadEntry *t ) {
 	if ( fstate->m_errno == EDISKSTUCK ) slow = true;
 	if ( slow && fstate->m_niceness <= 0 ) {
 		if ( fstate->m_errno != EDISKSTUCK )
-		  log(LOG_INFO, "disk: Read %"INT64" bytes in %"INT64" "
-		      "ms (%"INT32"KB/s).",
+		  log(LOG_INFO, "disk: Read %" INT64 " bytes in %" INT64 " "
+		      "ms (%" INT32 "KB/s).",
 		    fstate->m_bytesDone,took,rate);
 		g_stats.m_slowDiskReads++;
 	}
@@ -1036,19 +1036,19 @@ void doneWrapper ( void *state , ThreadEntry *t ) {
 	//if ( fstate->m_this->getFlags() & O_NONBLOCK ) t = "yes";
 	// this is bad for real-time threads cuz our unlink() routine may
 	// have been called by RdbMerge and our m_files may be altered 
-	//log("disk::readwrite: %s %"INT32" bytes from %s(nonBlock=%s)",s,n,
+	//log("disk::readwrite: %s %" INT32 " bytes from %s(nonBlock=%s)",s,n,
 	//    m_files[filenum]->getFilename(),t);
-	//log("disk::readwrite_r: %s %"INT32" bytes (nonBlock=%s)",
+	//log("disk::readwrite_r: %s %" INT32 " bytes (nonBlock=%s)",
 	//     s,fstate->m_bytesDone/*n*/,t);
 	// debug msg
 	//int32_t took = gettimeofdayInMilliseconds() - fstate->m_startTime ;
-	//log("read of %"INT32" bytes took %"INT32" ms",fstate->m_bytesDone, took);
+	//log("read of %" INT32 " bytes took %" INT32 " ms",fstate->m_bytesDone, took);
 	// now log our stuff here
 	int32_t tt = LOG_WARN;
 	if ( g_errno == EFILECLOSED ) tt = LOG_INFO;
 	if ( g_errno && g_errno != EDISKSTUCK ) 
-		log (tt,"disk: %s. fd1=%"INT32" fd2=%"INT32" "
-		     "off=%"INT64" toread=%"INT32,
+		log (tt,"disk: %s. fd1=%" INT32 " fd2=%" INT32 " "
+		     "off=%" INT64 " toread=%" INT32 ,
 		     mstrerror(g_errno),
 		     (int32_t)fstate->m_fd1,
 		     (int32_t)fstate->m_fd2,
@@ -1083,8 +1083,8 @@ void doneWrapper ( void *state , ThreadEntry *t ) {
 		// CAUTION: if file got delete THIS will be invalid!!!
 		BigFile *THIS = fstate->m_this;
 		char *s = THIS->getFilename();
-		log(LOG_DEBUG,"disk: Closing old fd1 (%s,%"INT32")",s,fn1);
-		log(LOG_DEBUG,"disk: Closing old fd2 (%s,%"INT32")",s,fn2);
+		log(LOG_DEBUG,"disk: Closing old fd1 (%s,%" INT32 ")",s,fn1);
+		log(LOG_DEBUG,"disk: Closing old fd2 (%s,%" INT32 ")",s,fn2);
 		// get the File ptr from the table
 		File *f1 = THIS->getFile(fn1);
 		File *f2 = THIS->getFile(fn2);
@@ -1100,7 +1100,7 @@ void doneWrapper ( void *state , ThreadEntry *t ) {
 
 void *readwriteWrapper_r ( void *state , ThreadEntry *t ) {
 	// debug msg
-	//log("disk: this thread id = %"INT32"",(int32_t)pthread_self());
+	//log("disk: this thread id = %" INT32 "",(int32_t)pthread_self());
 
 	// if we were queued and now we are launching stuck, just return now
 	//if ( g_diskIsStuck ) {
@@ -1190,8 +1190,8 @@ void *readwriteWrapper_r ( void *state , ThreadEntry *t ) {
 		// int32_t cc2 = -1;
 		// if ( f1 ) cc1 = f1->m_closeCount;
 		// if ( f2 ) cc2 = f2->m_closeCount;
-		log("file: c1a=%"INT32" c1b=%"INT32" "
-		    "c2a=%"INT32" c2b=%"INT32"",
+		log("file: c1a=%" INT32 " c1b=%" INT32 " "
+		    "c2a=%" INT32 " c2b=%" INT32 "",
 		    cc1,fstate->m_closeCount1,
 		    cc2,fstate->m_closeCount2);
 		    
@@ -1235,7 +1235,7 @@ void *readwriteWrapper_r ( void *state , ThreadEntry *t ) {
 	}
 	*/
 	// debug msg
-	//fprintf(stderr,"BigFile exiting thread, state=%"UINT32"\n",(int32_t)fstate);
+	//fprintf(stderr,"BigFile exiting thread, state=%" UINT32 "\n",(int32_t)fstate);
 	// . we're all done, tell g_threads
 	// . this never returns
 	// . the state must be unique per thread so we know what thread this is
@@ -1321,7 +1321,7 @@ bool readwrite_r ( FileState *fstate , ThreadEntry *t ) {
 	//static int32_t s_poo = 0;
 	//s_poo++;
 	//if ( s_poo > 1125 )sleep(5);
-	//log("disk: spoo=%"INT32"",s_poo);
+	//log("disk: spoo=%" INT32 "",s_poo);
 
 	// reset this
 	errno = 0;
@@ -1359,9 +1359,9 @@ bool readwrite_r ( FileState *fstate , ThreadEntry *t ) {
 		    (int)fstate->m_closeCount2 ,
 		    (int)getCloseCount_r ( fstate->m_fd2 ) ,
 		    mstrerror(errno) );
-		//log("disk::readwrite_r: %s %"INT32" bytes (nonBlock=%s)",
+		//log("disk::readwrite_r: %s %" INT32 " bytes (nonBlock=%s)",
 		//s,n,t);
-		//log("disk::readwrite_r: did %"INT32" bytes", n);
+		//log("disk::readwrite_r: did %" INT32 " bytes", n);
 	}
 
 	// interrupted system call?
@@ -1377,7 +1377,7 @@ bool readwrite_r ( FileState *fstate , ThreadEntry *t ) {
 	if (n==0 && len > 0 ) {
 		// MDW: don't access m_this in case bigfile was deleted
 		// since we are in a thread
-		log("disk: Read of %"INT32" bytes at offset %"INT64" "
+		log("disk: Read of %" INT32 " bytes at offset %" INT64 " "
 		    " failed because file is too short for that "
 		    "offset? Our fd was probably stolen from us by another "
 		    "thread. fd1=%i fd2=%i len=%i filenum=%i "
@@ -1413,7 +1413,7 @@ bool readwrite_r ( FileState *fstate , ThreadEntry *t ) {
 	}
 	// bitch if didn't read what we wanted
 	//if ( n != len )
-	//	log("disk::readwrite_r: only did %"INT32", needed %"INT32"",n,len);
+	//	log("disk::readwrite_r: only did %" INT32 ", needed %" INT32 "",n,len);
 	// . flush the write
 	// . linux's write cache may be messing with my data!
 	// . no, turns out write errors (garbage written) happens anyway...
@@ -1655,7 +1655,7 @@ bool BigFile::unlinkRename ( // non-NULL for renames, NULL for unlinks
 		// otherwise, thread spawn failed, do it blocking then
 		log(LOG_INFO,
 		    "disk: Failed to launch unlink/rename thread for %s. "
-		    "Doing blocking unlink. part=%"INT32"/%"INT32". "
+		    "Doing blocking unlink. part=%" INT32 "/%" INT32 ". "
 		    "This will hurt performance. "
 		    "%s.",f->getFilename(),i,m_part,mstrerror(g_errno));
 	skipThread:

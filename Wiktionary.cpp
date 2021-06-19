@@ -287,7 +287,7 @@ bool Wiktionary::load() {
 		int64_t nn2 = -2511412928924361809LL;
 		if ( h != nn && h != nn2 ) {
 			log("gb: %s or %s checksum is not approved for "
-			    "live service (%"INT64" != %"INT64")", ff3, ff4,
+			    "live service (%" INT64 " != %" INT64 ")", ff3, ff4,
 			    h,nn);
 			//return false;
 		}
@@ -636,7 +636,7 @@ bool Wiktionary::generateHashTableFromWiktionaryTxt ( int32_t sizen ) {
 	}
 
 	// log it
-	log("wikt: reading %"INT32" bytes of %s @ %"INT64" (filesize=%"INT32")",
+	log("wikt: reading %" INT32 " bytes of %s @ %" INT64 " (filesize=%" INT32 ")",
 	    readSize,ff1,offset,sizen);
 
 	int32_t n = pread ( fd1 , buf , readSize , offset );
@@ -1099,7 +1099,7 @@ bool Wiktionary::generateHashTableFromWiktionaryTxt ( int32_t sizen ) {
 		if ( *wp == '\n' )  goto lineLoop;
 		// debug
 		//int32_t diff = wp - buf;
-		//log("diff = %"INT32"",diff);
+		//log("diff = %" INT32 "",diff);
 		// a pos?
 		if ( ! strncasecmp(wp,"noun",4) ) {
 			flag = WF_NOUN;
@@ -1965,7 +1965,7 @@ bool Wiktionary::compile ( ) {
 		// a byte for storing the # of synonym forms
 		//m_synBuf.pushChar(0);
 		// push the langid!
-		//m_synBuf.safePrintf("%"INT32",",langId);
+		//m_synBuf.safePrintf("%" INT32 ",",langId);
 		int32_t count = 0;
 		// chain for all keys that are the same
 		for ( int32_t j = i ; ; j++ ) {
@@ -2047,7 +2047,7 @@ bool Wiktionary::compile ( ) {
 			// debug time
 			if ( stripLen > 0 ) a[stripLen] = 0;
 			//if ( stripLen > 0 ) 
-			//	log("wikt: %"INT32") %s->%s",i,word,a);
+			//	log("wikt: %" INT32 ") %s->%s",i,word,a);
 			//if ( i==5133265 )
 			//	log("hey");
 			// if same as original word, ignore it

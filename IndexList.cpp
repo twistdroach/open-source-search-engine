@@ -29,8 +29,8 @@ void IndexList::print() {
 		// print out date lists here
 		if ( m_ks == 16 ) {
 			logf(LOG_DEBUG,
-			     "db: %04"INT32") %020"INT64" "
-			     "%10"UINT32" %03"INT32" %020"INT64"",
+			     "db: %04" INT32 ") %020" INT64 " "
+			     "%10" UINT32 " %03" INT32 " %020" INT64 "",
 			     i++ ,
 			     getTermId16(m_listPtr),
 			     (int32_t)getCurrentDate(),
@@ -38,8 +38,8 @@ void IndexList::print() {
 			     (int64_t)getCurrentDocId() );
 			continue;
 		}
-		logf(LOG_DEBUG,"db: %04"INT32") %020"INT64" "
-		     "%03"INT32" %020"INT64"" ,
+		logf(LOG_DEBUG,"db: %04" INT32 ") %020" INT64 " "
+		     "%03" INT32 " %020" INT64 "" ,
 		     i++ ,
 		     (int64_t)getCurrentTermId12() ,
 		     (int32_t)getCurrentScore(),

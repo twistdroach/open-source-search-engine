@@ -76,7 +76,7 @@ bool sendPageCatdb ( TcpSocket *s , HttpRequest *r ) {
 	try { st = new (StateCatdb); }
 	catch ( ... ) {
 		g_errno = ENOMEM;
-		log("catdb: Unable to allocate %"INT32" bytes for StateCatdb",
+		log("catdb: Unable to allocate %" INT32 " bytes for StateCatdb",
 		    (int32_t)sizeof(StateCatdb) );
 		return true;
 	}
@@ -207,7 +207,7 @@ bool sendReply ( void *state ) {
 			st->m_coll );
 	if (st->m_genCatdb)
 		sb.safePrintf ( "<tr class=poo>"
-				"<td> Catdb Generation took %"INT64" ms."
+				"<td> Catdb Generation took %" INT64 " ms."
 				"</td></tr>",
 				endTime - st->m_startTime );
 	// print Url Category Lookup
@@ -223,11 +223,11 @@ bool sendReply ( void *state ) {
 		sb.safePrintf("<tr><td>");
 		// print the url
 		sb.safeMemcpy(st->m_url.getUrl(), st->m_url.getUrlLen());
-		sb.safePrintf(" (%"INT64" ms)</td><td>",
+		sb.safePrintf(" (%" INT64 " ms)</td><td>",
 				endTime - st->m_startTime );
 		// print each category id and path
 		for (int32_t i = 0; i < st->m_catRec.m_numCatids; i++) {
-			sb.safePrintf("<b>[%"INT32"] ",
+			sb.safePrintf("<b>[%" INT32 "] ",
 					st->m_catRec.m_catids[i]);
 			g_categories->printPathFromId(&sb,
 					st->m_catRec.m_catids[i]);
@@ -264,16 +264,16 @@ bool sendReply ( void *state ) {
 						anchor);
 			sb.safePrintf("<br>");
 		}
-		sb.safePrintf("<b>Filenum:</b> %"INT32"<br>",
+		sb.safePrintf("<b>Filenum:</b> %" INT32 "<br>",
 				st->m_catRec.m_filenum);
 		// print indirect catids
 		if (st->m_catRec.m_numIndCatids > 0) {
-			sb.safePrintf("<hr><b>Indirect Catids [%"INT32"]:"
+			sb.safePrintf("<hr><b>Indirect Catids [%" INT32 "]:"
 					"</b><br>\n",
 					st->m_catRec.m_numIndCatids );
 			for (int32_t i = 0;
 				  i < st->m_catRec.m_numIndCatids; i++) {
-				sb.safePrintf("%"UINT32"<br>",
+				sb.safePrintf("%" UINT32 "<br>",
 					st->m_catRec.m_indCatids[i]);
 			}
 		}

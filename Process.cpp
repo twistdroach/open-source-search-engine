@@ -329,7 +329,7 @@ bool Process::checkFiles ( char *dir ) {
 	// . MDW - i am phased these annoying files out 100%
 	//for ( int32_t i = 0 ; i <= 50 ; i++ ) {
 	//	char tmp[100];
-	//	sprintf ( tmp , "tagdb%"INT32".xml" , i );
+	//	sprintf ( tmp , "tagdb%" INT32 ".xml" , i );
 	//	File f;
 	//	f.set ( dir , tmp );
 	//	if ( ! f.doesExist() ) 
@@ -945,7 +945,7 @@ void hdtempDoneWrapper ( void *state , ThreadEntry *t ) {
 	char msgbuf[1024];
 	Host *h0 = g_hostdb.getHost ( 0 );
 	snprintf(msgbuf, 1024,
-		 "hostid %"INT32" has overheated HD at %"INT32" C "
+		 "hostid %" INT32 " has overheated HD at %" INT32 " C "
 		 "cluster=%s (%s). Disabling spiders.",
 		 h->m_hostId,
 		 (int32_t)max,
@@ -1019,7 +1019,7 @@ float getDiskUsage ( int64_t *diskAvail ) {
 
 	float usage;
 	int64_t avail;
-	sscanf(buf,"%"INT64" %f",&avail,&usage);
+	sscanf(buf,"%" INT64 " %f",&avail,&usage);
 	// it is in KB so make it into bytes
 	if ( diskAvail ) *diskAvail = avail * 1000LL;
 	return usage;
@@ -1185,10 +1185,10 @@ void heartbeatWrapper ( int fd , void *state ) {
 		// to see if its overflowed. hopefully i will fix this by
 		// queue the signals myself in Loop.cpp.
 		log("db: missed calling niceness 0 heartbeatWrapper "
-		    "function by %"INT64" ms. Either you need a quickpoll "
+		    "function by %" INT64 " ms. Either you need a quickpoll "
 		    "somewhere or a niceness 0 function is taking too long. "
 		    "Num elapsed alarms = "
-		    "%"INT32"", elapsed-100,(int32_t)(g_numAlarms - 
+		    "%" INT32 "", elapsed-100,(int32_t)(g_numAlarms - 
 						      s_lastNumAlarms));
 	s_last = now;
 	s_lastNumAlarms = g_numAlarms;
@@ -1383,7 +1383,7 @@ bool Process::shutdown ( bool urgent ,
 		if ( m_mode == EXIT_MODE )
 			return true;
 		// otherwise, log it!
-		log("process: shutdown called, but mode is %"INT32"",
+		log("process: shutdown called, but mode is %" INT32 "",
 		    (int32_t)m_mode);
 		return true;
 	}
@@ -1497,10 +1497,10 @@ bool Process::shutdown2 ( ) {
 
 	if ( m_urgent )
 		log(LOG_INFO,"gb: Shutting down urgently. "
-		    "Timed try #%"INT32".",
+		    "Timed try #%" INT32 ".",
 		    m_try++);
 	else
-		log(LOG_INFO,"gb: Shutting down. Timed try #%"INT32".",
+		log(LOG_INFO,"gb: Shutting down. Timed try #%" INT32 ".",
 		    m_try++);
 
 
@@ -1545,14 +1545,14 @@ bool Process::shutdown2 ( ) {
 	// we can't wait for the write thread if we had a seg fault, but
 	// do print a msg in the log
 	if ( n != 0 && m_urgent ) {
-		log(LOG_INFO,"gb: Has %"INT32" write/unlink/rename "
+		log(LOG_INFO,"gb: Has %" INT32 " write/unlink/rename "
 		    "threads active. Waiting.",n);
 		sleep(1);
 		goto waitLoop;
 	}
 
 	if ( n != 0 && ! m_urgent ) {
-		log(LOG_INFO,"gb: Has %"INT32" write/unlink/rename "
+		log(LOG_INFO,"gb: Has %" INT32 " write/unlink/rename "
 		    "threads out. Waiting for "
 		    "them to finish.",n);
 		return false;
@@ -1678,12 +1678,12 @@ bool Process::shutdown2 ( ) {
 		if ( g_threads.amThread() ) {
 			uint64_t tid = (uint64_t)getpidtid();
 			log("gb: calling abort from thread with tid of "
-			    "%"UINT64" (thread)",tid);
+			    "%" UINT64 " (thread)",tid);
 		}
 		else {
 			pid_t pid = getpid();
 			log("gb: calling abort from main process "
-			    "with pid of %"UINT64" (main process)",
+			    "with pid of %" UINT64 " (main process)",
 			    (uint64_t)pid);
 		}
 
@@ -1754,9 +1754,9 @@ bool Process::shutdown2 ( ) {
 	//int32_t n = g_threads.getNumThreadsOutOrQueued() ;
 	//if ( n > 0 )
 	//	return log(LOG_INFO,
-	//		   "gb: Waiting for %"INT32" threads to complete.",n);
+	//		   "gb: Waiting for %" INT32 " threads to complete.",n);
 
-	//log(LOG_INFO,"gb: Has %"INT32" threads out.",n);
+	//log(LOG_INFO,"gb: Has %" INT32 " threads out.",n);
 
 
 	//ok, resetAll will close httpServer's socket so now is the time to 
@@ -2017,7 +2017,7 @@ bool Process::saveBlockingFiles1 ( ) {
 	// QueryLogEntry::m_minTop50Score member and corresponding timestamp
 	if ( g_qbufNeedSave ) {
 		char fname[1024];
-		sprintf(fname,"querylog.host%"INT32".dat",g_hostdb.m_hostId);
+		sprintf(fname,"querylog.host%" INT32 ".dat",g_hostdb.m_hostId);
 		g_qbuf.saveToFile(g_hostdb.m_dir,fname);
 		log("process: saving changes to %s",fname);
 		g_qbufNeedSave = false;
@@ -2261,7 +2261,7 @@ static void loadavg_callback(loadavg_state* state) {
 		s_st_lavg.bigfile.close();
 		s_st_lavg.bigfile.setNonBlocking();
 		s_st_lavg.bigfile.open(O_RDONLY);
-		log(LOG_INFO, "build: errno %"INT32" reading /proc/loadavg",
+		log(LOG_INFO, "build: errno %" INT32 " reading /proc/loadavg",
 			s_st_lavg.filestate.m_errno);
 		s_st_lavg.filestate.m_errno = 0;
 		return;
@@ -2406,29 +2406,29 @@ void gotStatReply ( UdpSlot *slot ) {
 		      "\r\n"
 		      );
 
-	sb.safePrintf("total expired events %"INT32"\n\n", total.m_expired );
-	sb.safePrintf("total active events %"INT32"\n\n", total.m_active );
+	sb.safePrintf("total expired events %" INT32 "\n\n", total.m_expired );
+	sb.safePrintf("total active events %" INT32 "\n\n", total.m_active );
 
 	// print the stats now a
-	fprintf(stdout,"expired %"INT32"\n",expiredCount);
-	fprintf(stdout,"active %"INT32"\n",activeCount);
-	fprintf(stdout,"expired+active %"INT32"\n",expiredCount+activeCount);
-	fprintf(stdout,"activeresultset1 %"INT32"\n",activeResultSet1Count);
-	fprintf(stdout,"activeexperimental %"INT32"\n",activeExperimentalCount);
-	fprintf(stdout,"activeresultset1+activeexperimental %"INT32"\n",
+	fprintf(stdout,"expired %" INT32 "\n",expiredCount);
+	fprintf(stdout,"active %" INT32 "\n",activeCount);
+	fprintf(stdout,"expired+active %" INT32 "\n",expiredCount+activeCount);
+	fprintf(stdout,"activeresultset1 %" INT32 "\n",activeResultSet1Count);
+	fprintf(stdout,"activeexperimental %" INT32 "\n",activeExperimentalCount);
+	fprintf(stdout,"activeresultset1+activeexperimental %" INT32 "\n",
 		activeResultSet1Count+activeExperimentalCount);
-	fprintf(stdout,"activefacebook %"INT32"\n",facebookCount);
-	fprintf(stdout,"activebadgeocoder %"INT32"\n",badGeocoderCount);
+	fprintf(stdout,"activefacebook %" INT32 "\n",facebookCount);
+	fprintf(stdout,"activebadgeocoder %" INT32 "\n",badGeocoderCount);
 	// by country
 	fprintf(stdout,"active by country\n");
 	for ( int32_t i = 0 ;i < 256 ; i++ ) {
 		if ( ! cctable[i] ) continue;
 		char *cs = getCountryCode ( (uint8_t)i );
 		if ( ! cs ) continue;
-		fprintf(stdout,"%s %"INT32"\n",cs,cctable[i]);
+		fprintf(stdout,"%s %" INT32 "\n",cs,cctable[i]);
 	}
 
-	sb.safePrintf("%"INT32" of %"INT32" hosts reporting.\n\n",
+	sb.safePrintf("%" INT32 " of %" INT32 " hosts reporting.\n\n",
 		      s_numReplies, g_hostdb.m_numHosts );
 
 	// email that to mwells2@gigablast.com
@@ -2503,14 +2503,14 @@ void handleRequestdd ( UdpSlot *slot , int32_t netnice ) {
 		int64_t docId       = g_titledb.getDocIdFromKey ( k );
 		if ( k <= lastKey ) 
 			log("key out of order. "
-			    "lastKey.n1=%"XINT32" n0=%"XINT64" "
-			    "currKey.n1=%"XINT32" n0=%"XINT64" ",
+			    "lastKey.n1=%" XINT32 " n0=%" XINT64 " "
+			    "currKey.n1=%" XINT32 " n0=%" XINT64 " ",
 			    lastKey.n1,lastKey.n0,
 			    k.n1,k.n0);
 		lastKey = k;
 		// print deletes
 		if ( (k.n0 & 0x01) == 0) {
-			fprintf(stdout,"n1=%08"XINT32" n0=%016"XINT64" docId=%012"INT64" "
+			fprintf(stdout,"n1=%08" XINT32 " n0=%016" XINT64 " docId=%012" INT64 " "
 			       "(del)\n", 
 			       k.n1 , k.n0 , docId );
 			continue;
@@ -2726,14 +2726,14 @@ void Process::checkFanSwitch ( ) {
 	if ( m_desiredFanState ) {
 		// this turns it on
 		if ( !urlBuf.safePrintf("http://10.5.0.10/outlet.cgi?outlet=1&"
-				  "command=1&time=%"UINT32"",
+				  "command=1&time=%" UINT32 "",
 					(uint32_t)getTimeGlobal()) )
 			return;
 	}
 	else {
 		// this turns it off
 		if ( !urlBuf.safePrintf("http://10.5.0.10/outlet.cgi?outlet=1&"
-				  "command=0&time=%"UINT32"",
+				  "command=0&time=%" UINT32 "",
 					(uint32_t)getTimeGlobal()) )
 			return;
 	}
@@ -2748,7 +2748,7 @@ void Process::checkFanSwitch ( ) {
 	// mark the request as outstanding so we do not overlap it
 	m_fanReqOut = true;
 
-	log("process: trying to set fan state to %"INT32"",m_desiredFanState);
+	log("process: trying to set fan state to %" INT32 "",m_desiredFanState);
 
 	// get it
 	bool status = g_httpServer.
@@ -2836,10 +2836,10 @@ bool Process::gotFanReply ( TcpSocket *s ) {
 	m_currentFanState = val;
 
 	if ( m_currentFanState == m_desiredFanState ) 
-		log("powermo: desired fan state, %"INT32", achieved",
+		log("powermo: desired fan state, %" INT32 ", achieved",
 		    m_currentFanState);
 	else
-		log("powermo: fan state is %"INT32", but needs to be %"INT32"",
+		log("powermo: fan state is %" INT32 ", but needs to be %" INT32 "",
 		    m_currentFanState, 
 		    m_desiredFanState);
 

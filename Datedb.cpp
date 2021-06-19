@@ -188,7 +188,7 @@ bool Datedb::verify ( char *coll ) {
 		if ( shardNum == getMyShardNum() ) got++;
 	}
 	if ( got != count ) {
-		log ("db: Out of first %"INT32" records in datedb, only %"INT32" belong "
+		log ("db: Out of first %" INT32 " records in datedb, only %" INT32 " belong "
 		     "to our group.",count,got);
 		// exit if NONE, we probably got the wrong data
 		if ( got == 0 ) log("db: Are you sure you have the "
@@ -199,7 +199,7 @@ bool Datedb::verify ( char *coll ) {
 		g_threads.enableThreads();
 		return g_conf.m_bypassValidation;
 	}
-	log ( LOG_INFO, "db: Datedb passed verification successfully for %"INT32" "
+	log ( LOG_INFO, "db: Datedb passed verification successfully for %" INT32 " "
 			"recs.", count );
 	// DONE
 	g_threads.enableThreads();

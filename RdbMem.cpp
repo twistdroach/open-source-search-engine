@@ -115,7 +115,7 @@ void *RdbMem::allocData ( char *key , int32_t dataSize , collnum_t collnum ) {
 		// debug why recs added during dump aren't going into
 		// secondary mem
 		// log("rdbmem: allocating %i bytes for rec in %s (cn=%i) "
-		//     "ptr1=%"PTRFMT" --ptr2=%"PTRFMT" mem=%"PTRFMT,
+		//     "ptr1=%" PTRFMT " --ptr2=%" PTRFMT " mem=%"PTRFMT,
 		//     (int)dataSize,m_rdb->m_dbname,(int)collnum,
 		//     (PTRTYPE)m_ptr1,(PTRTYPE)m_ptr2,(PTRTYPE)m_mem);
 
@@ -135,7 +135,7 @@ void *RdbMem::allocData ( char *key , int32_t dataSize , collnum_t collnum ) {
 		// debug why recs added during dump aren't going into
 		// secondary mem
 		// log("rdbmem: allocating %i bytes for rec in %s (cn=%i) "
-		//     "ptr1=%"PTRFMT" ++ptr2=%"PTRFMT" mem=%"PTRFMT,
+		//     "ptr1=%" PTRFMT " ++ptr2=%" PTRFMT " mem=%"PTRFMT,
 		//     (int)dataSize,m_rdb->m_dbname,(int)collnum,
 		//     (PTRTYPE)m_ptr1,(PTRTYPE)m_ptr2,(PTRTYPE)m_mem);
 
@@ -257,7 +257,7 @@ void RdbMem::freeDumpedMem( RdbTree *tree ) {
 			stillNeedsMove = true;
 		}
 		if ( stillNeedsMove ) {// this should never happen!!
-			log("rdbmem: olddata=0x%"PTRFMT" newdata=0x%"PTRFMT,
+			log("rdbmem: olddata=0x%" PTRFMT " newdata=0x%" PTRFMT,
 			    (PTRTYPE)data, (PTRTYPE)newData);
 			log("rdbmem: still needs move!");
 		}

@@ -112,7 +112,7 @@ bool Summary::set2 ( Xml      *xml                ,
 			s_flag = 0;
 			log("query: Warning. "
 			    "Max summary excerpt length decreased to "
-			    "%"INT32" chars because max summary excerpts and "
+			    "%" INT32 " chars because max summary excerpts and "
 			    "max summary length are too big.",
 			    maxNumCharsPerLine);
 		}
@@ -123,7 +123,7 @@ bool Summary::set2 ( Xml      *xml                ,
 	// . leave room for tailing \0
 	if ( maxSummaryLen >= MAX_SUMMARY_LEN ) {
 		g_errno = EBUFTOOSMALL;
-		return log("query: Summary too big to hold in buffer of %"INT32" "
+		return log("query: Summary too big to hold in buffer of %" INT32 " "
 			   "bytes.",(int32_t)MAX_SUMMARY_LEN);
 	}
 
@@ -158,7 +158,7 @@ bool Summary::set2 ( Xml      *xml                ,
 	
 	/*int64_t end = gettimeofdayInMilliseconds();
 	if ( end - start > 2 )
-		log ( LOG_WARN,"summary: took %"INT64" ms to finish big hack",
+		log ( LOG_WARN,"summary: took %" INT64 " ms to finish big hack",
 		      end - start );
 		      start = gettimeofdayInMilliseconds();*/
 	//
@@ -207,7 +207,7 @@ bool Summary::set2 ( Xml      *xml                ,
 			//make sure everything has a little weight:
 			if(m_wordWeights[ndx] < .10) m_wordWeights[ndx] = .10;
 			//log(LOG_WARN,
-			//"query word num %"INT32" termnum %"INT32" freq %f max %f",
+			//"query word num %" INT32 " termnum %" INT32 " freq %f max %f",
 			//ndx,i,m_wordWeights[ndx],maxTermFreq);
 		}
 	} 
@@ -220,7 +220,7 @@ bool Summary::set2 ( Xml      *xml                ,
 		for ( int32_t i = 0 ; i < q->m_numWords; i++ ) {
 			int64_t tf = -1;
 			if ( termFreqs ) tf = termFreqs[i];
-			log("sum: u=%s wordWeights[%"INT32"]=%f tf=%"INT64"",
+			log("sum: u=%s wordWeights[%" INT32 "]=%f tf=%" INT64 "",
 			    f->m_url,i,m_wordWeights[i],tf);
 		}
 	}
@@ -353,7 +353,7 @@ bool Summary::set2 ( Xml      *xml                ,
 			char *xp = buf;
 			if ( i == 0 )
 				log (LOG_WARN,"=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
-			sprintf(xp, "score=%08"INT32" a=%05"INT32" b=%05"INT32" ",
+			sprintf(xp, "score=%08" INT32 " a=%05" INT32 " b=%05" INT32 " ",
 				(int32_t)score,(int32_t)a,(int32_t)b);
 			xp += gbstrlen(xp);
 			for ( int32_t j = a; j < b; j++ ){
@@ -370,7 +370,7 @@ bool Summary::set2 ( Xml      *xml                ,
 				}
 				//p += gbstrlen(p);
 				if ( s == 0 ) continue;
-				sprintf ( xp ,"(%"INT32")",s);
+				sprintf ( xp ,"(%" INT32 ")",s);
 				xp += gbstrlen(xp);
 			}
 			log (LOG_WARN,"query: summary: %s", buf);
@@ -389,9 +389,9 @@ bool Summary::set2 ( Xml      *xml                ,
 			  //Sections *ss = matches->m_matches[i].m_sections;
 			  //if ( ss->m_numSections <= 0 ) ss = NULL;
 			  //len=pos->filter(bufPtr, bufPtrEnd, ww, a, b, NULL);
-			  //log(LOG_WARN,"summary: %"INT32") %s - %"INT64"",i,bufPtr, 
+			  //log(LOG_WARN,"summary: %" INT32 ") %s - %" INT64 "",i,bufPtr, 
 			  //score);
-			  log(LOG_WARN,"summary: %"INT32") %s - %"INT64"",i,bufPtr, 
+			  log(LOG_WARN,"summary: %" INT32 ") %s - %" INT64 "",i,bufPtr, 
 			  score);
 			*/
 
@@ -413,7 +413,7 @@ bool Summary::set2 ( Xml      *xml                ,
 		// retire the query words in the winning summary
 
 		
-		//log( LOG_WARN,"summary: took %"INT64" ms to finish getbestwindo",
+		//log( LOG_WARN,"summary: took %" INT64 " ms to finish getbestwindo",
 		//    gettimeofdayInMilliseconds() - stget );
 
 
@@ -436,7 +436,7 @@ bool Summary::set2 ( Xml      *xml                ,
 		// this should be impossible
 		if ( maxa > ww->m_numWords || maxb > ww->m_numWords ){
 			log ( LOG_WARN,"query: summary starts or ends after "
-			      "document is over! maxa=%"INT32" maxb=%"INT32" nw=%"INT32"",
+			      "document is over! maxa=%" INT32 " maxb=%" INT32 " nw=%" INT32 "",
 			      maxa, maxb, ww->m_numWords );
 			maxa = ww->m_numWords - 1;
 			maxb = ww->m_numWords;
@@ -567,8 +567,8 @@ bool Summary::set2 ( Xml      *xml                ,
 
 	/*end = gettimeofdayInMilliseconds();
 	if ( end - start > 10 )
-		log ( LOG_WARN,"summary: took %"INT64"ms to finish doing summary "
-		      "numMatches=%"INT32" maxNumLines=%"INT32" url=%s", end - start,
+		log ( LOG_WARN,"summary: took %" INT64 "ms to finish doing summary "
+		      "numMatches=%" INT32 " maxNumLines=%" INT32 " url=%s", end - start,
 		      matches.m_numMatches, maxNumLines, f->m_url );
 		      start = gettimeofdayInMilliseconds();*/
 
@@ -911,7 +911,7 @@ int64_t Summary::getBestWindow ( Matches *matches       ,
 
 		// print the score, "t"
 		if ( g_conf.m_logDebugSummary ) {
-			xp.safePrintf("(%"INT32")",t);
+			xp.safePrintf("(%" INT32 ")",t);
 		}
 
 		// skip if not wid
@@ -951,7 +951,7 @@ int64_t Summary::getBestWindow ( Matches *matches       ,
 		score += t;
 
 		if ( g_conf.m_logDebugSummary ) {
-			xp.safePrintf ("[%"INT32"]{qwn=%"INT32",ww=%f}",t,qwn,
+			xp.safePrintf ("[%" INT32 "]{qwn=%" INT32 ",ww=%f}",t,qwn,
 				       m_wordWeights[qwn]);
 		}
 
@@ -990,7 +990,7 @@ int64_t Summary::getBestWindow ( Matches *matches       ,
 
 	// show it
 	if ( g_conf.m_logDebugSummary )
-		logf(LOG_DEBUG,"score=%08"INT32" prescore=%08"INT32" a=%05"INT32" b=%05"INT32" %s",
+		logf(LOG_DEBUG,"score=%08" INT32 " prescore=%08" INT32 " a=%05" INT32 " b=%05" INT32 " %s",
 		     (int32_t)score,oldScore,(int32_t)a,(int32_t)b,
 		     xp.getBufStart());
 
@@ -1179,8 +1179,8 @@ bool Summary::scanForLocations ( ) {
                         uint64_t place = hash64d( phrasePtr, phraseLen);
 			if (place == 0) continue;
 
-			log(LOG_DEBUG, "query: found place:'%s' (len:%"INT32") in "
-			    "summary -- h:%"UINT64" pop:%"INT32"", 
+			log(LOG_DEBUG, "query: found place:'%s' (len:%" INT32 ") in "
+			    "summary -- h:%" UINT64 " pop:%" INT32 "", 
 			    phrasePtr, phraseLen, place, placePop);
 
 			if (!m_summaryLocs.safeMemcpy((char *)&place, 
@@ -1245,7 +1245,7 @@ bool Summary::set1 ( char      *doc                ,
 	// boundary check
 	if ( MAX_SUMMARY_LEN < maxNumCharsPerLine * maxNumLines ) {
 		g_errno = EBUFTOOSMALL;
-		return log("query: Summary too big to hold in buffer of %"INT32" "
+		return log("query: Summary too big to hold in buffer of %" INT32 " "
 			   "bytes.",(int32_t)MAX_SUMMARY_LEN);
 	}
 	// query terms

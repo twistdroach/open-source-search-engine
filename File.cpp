@@ -112,13 +112,13 @@ void File::constructor ( ) {
 	//m_filename.setBuf ( m_filenameBuf,MAX_FILENAME_LEN-1 ,0,false,0);
 	//m_filename.setLabel   ("sbfnm");
 	if ( g_conf.m_logDebugDisk )
-		log("disk: constructor fd %i this=0x%"PTRFMT,
+		log("disk: constructor fd %i this=0x%" PTRFMT ,
 		    (int)m_fd,(PTRTYPE)this);
 }
 
 void File::destructor ( ) {
 	if ( g_conf.m_logDebugDisk )
-		log("disk: destructor fd %i this=0x%"PTRFMT,
+		log("disk: destructor fd %i this=0x%" PTRFMT ,
 		    (int)m_fd,(PTRTYPE)this);
 	close ();
 	// set m_calledSet to false so BigFile.cpp see it as 'empty'
@@ -150,9 +150,9 @@ void File::set ( char *filename ) {
 	int32_t len = gbstrlen ( filename );
 	// account for terminating '\0'
 	if ( len + 1 >= MAX_FILENAME_LEN ) { 
-	 	log ( "disk: Provided filename %s length of %"INT32" "
+	 	log ( "disk: Provided filename %s length of %" INT32 " "
 		      "is bigger "
-	 	      "than %"INT32".",filename,len,
+	 	      "than %" INT32 ".",filename,len,
 		      (int32_t)MAX_FILENAME_LEN-1); 
 	 	return; 
 	}
@@ -500,7 +500,7 @@ void File::close2 ( ) {
 	// debug log
 	if ( g_conf.m_logDebugDisk )
 		log("disk: close2 fd %i for %s #openfiles=%i "
-		    "this=0x%"PTRFMT,
+		    "this=0x%" PTRFMT ,
 		    fd,getFilename(),
 		    (int)s_numOpenFiles,(PTRTYPE)this);
 
@@ -616,7 +616,7 @@ int File::getfd () {
 	// if someone closed our fd, why didn't our m_fd get set to -1 ??!?!?!!
 	if ( m_fd >= 0 && m_closeCount != s_closeCounts[m_fd] ) {
 		log(LOG_DEBUG,"disk: invalidating existing fd %i "
-		    "for %s this=0x%"PTRFMT" ccSaved=%i ccNow=%i", 
+		    "for %s this=0x%" PTRFMT " ccSaved=%i ccNow=%i", 
 		    (int)m_fd,getFilename(),(PTRTYPE)this,
 		    (int)m_closeCount,
 		    (int)s_closeCounts[m_fd]);
@@ -633,7 +633,7 @@ int File::getfd () {
 		// debug msg
 		if ( g_conf.m_logDebugDisk )
 			log(LOG_DEBUG,"disk: returning existing fd %i for %s "
-			    "this=0x%"PTRFMT" ccSaved=%i ccNow=%i", 
+			    "this=0x%" PTRFMT " ccSaved=%i ccNow=%i", 
 			    (int)m_fd,getFilename(),(PTRTYPE)this,
 			    (int)m_closeCount,
 			    (int)s_closeCounts[m_fd]);
@@ -697,7 +697,7 @@ int File::getfd () {
 			if ( g_conf.m_logDebugDisk )
 				log("disk: swiping fd %i from %s before "
 				    "his close thread returned "
-				    "this=0x%"PTRFMT,
+				    "this=0x%" PTRFMT ,
 				    fd,
 				    f->getFilename(),
 				    (PTRTYPE)f);
@@ -734,7 +734,7 @@ int File::getfd () {
 		int64_t dt = gettimeofdayInMilliseconds() - t1 ;
 		if ( dt > 1 ) log(LOG_INFO,
 				  "disk: call to open(%s) blocked for "
-				  "%"INT64" ms.",getFilename(),dt);
+				  "%" INT64 " ms.",getFilename(),dt);
 	}
 	// copy errno to g_errno
 	if ( fd <= -1 ) {
@@ -751,7 +751,7 @@ int File::getfd () {
 
 	// debug log
 	if ( g_conf.m_logDebugDisk )
-		log("disk: opened1 fd %i for %s #openfiles=%i this=0x%"PTRFMT,
+		log("disk: opened1 fd %i for %s #openfiles=%i this=0x%" PTRFMT ,
 		    (int)fd,getFilename(),(int)s_numOpenFiles,(PTRTYPE)this);
 
 	// set this file descriptor, the other stuff remains the same
@@ -856,7 +856,7 @@ bool File::closeLeastUsed () {
 
 	// if nothing to free then return false
 	if ( mini == -1 ) 
-		return log("File: closeLeastUsed: failed. All %"INT32" "
+		return log("File: closeLeastUsed: failed. All %" INT32 " "
 			   "descriptors "
 			   "are unavailable to be closed and re-used to read "
 			   "from another file. notopen=%i writing=%i "
@@ -920,7 +920,7 @@ bool File::closeLeastUsed () {
 			char *fname = "";
 			if ( f ) fname = f->getFilename();
 			logf(LOG_DEBUG,"disk: force closed fd %i for"
-			     " %s. age=%"INT64" #openfiles=%i this=0x%"PTRFMT,
+			     " %s. age=%" INT64 " #openfiles=%i this=0x%" PTRFMT ,
 			     fd,fname,now-s_timestamps[mini],
 			     (int)s_numOpenFiles,
 			     (PTRTYPE)this);
@@ -1143,7 +1143,7 @@ int32_t File::lseek ( int32_t offset , int whence ) {
 	// copy errno to g_errno
 	g_errno = errno;
 
-	log("disk: lseek ( %s(%i) , %"INT32" , whence ): %s" , getFilename() , 
+	log("disk: lseek ( %s(%i) , %" INT32 " , whence ): %s" , getFilename() , 
 	      m_fd, offset , strerror ( g_errno ) );
 
 	return -1;

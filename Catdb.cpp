@@ -179,7 +179,7 @@ bool Catdb::verify ( char *coll ) {
 		if ( shardNum == getMyShardNum() ) got++;
 	}
 	if ( got != count ) {
-		log ("db: Out of first %"INT32" records in %s, only %"INT32" belong "
+		log ("db: Out of first %" INT32 " records in %s, only %" INT32 " belong "
 		     "to our group.",count,rdbName,got);
 		// exit if NONE, we probably got the wrong data
 		if ( got == 0 ) log("db: Are you sure you have the "
@@ -190,7 +190,7 @@ bool Catdb::verify ( char *coll ) {
 		g_threads.enableThreads();
 		return g_conf.m_bypassValidation;
 	}
-	log ( LOG_INFO, "db: %s passed verification successfully for %"INT32" recs.",
+	log ( LOG_INFO, "db: %s passed verification successfully for %" INT32 " recs.",
 			rdbName, count );
 	// DONE
 	g_threads.enableThreads();
@@ -331,7 +331,7 @@ void Catdb::listSearch ( RdbList *list,
 				   list->getCurrentData(),
 				   list->getCurrentDataSize(),
 				   false);
-			log("catdb: caturl=%s #catid=%"INT32" version=%"INT32""
+			log("catdb: caturl=%s #catid=%" INT32 " version=%" INT32 ""
 			    ,crec.m_url
 			    ,(int32_t)crec.m_numCatids
 			    ,(int32_t)crec.m_version
@@ -458,8 +458,8 @@ char *Catdb::getRec ( RdbList *list , Url *url , int32_t *recSize,
 	}
 	took = gettimeofdayInMilliseconds() - startTime;
 	if ( took > 10 ) 
-		log(LOG_INFO, "catdb: catdb lookup took %"INT64" ms, "
-		    "listSize=%"INT32"", took, list->getListSize() );
+		log(LOG_INFO, "catdb: catdb lookup took %" INT64 " ms, "
+		    "listSize=%" INT32 "", took, list->getListSize() );
 	return data;
 }
 

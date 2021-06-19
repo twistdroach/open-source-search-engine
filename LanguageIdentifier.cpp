@@ -365,7 +365,7 @@ uint8_t LanguageIdentifier::guessLanguageFromInlinks(LinkInfo *linkInfo, int32_t
 		int32_t id = k->m_language;
 		// sanity check, we are still getting bad lang ids!!
 		if ( id < 0 || id >= 32 ) {
-			log("build: Got bad lang id of %"INT32". how can this "
+			log("build: Got bad lang id of %" INT32 ". how can this "
 			    "happen?",id);
 			continue;
 		}

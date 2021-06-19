@@ -189,7 +189,7 @@ bool flushMsg4Buffers ( void *state , void (* callback) (void *) ) {
 
 	// no room?
 	if ( cb >= cbEnd ) {
-		log("msg4: no room for flush callback. count=%"INT32"",
+		log("msg4: no room for flush callback. count=%" INT32 "",
 		    (int32_t)s_numCallbacks);
 		g_errno = EBUFTOOSMALL;
 		return true;
@@ -356,7 +356,7 @@ bool Msg4::storeList ( RdbList *list , char rdbId , collnum_t collnum ) {
 		if ( ! s_msg4Head       ) { char *xx =NULL; *xx=0; }
 		// spider hang bug
 		//logf(LOG_DEBUG,
-		//   "db: msg4 blocked. adding to tail. msg4=%"INT32"",(int32_t)this);
+		//   "db: msg4 blocked. adding to tail. msg4=%" INT32 "",(int32_t)this);
 		s_msg4Tail->m_next = this;
 		s_msg4Tail         = this;
 		return false;
@@ -371,7 +371,7 @@ bool Msg4::storeList ( RdbList *list , char rdbId , collnum_t collnum ) {
 		return true;
 
 	// spider hang bug
-	//logf(LOG_DEBUG,"build: msg4 first in line. msg4=%"INT32"",(int32_t)this);
+	//logf(LOG_DEBUG,"build: msg4 first in line. msg4=%" INT32 "",(int32_t)this);
 
 	// sanity check
 	if ( s_msg4Head || s_msg4Tail ) { char *xx=NULL; *xx=0; }
@@ -545,7 +545,7 @@ bool Msg4::addMetaList ( char      *metaList                 ,
 		s_msg4Tail = this;
 		// debug log. seems to happen a lot if not using threads..
 		if ( g_conf.m_useThreads )
-			log("msg4: queueing body msg4=0x%"PTRFMT"",(PTRTYPE)this);
+			log("msg4: queueing body msg4=0x%" PTRFMT "",(PTRTYPE)this);
 		// mark it
 		m_inUse = true;
 		// all done then, but return false so caller does not free
@@ -575,7 +575,7 @@ bool Msg4::addMetaList ( char      *metaList                 ,
 	// . spider hang bug
 	// . debug log. seems to happen a lot if not using threads..
 	if ( g_conf.m_useThreads )
-		logf(LOG_DEBUG,"msg4: queueing head msg4=0x%"PTRFMT"",(PTRTYPE)this);
+		logf(LOG_DEBUG,"msg4: queueing head msg4=0x%" PTRFMT "",(PTRTYPE)this);
 
 	// mark it
 	m_inUse = true;
@@ -892,7 +892,7 @@ bool sendBuffer ( int32_t hostId , int32_t niceness ) {
 	p += 8;
 	// syncdb debug
 	if ( g_conf.m_logDebugSpider )
-		logf(LOG_DEBUG,"syncdb: sending msg4 request zid=%"UINT64"",zid);
+		logf(LOG_DEBUG,"syncdb: sending msg4 request zid=%" UINT64 "",zid);
 
 	// this is the request
 	char *request     = buf;
@@ -940,7 +940,7 @@ bool sendBuffer ( int32_t hostId , int32_t niceness ) {
 
 	// g_errno should be set
 	log("net: Had error when sending request to add data to rdb shard "
-	    "#%"UINT32": %s.", shardNum,mstrerror(g_errno));
+	    "#%" UINT32 ": %s.", shardNum,mstrerror(g_errno));
 
 	returnMulticast ( mcast );
 
@@ -1011,7 +1011,7 @@ void gotReplyWrapper4 ( void *state , void *state2 ) {
 	// bail if no callbacks to call
 	if ( s_numCallbacks == 0 ) return;
 
-	//log("msg4: got msg4 reply. replyslot starttime=%"INT64" slot=0x%"XINT32"",
+	//log("msg4: got msg4 reply. replyslot starttime=%" INT64 " slot=0x%" XINT32 "",
 	//    replyingSlot->m_startTime,(int32_t)replyingSlot);
 
 	// get the oldest msg4 slot starttime
@@ -1030,7 +1030,7 @@ void gotReplyWrapper4 ( void *state , void *state2 ) {
 		// be less than our callback's m_timestamp
 		//if ( slot == replyingSlot ) continue;
 		// log it
-		//log("msg4: slot starttime = %"INT64" ",slot->m_startTime);
+		//log("msg4: slot starttime = %" INT64 " ",slot->m_startTime);
 		// get it
 		if ( min && slot->m_startTime >= min ) continue;
 		// got a new min
@@ -1038,7 +1038,7 @@ void gotReplyWrapper4 ( void *state , void *state2 ) {
 	}
 
 	// log it
-	//log("msg4: slots min = %"INT64" ",min);
+	//log("msg4: slots min = %" INT64 " ",min);
 
 	// scan for slots whose callbacks we can call now
 	char *buf = s_callbackBuf.getBufStart();
@@ -1050,7 +1050,7 @@ void gotReplyWrapper4 ( void *state , void *state2 ) {
 		// skip if empty
 		if ( ! cb->m_callback ) continue;
 		// debug
-		//log("msg4: cb timestamp = %"INT64"",cb->m_timestamp);
+		//log("msg4: cb timestamp = %" INT64 "",cb->m_timestamp);
 		// wait until callback's stored time is <= all msg4
 		// slot's start times, then we can guarantee that all the
 		// msg4s required for this callback have replied.
@@ -1097,7 +1097,7 @@ void storeLineWaiters ( ) {
 	if ( ! msg4->m_callback ) { char *xx=NULL;*xx=0; }
 	// log this now i guess. seems to happen a lot if not using threads
 	if ( g_conf.m_useThreads )
-		logf(LOG_DEBUG,"msg4: calling callback for msg4=0x%"PTRFMT"",
+		logf(LOG_DEBUG,"msg4: calling callback for msg4=0x%" PTRFMT "",
 		     (PTRTYPE)msg4);
 	// release it
 	msg4->m_inUse = false;
@@ -1172,8 +1172,8 @@ void handleRequest4 ( UdpSlot *slot , int32_t netnice ) {
 	if ( used != readBufSize ) {
 		// if we send back a g_errno then multicast retries forever
 		// so just absorb it!
-		log("msg4: got corrupted request from hostid %"INT32" "
-		    "used=%"INT32" != %"INT32"=readBufSize msg4",
+		log("msg4: got corrupted request from hostid %" INT32 " "
+		    "used=%" INT32 " != %" INT32 "=readBufSize msg4",
 		    slot->m_host->m_hostId,
 		    used,
 		    readBufSize);
@@ -1247,7 +1247,7 @@ void handleRequest4 ( UdpSlot *slot , int32_t netnice ) {
 bool addMetaList ( char *p , UdpSlot *slot ) {
 
 	if ( g_conf.m_logDebugSpider )
-		logf(LOG_DEBUG,"syncdb: calling addMetalist zid=%"UINT64"",
+		logf(LOG_DEBUG,"syncdb: calling addMetalist zid=%" UINT64 "",
 		     *(int64_t *)(p+4));
 
 	// get total buf used
@@ -1309,12 +1309,12 @@ bool addMetaList ( char *p , UdpSlot *slot ) {
 		}
 		if ( ! rdb ) {
 			if ( slot ) 
-				log("msg4: rdbId of %"INT32" unrecognized "
+				log("msg4: rdbId of %" INT32 " unrecognized "
 				    "from hostip=%s. "
 				    "dropping WHOLE request", (int32_t)rdbId,
 				    iptoa(slot->m_ip));
 			else
-				log("msg4: rdbId of %"INT32" unrecognized. "
+				log("msg4: rdbId of %" INT32 " unrecognized. "
 				    "dropping WHOLE request", (int32_t)rdbId);
 			g_errno = ETRYAGAIN;
 			return false;
@@ -1350,7 +1350,7 @@ bool addMetaList ( char *p , UdpSlot *slot ) {
 	// sanity check
 	if ( rdb->getKeySize() == 0 ) {
 		log("seems like a stray /e/repair-addsinprogress.dat file "
-		    "rdbId=%"INT32". waiting to be in repair mode."
+		    "rdbId=%" INT32 ". waiting to be in repair mode."
 		    ,(int32_t)rdbId);
 		    //not in repair mode. dropping.",(int32_t)rdbId);
 		g_errno = ETRYAGAIN;
@@ -1464,7 +1464,7 @@ bool saveAddsInProgress ( char *prefix ) {
 		// test it
 		if ( used <= 4 || used > 300000000 ) {  // > 300MB????
 			log("msg4: saving addsinprogress. bad bucket "
-			    "used size of %"INT32,used);
+			    "used size of %" INT32 ,used);
 			continue;
 		}
 		// the buf itself
@@ -1486,12 +1486,12 @@ bool saveAddsInProgress ( char *prefix ) {
 		int32_t used = *(int32_t *)slot->m_sendBuf;
 		if ( used <= 4 || used > 300000000 ) {  // > 300MB????
 			log("msg4: saving addsinprogress. bad slot "
-			    "used size of %"INT32,used);
+			    "used size of %" INT32 ,used);
 			continue;
 		}
 		if ( used != slot->m_sendBufSize ) {
 			log("msg4: saving addsinprogress. bad used size of "
-			    "%"INT32" != %"INT32,used,slot->m_sendBufSize);
+			    "%" INT32 " != %" INT32 ,used,slot->m_sendBufSize);
 			continue;
 		}
 		// write hostid sent to
@@ -1592,7 +1592,7 @@ bool loadAddsInProgress ( char *prefix ) {
 		return false;
 	}
 
-	log(LOG_INFO,"build: Loading %"INT32" bytes from %s",pend,filename);
+	log(LOG_INFO,"build: Loading %" INT32 " bytes from %s",pend,filename);
 
 	// . deserialize each hostbuf
 	// . the # of host bufs
@@ -1626,7 +1626,7 @@ bool loadAddsInProgress ( char *prefix ) {
 		if ( allocSize < used ) allocSize = used;
 		// alloc the buf space, returns NULL and sets g_errno on error
 		char *buf = (char *)mmalloc ( allocSize , "Msg4" );
-		if ( ! buf ) return log("build: Could not alloc %"INT32" bytes for "
+		if ( ! buf ) return log("build: Could not alloc %" INT32 " bytes for "
 					"reading %s",allocSize,filename);
 		// the buf itself
 		int32_t nb = read ( fd , buf , used );
@@ -1648,7 +1648,7 @@ bool loadAddsInProgress ( char *prefix ) {
 		}
 		if ( i >= s_numHostBufs ) {
 			mfree ( buf , allocSize ,"hostbuf");
-			log("build: skipping host buf #%"INT32,i);
+			log("build: skipping host buf #%" INT32 ,i);
 			continue;
 		}
 
@@ -1689,7 +1689,7 @@ bool loadAddsInProgress ( char *prefix ) {
 		// must be there
 		if ( ! h ) {
 			//close (fd);
-			log("build: bad msg4 hostid %"INT32" nb=%"INT32,
+			log("build: bad msg4 hostid %" INT32 " nb=%" INT32 ,
 			    hostId,nb);
 			mfree ( buf , numBytes,"hostbuf");
 			continue;
@@ -1785,7 +1785,7 @@ bool loadAddsInProgress ( char *prefix ) {
 
 		// if had a bad rdbId, try reading the next queue
 		if ( ! rdb ) {
-			log("build: had bogus rdbId of %"INT32".",(int32_t)rdbId);
+			log("build: had bogus rdbId of %" INT32 ".",(int32_t)rdbId);
 			mfree   ( listBuf , listSize , "Msg4d" );
 			mdelete ( msg4 , sizeof(Msg4), "Msg4" );
 			delete  ( msg4 );
@@ -1852,7 +1852,7 @@ void processSpecialSignal ( collnum_t collnum , char *p ) {
 	if ( g_conf.m_logDebugSpider)
 		// log debug
 		logf(LOG_DEBUG,"msg4: got FAKE titledb "
-		     "key for lockkey=%"UINT64" - removing spider lock",
+		     "key for lockkey=%" UINT64 " - removing spider lock",
 		     lockKey);
 	// int16_tcut
 	HashTableX *ht = &g_spiderLoop.m_lockTable;
@@ -1861,7 +1861,7 @@ void processSpecialSignal ( collnum_t collnum , char *p ) {
 
 	if ( g_conf.m_logDebugSpiderFlow )
 		logf(LOG_DEBUG,"spflow: scheduled lock removal in 5 secs for "
-		     "docid=lockkey=%"UINT64"",  lockKey);
+		     "docid=lockkey=%" UINT64 "",  lockKey);
 
 	// test it
 	//if ( m_nowGlobal == 0 && lock )
@@ -1877,7 +1877,7 @@ void processSpecialSignal ( collnum_t collnum , char *p ) {
 	if ( lock ) lock->m_expires = nowGlobal + 5;
 	// bitch if not in there
 	if (!lock&&g_conf.m_logDebugSpider)//ht->isInTable(&lockKey)) 
-		logf(LOG_DEBUG,"spider: rdb: lockkey %"UINT64" "
+		logf(LOG_DEBUG,"spider: rdb: lockkey %" UINT64 " "
 		     "was not in lock table",lockKey);
 	// now unlock on that
 	//g_spiderLoop.m_lockTable.removeKey(&lockKey);

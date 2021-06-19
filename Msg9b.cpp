@@ -49,7 +49,7 @@ bool Msg9b::addCatRecs ( char *urls        ,
 	int32_t initSize = ((usize / 15)*(12+4+4+1) + usize);
 	if ( ! m_list.growList ( initSize ) ) {
 		g_errno = ENOMEM;
-		log("admin: Failed to allocate %"INT32" bytes to hold "
+		log("admin: Failed to allocate %" INT32 " bytes to hold "
 		    "urls to add to tagdb.", initSize);
 		return true;
 	}
@@ -62,7 +62,7 @@ bool Msg9b::addCatRecs ( char *urls        ,
 	//int32_t firstPosIds = -1;
 	while ( *p ) {
 		if (  *p != '\n' ||  lastk != k   ) {
-			log (LOG_WARN, "Msg9b: FOUND BAD URL IN LIST AT %"INT32", "
+			log (LOG_WARN, "Msg9b: FOUND BAD URL IN LIST AT %" INT32 ", "
 				       "EXITING", k );
 			return true;
 		}
@@ -72,7 +72,7 @@ bool Msg9b::addCatRecs ( char *urls        ,
 		while ( is_wspace_a (*p) ) p++;
 		if (  p - lastp > 1 ) {
 			log(LOG_WARN, "Msg9b: SKIPPED TWO SPACES IN A ROW AT "
-				      " %"INT32", EXITING", k );
+				      " %" INT32 ", EXITING", k );
 			//return true;
 		}
 		// break if end
@@ -148,7 +148,7 @@ bool Msg9b::addCatRecs ( char *urls        ,
 		sb.safeStrcpy(sr.m_url);
 		sb.safePrintf(" ");
 		for ( int32_t i = 0 ; i < numCatids[k] ; i++ )
-			sb.safePrintf ( "%"INT32" " , catids[c+i] );
+			sb.safePrintf ( "%" INT32 " " , catids[c+i] );
 		log("catdb: adding key=%s url=%s",
 		    KEYSTR(&key,12),
 		    sb.getBufStart());
@@ -166,8 +166,8 @@ bool Msg9b::addCatRecs ( char *urls        ,
 		
 		QUICKPOLL((niceness));
 	}
-	log ( LOG_INFO, "Msg9b: %"INT32" sites and %"INT32" links added. "
-	      "listSize=%"INT32"", k , c , m_list.m_listSize );
+	log ( LOG_INFO, "Msg9b: %" INT32 " sites and %" INT32 " links added. "
+	      "listSize=%" INT32 "", k , c , m_list.m_listSize );
 	// . now add the m_list to tagdb using msg1
 	// . use high priority (niceness of 0)
 	// . i raised niceness from 0 to 1 so multicast does not use the

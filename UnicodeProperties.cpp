@@ -85,7 +85,7 @@ bool saveUnicodeTable(UCPropTable *table, char *filename) {
 	size_t tableSize = table->getStoredSize();
 	char *buf = (char*)mmalloc(tableSize,"UP1");
 	if (!buf){
-		log(LOG_WARN, "uni: Couldn't allocate %"INT32" bytes "
+		log(LOG_WARN, "uni: Couldn't allocate %" INT32 " bytes "
 		    "for storing %s", (int32_t)tableSize,filename);
 		return false;
 	}
@@ -331,7 +331,7 @@ bool saveKDecompTable(char *baseDir) {
 	size_t nwrite = fwrite(s_ucKDData, fileSize, 1, fp);
 	if (nwrite != 1) {
 		log(LOG_WARN, "uni: Error writing %s "
-		    "(filesize: %"INT32")", 
+		    "(filesize: %" INT32 ")", 
 		    filename, (int32_t)fileSize);
 		fclose(fp);
 		return false;
@@ -362,7 +362,7 @@ bool saveCDecompTable(char *baseDir) {
 	size_t nwrite = fwrite(s_ucCDData, fileSize, 1, fp);
 	if (nwrite != 1) {
 		log(LOG_WARN, "uni: Error writing %s "
-		    "(filesize: %"INT32")", 
+		    "(filesize: %" INT32 ")", 
 		    filename, (int32_t)fileSize);
 		fclose(fp);
 		return false;

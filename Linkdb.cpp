@@ -245,8 +245,8 @@ bool Linkdb::verify ( char *coll ) {
 	if ( got != count ) {
 		// tally it up
 		g_rebalance.m_numForeignRecs += count - got;
-		log ("db: Out of first %"INT32" records in Linkdb , "
-		     "only %"INT32" belong to our group.",count,got);
+		log ("db: Out of first %" INT32 " records in Linkdb , "
+		     "only %" INT32 " belong to our group.",count,got);
 
 		/*
 		// repeat with log
@@ -260,7 +260,7 @@ bool Linkdb::verify ( char *coll ) {
 			uint32_t sh32 ;
 			sh32 = g_linkdb.getLinkeeSiteHash32_uk(&k);
 			uint16_t sh16 = sh32 >> 19;
-			log("db: sh16=0x%"XINT32" group=%"INT32"",
+			log("db: sh16=0x%" XINT32 " group=%" INT32 "",
 			    (int32_t)sh16,groupNum);
 		}
 		*/
@@ -276,7 +276,7 @@ bool Linkdb::verify ( char *coll ) {
 		return g_conf.m_bypassValidation;
 	}
 	log ( LOG_DEBUG, "db: Linkdb passed verification successfully for "
-	      "%"INT32" recs.", count );
+	      "%" INT32 " recs.", count );
 	// DONE
 	g_threads.enableThreads();
 	return true;
@@ -676,7 +676,7 @@ static void sendReplyWrapper ( void *state ) {
 	if ( req->m_mode == MODE_SITELINKINFO ) {
 		g_lineTable.removeKey ( &req->m_siteHash64 );
 		if ( g_conf.m_logDebugLinkInfo )
-			log("linkdb: removing sitehash64=%"INT64"",
+			log("linkdb: removing sitehash64=%" INT64 "",
 			    req->m_siteHash64);
 	}
 
@@ -729,7 +729,7 @@ void  handleRequest25 ( UdpSlot *slot , int32_t netnice ) {
 	req->m_udpSlot = slot;
 
 	if ( g_conf.m_logDebugLinkInfo && req->m_mode == MODE_SITELINKINFO ) {
-		log("linkdb: got msg25 request sitehash64=%"INT64" "
+		log("linkdb: got msg25 request sitehash64=%" INT64 " "
 		    "site=%s "
 		    ,req->m_siteHash64
 		    ,req->ptr_site
@@ -762,7 +762,7 @@ void  handleRequest25 ( UdpSlot *slot , int32_t netnice ) {
 		req->m_waitingInLine = 1;
 		// note it for debugging
 		log("build: msg25 request waiting in line for %s "
-		    "udpslot=0x%"PTRFMT"",
+		    "udpslot=0x%" PTRFMT "",
 		    req->ptr_url,(PTRTYPE)slot);
 		// we will send a reply back for this guy when done
 		// getting the reply for the head msg25request
@@ -776,7 +776,7 @@ void  handleRequest25 ( UdpSlot *slot , int32_t netnice ) {
 	try { m25 = new ( Msg25 ); }
 	catch ( ... ) {
 		g_errno = ENOMEM;
-		log("build: msg25: new(%"INT32"): %s", 
+		log("build: msg25: new(%" INT32 "): %s", 
 		    (int32_t)sizeof(Msg25),mstrerror(g_errno));
 		g_udpServer.sendErrorReply ( slot , g_errno );
 		return;
@@ -1055,7 +1055,7 @@ bool Msg25::getLinkInfo2( char      *site                ,
 	//Url u2;
 	//u2.set ( m_url->getUrl() , m_url->getUrlLen() , false/*addWWW?*/);
 
-	//log("debug: entering getlinkinfo this=%"XINT32"",(int32_t)this);
+	//log("debug: entering getlinkinfo this=%" XINT32 "",(int32_t)this);
 
 	// then the url/site hash
 	//uint64_t linkHash64 = (uint64_t) u.getUrlHash64();
@@ -1079,7 +1079,7 @@ bool Msg25::getLinkInfo2( char      *site                ,
 // . returns true and sets g_errno on error
 bool Msg25::doReadLoop ( ) {
 
-	//log("debug: entering doReadLoop this=%"XINT32"",(int32_t)this);
+	//log("debug: entering doReadLoop this=%" XINT32 "",(int32_t)this);
 
 	// sanity. no double entry.
 	if ( m_gettingList ) { char *xx=NULL;*xx=0; }
@@ -1097,7 +1097,7 @@ bool Msg25::doReadLoop ( ) {
 		startKey = g_linkdb.makeStartKey_uk ( siteHash32 );
 		endKey   = g_linkdb.makeEndKey_uk   ( siteHash32 );
 		//log("linkdb: getlinkinfo: "
-		//    "site=%s sitehash32=%"UINT32"",site,siteHash32);
+		//    "site=%s sitehash32=%" UINT32 "",site,siteHash32);
 	}
 	else {
 		startKey = g_linkdb.makeStartKey_uk (siteHash32,m_linkHash64 );
@@ -1139,7 +1139,7 @@ bool Msg25::doReadLoop ( ) {
 		char *ms = "page";
 		if ( m_mode == MODE_SITELINKINFO ) ms = "site";
 		log("msg25: reading linkdb list mode=%s site=%s url=%s "
-		    "docid=%"INT64" linkdbstartkey=%s",
+		    "docid=%" INT64 " linkdbstartkey=%s",
 		    ms,m_site,m_url,m_docId,KEYSTR(&startKey,LDBKS));
 	}
 
@@ -1153,7 +1153,7 @@ bool Msg25::doReadLoop ( ) {
 
 	CollectionRec *cr = g_collectiondb.getRec ( m_collnum );
 	if ( ! cr ) {
-		log("linkdb: no coll for collnum %"INT32"",(int32_t)m_collnum);
+		log("linkdb: no coll for collnum %" INT32 "",(int32_t)m_collnum);
 		g_errno = ENOCOLLREC;
 		return true;
 	}
@@ -1184,7 +1184,7 @@ bool Msg25::doReadLoop ( ) {
 				gotListWrapper  ,
 				m_niceness      ,
 				true            )){ // error correct?
-		//log("debug: msg0 blocked this=%"XINT32"",(int32_t)this);
+		//log("debug: msg0 blocked this=%" XINT32 "",(int32_t)this);
 		return false;
 	}
 	// all done
@@ -1211,7 +1211,7 @@ bool Msg25::doReadLoop ( ) {
 void gotListWrapper ( void *state , RdbList *list , Msg5 *msg5 ) {
 	Msg25 *THIS = (Msg25 *) state;
 
-	//log("debug: entering gotlistwrapper this=%"XINT32"",(int32_t)THIS);
+	//log("debug: entering gotlistwrapper this=%" XINT32 "",(int32_t)THIS);
 
 
 	// return if it blocked
@@ -1223,8 +1223,8 @@ void gotListWrapper ( void *state , RdbList *list , Msg5 *msg5 ) {
 
 	// error? wait for all replies to come in...
 	if ( THIS->m_numRequests > THIS->m_numReplies ) {
-		log("msg25: had error %s numreplies=%"INT32" numrequests=%"INT32" "
-		    "round=%"INT32"",
+		log("msg25: had error %s numreplies=%" INT32 " numrequests=%" INT32 " "
+		    "round=%" INT32 "",
 		    mstrerror(g_errno),THIS->m_numReplies,THIS->m_numRequests,
 		    THIS->m_round);
 		return;
@@ -1257,7 +1257,7 @@ bool Msg25::gotList() {
 	if ( m_msg5.m_msg3.m_numScansCompleted < 
 	     m_msg5.m_msg3.m_numScansStarted ) { char *xx=NULL;*xx=0; }
 
-	//log("debug: entering gotlist this=%"XINT32"",(int32_t)this);
+	//log("debug: entering gotlist this=%" XINT32 "",(int32_t)this);
 
 	// return true on error
 	if ( g_errno ) {
@@ -1318,7 +1318,7 @@ bool Msg25::gotTermFreq ( bool msg42Called ) {
 	if ( msg42Called ) {
 		// set the new one
 		int64_t tf = m_msg42.getTermFreq();
-		logf(LOG_DEBUG,"build: Upping linkers from %"INT32" to %"INT64"",
+		logf(LOG_DEBUG,"build: Upping linkers from %" INT32 " to %" INT64 "",
 		     m_numDocIds,tf);
 		if ( tf > m_numDocIds ) m_numDocIds = tf;
 	}
@@ -1347,7 +1347,7 @@ bool Msg25::gotTermFreq ( bool msg42Called ) {
 		// wtf?
 		if ( m_list.getListSize() > READSIZE + 10000 ) {
 			//char *xx=NULL;*xx=0; }
-			log("linkdb: read very big linkdb list %"INT32" bytes "
+			log("linkdb: read very big linkdb list %" INT32 " bytes "
 			    "bigger than needed",
 			    m_list.getListSize() - READSIZE );
 		}
@@ -1439,7 +1439,7 @@ bool Msg25::sendRequests ( ) {
 
 	uint64_t lastDocId = 0LL;
 
-	//log("debug: entering sendrequests this=%"XINT32"",(int32_t)this);
+	//log("debug: entering sendrequests this=%" XINT32 "",(int32_t)this);
 
 	// change status
 	//if ( m_statusPtr ) *m_statusPtr = "getting link texts";
@@ -1453,7 +1453,7 @@ bool Msg25::sendRequests ( ) {
 
 	CollectionRec *cr = g_collectiondb.getRec ( m_collnum );
 	if ( ! cr ) {
-		log("linkdb: collnum %"INT32" is gone 1",(int32_t)m_collnum);
+		log("linkdb: collnum %" INT32 " is gone 1",(int32_t)m_collnum);
 		// that func doesn't set g_errno so we must
 		g_errno = ENOCOLLREC;
 		return true;
@@ -1772,7 +1772,7 @@ bool Msg25::sendRequests ( ) {
 			char *ms = "page";
 			if ( m_mode == MODE_SITELINKINFO ) ms = "site";
 			log("msg25: getting single link mode=%s site=%s "
-			    "url=%s docid=%"INT64" request=%"INT32"",
+			    "url=%s docid=%" INT64 " request=%" INT32 "",
 			    ms,m_site,m_url,docId,m_numRequests-1);
 		}
 
@@ -1796,12 +1796,12 @@ bool Msg25::sendRequests ( ) {
 	
 	/*
 	if ( m_url )
-		log("linkdb: encountered %"INT32" lost links for url %s "
-		    "rnd=%"INT32"",
+		log("linkdb: encountered %" INT32 " lost links for url %s "
+		    "rnd=%" INT32 "",
 		    m_lostLinks,m_url,m_round);
 	else
-		log("linkdb: encountered %"INT32" lost links for docid %"INT64" "
-		    "rnd=%"INT32"",
+		log("linkdb: encountered %" INT32 " lost links for docid %" INT64 " "
+		    "rnd=%" INT32 "",
 		    m_lostLinks,m_docId,m_round);
 	*/
 
@@ -1819,7 +1819,7 @@ bool gotLinkTextWrapper ( void *state ) { // , LinkTextReply *linkText ) {
 	// get our Msg25
 	Msg25 *THIS = (Msg25 *)req->m_state2;
 
-	//log("debug: entering gotlinktextwrapper this=%"XINT32"",(int32_t)THIS);
+	//log("debug: entering gotlinktextwrapper this=%" XINT32 "",(int32_t)THIS);
 
 	// . this returns false if we're still awaiting replies
 	// . returns true if all replies have been received and processed
@@ -1969,7 +1969,7 @@ char *getExplanation ( char *note ) {
 // . sets g_errno on error
 bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 
-	//log("debug: entering gotlinktext this=%"XINT32"",(int32_t)this);
+	//log("debug: entering gotlinktext this=%" XINT32 "",(int32_t)this);
 
 	int32_t j = -1;
 	if ( req ) j = req->m_j;
@@ -2002,7 +2002,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 		if ( r && r->m_errno && ! g_errno ) g_errno = r->m_errno;
 		// if it had an error print it for now
 		if ( r && r->m_errno )
-			log("query: msg25: msg20 had error for docid %"INT64" : "
+			log("query: msg25: msg20 had error for docid %" INT64 " : "
 			    "%s",r->m_docId, mstrerror(r->m_errno));
 	}
 	
@@ -2025,7 +2025,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 		// MDW: we no longer do this restriction...
 		log(LOG_DEBUG,
 		    "build: Got error getting link text from one document: "
-		    "%s. Will have to restart later. docid=%"INT64".",
+		    "%s. Will have to restart later. docid=%" INT64 ".",
 		    mstrerror(g_errno),docId);
 		// this is a special case
 		if ( g_errno == ECANCELLED || 
@@ -2087,7 +2087,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 	// sanity check, Xml::set() requires this...
 	if ( r&&r->size_rssItem > 0 && r->ptr_rssItem[r->size_rssItem-1]!=0 ) {
 		log("admin: received corrupt rss item of size "
-		    "%"INT32" not null terminated  from linker %s",
+		    "%" INT32 " not null terminated  from linker %s",
 		    r->size_rssItem,r->ptr_ubuf);
 		// ignore it for now
 		r->size_rssItem = 0;
@@ -2293,7 +2293,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 		r->m_discoveryDate = req->m_discoveryDate;
 		m_numReplyPtrs++;
 		// debug note
-		//log("linkdb: stored %"INT32" msg20replies",m_numReplyPtrs);
+		//log("linkdb: stored %" INT32 " msg20replies",m_numReplyPtrs);
 		// do not allow Msg20 to free it
 		m->m_r = NULL;
 	}
@@ -2336,8 +2336,8 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 		}
 		// debug
 		if ( g_conf.m_logDebugLinkInfo ) {
-			log("linkdb: recalling round=%"INT32" for %s=%s "
-			    "req=0x%"PTRFMT" numlinkerreplies=%"INT32,
+			log("linkdb: recalling round=%" INT32 " for %s=%s "
+			    "req=0x%" PTRFMT " numlinkerreplies=%" INT32 ,
 			    m_round,ms,m_site,(PTRTYPE)m_req25,m_numReplyPtrs);
 		}
 		// and re-call. returns true if did not block.
@@ -2380,15 +2380,15 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 	if ( rem > step ) { char *xx = NULL; *xx = 0; }
 	// log build msg
 	if ( g_conf.m_logDebugSpider )
-		log(LOG_DEBUG,"build: msg25: %s extrapolated=%"INT32" "
-		    "goodReplies=%"INT32" "
-		    "allReplies=%"INT32"",
+		log(LOG_DEBUG,"build: msg25: %s extrapolated=%" INT32 " "
+		    "goodReplies=%" INT32 " "
+		    "allReplies=%" INT32 "",
 		    m_url->getUrl(), (int32_t)extrapolated, (int32_t)m_numReplyPtrs, 
 		    (int32_t)m_numReplies);
 	// sanity check
 	if ( extrapolated < 0 ) {
 		if ( g_conf.m_logDebugSpider )
-			log("build: msg25: extrapolated = %"INT32" < 0. Resetting "
+			log("build: msg25: extrapolated = %" INT32 " < 0. Resetting "
 			    "to 0.",(int32_t)extrapolated);
 		extrapolated = 0;
 	}
@@ -2409,13 +2409,13 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 		char *ms = "page";
 		if ( m_mode == MODE_SITELINKINFO ) ms = "site";
 		log("msg25: making final linkinfo mode=%s site=%s url=%s "
-		    "docid=%"INT64"",
+		    "docid=%" INT64 "",
 		    ms,m_site,m_url,m_docId);
 	}
 
 	CollectionRec *cr = g_collectiondb.getRec ( m_collnum );
 	if ( ! cr ) {
-		log("linkdb: collnum %"INT32" is gone 2",(int32_t)m_collnum);
+		log("linkdb: collnum %" INT32 " is gone 2",(int32_t)m_collnum);
 		// that func doesn't set g_errno so we must
 		g_errno = ENOCOLLREC;
 		return true;
@@ -2471,7 +2471,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 			int64_t d2 = m_replyPtrs[i  ]->m_docId;
 			if ( d1 == d2 )
 				log("build: got same docid in msg25 "
-				    "d=%"INT64" url=%s",d1,
+				    "d=%" INT64 " url=%s",d1,
 				    m_replyPtrs[i]->ptr_ubuf);
 			if ( q1 == q2 && d1 <= d2 ) continue;
 			// swap them
@@ -2510,7 +2510,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 
 		m_pbuf->safePrintf("\t<desc>inlinks to %s</desc>\n",ss);
 
-		m_pbuf->safePrintf("\t<sampleCreatedUTC>%"UINT32""
+		m_pbuf->safePrintf("\t<sampleCreatedUTC>%" UINT32 ""
 				   "</sampleCreatedUTC>\n"
 				   , m_lastUpdateTime
 				   );
@@ -2533,21 +2533,21 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 		//if ( m_xd ) d = m_xd->m_docId;
 		int64_t d = m_docId;
 		if ( d && d != -1LL )
-			m_pbuf->safePrintf("\t<docId>%"INT64"</docId>\n",d);
+			m_pbuf->safePrintf("\t<docId>%" INT64 "</docId>\n",d);
 			
 		m_pbuf->safePrintf(
 				   "\t<ipAddress><![CDATA[%s]]></ipAddress>\n"
 
-				   "\t<totalSiteInlinksProcessed>%"INT32""
+				   "\t<totalSiteInlinksProcessed>%" INT32 ""
 				   "</totalSiteInlinksProcessed>\n"
 
-				   "\t<totalGoodSiteInlinksProcessed>%"INT32""
+				   "\t<totalGoodSiteInlinksProcessed>%" INT32 ""
 				   "</totalGoodSiteInlinksProcessed>\n"
 
-				   "\t<numUniqueCBlocksLinkingToPage>%"INT32""
+				   "\t<numUniqueCBlocksLinkingToPage>%" INT32 ""
 				   "</numUniqueCBlocksLinkingToPage>\n"
 
-				   "\t<numUniqueIpsLinkingToPage>%"INT32""
+				   "\t<numUniqueIpsLinkingToPage>%" INT32 ""
 				   "</numUniqueIpsLinkingToPage>\n"
 
 				   , iptoa(m_ip)
@@ -2586,9 +2586,9 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 				      
 				      "<tr>"
 				      "<td>total inlinkers</td>"
-				      "<td>%"INT32"</td>"
+				      "<td>%" INT32 "</td>"
 				      "<td>how many inlinks we have total. "
-				      "Max: %"INT32"."
+				      "Max: %" INT32 "."
 				      //" Bad docids are removed so may be "
 				      //"less than that max."
 				      "</td>"
@@ -2597,14 +2597,14 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 
 				      "<tr>"
 				      "<td>unique cblocks</td>"
-				      "<td>%"INT32"</td>"
+				      "<td>%" INT32 "</td>"
 				      "<td>unique EXTERNAL cblock inlinks</td>"
 				      "<td> &nbsp; </td>"
 				      "</tr>\n"
 
 				      "<tr>"
 				      "<td>unique ips</td>"
-				      "<td>%"INT32"</td>"
+				      "<td>%" INT32 "</td>"
 				      "<td>unique EXTERNAL IP inlinks</td>"
 				      "<td> &nbsp; </td>"
 				      "</tr>\n"
@@ -2612,10 +2612,10 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 				      
 				      //"<tr>"
 				      //"<td>sampled inlinkers</td>"
-				      //"<td>%"INT32"</td>"
+				      //"<td>%" INT32 "</td>"
 				      //"<td>how many docs "
 				      //"we sampled for inlink text. "
-				      //"Limited to %"INT32" docs.</td>"
+				      //"Limited to %" INT32 " docs.</td>"
 				      //"<td> &nbsp; </td>"
 				      //"</tr>\n"
 				      ,
@@ -2636,7 +2636,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 				      );
 
 	if ( m_mode == MODE_SITELINKINFO && m_printInXml )
-		m_pbuf->safePrintf("\t<siteRank>%"INT32"</siteRank>\n" , siteRank );
+		m_pbuf->safePrintf("\t<siteRank>%" INT32 "</siteRank>\n" , siteRank );
 
 	// print link spam types
 	int32_t ns = m_table.getNumSlots();
@@ -2658,7 +2658,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 						     "<![CDATA[%s]]>"
 						     "</explanation>\n",
 						     exp);
-			m_pbuf->safePrintf ( "\t\t<count>%"INT32"</count>\n",
+			m_pbuf->safePrintf ( "\t\t<count>%" INT32 "</count>\n",
 					     e->m_count );
 			m_pbuf->safePrintf ( "\t</inlinkStat>\n");
 		}
@@ -2668,7 +2668,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 			//	m_pbuf->safePrintf ( " - %s", exp );
 			m_pbuf->safePrintf("</td>");
 			m_pbuf->safePrintf (
-					    "<td><font color=red>%"INT32"</font>"
+					    "<td><font color=red>%" INT32 "</font>"
 					    "</td>"
 					    "<td>reason could not vote</td>"
 					    "<td>"
@@ -2679,8 +2679,8 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 			if ( e->m_docIds[j] == -1LL ) break;
 			if ( ! m_printInXml )
 				m_pbuf->safePrintf ("<a href=\"/admin/titledb"
-						    "?c=%s&d=%"INT64"\">"
-						    "%"INT32"</a> ",
+						    "?c=%s&d=%" INT64 "\">"
+						    "%" INT32 "</a> ",
 						    coll,e->m_docIds[j],j);
 		}
 		if ( ! m_printInXml )
@@ -2692,7 +2692,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 
 				   "<tr>"
 				   "<td>ip dup</td>"
-				   "<td><font color=red>%"INT32"</font></td>"
+				   "<td><font color=red>%" INT32 "</font></td>"
 				   "<td>"
 				   "basically the same ip, but we looked "
 				   "it up anyway."
@@ -2701,7 +2701,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 
 				   "<tr>"
 				   "<td>ip dup linkdb</td>"
-				   "<td>%"INT32"</td>"
+				   "<td>%" INT32 "</td>"
 				   "<td>"
 				   "linkdb saved us from having to "
 				   "look up this many title recs from the "
@@ -2710,7 +2710,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 
 				   "<tr>"
 				   "<td>docid dup linkdb</td>"
-				   "<td>%"INT32"</td>"
+				   "<td>%" INT32 "</td>"
 				   "<td>"
 				   "linkdb saved us from having to "
 				   "look up this many title recs from the "
@@ -2719,7 +2719,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 				   
 				   "<tr>"
 				   "<td>link spam linkdb</td>"
-				   "<td>%"INT32"</td>"
+				   "<td>%" INT32 "</td>"
 				   "<td>"
 				   "linkdb saved us from having to "
 				   "look up this many title recs because "
@@ -2729,12 +2729,12 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 				   
 				   "<tr>"
 				   "<td><b>good</b></td>"
-				   "<td><b>%"INT32"</b></td>"
+				   "<td><b>%" INT32 "</b></td>"
 				   "<td>"
 				   //"may include anomalies and some "
 				   //"link farms discovered later. "
 				   "# inlinkers with positive weight"
-				   //"limited to MAX_LINKERS = %"INT32""
+				   //"limited to MAX_LINKERS = %" INT32 ""
 				   "</td>"
 				   "<td> &nbsp; </td>"
 				   "</tr>\n"
@@ -2742,7 +2742,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 				   /*
 				     "<tr>"
 				     "<td>good extrapolated</td>"
-				     "<td>%"INT32"</td>"
+				     "<td>%" INT32 "</td>"
 				     "<td>extrapolate the good links to get "
 				     "around the MAX_LINKERS limitation</td>"
 				     "<td> &nbsp; </td>"
@@ -2750,9 +2750,9 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 				     
 				     "<tr>"
 				     "<td>X factor (not linear!)</td>"
-				     "<td>%"INT32"%%</td>"
+				     "<td>%" INT32 "%%</td>"
 				     "<td>~ good extrapolated / good = "
-				     "%"INT32" / %"INT32"</td>"
+				     "%" INT32 " / %" INT32 "</td>"
 				     "<td> &nbsp; </td>"
 				     "</tr>\n"
 				   */
@@ -2769,7 +2769,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 	if ( m_mode == MODE_SITELINKINFO && ! m_printInXml )
 		m_pbuf->safePrintf(
 				   "<tr><td><b>siterank</b></td>"
-				   "<td><b>%"INT32"</b></td>"
+				   "<td><b>%" INT32 "</b></td>"
 				   "<td>based on # of good inlinks</td>"
 				   "</tr>",
 				   siteRank
@@ -2793,7 +2793,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 				     "as another inlinker we processed");
 		m_pbuf->safePrintf ( "]]></explanation>\n");
 
-		m_pbuf->safePrintf ( "\t\t<count>%"INT32"</count>\n",
+		m_pbuf->safePrintf ( "\t\t<count>%" INT32 "</count>\n",
 				     m_ipDups );
 		m_pbuf->safePrintf ( "\t</inlinkStat>\n");
 	}
@@ -2808,7 +2808,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 				     "as another inlinker we processed");
 		m_pbuf->safePrintf ( "]]></explanation>\n");
 
-		m_pbuf->safePrintf ( "\t\t<count>%"INT32"</count>\n",
+		m_pbuf->safePrintf ( "\t\t<count>%" INT32 "</count>\n",
 				     m_ipDupsLinkdb );
 		m_pbuf->safePrintf ( "\t</inlinkStat>\n");
 	}
@@ -2822,7 +2822,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 		m_pbuf->safePrintf ( "inlinker is on the same page "
 				     "as another inlinker we processed");
 		m_pbuf->safePrintf ( "]]></explanation>\n");
-		m_pbuf->safePrintf ( "\t\t<count>%"INT32"</count>\n",
+		m_pbuf->safePrintf ( "\t\t<count>%" INT32 "</count>\n",
 				     m_ipDupsLinkdb );
 		m_pbuf->safePrintf ( "\t</inlinkStat>\n");
 	}
@@ -2832,7 +2832,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 				     "\t\t<name><![CDATA[");
 		m_pbuf->safePrintf ( "generalLinkSpam" );
 		m_pbuf->safePrintf ( "]]></name>\n");
-		m_pbuf->safePrintf ( "\t\t<count>%"INT32"</count>\n",
+		m_pbuf->safePrintf ( "\t\t<count>%" INT32 "</count>\n",
 				     m_linkSpamLinkdb );
 		m_pbuf->safePrintf ( "\t</inlinkStat>\n");
 	}
@@ -2845,8 +2845,8 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 		m_pbuf->safePrintf(  "<table cellpadding=3 border=1>"
 				     "<tr>"
 				     "<td colspan=20>Inlinks "
-				     "to %s%s &nbsp; (IP=%s) " // pagePop=%"INT32" "
-				     //"sitePop=%"INT32" numLinksToSite=%"INT32")"
+				     "to %s%s &nbsp; (IP=%s) " // pagePop=%" INT32 " "
+				     //"sitePop=%" INT32 " numLinksToSite=%" INT32 ")"
 				     "</td>"
 				     "</tr>\n"
 				     "<tr>"
@@ -2936,7 +2936,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 			//if ( internal ) note = "internal";
 			m_pbuf->safePrintf("\t<inlink>\n"
 
-					   "\t\t<docId>%"INT64"</docId>\n"
+					   "\t\t<docId>%" INT64 "</docId>\n"
 
 					   "\t\t<url><![CDATA[%s]]></url>\n"
 
@@ -2977,15 +2977,15 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 
 			m_pbuf->safePrintf(
 
-					   "\t\t<onSite>%"INT32"</onSite>\n"
+					   "\t\t<onSite>%" INT32 "</onSite>\n"
 
-					   "\t\t<discoveryDateUTC>%"UINT32""
+					   "\t\t<discoveryDateUTC>%" UINT32 ""
 					   "</discoveryDateUTC>\n"
 
 					   "\t\t<language><![CDATA[%s]]>"
 					   "</language>\n"
 
-					   "\t\t<siteRank>%"INT32"</siteRank>\n"
+					   "\t\t<siteRank>%" INT32 "</siteRank>\n"
 					   , (int32_t)internal
 					   , (uint32_t)dd
 					   , getLanguageString(r->m_language)
@@ -3007,10 +3007,10 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 		}
 
 		m_pbuf->safePrintf(  "<tr>"
-				     "<td>%"INT32"</td>" // #i
+				     "<td>%" INT32 "</td>" // #i
 				     "<td>"
-				     "<a href=\"/print?page=1&d=%"INT64"\">"
-				     "%"INT64"</a></td>" // docid
+				     "<a href=\"/print?page=1&d=%" INT64 "\">"
+				     "%" INT64 "</a></td>" // docid
 				     "<td><nobr>"//%.1f"
 				     ,i+1
 				     ,r->m_docId
@@ -3042,11 +3042,11 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 				     "<td>%s</td>"   // language
 				     "<td>%s</td>"   // discoverydate
 				     "<td>%s</td>"   // datedbdate
-				     "<td>%"INT32"</td>" // hopcount
-				     "<td><font color=red><b>%"INT32""
+				     "<td>%" INT32 "</td>" // hopcount
+				     "<td><font color=red><b>%" INT32 ""
 				     "</b></font></td>"  // site rank
-				     "<td>%"INT32"</td>"  // nw 
-				     "<td>%"INT32"</td>" // textLen
+				     "<td>%" INT32 "</td>"  // nw 
+				     "<td>%" INT32 "</td>" // textLen
 				     "<td><nobr>", // text
 				     //ext,
 				     getLanguageString(r->m_language),
@@ -3109,14 +3109,14 @@ bool Msg25::gotLinkText ( Msg20Request *req ) { // LinkTextReply *linkText ) {
 		lastsr = sr;
 		if ( m_printInXml )
 			m_pbuf->safePrintf("\t\t<row>"
-					   "\t\t\t<numInlinks>%"INT32""
+					   "\t\t\t<numInlinks>%" INT32 ""
 					   "</numInlinks>\n"
-					   "\t\t\t<siteRank>%"INT32""
+					   "\t\t\t<siteRank>%" INT32 ""
 					   "</siteRank>\n"
 					   "\t\t</row>\n"
 					   ,i,sr);
 		else
-			m_pbuf->safePrintf("<tr><td>%"INT32"</td><td>%"INT32"</td></tr>"
+			m_pbuf->safePrintf("<tr><td>%" INT32 "</td><td>%" INT32 "</td></tr>"
 					   ,i,sr);
 	}
 	if ( m_printInXml && m_mode == MODE_SITELINKINFO )
@@ -3343,8 +3343,8 @@ char *Msg25::isDup ( Msg20Reply *r , Msg20Reply *p ) {
 	//if ( p4 >= 80 ) return "similar incoming ip shingle";
 	//if ( p4 >= 80 ) {
 	//	// get the link text that is residing
-	//	logf(LOG_DEBUG,"build: ip shingle sim2 of %"INT32"%% for "
-	//	     "nhi=%"INT32" nhj=%"INT32" di=%"UINT64" dj=%"UINT64"",
+	//	logf(LOG_DEBUG,"build: ip shingle sim2 of %" INT32 "%% for "
+	//	     "nhi=%" INT32 " nhj=%" INT32 " di=%" UINT64 " dj=%" UINT64 "",
 	//	     (int32_t)p4,
 	//	     v4->m_numPairHashes,x4->m_numPairHashes,
 	//	     rold->getDocId(),rnew->getDocId());
@@ -3991,7 +3991,7 @@ LinkInfo *makeLinkInfo ( char        *coll                    ,
 		if ( r->m_isLinkSpam ) {
 			// linkdb debug
 			if ( g_conf.m_logDebugLinkInfo ) 
-				log("linkdb: inlink #%"INT32" is link spam: %s",
+				log("linkdb: inlink #%" INT32 " is link spam: %s",
 				    i,r->ptr_note);
 			if ( onlyNeedGoodInlinks )
 				continue;
@@ -4082,7 +4082,7 @@ LinkInfo *makeLinkInfo ( char        *coll                    ,
 		// note it if recycled
 		if ( k.m_recycled )
 			logf(LOG_DEBUG,"build: recycling Inlink %s for linkee "
-			     "%"INT64"", k.getUrl(),linkeeDocId);
+			     "%" INT64 "", k.getUrl(),linkeeDocId);
 		// advance
 		p += wrote;
 	}
@@ -4848,19 +4848,19 @@ bool LinkInfo::print ( SafeBuf *sb , char *coll ) {
 		// . there is a ton more info in Inlink class to print if
 		//   you want to throw it in here...
 		sb->safePrintf(
-			       "<tr><td colspan=2>link #%04"INT32" "
+			       "<tr><td colspan=2>link #%04" INT32 " "
 			       "("
-			       //"baseScore=%010"INT32", "
+			       //"baseScore=%010" INT32 ", "
 			       "d=<a href=\"/admin/titledb?c=%s&"
-			       "d=%"INT64"\">%016"INT64"</a>, "
-			       "siterank=%"INT32", "
-			       "hopcount=%03"INT32" "
-			       "outlinks=%05"INT32", "
+			       "d=%" INT64 "\">%016" INT64 "</a>, "
+			       "siterank=%" INT32 ", "
+			       "hopcount=%03" INT32 " "
+			       "outlinks=%05" INT32 ", "
 			       "ip=%s "
-			       //"pagepop=%"INT32" "
-			       //"sitepop=%"INT32" "
-			       "numLinksToSite=%"INT32" "
-			       //"anomaly=%"INT32" "
+			       //"pagepop=%" INT32 " "
+			       //"sitepop=%" INT32 " "
+			       "numLinksToSite=%" INT32 " "
+			       //"anomaly=%" INT32 " "
 			       "<b>url</b>=\"%s\" "
 			       "<b>txt=</b>\""
 			       "%s\" "
@@ -5284,8 +5284,8 @@ bool Links::set ( bool useRelNoFollow ,
 			static bool s_flag = 1;
 			if ( s_flag ) {
 				s_flag = 0;
-				log(LOG_INFO, "build: Link len %"INT32" is longer "
-					      "than max of %"INT32". Link will not "
+				log(LOG_INFO, "build: Link len %" INT32 " is longer "
+					      "than max of %" INT32 ". Link will not "
 					      "be added to spider queue or "
 					      "indexed for link: search.",
 					      linkLen,(int32_t)MAX_URL_LEN);
@@ -5417,7 +5417,7 @@ bool Links::print ( SafeBuf *sb ) {
 	for ( i = 0 ; i < m_numLinks ; i++ ) {
 		char *link    = getLinkPtr(i);
 		int32_t  linkLen = getLinkLen(i);
-		sb->safePrintf("<tr><td>%"INT32"</td><td>",i);
+		sb->safePrintf("<tr><td>%" INT32 "</td><td>",i);
 		sb->safeMemcpy(link,linkLen);
 		sb->safePrintf("</td></tr>\n");
 	}
@@ -5646,7 +5646,7 @@ bool Links::addLink ( char *link , int32_t linkLen , int32_t nodeNum ,
 		// a ptr to it
 		char *p = newBuf;
 		// debug msg
-		log(LOG_DEBUG, "build: resizing Links ptr buffer to %"INT32"",
+		log(LOG_DEBUG, "build: resizing Links ptr buffer to %" INT32 "",
 		    newAllocSize);
 
 		char **newLinkPtrs = (char**)p;
@@ -5919,7 +5919,7 @@ bool Links::addLink ( char *link , int32_t linkLen , int32_t nodeNum ,
 		QUICKPOLL(niceness);
 		char *newBuf = (char*)mmalloc(newAllocSize, "Links");
 		if ( ! newBuf ) return log("build: Links failed to realloc.");
-		log(LOG_DEBUG, "build: resizing Links text buffer to %"INT32"",
+		log(LOG_DEBUG, "build: resizing Links text buffer to %" INT32 "",
 		    newAllocSize);
 		QUICKPOLL(niceness);
 		if ( m_allocBuf ) {

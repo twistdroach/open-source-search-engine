@@ -199,8 +199,8 @@ uint64_t hash64h ( uint64_t h1 , uint64_t h2 ) {
 
 void hash2string ( uint64_t h , char *buf ) {
 	//	sprintf(buf, "%016lx", h );
-	sprintf(buf   , "%08"PRIX32, (uint32_t)(h >> 32) );
-	sprintf(buf+10, "%08"PRIX32, (uint32_t)h );
+	sprintf(buf   , "%08" PRIX32 , (uint32_t)(h >> 32) );
+	sprintf(buf+10, "%08" PRIX32 , (uint32_t)h );
 }
 
 // only utf8 allowed now

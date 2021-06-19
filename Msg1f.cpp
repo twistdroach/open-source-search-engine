@@ -77,7 +77,7 @@ void handleRequest ( UdpSlot *slot , int32_t netnice ) {
 		buf = (char*)mmalloc(numBytes, "Msg1fA");
 		if(!buf) {
 			log(LOG_INFO, 
-			    "admin: malloc of %"INT32" bytes failed "
+			    "admin: malloc of %" INT32 " bytes failed "
 			    "for logview,"
 			    " falling back on stack buffer.",
 			    numBytes);

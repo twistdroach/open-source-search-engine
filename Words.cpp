@@ -192,7 +192,7 @@ bool Words::set ( Xml *xml,
 		if ( xml->isBackTag(k)) {
 			m_tagIds[m_numWords] |= BACKBIT;
 		}
-		//log(LOG_DEBUG, "Words: Word %"INT32": got tag %s%s (%d)", 
+		//log(LOG_DEBUG, "Words: Word %" INT32 ": got tag %s%s (%d)", 
 		//    m_numWords,
 		//    isBackTag(m_numWords)?"/":"",
 		//    g_nodes[getTagId(m_numWords)].m_nodeName,
@@ -517,7 +517,7 @@ bool Words::addWords(char *s,int32_t nodeLen,bool computeWordIds, int32_t nicene
 	else m_totalLen = m_words[m_numWords-1] - s + m_wordLens[m_numWords-1];
 
 	if ( badCount )
-		log("words: had %"INT32" bad utf8 chars",badCount);
+		log("words: had %" INT32 " bad utf8 chars",badCount);
 
 	return true;
 }
@@ -532,8 +532,8 @@ bool Words::allocateWordBuffers(int32_t count, bool tagIds) {
 	wordSize += sizeof(int32_t);
 	if ( tagIds ) wordSize += sizeof(nodeid_t);
 	m_bufSize = wordSize * count;
-	if(m_bufSize < 0) return log("build: word count overflow %"INT32" "
-				     "bytes wordSize=%"INT32" count=%"INT32".",
+	if(m_bufSize < 0) return log("build: word count overflow %" INT32 " "
+				     "bytes wordSize=%" INT32 " count=%" INT32 ".",
 				     m_bufSize, wordSize, count);
 	if ( m_bufSize <= m_localBufSize2 && m_localBuf2 ) {
 		m_buf = m_localBuf2;
@@ -543,7 +543,7 @@ bool Words::allocateWordBuffers(int32_t count, bool tagIds) {
 	}
 	else {
 		m_buf = (char *)mmalloc ( m_bufSize , "Words" );
-		if ( ! m_buf ) return log("build: Could not allocate %"INT32" "
+		if ( ! m_buf ) return log("build: Could not allocate %" INT32 " "
 					  "bytes for parsing document.",
 					  m_bufSize);
 	}
@@ -579,8 +579,8 @@ void Words::print( ) {
 }
 
 void Words::printWord ( int32_t i ) {
-	fprintf(stderr,"#%05"INT32" ",i);
-	fprintf(stderr,"%020"UINT64" ",m_wordIds[i]);
+	fprintf(stderr,"#%05" INT32 " ",i);
+	fprintf(stderr,"%020" UINT64 " ",m_wordIds[i]);
 	// print the word
 	printstring(m_words[i],m_wordLens[i]);
 	//if (m_spam.m_spam[i]!=0)
@@ -718,8 +718,8 @@ bool Words::hash ( TermTable      *table          ,
 		//if ( h == 25718418790376LL ) {
 		//	int32_t ww = -1;
 		//	if ( wscores ) ww = wscores[i];
-		//	logf(LOG_DEBUG,"build: adding %"INT32" for sex, wscore=%"INT32" "
-		//	     "baseScore=%"INT32"",
+		//	logf(LOG_DEBUG,"build: adding %" INT32 " for sex, wscore=%" INT32 " "
+		//	     "baseScore=%" INT32 "",
 		//	     score,ww,baseScore);
 		//}
 		
@@ -751,7 +751,7 @@ bool Words::hash ( TermTable      *table          ,
 		// sanity check
 		//if ( h == 262515731587173LL ) {
 		//	int32_t nn = table->getScoreFromTermId ( h );
-		//	logf(LOG_DEBUG,"build: score now %"INT32"",nn);
+		//	logf(LOG_DEBUG,"build: score now %" INT32 "",nn);
 		//}
 	}
 	// return now if we don't have to print out spam info to parser buf
@@ -831,14 +831,14 @@ bool Words::hash ( TermTable      *table          ,
 				//tt = score;
 				//if ( tt == 0 ) tt = 1;
 				//pbuf->safePrintf("<font size=-7 color=red>"
-				//		 "%"INT32"</font>",
+				//		 "%" INT32 "</font>",
 				//		 pscore);
 				//if ( scores )
 				//	pbuf->safePrintf(
 				//		 "<font size=-7 color=green>"
-				//		 "%"INT32"</font>",
+				//		 "%" INT32 "</font>",
 				//		 scores->m_scores[i]);
-				pbuf->safePrintf("<font size=-7>#%"INT32"</font>",i);
+				pbuf->safePrintf("<font size=-7>#%" INT32 "</font>",i);
 			}
 			if ( ! pbuf->m_renderHtml ) // ! m_printTags )
 				pbuf->safePrintf("</span>\n");
@@ -846,7 +846,7 @@ bool Words::hash ( TermTable      *table          ,
 		//if (m_wordIds[i] && (!scores || scores->getScore(i) > 0) ){
 		if (m_wordIds[i] ) { // && score ) {
 			if ( m_wordIds[i] && spam->getSpam(i) ) {
-				pbuf->safePrintf("</strike>[%"INT32"]",
+				pbuf->safePrintf("</strike>[%" INT32 "]",
 					(int32_t)spam->getSpam(i));
 			}
 			//if (m_wordIds[i] && (!scores || scores->getScore(i) 
@@ -861,13 +861,13 @@ bool Words::hash ( TermTable      *table          ,
 			tt = score;
 			if ( tt == 0 ) tt = 1;
 			pbuf->safePrintf("<font size=-7 color=red>"
-					 "%"INT32"/%"INT32"</font>",
+					 "%" INT32 "/%" INT32 "</font>",
 					 score,pscore);
 			//if ( scores )
 			//	pbuf->safePrintf("<font size=-7 color=green>"
-			//			 "%"INT32"</font>",
+			//			 "%" INT32 "</font>",
 			//			 (int32_t)scores->m_scores[i]);
-			pbuf->safePrintf("<font size=-7>#%"INT32"</font>",i);
+			pbuf->safePrintf("<font size=-7>#%" INT32 "</font>",i);
 			//}
 			if ( ! pbuf->m_renderHtml ) // ! m_printTags )
 				pbuf->safePrintf("</span>\n");
@@ -936,7 +936,7 @@ bool Words::set2 ( Xml *xml,
 				m_tagIds[m_numWords] |= BACKBIT;
 			}
 
-			//log(LOG_DEBUG, "Words: Word %"INT32": got tag %s%s (%d)", 
+			//log(LOG_DEBUG, "Words: Word %" INT32 ": got tag %s%s (%d)", 
 			//    m_numWords,
 			//    isBackTag(m_numWords)?"/":"",
 			//    g_nodes[getTagId(m_numWords)].m_nodeName,
@@ -971,7 +971,7 @@ int32_t Words::isFloat  ( int32_t n, float& f) {
 
 	gbmemcpy(buf, getWord(n), getWordLen(n));
 	buf[getWordLen(n)] = '\0';
-	log(LOG_WARN, "trying to get %s %"INT32"", buf, offset);
+	log(LOG_WARN, "trying to get %s %" INT32 "", buf, offset);
 	
 
 	if(isNum(n)) {
@@ -1122,7 +1122,7 @@ int32_t Words::getLanguage( Sections *sections ,
 	char     **wptrs = m_words;
 
 	//int32_t langTotal = 0;
-// 	log ( LOG_WARN, "xmldoc: Picking language from %"INT32" words with %"INT32" skip",
+// 	log ( LOG_WARN, "xmldoc: Picking language from %" INT32 " words with %" INT32 " skip",
 // 			numWords, skip );
 	char numOne = 1;
 	Section **sp = NULL;

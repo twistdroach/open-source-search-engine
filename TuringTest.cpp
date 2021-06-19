@@ -376,7 +376,7 @@ bool TuringTest::printTest( SafeBuf* sb ) {
 			 "&nbsp; "
 			 "<input type=text name=ans size=5>\n"
 			 "<input type=hidden name=\"qid\" "
-			 "value=\"%"INT32"\">\n" ,
+			 "value=\"%" INT32 "\">\n" ,
 			 m_nextQuestion );
 	if(m_answers.getNumSlotsUsed() > 25000) {
 		//we're going to lose answers in progress here,

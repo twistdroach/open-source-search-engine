@@ -186,13 +186,13 @@ void Test::initTestRun ( ) {
 
 	char *testDir = getTestDir();
 
-	// scan for file named "run.start.%"INT32".txt" which is a dump of all
+	// scan for file named "run.start.%" INT32 ".txt" which is a dump of all
 	// the conf and parms 
 	char filename[100];
 	File f;
 	int32_t i; for ( i = 0 ; i < 9999 ; i++ ) {
 		// make filename. base it off working dir, g_hostdb.m_dir
-		sprintf ( filename,"%s/%s/run.%"INT32".collparms.txt",
+		sprintf ( filename,"%s/%s/run.%" INT32 ".collparms.txt",
 			  g_hostdb.m_dir,testDir,i );
 		// exist?
 		f.set ( filename );
@@ -216,10 +216,10 @@ void Test::initTestRun ( ) {
 	// close it
 	f.close();
 
-	// create the run.%"INT32".version.txt file
+	// create the run.%" INT32 ".version.txt file
 	char cmd[1000];
 	char vfile[200];
-	sprintf(vfile,"%s/%s/run.%"INT32".version.txt",g_hostdb.m_dir,testDir,i);
+	sprintf(vfile,"%s/%s/run.%" INT32 ".version.txt",g_hostdb.m_dir,testDir,i);
 	sprintf(cmd,
 		"%s/gb -v >& %s ; "
 		"echo -n \"RUN START TIME: \" >> %s ; "
@@ -254,8 +254,8 @@ void Test::initTestRun ( ) {
 	// log out the global parms
 	//
 	char fbuf[100]; 
-	// print our global parms into a file called run.%"INT32".start.txt
-	sprintf(fbuf,"%s/%s/run.%"INT32".confparms.txt",g_hostdb.m_dir,testDir,i);
+	// print our global parms into a file called run.%" INT32 ".start.txt
+	sprintf(fbuf,"%s/%s/run.%" INT32 ".confparms.txt",g_hostdb.m_dir,testDir,i);
 	// this saves it as xml i think
 	g_parms.saveToXml ( (char *)&g_conf , fbuf , OBJ_CONF);
 
@@ -263,7 +263,7 @@ void Test::initTestRun ( ) {
 	// log out the coll specific parms
 	//
 	// update name
-	sprintf(fbuf,"%s/%s/run.%"INT32".collparms.txt",g_hostdb.m_dir,testDir,i);
+	sprintf(fbuf,"%s/%s/run.%" INT32 ".collparms.txt",g_hostdb.m_dir,testDir,i);
 	// save that
 	g_parms.saveToXml ( (char *)cr , fbuf , OBJ_COLL);
 
@@ -280,7 +280,7 @@ void Test::initTestRun ( ) {
 	// error?
 	if ( ! buf ) {
 		// note it
-		log("test: failed to alloc %"INT32" bytes for url buf",fsize);
+		log("test: failed to alloc %" INT32 " bytes for url buf",fsize);
 		// disable testing
 		g_conf.m_testParserEnabled = false;
 		g_conf.m_testSpiderEnabled = false;
@@ -294,7 +294,7 @@ void Test::initTestRun ( ) {
 	// check it
 	if ( rs != fsize ) {
 		// note it
-		log("test: failed to read %"INT32" bytes of urls.txt file",fsize);
+		log("test: failed to read %" INT32 " bytes of urls.txt file",fsize);
 		// disable testing
 		g_conf.m_testParserEnabled = false;
 		g_conf.m_testSpiderEnabled = false;
@@ -405,7 +405,7 @@ void Test::stopIt ( ) {
 	m_isRunning = false;
 
 	// print time
-	log("test: took %"INT64" ms to complete injections.",
+	log("test: took %" INT64 " ms to complete injections.",
 	    gettimeofdayInMilliseconds() - m_testStartTime );
 
 	// get this before setting testParserEnabled to false
@@ -454,16 +454,16 @@ void Test::stopIt ( ) {
 		char *dir = g_hostdb.m_dir;
 		// make diff filename
 		char diff1[200];
-		sprintf(diff1,"%s/%s/run.%"INT32".confparms.txt.diff",dir,
+		sprintf(diff1,"%s/%s/run.%" INT32 ".confparms.txt.diff",dir,
 			testDir,i);
 		File f1;
 		f1.set(diff1);
 		if ( ! f1.doesExist() ) {
 			char df1[200];
 			char df2[200];
-			sprintf(df1,"%s/%s/run.%"INT32".confparms.txt",dir,
+			sprintf(df1,"%s/%s/run.%" INT32 ".confparms.txt",dir,
 				testDir,i);
-			sprintf(df2,"%s/%s/run.%"INT32".confparms.txt",dir,
+			sprintf(df2,"%s/%s/run.%" INT32 ".confparms.txt",dir,
 				testDir,i-1);
 			// do the diff
 			char cmd[600];
@@ -472,20 +472,20 @@ void Test::stopIt ( ) {
 			system (cmd);
 		}
 		int32_t fs1 = f1.getFileSize();
-		sb.safePrintf("<tr><td>%"INT32"</td><td>%"INT32"</td>", i,fs1);
+		sb.safePrintf("<tr><td>%" INT32 "</td><td>%" INT32 "</td>", i,fs1);
 
 		// make diff filename
 		char diff2[200];
-		sprintf(diff2,"%s/%s/run.%"INT32".collparms.txt.diff",dir,
+		sprintf(diff2,"%s/%s/run.%" INT32 ".collparms.txt.diff",dir,
 			testDir,i);
 		File f2;
 		f2.set(diff2);
 		if ( ! f2.doesExist() ) {
 			char df1[200];
 			char df2[200];
-			sprintf(df1,"%s/%s/run.%"INT32".collparms.txt",dir,
+			sprintf(df1,"%s/%s/run.%" INT32 ".collparms.txt",dir,
 				testDir,i);
-			sprintf(df2,"%s/%s/run.%"INT32".collparms.txt",dir,
+			sprintf(df2,"%s/%s/run.%" INT32 ".collparms.txt",dir,
 				testDir,i-1);
 			// do the diff
 			char cmd[600];
@@ -494,11 +494,11 @@ void Test::stopIt ( ) {
 			system (cmd);
 		}
 		int32_t fs2 = f2.getFileSize();
-		sb.safePrintf("<td>%"INT32"</td>", fs2);
+		sb.safePrintf("<td>%" INT32 "</td>", fs2);
 
 		// the version
 		char vf[200]; 
-		sprintf(vf,"%s/%s/run.%"INT32".version.txt",dir,testDir,i);
+		sprintf(vf,"%s/%s/run.%" INT32 ".version.txt",dir,testDir,i);
 		File f3; 
 		f3.set ( vf );
 		int32_t fs3 = f3.getFileSize();
@@ -575,11 +575,11 @@ void Test::stopIt ( ) {
 		udiff[un] = 0;
 
 		// print number
-		tmp.safePrintf("%"INT32") ",count++);
+		tmp.safePrintf("%" INT32 ") ",count++);
 		// . link to our stored http server reply
 		// . TODO: link it to our [cached] copy in the test coll!!!
 		char local[1200];
-		sprintf(local,"/%s/doc.%"UINT64".html",testDir,h);
+		sprintf(local,"/%s/doc.%" UINT64 ".html",testDir,h);
 		tmp.safePrintf("<a href=\"%s\"><b>%s</b></a> ",local,u);
 		// link to live page
 		tmp.safePrintf(" <a href=\"%s\">live</a> ",u);
@@ -588,7 +588,7 @@ void Test::stopIt ( ) {
 		urlEncode(ubuf,2000,u,gbstrlen(u),true);
 		tmp.safePrintf(" <a href=\"/admin/parser?c=test&"
 			       "u=%s\">parser</a> ",ubuf);
-		//tmp.safePrintf(" (%"UINT64")",h);
+		//tmp.safePrintf(" (%" UINT64 ")",h);
 		tmp.safePrintf("<br>\n");
 		//tmp.safePrintf("<br>\n");
 		tmp.safePrintf("<table border=1>\n");
@@ -612,7 +612,7 @@ void Test::stopIt ( ) {
 
 			// the diff filename
 			char pdiff[200];
-			sprintf(pdiff,"%s/%s/parse.%"UINT64".%"INT32".html.diff",dir,
+			sprintf(pdiff,"%s/%s/parse.%" UINT64 ".%" INT32 ".html.diff",dir,
 				testDir,h,ri);
 			File f;
 			f.set(pdiff);
@@ -621,9 +621,9 @@ void Test::stopIt ( ) {
 				// make the parse filename
 				char pbuf1[200];
 				char pbuf2[200];
-				sprintf(pbuf1,"%s/%s/parse.%"UINT64".%"INT32".html",
+				sprintf(pbuf1,"%s/%s/parse.%" UINT64 ".%" INT32 ".html",
 					dir,testDir,h,ri);
-				sprintf(pbuf2,"%s/%s/parse.%"UINT64".%"INT32".html",
+				sprintf(pbuf2,"%s/%s/parse.%" UINT64 ".%" INT32 ".html",
 					dir,testDir,h,ri-1);
 				// sanity check
 				//File tf; tf.set(pbuf1);
@@ -672,14 +672,14 @@ void Test::stopIt ( ) {
 				continue;
 			// relative filename
 			char rel[200];
-			sprintf(rel,"/%s/parse.%"UINT64".%"INT32".html.diff",
+			sprintf(rel,"/%s/parse.%" UINT64 ".%" INT32 ".html.diff",
 				testDir,h,ri);
 			char full[200];
-			sprintf(full,"/%s/parse.%"UINT64".%"INT32".html",
+			sprintf(full,"/%s/parse.%" UINT64 ".%" INT32 ".html",
 				testDir,h,ri);
 			char validate[200];
 			sprintf(validate,
-				"/%s/parse-int16_tdisplay.%"UINT64".%"INT32".html",
+				"/%s/parse-int16_tdisplay.%" UINT64 ".%" INT32 ".html",
 				testDir,h,ri);
 			// use red font for current run that has a diff!
 			char *t1 = "";
@@ -700,7 +700,7 @@ void Test::stopIt ( ) {
 			//   any more then Spider.cpp creates this file!
 			if ( ri == m_runId ) {
 				char cfile[256];
-				sprintf(cfile,"%s/%s/critical.%"UINT64".%"INT32".txt",
+				sprintf(cfile,"%s/%s/critical.%" UINT64 ".%" INT32 ".txt",
 					g_hostdb.m_dir,testDir,h,ri);
 				SafeBuf ttt;
 				ttt.fillFromFile(cfile);
@@ -711,7 +711,7 @@ void Test::stopIt ( ) {
 				uunchecked[un] = 0;
 				if ( ttt.length() >= 3 )
 					sscanf(ttt.getBufStart(),
-					       "%"INT32" %"INT32" %"INT32" %"INT32"",
+					       "%" INT32 " %" INT32 " %" INT32 " %" INT32 "",
 					       &umiss[un],
 					       &uhits[un],
 					       &uevents[un],
@@ -757,12 +757,12 @@ void Test::stopIt ( ) {
 				
 			// print the row!
 			tmp.safePrintf("<tr>"
-				      "<td>%s%"INT32"%s</td>"
-				       "<td>%s%"INT32"%s</td>" // critical hits
-				       "<td>%s%"INT32"%s</td>" // critical misses
-				       "%s%"INT32"%s" // # events
-				       "%s%"INT32"%s" // unchecked
-				       "<td>%s%"INT32"%s</td>" // filesize of diff
+				      "<td>%s%" INT32 "%s</td>"
+				       "<td>%s%" INT32 "%s</td>" // critical hits
+				       "<td>%s%" INT32 "%s</td>" // critical misses
+				       "%s%" INT32 "%s" // # events
+				       "%s%" INT32 "%s" // unchecked
+				       "<td>%s%" INT32 "%s</td>" // filesize of diff
 				      // diff filename
 				      "<td><a href=\"%s\">%s%s%s</a></td>"
 				      // full parser output
@@ -789,7 +789,7 @@ void Test::stopIt ( ) {
 			// to this little table so qa admin can check/uncheck
 			// validation checkboxes for addresses and events
 			//sprintf(cfile,
-			//	"%s/test/parse-int16_tdisplay.%"UINT64".%"INT32".html",
+			//	"%s/test/parse-int16_tdisplay.%" UINT64 ".%" INT32 ".html",
 			//	g_hostdb.m_dir,h,ri);
 			//sd.fillFromFile ( cfile );
 		}

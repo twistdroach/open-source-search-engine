@@ -248,7 +248,7 @@ void repairWrapper ( int fd , void *state ) {
 		// . tell Msg4 to load state using the new filename now
 		// . load "repair-addsinprogress" file
 		loadAddsInProgress ( "repair-" );
-		//log("repair: Scanning titledb file #%"INT32".",  g_repair.m_fn );
+		//log("repair: Scanning titledb file #%" INT32 ".",  g_repair.m_fn );
 		log("repair: Starting repair scan.");
 		// advance
 		g_repairMode = 4;
@@ -371,7 +371,7 @@ void repairWrapper ( int fd , void *state ) {
 		if ( g_pingServer.getMinRepairModeBesides0() != 8 ) return;
 
 		// note it
-		log("repair: Exiting repair mode.  took %"INT64" ms", 
+		log("repair: Exiting repair mode.  took %" INT64 " ms", 
 		    gettimeofdayInMilliseconds() - g_repair.m_startTime);
 		// turn it off to prevent going back to mode 1 again
 		g_conf.m_repairingEnabled = false;
@@ -1429,8 +1429,8 @@ bool Repair::scanRecs ( ) {
 	// for saving
 	m_lastTitledbKey = m_nextTitledbKey;
 	log(LOG_DEBUG,"repair: nextKey=%s endKey=%s"
-	    "coll=%s collnum=%"INT32" "
-	    "bnf=%"INT32"",//fn=%"INT32" nf=%"INT32"",
+	    "coll=%s collnum=%" INT32 " "
+	    "bnf=%" INT32 "",//fn=%" INT32 " nf=%" INT32 "",
 	    KEYSTR(&m_nextTitledbKey,sizeof(key_t)),
 	    KEYSTR(&m_endKey,sizeof(key_t)),
 	    m_cr->m_coll,
@@ -1546,10 +1546,10 @@ bool Repair::gotScanRecList ( ) {
 	// all done with this bigfile if this list is empty
 	if ( m_titleRecList.isEmpty() ) { //||m_recsScanned > 10 ) {
 		// note it
-		//logf(LOG_INFO,"repair: Scanning ledb file #%"INT32".",  m_fn );
+		//logf(LOG_INFO,"repair: Scanning ledb file #%" INT32 ".",  m_fn );
 		m_completedFirstScan = true;
 		logf(LOG_INFO,"repair: Completed titledb scan of "
-		     "%"INT64" records.",m_recsScanned);
+		     "%" INT64 " records.",m_recsScanned);
 		//logf(LOG_INFO,"repair: Starting spiderdb scan.");
 		m_stage = STAGE_SPIDERDB_0;
 		// force spider scan completed now too!
@@ -1579,7 +1579,7 @@ bool Repair::gotScanRecList ( ) {
 	if ( tkey < m_nextTitledbKey ) {
 		log("repair: Encountered corruption2 in titledb. "
 		    "key=%s < NextKey=%s"
-		    "FirstDocId=%"UINT64".",
+		    "FirstDocId=%" UINT64 ".",
 		    //p1-1,
 		    KEYSTR(&tkey,sizeof(key_t)),
 		    KEYSTR(&m_nextTitledbKey,sizeof(key_t)),
@@ -2340,19 +2340,19 @@ bool Repair::printRepairStatus ( SafeBuf *sb , int32_t fromIp ) {
 
 			 "<tr bgcolor=#%s><td width=50%%><b>rebuild mode</b>"
 			 "</td>"
-			 "<td>%"INT32"</td></tr>\n"
+			 "<td>%" INT32 "</td></tr>\n"
 
 			 "<tr bgcolor=#%s>"
 
 			 "<td width=50%%><b>min rebuild mode</b></td>"
-			 "<td>%"INT32"</td></tr>\n"
+			 "<td>%" INT32 "</td></tr>\n"
 
 			 "<tr bgcolor=#%s>"
 			 "<td width=50%%><b>host ID with min rebuild mode"
 			 "</b></td>"
 
 			 "<td><a href=\"http://%s:%hu/admin/rebuild\">"
-			 "%"INT32"</a></td></tr>\n"
+			 "%" INT32 "</a></td></tr>\n"
 
 			 "<tr bgcolor=#%s><td><b>old collection</b></td>"
 			 "<td>%s</td></tr>"
@@ -2389,7 +2389,7 @@ bool Repair::printRepairStatus ( SafeBuf *sb , int32_t fromIp ) {
 	sb->safePrintf ( 
 			 // docs done, includes overwritten title recs
 			 "<tr bgcolor=#%s><td><b>titledb recs scanned</b></td>"
-			 "<td>%"INT64" of %"INT64"</td></tr>\n"
+			 "<td>%" INT64 " of %" INT64 "</td></tr>\n"
 
 			 // percent complete
 			 "<tr bgcolor=#%s><td><b>titledb recs scanned "
@@ -2398,47 +2398,47 @@ bool Repair::printRepairStatus ( SafeBuf *sb , int32_t fromIp ) {
 
 			 // title recs set errors, parsing errors, etc.
 			 //"<tr bgcolor=#%s><td><b>title recs injected</b></td>"
-			 //"<td>%"INT64"</td></tr>\n"
+			 //"<td>%" INT64 "</td></tr>\n"
 
 			 // title recs set errors, parsing errors, etc.
 			 "<tr bgcolor=#%s><td><b>titledb rec error count</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 
 			 // sub errors
 			 "<tr bgcolor=#%s><td> &nbsp; key out of order</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 			 "<tr bgcolor=#%s><td> &nbsp; set errors</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 			 "<tr bgcolor=#%s><td> &nbsp; corrupt errors</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 			 "<tr bgcolor=#%s><td> &nbsp; xml errors</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 			 "<tr bgcolor=#%s><td> &nbsp; dup docid errors</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 			 "<tr bgcolor=#%s><td> &nbsp; negative keys</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 			 //"<tr bgcolor=#%s><td> &nbsp; overwritten recs</b></td>"
-			 //"<td>%"INT64"</td></tr>\n"
+			 //"<td>%" INT64 "</td></tr>\n"
 			 "<tr bgcolor=#%s><td> &nbsp; twin's "
 			 "respsponsibility</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 
 			 "<tr bgcolor=#%s><td> &nbsp; wrong shard</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 
 			 "<tr bgcolor=#%s><td> &nbsp; root urls</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 			 "<tr bgcolor=#%s><td> &nbsp; non-root urls</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 
 			 "<tr bgcolor=#%s><td> &nbsp; no title rec</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 
 			 //"<tr><td><b> &nbsp; Other errors</b></td>"
-			 //"<td>%"INT64"</td></tr>\n"
+			 //"<td>%" INT64 "</td></tr>\n"
 
 			 // time left in hours
-			 //"<tr><td><b>Time Left in Phase %"INT32"</b></td>"
+			 //"<tr><td><b>Time Left in Phase %" INT32 "</b></td>"
 			 //"<td>%.2f hrs</td></tr>\n"
 
 			 ,
@@ -2484,7 +2484,7 @@ bool Repair::printRepairStatus ( SafeBuf *sb , int32_t fromIp ) {
 	sb->safePrintf(
 			 // spider recs done
 			 "<tr bgcolor=#%s><td><b>spider recs scanned</b></td>"
-			 "<td>%"INT64" of %"INT64"</td></tr>\n"
+			 "<td>%" INT64 " of %" INT64 "</td></tr>\n"
 
 			 // percent complete
 			 "<tr bgcolor=#%s><td><b>spider recs scanned "
@@ -2494,19 +2494,19 @@ bool Repair::printRepairStatus ( SafeBuf *sb , int32_t fromIp ) {
 			 // spider recs set errors, parsing errors, etc.
 			 "<tr bgcolor=#%s><td><b>spider rec not "
 			 "assigned to us</b></td>"
-			 "<td>%"INT32"</td></tr>\n"
+			 "<td>%" INT32 "</td></tr>\n"
 
 			 // spider recs set errors, parsing errors, etc.
 			 "<tr bgcolor=#%s><td><b>spider rec errors</b></td>"
-			 "<td>%"INT64"</td></tr>\n"
+			 "<td>%" INT64 "</td></tr>\n"
 
 			 // spider recs set errors, parsing errors, etc.
 			 "<tr bgcolor=#%s><td><b>spider rec bad tld</b></td>"
-			 "<td>%"INT32"</td></tr>\n"
+			 "<td>%" INT32 "</td></tr>\n"
 
 			 // time left in hours
 			 //"<tr bgcolor=#%s><td><b>"
-			 //"Time Left in Phase %"INT32"</b></td>"
+			 //"Time Left in Phase %" INT32 "</b></td>"
 			 //"<td>%.2f hrs</td></tr>\n"
 
 			 ,
@@ -2538,7 +2538,7 @@ bool Repair::printRepairStatus ( SafeBuf *sb , int32_t fromIp ) {
 		if ( tr == 0 ) continue;
 		sb->safePrintf(
 			 "<tr bgcolor=#%s><td><b>%s2 recs</b></td>"
-			 "<td>%"INT64"</td></tr>\n" ,
+			 "<td>%" INT64 "</td></tr>\n" ,
 			 bg,
 			 rdb->m_dbname,
 			 rdb->getNumTotalRecs());

@@ -826,11 +826,11 @@ bool Sections::set ( Words     *w                       ,
 				if ( stackPtr->m_tid != ptid) ms =" UNMATCHED";
 				char *back ="";
 				if ( fullPopTid & BACKBIT ) back = "/";
-				logf(LOG_DEBUG,"section: pop tid=%"INT32" "
-				     "i=%"INT32" "
-				     "level=%"INT32" "
+				logf(LOG_DEBUG,"section: pop tid=%" INT32 " "
+				     "i=%" INT32 " "
+				     "level=%" INT32 " "
 				     "%s%s "
-				     //"h=0x%"XINT32""
+				     //"h=0x%" XINT32 ""
 				     "%s",(int32_t)tid,
 				     i,
 				     (int32_t)(stackPtr - stack),
@@ -1044,12 +1044,12 @@ bool Sections::set ( Words     *w                       ,
 		if ( ! g_conf.m_logDebugSections ) continue;
 		//int32_t back = 0;
 		//if ( fullTid & BACKBIT ) back = 1;
-		logf(LOG_DEBUG,"section: push tid=%"INT32" "
-		     "i=%"INT32" "
-		     "level=%"INT32" "
+		logf(LOG_DEBUG,"section: push tid=%" INT32 " "
+		     "i=%" INT32 " "
+		     "level=%" INT32 " "
 		     "%s "
-		     //"back=%"INT32""
-		     //" h=0x%"XINT32"",
+		     //"back=%" INT32 ""
+		     //" h=0x%" XINT32 "",
 		     ,
 		     (int32_t)tid,
 		     i,
@@ -8784,7 +8784,7 @@ float computeSimilarity2 ( int32_t   *vec0 ,
 		int32_t count = dedupLabels.getScoreFromSlot(i);
 		// get label and count
 		char *str = *pptr;//(char *)labelTable->getValue(&h);
-		if ( count != 1 ) pbuf->safePrintf ( "%s(%"INT32") ",str,count);
+		if ( count != 1 ) pbuf->safePrintf ( "%s(%" INT32 ") ",str,count);
 		else              pbuf->safePrintf ( "%s ",str);
 	}
 
@@ -9273,20 +9273,20 @@ int32_t Sections::getDelimScore ( Section *bro ,
 	// skip this for now
 	//return total;
 
-	logf(LOG_DEBUG,"sec: 1stbro=%"UINT32" "
-	     "nondelims=%"INT32" "
-	     "total=%"INT32" "
-	     "bonus1=%"INT32" "
-	     "bonus2=%"INT32" "
-	     "bonus3=%"INT32" "
+	logf(LOG_DEBUG,"sec: 1stbro=%" UINT32 " "
+	     "nondelims=%" INT32 " "
+	     "total=%" INT32 " "
+	     "bonus1=%" INT32 " "
+	     "bonus2=%" INT32 " "
+	     "bonus3=%" INT32 " "
 	     "avgSim=%.02f "
 	     "minSim=%.02f "
-	     "totalcomps=%"INT32" "
-	     "inserts=%"INT32" "
-	     "skips=%"INT32" "
-	     "containera=%"INT32" "
-	     //"goodcount=%"INT32" badcount=%"INT32" "
-	     "dhA=%"INT32" method=%s",
+	     "totalcomps=%" INT32 " "
+	     "inserts=%" INT32 " "
+	     "skips=%" INT32 " "
+	     "containera=%" INT32 " "
+	     //"goodcount=%" INT32 " badcount=%" INT32 " "
+	     "dhA=%" INT32 " method=%s",
 	     start->m_a,
 	     nonDelims,
 	     total,
@@ -9305,7 +9305,7 @@ int32_t Sections::getDelimScore ( Section *bro ,
 	// show the difference in the two adjacent brother sections that
 	// resulted in the min similarity
 	// NOTE: using the log() it was truncating us!! so use stderr
-	fprintf(stderr,"sec: mina1=%"INT32" mina2=%"INT32" "
+	fprintf(stderr,"sec: mina1=%" INT32 " mina2=%" INT32 " "
 	     "missingbits=%s\n", mina1,mina2, minBuf.getBufStart());
 
 	// return score
@@ -9459,7 +9459,7 @@ bool addLabel ( HashTableX *labelTable ,
 		char *v = (char *)labelTable->getValueFromSlot(i);
 		if ( strcmp(v,label) ) continue;
 		int32_t k1 = *(int32_t *)labelTable->getKeyFromSlot(i);
-		log("sec: key=%"INT32" oldk=%"INT32"",key,k1);
+		log("sec: key=%" INT32 " oldk=%" INT32 "",key,k1);
 		char *xx=NULL;*xx=0;
 	}
 
@@ -10947,7 +10947,7 @@ bool Sections::addSentenceSections ( ) {
 			if ( is->m_flags & SEC_SPLIT_SENT )
 				tt.safePrintf(" [split]");
 			tt.pushChar(0);
-			fprintf(stderr,"a=%"INT32" %s\n",start,tt.m_buf);
+			fprintf(stderr,"a=%" INT32 " %s\n",start,tt.m_buf);
 			*/
 			// . set this
 			// . sentence is from [senta,sentb)
@@ -11137,7 +11137,7 @@ bool Sections::addSentenceSections ( ) {
 Section *Sections::insertSubSection ( Section *parentArg , int32_t a , int32_t b ,
 				      int32_t newBaseHash ) {
 	// debug
-	//log("sect: inserting subsection [%"INT32",%"INT32")",a,b);
+	//log("sect: inserting subsection [%" INT32 ",%" INT32 ")",a,b);
 
 	// try to realloc i guess. should keep ptrs in tact.
 	if ( m_numSections >= m_maxNumSections )
@@ -12256,7 +12256,7 @@ bool SectionVotingTable::addVote3 ( int32_t        turkTagHash ,
 	if ( sectionType < 0 ) { char *xx=NULL;*xx=0; }
 
 	// print out for debug
-	//log("section: adding vote #%"INT32") th=%"UINT32"-%"INT32"",
+	//log("section: adding vote #%" INT32 ") th=%" UINT32 "-%" INT32 "",
 	//    m_numVotes++,tagHash,sectionType);
 	
 	// get existing vote statistics for this vk from hash table
@@ -12466,7 +12466,7 @@ bool SectionVotingTable::hash ( int64_t docId ,
 	// . do not index more recs to sectiondb if we have enough!
 	// . this is now in XmlDoc.cpp
 	//if ( m_totalSiteVoters >= MAX_SITE_VOTERS ) {
-	//     //log("sect: got %"INT32" site voters. skipping.",m_totalSiteVoters);
+	//     //log("sect: got %" INT32 " site voters. skipping.",m_totalSiteVoters);
 	//	return true;
 	//}
 
@@ -12546,8 +12546,8 @@ bool SectionVotingTable::hash ( int64_t docId ,
 		// this returns false and sets g_errno on error
 		if ( ! dt->addKey ( &k , sv ) ) return false;
 		// log this for now! last hash is the date format hash!
-		//logf(LOG_DEBUG,"section: added tagHash=0x%"XINT32" "
-		//     "sectionType=%"INT32" score=%.02f numSampled=%.02f",
+		//logf(LOG_DEBUG,"section: added tagHash=0x%" XINT32 " "
+		//     "sectionType=%" INT32 " score=%.02f numSampled=%.02f",
 		//     tagHash,sectionType,sv->m_score,sv->m_numSampled);
 	}
 
@@ -12613,7 +12613,7 @@ char *Sections::respiderLineWaiters ( char *metaList    ,
 		sreq->m_urlIsDocId   = 1;
 		sreq->m_fakeFirstIp  = 1;
 		// copy url
-		sprintf(sreq->m_url,"%"UINT64"",docId);
+		sprintf(sreq->m_url,"%" UINT64 "",docId);
 		// fake
 		int32_t firstIp = hash32n(sreq->m_url);
 		if ( firstIp == -1 || firstIp == 0 ) firstIp = 1;
@@ -12625,7 +12625,7 @@ char *Sections::respiderLineWaiters ( char *metaList    ,
 		// sanity check
 		if ( p > pend ) { char *xx=NULL;*xx=0; }
 		// debug
-		logf(LOG_DEBUG,"section: respider line waiter d=%"INT64"",docId);
+		logf(LOG_DEBUG,"section: respider line waiter d=%" INT64 "",docId);
 	}
 	return p;
 }		
@@ -12700,7 +12700,7 @@ bool Sections::print ( SafeBuf *sbuf ,
 		}
 		// punch out some </divs>
 		for ( ; ns>0 && dstack[ns-1]->m_b == i ; ns-- ) {
-			//sbuf->safePrintf("</div id=0x%"XINT32">\n",
+			//sbuf->safePrintf("</div id=0x%" XINT32 ">\n",
 			//(int32_t)dstack[ns-1]);
 			sbuf->safePrintf("</div>\n");
 		}
@@ -12760,20 +12760,20 @@ bool Sections::print ( SafeBuf *sbuf ,
 					rcolor = 0x00ffffff;
 				}
 				// start the new div
-				//sbuf->safePrintf("<div id=0x%"XINT32" "//e%"INT32" "
+				//sbuf->safePrintf("<div id=0x%" XINT32 " "//e%" INT32 " "
 				sbuf->safePrintf("<div "
 						 "style=\""
-						 "background-color:#%06"XINT32";"
+						 "background-color:#%06" XINT32 ";"
 						 "margin-left:20px;"
-						 "border:#%06"XINT32" 1px solid;"
-						 "color:#%06"XINT32"\">",
+						 "border:#%06" XINT32 " 1px solid;"
+						 "color:#%06" XINT32 "\">",
 						 //(int32_t)sk,
 						 bcolor,
 						 rcolor,
 						 fcolor);
 				// print event id range
 				if ( sk->m_minEventId >= 1 )
-					sbuf->safePrintf("%"INT32"-%"INT32" ",
+					sbuf->safePrintf("%" INT32 "-%" INT32 " ",
 							 sk->m_minEventId,
 							 sk->m_maxEventId);
 				// push that
@@ -12807,33 +12807,33 @@ bool Sections::print ( SafeBuf *sbuf ,
 				sbuf->safePrintf("<i>");
 
 				if ( sk ) 
-				 sbuf->safePrintf("A=%"INT32" ",sk->m_a);
+				 sbuf->safePrintf("A=%" INT32 " ",sk->m_a);
 
 				//sbuf->
-				//safePrintf("fwp=%"INT32" ",sk->m_firstWordPos);
+				//safePrintf("fwp=%" INT32 " ",sk->m_firstWordPos);
 
 				// print tag hash now
 				if ( sk )
-				 sbuf->safePrintf("hash=0x%"XINT32" ",
+				 sbuf->safePrintf("hash=0x%" XINT32 " ",
 						  (int32_t)sk->m_tagHash);
 
 				if ( sk->m_contentHash)
-					sbuf->safePrintf("ch=0x%"XINT32" ",
+					sbuf->safePrintf("ch=0x%" XINT32 " ",
 						 (int32_t)sk->m_contentHash);
 				//else if ( sk->m_contentHash2 )
-				//	sbuf->safePrintf("ch2=0x%"XINT32" ",
+				//	sbuf->safePrintf("ch2=0x%" XINT32 " ",
 				//		 (int32_t)sk->m_contentHash2);
 				else if ( sk->m_sentenceContentHash )
-					sbuf->safePrintf("sch=0x%"XINT32" ",
+					sbuf->safePrintf("sch=0x%" XINT32 " ",
 					     (int32_t)sk->m_sentenceContentHash);
 
 
 				// show dup votes if any
 				if ( sk->m_votesForDup )
-					sbuf->safePrintf("dupvotes=%"INT32" ",
+					sbuf->safePrintf("dupvotes=%" INT32 " ",
 							 sk->m_votesForDup);
 				if ( sk->m_votesForNotDup )
-					sbuf->safePrintf("notdupvotes=%"INT32" ",
+					sbuf->safePrintf("notdupvotes=%" INT32 " ",
 							 sk->m_votesForNotDup);
 
 				printFlags ( sbuf , sk , false );
@@ -12880,31 +12880,31 @@ bool Sections::print ( SafeBuf *sbuf ,
 					sbuf->safePrintf("hasprice ");
 					
 				//if ( sk )
-				//sbuf->safePrintf("dh=0x%"XINT32" ",
+				//sbuf->safePrintf("dh=0x%" XINT32 " ",
 				//getDelimHash(METHOD_INNER_TAGID,sk));
 
 
 				if ( sh )
-					sbuf->safePrintf("placehash=0x%"XINT64"",
+					sbuf->safePrintf("placehash=0x%" XINT64 "",
 							 sh);
 				if ( sh && acount >= 2 )
-					sbuf->safePrintf(" (%"INT32" total)",
+					sbuf->safePrintf(" (%" INT32 " total)",
 							 acount);
 
 				if ( isHardSection(sk) )
 					sbuf->safePrintf("hardsec ");
 					
 				//if ( ph ) 
-				//     sbuf->safePrintf("phonehash=%"XINT64" ",*ph);
+				//     sbuf->safePrintf("phonehash=%" XINT64 " ",*ph);
 				//if ( eh ) 
-				//     sbuf->safePrintf("emailhash=%"XINT64" ",*eh);
+				//     sbuf->safePrintf("emailhash=%" XINT64 " ",*eh);
 				// consider actually print the address out
 				// if you want to, but don't show the pointer
 				// because it causes problems in the diff
 				// that the qa loop does.
 				// addr #
 				//if ( ai ) 
-				//sbuf->safePrintf("addrindex=%"INT32" ",*ai);
+				//sbuf->safePrintf("addrindex=%" INT32 " ",*ai);
 				//if ( ai ) 
 				//sbuf->safePrintf("hasaddress ");
 				// tod #
@@ -12947,7 +12947,7 @@ bool Sections::print ( SafeBuf *sbuf ,
 		sbuf->safePrintf("</div>\n");
 	// sanity check
 	if ( unbal ) 
-		sbuf->safePrintf("<br><b>%"INT32" UNBALANCED SECTIONS</b><br><br>",
+		sbuf->safePrintf("<br><b>%" INT32 " UNBALANCED SECTIONS</b><br><br>",
 				 ns);
 
 
@@ -12997,7 +12997,7 @@ bool Sections::print ( SafeBuf *sbuf ,
 		char ttt[100];
 		if ( sn->m_contentHash ) {
 			int32_t modified = sn->m_tagHash ^ sn->m_contentHash;
-			sprintf(ttt,"0x%"XINT32"",modified);
+			sprintf(ttt,"0x%" XINT32 "",modified);
 			xs = ttt;
 		}
 		// int16_tcut
@@ -13007,17 +13007,17 @@ bool Sections::print ( SafeBuf *sbuf ,
 		if ( parent ) pswn = parent->m_a;
 		if ( parent ) pewn = parent->m_b;
 		// print it
-		sbuf->safePrintf("<!--ignore--><tr><td>%"INT32"</td>\n"
-				 "<td>0x%"XINT32"</td>"
-				 "<td>0x%"XINT32"</td>"
-				 "<td>%"INT32"</td>"
-				 "<td>%"INT32"</td>"
-				 "<td>0x%"XINT32"</td>"
+		sbuf->safePrintf("<!--ignore--><tr><td>%" INT32 "</td>\n"
+				 "<td>0x%" XINT32 "</td>"
+				 "<td>0x%" XINT32 "</td>"
+				 "<td>%" INT32 "</td>"
+				 "<td>%" INT32 "</td>"
+				 "<td>0x%" XINT32 "</td>"
 				 "<td>%s</td>"
-				 "<td>%"INT32"</td>"
-				 "<td>%"INT32"</td>"
-				 "<td><nobr>%"INT32" to %"INT32"</nobr></td>"
-				 "<td>%"INT32"</td>"
+				 "<td>%" INT32 "</td>"
+				 "<td>%" INT32 "</td>"
+				 "<td><nobr>%" INT32 " to %" INT32 "</nobr></td>"
+				 "<td>%" INT32 "</td>"
 				 "<td><nobr>" ,
 				 scount++,//i,
 				 (int32_t)sn->m_baseHash,
@@ -13041,7 +13041,7 @@ bool Sections::print ( SafeBuf *sbuf ,
 		sbuf->safePrintf("</nobr></td>");
 
 		if ( sn->m_minEventId >= 1 )
-			sbuf->safePrintf("<td><nobr>%"INT32"-%"INT32"</nobr></td>",
+			sbuf->safePrintf("<td><nobr>%" INT32 "-%" INT32 "</nobr></td>",
 					 sn->m_minEventId,sn->m_maxEventId);
 		else
 			sbuf->safePrintf("<td>&nbsp;</td>");
@@ -13131,7 +13131,7 @@ bool Sections::print ( SafeBuf *sbuf ,
 		if ( sv->m_numSampled > 0 ) avg = sv->m_score/sv->m_numSampled;
 		sbuf->safePrintf("<tr>"
 				 "<td>--</td>"
-				 "<td>0x%"XINT32"</td>"
+				 "<td>0x%" XINT32 "</td>"
 				 "<td>%s</td>"
 				 "<td>%.02f</td>"
 				 "<td>%.02f</td>"
@@ -13184,7 +13184,7 @@ bool Sections::print ( SafeBuf *sbuf ,
 		if ( sv->m_numSampled > 0 ) avg = sv->m_score/sv->m_numSampled;
 		sbuf->safePrintf("<tr>"
 				 "<td>--</td>"
-				 "<td>0x%"XINT32"</td>"
+				 "<td>0x%" XINT32 "</td>"
 				 "<td>%s</td>"
 				 "<td>%.02f</td>"
 				 "<td>%.02f</td>"
@@ -13287,7 +13287,7 @@ void Sections::printFlags ( SafeBuf *sbuf , Section *sn , bool justEvents ) {
 	if ( f & SEC_HASHXPATH )
 		sbuf->safePrintf("hashxpath ");
 
-	sbuf->safePrintf("indsenthash64=%"UINT64" ",sn->m_indirectSentHash64);
+	sbuf->safePrintf("indsenthash64=%" UINT64 " ",sn->m_indirectSentHash64);
 
 
 	if ( f & SEC_TOD_EVENT )
@@ -13301,7 +13301,7 @@ void Sections::printFlags ( SafeBuf *sbuf , Section *sn , bool justEvents ) {
 	//if ( f & SEC_TOD_EVENT_3 )
 	//	sbuf->safePrintf("containsmulttodevents ");
 	//if ( sn->m_numTods >= 1 )
-	//	sbuf->safePrintf("numtods=%"INT32" ",sn->m_numTods );
+	//	sbuf->safePrintf("numtods=%" INT32 " ",sn->m_numTods );
 
 
 	if ( f & SEC_HAS_REGISTRATION )
@@ -13436,13 +13436,13 @@ void Sections::printFlags ( SafeBuf *sbuf , Section *sn , bool justEvents ) {
 
 
 	if ( sn->m_colNum ) 
-		sbuf->safePrintf("colnum=%"INT32" ",sn->m_colNum );
+		sbuf->safePrintf("colnum=%" INT32 " ",sn->m_colNum );
 	if ( sn->m_rowNum ) 
-		sbuf->safePrintf("rownum=%"INT32" ",sn->m_rowNum );
+		sbuf->safePrintf("rownum=%" INT32 " ",sn->m_rowNum );
 	if ( sn->m_headColSection )
-		sbuf->safePrintf("headcola=%"INT32" ",sn->m_headColSection->m_a);
+		sbuf->safePrintf("headcola=%" INT32 " ",sn->m_headColSection->m_a);
 	if ( sn->m_headRowSection )
-		sbuf->safePrintf("headrowa=%"INT32" ",sn->m_headRowSection->m_a);
+		sbuf->safePrintf("headrowa=%" INT32 " ",sn->m_headRowSection->m_a);
 
 	if ( f & SEC_IN_TABLE )
 		sbuf->safePrintf("intable ");
@@ -15359,7 +15359,7 @@ bool Sections::print2 ( SafeBuf *sbuf ,
 		char ttt[100];
 		if ( sn->m_contentHash64 ) {
 			int32_t modified = sn->m_tagHash ^ sn->m_contentHash64;
-			sprintf(ttt,"0x%"XINT32"",modified);
+			sprintf(ttt,"0x%" XINT32 "",modified);
 			xs = ttt;
 		}
 		// int16_tcut
@@ -15369,18 +15369,18 @@ bool Sections::print2 ( SafeBuf *sbuf ,
 		if ( parent ) pswn = parent->m_a;
 		if ( parent ) pewn = parent->m_b;
 		// print it
-		sbuf->safePrintf("<!--ignore--><tr><td>%"INT32"</td>\n"
-				 "<td>%"INT32"</td>"
-				 "<td>%"INT32"</td>"
-				 "<td>0x%"XINT32"</td>"
-				 "<td>0x%"XINT32"</td>"
-				 "<td>0x%"XINT32"</td>"
-				 "<td>0x%"XINT32"</td>"
+		sbuf->safePrintf("<!--ignore--><tr><td>%" INT32 "</td>\n"
+				 "<td>%" INT32 "</td>"
+				 "<td>%" INT32 "</td>"
+				 "<td>0x%" XINT32 "</td>"
+				 "<td>0x%" XINT32 "</td>"
+				 "<td>0x%" XINT32 "</td>"
+				 "<td>0x%" XINT32 "</td>"
 				 "<td>%s</td>"
-				 "<td>%"INT32"</td>"
-				 "<td>%"INT32"</td>"
-				 "<td><nobr>%"INT32" to %"INT32"</nobr></td>"
-				 "<td>%"INT32"</td>"
+				 "<td>%" INT32 "</td>"
+				 "<td>%" INT32 "</td>"
+				 "<td><nobr>%" INT32 " to %" INT32 "</nobr></td>"
+				 "<td>%" INT32 "</td>"
 				 "<td><nobr>" ,
 				 scount++,//i,
 				 sn->m_a,
@@ -15498,7 +15498,7 @@ bool SectionVotingTable::print ( SafeBuf *sbuf , char *title ) {
 		if ( sv->m_numSampled > 0 ) avg = sv->m_score/sv->m_numSampled;
 		sbuf->safePrintf("<tr>"
 				 "<td>--</td>"
-				 "<td>0x%"XINT32"</td>"
+				 "<td>0x%" XINT32 "</td>"
 				 "<td>%s</td>"
 				 "<td>%.02f</td>"
 				 "<td>%.02f</td>"
@@ -15574,7 +15574,7 @@ bool SectionVotingTable::print ( SafeBuf *sbuf , char *title ) {
 */
 
 bool Sections::printSectionDiv ( Section *sk , char format ) { // bool forProCog ) {
-	//log("sk=%"INT32"",sk->m_a);
+	//log("sk=%" INT32 "",sk->m_a);
 	// enter a new div section now
 	m_sbuf->safePrintf("<br>");
 	// only make font color different
@@ -15597,10 +15597,10 @@ bool Sections::printSectionDiv ( Section *sk , char format ) { // bool forProCog
 	// start the new div
 	m_sbuf->safePrintf("<div "
 			 "style=\""
-			 "background-color:#%06"XINT32";"
+			 "background-color:#%06" XINT32 ";"
 			 "margin-left:20px;"
-			 "border:#%06"XINT32" 1px solid;"
-			 "color:#%06"XINT32"\">",
+			 "border:#%06" XINT32 " 1px solid;"
+			 "color:#%06" XINT32 "\">",
 			 //(int32_t)sk,
 			 bcolor,
 			 rcolor,
@@ -15616,7 +15616,7 @@ bool Sections::printSectionDiv ( Section *sk , char format ) { // bool forProCog
 		m_sbuf->htmlEncode(m_wptrs[sk->m_a],m_wlens[sk->m_a],false );
 
 	//if ( forProCog )
-	//	m_sbuf->safePrintf("A=%"INT32" ",sk->m_a);
+	//	m_sbuf->safePrintf("A=%" INT32 " ",sk->m_a);
 
 
 	/*
@@ -15630,8 +15630,8 @@ bool Sections::printSectionDiv ( Section *sk , char format ) { // bool forProCog
 				   "dr=0&"
 				   // turn ON site clustering
 				   "sc=1&"
-				   "q=gbsectionhash:%"UINT64"\">"
-				   "sitedups=%"INT32""
+				   "q=gbsectionhash:%" UINT64 "\">"
+				   "sitedups=%" INT32 ""
 				   "</a>"
 				   "</font>"
 				   "</i> "
@@ -15657,31 +15657,31 @@ bool Sections::printSectionDiv ( Section *sk , char format ) { // bool forProCog
 
 	//if ( sk->m_sentenceContentHash64 && 
 	//     sk->m_sentenceContentHash64 ) // != sk->m_contentHash64 )
-	//	m_sbuf->safePrintf("sch=%"UINT64" ",
+	//	m_sbuf->safePrintf("sch=%" UINT64 " ",
 	//			   sk->m_sentenceContentHash64);
 
 	// show dup votes if any
 	//if ( sk->m_votesForDup )
-	//	m_sbuf->safePrintf("dupvotes=%"INT32" ",sk->m_votesForDup);
+	//	m_sbuf->safePrintf("dupvotes=%" INT32 " ",sk->m_votesForDup);
 	//if ( sk->m_votesForNotDup )
-	//	m_sbuf->safePrintf("notdupvotes=%"INT32" ",
+	//	m_sbuf->safePrintf("notdupvotes=%" INT32 " ",
 	//			   sk->m_votesForNotDup);
 	
 	if ( format != FORMAT_PROCOG ) {
 		// print the flags
-		m_sbuf->safePrintf("A=%"INT32" ",sk->m_a);
+		m_sbuf->safePrintf("A=%" INT32 " ",sk->m_a);
 		
 		// print tag hash now
-		m_sbuf->safePrintf("taghash=%"UINT32" ",(int32_t)sk->m_tagHash);
+		m_sbuf->safePrintf("taghash=%" UINT32 " ",(int32_t)sk->m_tagHash);
 		
-		m_sbuf->safePrintf("turktaghash=%"UINT32" ",
+		m_sbuf->safePrintf("turktaghash=%" UINT32 " ",
 				   (int32_t)sk->m_turkTagHash32);
 		
 		if ( sk->m_contentHash64 )
-			m_sbuf->safePrintf("ch64=%"UINT64" ",sk->m_contentHash64);
+			m_sbuf->safePrintf("ch64=%" UINT64 " ",sk->m_contentHash64);
 		if ( sk->m_sentenceContentHash64 && 
 		     sk->m_sentenceContentHash64 != sk->m_contentHash64 )
-			m_sbuf->safePrintf("sch=%"UINT64" ",
+			m_sbuf->safePrintf("sch=%" UINT64 " ",
 					   sk->m_sentenceContentHash64);
 
 
@@ -15699,9 +15699,9 @@ bool Sections::printSectionDiv ( Section *sk , char format ) { // bool forProCog
 			m_sbuf->safePrintf("<a style=decoration:none; "
 					   "href=/search?c=%s&"
 					   "q=gbfacetstr%%3A"
-					   "gbxpathsitehash%"UINT64">"
+					   "gbxpathsitehash%" UINT64 ">"
 					   //"<u>"
-					   "xpathsitehash=%"UINT64""
+					   "xpathsitehash=%" UINT64 ""
 					   //"</u>"
 					   "</a> "
 					   //"</font> "
@@ -15716,12 +15716,12 @@ bool Sections::printSectionDiv ( Section *sk , char format ) { // bool forProCog
 		if ( sk->m_flags & SEC_HASHXPATH ) {//ss->m_totalMatches > 0) {
 			uint32_t val ;
 			val = (uint32_t) sk->m_indirectSentHash64 ;
-			m_sbuf->safePrintf("xpathsitehashval=%"UINT32" ", val );
+			m_sbuf->safePrintf("xpathsitehashval=%" UINT32 " ", val );
 		}
 
 		// some voting stats
 		if ( sk->m_flags & SEC_HASHXPATH ) {//ss->m_totalMatches > 0) {
-			m_sbuf->safePrintf("_s=M%"INT32"D%"INT32"n%"INT32"u%"INT32"h%"UINT32" "
+			m_sbuf->safePrintf("_s=M%" INT32 "D%" INT32 "n%" INT32 "u%" INT32 "h%" UINT32 " "
 					   ,(int32_t)ss->m_totalMatches
 					   ,(int32_t)ss->m_totalDocIds
 					   ,(int32_t)ss->m_totalEntries
@@ -15737,27 +15737,27 @@ bool Sections::printSectionDiv ( Section *sk , char format ) { // bool forProCog
 		// 	uint32_t mod = (uint32_t)sk->m_turkTagHash32;
 		// 	mod ^= (uint32_t)m_siteHash64;
 		// 	m_sbuf->safePrintf(//"<font color=red>"
-		// 			   "gbsectionhash32=%"UINT32" "
+		// 			   "gbsectionhash32=%" UINT32 " "
 		// 			   //"</font> "
 		// 			   ,mod);
 		// }
 		// if ( sk->m_contentHash64 )
 		// 	m_sbuf->safePrintf(//"<font color=red>"
-		// 			   "ch32=%"UINT32""
+		// 			   "ch32=%" UINT32 ""
 		// 			   //"</font> "
 		// 			   ,
 		// 			   (uint32_t)sk->m_contentHash64);
 					   
 		
 		if ( sk->m_lastLinkContentHash32 )
-			m_sbuf->safePrintf("llch=%"UINT32" ",
+			m_sbuf->safePrintf("llch=%" UINT32 " ",
 					   (int32_t)sk->m_lastLinkContentHash32);
 		
 		if ( sk->m_leftCell )
-			m_sbuf->safePrintf("leftcellA=%"INT32" ",
+			m_sbuf->safePrintf("leftcellA=%" INT32 " ",
 					   (int32_t)sk->m_leftCell->m_a);
 		if ( sk->m_aboveCell )
-			m_sbuf->safePrintf("abovecellA=%"INT32" ",
+			m_sbuf->safePrintf("abovecellA=%" INT32 " ",
 					   (int32_t)sk->m_aboveCell->m_a);
 		
 		printFlags ( m_sbuf , sk , false );
@@ -15783,22 +15783,22 @@ bool Sections::printSectionDiv ( Section *sk , char format ) { // bool forProCog
 		}
 		// print those out
 		if ( sk->m_dateBits )
-			m_sbuf->safePrintf("datebits=0x%"XINT32" ",
+			m_sbuf->safePrintf("datebits=0x%" XINT32 " ",
 					   (int32_t)sk->m_dateBits);
 		if ( sk->m_phoneXor ) 
-			m_sbuf->safePrintf("phonexor=0x%"XINT32" ",sk->m_phoneXor);
+			m_sbuf->safePrintf("phonexor=0x%" XINT32 " ",sk->m_phoneXor);
 		if ( sk->m_emailXor ) 
-			m_sbuf->safePrintf("emailxor=0x%"XINT32" ",sk->m_emailXor);
+			m_sbuf->safePrintf("emailxor=0x%" XINT32 " ",sk->m_emailXor);
 		if ( sk->m_priceXor ) 
-			m_sbuf->safePrintf("pricexor=0x%"XINT32" ",sk->m_priceXor);
+			m_sbuf->safePrintf("pricexor=0x%" XINT32 " ",sk->m_priceXor);
 		if ( sk->m_todXor )
-			m_sbuf->safePrintf("todxor=0x%"XINT32" ",sk->m_todXor);
+			m_sbuf->safePrintf("todxor=0x%" XINT32 " ",sk->m_todXor);
 		if ( sk->m_dayXor )
-			m_sbuf->safePrintf("dayxor=0x%"XINT32" ",sk->m_dayXor);
+			m_sbuf->safePrintf("dayxor=0x%" XINT32 " ",sk->m_dayXor);
 		if ( sk->m_addrXor )
-			m_sbuf->safePrintf("addrxor=0x%"XINT32" ",sk->m_addrXor);
+			m_sbuf->safePrintf("addrxor=0x%" XINT32 " ",sk->m_addrXor);
 		if ( acount >= 2 )
-			m_sbuf->safePrintf(" (%"INT32" places)",acount);
+			m_sbuf->safePrintf(" (%" INT32 " places)",acount);
 	}
 
 	m_sbuf->safePrintf("</i>\n");
@@ -15871,21 +15871,21 @@ bool Sections::printSectionDiv ( Section *sk , char format ) { // bool forProCog
 					   "font-size:10px;"
 					   "border:black 1px solid;"
 					   "color:black;\">");
-			m_sbuf->safePrintf("%"INT32"",m_wposVec[i]);
+			m_sbuf->safePrintf("%" INT32 "",m_wposVec[i]);
 			if ( m_densityVec[i] != MAXDENSITYRANK )
-				m_sbuf->safePrintf("/<font color=purple><b>%"INT32""
+				m_sbuf->safePrintf("/<font color=purple><b>%" INT32 ""
 						   "</b></font>"
 						   ,
 						   (int32_t)m_densityVec[i]);
 			/*
 			if ( m_diversityVec[i] != MAXDIVERSITYRANK )
-				m_sbuf->safePrintf("/<font color=green><b>%"INT32""
+				m_sbuf->safePrintf("/<font color=green><b>%" INT32 ""
 						   "</b></font>"
 						   ,
 						   (int32_t)m_diversityVec[i]);
 			*/
 			if ( m_wordSpamVec[i] != MAXWORDSPAMRANK )
-				m_sbuf->safePrintf("/<font color=red><b>%"INT32""
+				m_sbuf->safePrintf("/<font color=red><b>%" INT32 ""
 						   "</b></font>"
 						   ,
 						   (int32_t)m_wordSpamVec[i]);
@@ -17447,8 +17447,8 @@ bool Sectiondb::verify ( char *coll ) {
 		if ( shardNum == getMyShardNum() ) got++;
 	}
 	if ( got != count ) {
-		log ("db: Out of first %"INT32" records in sectiondb, "
-		     "only %"INT32" belong to our group.",count,got);
+		log ("db: Out of first %" INT32 " records in sectiondb, "
+		     "only %" INT32 " belong to our group.",count,got);
 		// exit if NONE, we probably got the wrong data
 		if ( count > 10 && got == 0 ) 
 			log("db: Are you sure you have the right "
@@ -17460,7 +17460,7 @@ bool Sectiondb::verify ( char *coll ) {
 	}
 
 	log ( LOG_INFO, "db: Sectiondb passed verification successfully for "
-	      "%"INT32" recs.", count );
+	      "%" INT32 " recs.", count );
 	// DONE
 	g_threads.enableThreads();
 	return true;

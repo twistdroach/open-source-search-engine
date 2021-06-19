@@ -296,7 +296,7 @@ void Multicast::sendToGroup ( ) {
 		m_retired [ i ] = true;
 #ifdef _GLOBALSPEC_
 		// debug message for global spec
-		//logf(LOG_DEBUG,"net: mcast state=%08"XINT32"",(int32_t)this);
+		//logf(LOG_DEBUG,"net: mcast state=%08" XINT32 "",(int32_t)this);
 #endif
 		int32_t hid = h->m_hostId;
 		if ( m_hostdb != &g_hostdb ) hid = -1;
@@ -320,7 +320,7 @@ void Multicast::sendToGroup ( ) {
 				       m_niceness )) {  // cback niceness
 #ifdef _GLOBALSPEC_
 			// note the slot ptr for reference
-			//logf(LOG_DEBUG, "net: mcast slotPtr=%08"XINT32"",
+			//logf(LOG_DEBUG, "net: mcast slotPtr=%08" XINT32 "",
 			//     (int32_t)&m_slots[i]);
 #endif
 			continue;
@@ -333,7 +333,7 @@ void Multicast::sendToGroup ( ) {
 		m_retired[i] = false;
 		// log the error
 		log("net: Got error sending add data request (0x%hhx) "
-		    "to host #%"INT32": %s. "
+		    "to host #%" INT32 ": %s. "
 		    "Sleeping one second and retrying.", 
 		    m_msgType,h->m_hostId,mstrerror(g_errno) );
 		// . clear it, we'll try again
@@ -389,7 +389,7 @@ void Multicast::gotReply2 ( UdpSlot *slot ) {
 	for ( i = 0 ; i < m_numHosts ; i++ ) if ( m_slots[i] == slot ) break;
 	// if it matched no slot that's weird
 	if ( i == m_numHosts ) {
-		//log("not our slot: mcast=%"UINT32"",(int32_t)this);
+		//log("not our slot: mcast=%" UINT32 "",(int32_t)this);
 		log(LOG_LOGIC,"net: multicast: Not our slot."); return; }
 	// clear a timeout error on dead hosts
 	if ( g_conf.m_giveupOnDeadHosts &&
@@ -424,7 +424,7 @@ void Multicast::gotReply2 ( UdpSlot *slot ) {
 			//	if(!g_profiler.endTimer(address, 
 			//				__PRETTY_FUNCTION__))
 			//		log(LOG_WARN,"admin: Couldn't add the"
-			//		    "fn %"INT32"",  (int32_t)address);
+			//		    "fn %" INT32 "",  (int32_t)address);
 			//}
 		}
 		return;
@@ -450,14 +450,14 @@ void Multicast::gotReply2 ( UdpSlot *slot ) {
 	if ( logIt ) { // m_errnos[i] != ETRYAGAIN ) {
 		Host *h = m_hostdb->getHost ( slot->m_ip ,slot->m_port );
 		if ( h ) 
-			log("net: Got error sending request to hostId %"INT32" "
-			    "(msgType=0x%hhx transId=%"INT32" net=%s): "
+			log("net: Got error sending request to hostId %" INT32 " "
+			    "(msgType=0x%hhx transId=%" INT32 " net=%s): "
 			    "%s. Retrying.",
 			    h->m_hostId, slot->m_msgType, slot->m_transId, 
 			    m_hostdb->getNetName(),mstrerror(m_errnos[i]) );
 		else
-			log("net: Got error sending request to %s:%"INT32" "
-			    "(msgType=0x%hhx transId=%"INT32" net=%s): "
+			log("net: Got error sending request to %s:%" INT32 " "
+			    "(msgType=0x%hhx transId=%" INT32 " net=%s): "
 			    "%s. Retrying.",
 			    iptoa(slot->m_ip), (int32_t)slot->m_port, 
 			    slot->m_msgType, slot->m_transId, 
@@ -566,7 +566,7 @@ loop:
 	/*
 	else if ( m_doDiskLoadBalancing && firstHostId < 0 ) {
 		// debug msg
-		//log("getting best host (this=%"INT32")",(int32_t)&m_msg34);
+		//log("getting best host (this=%" INT32 ")",(int32_t)&m_msg34);
 		// . if multiple hosts have it in memory,prefers the local host
 		// . return true if this blocks
 		if ( ! m_msg34.getBestHost ( m_hosts    ,
@@ -599,7 +599,7 @@ loop:
 	if ( m_retired[i] ) i = -1;
 	// debug msg
 	//if ( m_msgType == 0x39 || m_msgType == 0x00 )
-	//	log("Multicast:: routing msgType=0x%hhx to hostId %"INT32"",
+	//	log("Multicast:: routing msgType=0x%hhx to hostId %" INT32 "",
 	//	     m_msgType,m_hosts[i].m_hostId);
 	// . if no more hosts return FALSE
 	// . we need to return false to the caller of us below
@@ -684,7 +684,7 @@ int32_t Multicast::pickBestHost2 ( uint32_t key , int32_t firstHostId ,
 	// return if we got someone in our group
 	if ( i < m_numHosts ) {
 		if ( g_conf.m_logDebugNet )
-			log(LOG_DEBUG,"net: Splitting request to hostid %"INT32"",
+			log(LOG_DEBUG,"net: Splitting request to hostid %" INT32 "",
 			    m_hosts[i].m_hostId);
 		return i;
 	}
@@ -728,7 +728,7 @@ int32_t Multicast::pickBestHost ( uint32_t key , int32_t firstHostId ,
 			if ( m_hostPtrs[i]->m_hostId == firstHostId ) break;
 		// if not found bitch
 		if ( i >= m_numHosts ) {
-			log(LOG_LOGIC,"net: multicast: HostId %"INT32" not "
+			log(LOG_LOGIC,"net: multicast: HostId %" INT32 " not "
 			    "in group.", firstHostId );
 			char *xx = NULL; *xx = 0;
 		}
@@ -871,13 +871,13 @@ bool Multicast::sendToHost ( int32_t i ) {
 	if ( i >= m_numHosts ) { char *xx=NULL;*xx=0; }
 	// sanity check , bitch if retired
 	if ( m_retired [ i ] ) {
-		log(LOG_LOGIC,"net: multicast: Host #%"INT32" is retired. "
+		log(LOG_LOGIC,"net: multicast: Host #%" INT32 " is retired. "
 		    "Bad engineer.",i);
 		//char *xx = NULL; *xx = 0;
 		return true;
 	}
 	// debug msg
-	//log("sending to host #%"INT32" (this=%"INT32")",i,(int32_t)&m_msg34);
+	//log("sending to host #%" INT32 " (this=%" INT32 ")",i,(int32_t)&m_msg34);
 	// . add this host to our retired list so we don't try again
 	// . only used by pickBestHost() and sendToHost()
 	m_retired [ i ] = true;
@@ -905,10 +905,10 @@ bool Multicast::sendToHost ( int32_t i ) {
 		// msg23 request tried to send a msg22 request which timed out
 		// on it so it sent us back this error.
 		if ( g_errno != EUDPTIMEDOUT ) 
-		log(LOG_INFO,"net: multicast: had negative timeout, %"INT32". "
-		    "startTime=%"INT32" totalTimeout=%"INT32" "
-		    "now=%"INT32". msgType=0x%hhx "
-		    "niceness=%"INT32" clock updated?",
+		log(LOG_INFO,"net: multicast: had negative timeout, %" INT32 ". "
+		    "startTime=%" INT32 " totalTimeout=%" INT32 " "
+		    "now=%" INT32 ". msgType=0x%hhx "
+		    "niceness=%" INT32 " clock updated?",
 		    timeRemaining,m_startTime,m_totalTimeout,
 		    (int32_t)now,m_msgType,
 		    (int32_t)m_niceness);
@@ -935,7 +935,7 @@ bool Multicast::sendToHost ( int32_t i ) {
 
 #ifdef _GLOBALSPEC_
 	// debug message for global spec
-	//logf(LOG_DEBUG,"net: mcast2 state=%08"XINT32"",(int32_t)this);
+	//logf(LOG_DEBUG,"net: mcast2 state=%08" XINT32 "",(int32_t)this);
 #endif
 	// sanity check
 	//if ( g_hostdb.isDead(h) ) {
@@ -979,7 +979,7 @@ bool Multicast::sendToHost ( int32_t i ) {
 				  m_niceness        , // cback niceness
 				  maxResends        )) {
 		log("net: Had error sending msgtype 0x%hhx to host "
-		    "#%"INT32": %s. Not retrying.", 
+		    "#%" INT32 ": %s. Not retrying.", 
 		    m_msgType,h->m_hostId,mstrerror(g_errno));
 		// i've seen ENOUDPSLOTS available msg here along with oom
 		// condition...
@@ -990,7 +990,7 @@ bool Multicast::sendToHost ( int32_t i ) {
 	m_inProgress[i] = 1;
 #ifdef _GLOBALSPEC_
 	// note the slot ptr for reference
-	//logf(LOG_DEBUG,"net: mcast2 slotPtr=%08"XINT32"",(int32_t)&m_slots[i]);
+	//logf(LOG_DEBUG,"net: mcast2 slotPtr=%08" XINT32 "",(int32_t)&m_slots[i]);
 #endif
 	// set our last launch date
 	m_lastLaunch = nowms ; // gettimeofdayInMilliseconds();
@@ -1011,7 +1011,7 @@ bool Multicast::sendToHost ( int32_t i ) {
 	// count it as launched
 	m_numLaunched++;
 	// timing debug
-	//log("Multicast sent to hostId %"INT32", this=%"INT32", transId=%"INT32"", 
+	//log("Multicast sent to hostId %" INT32 ", this=%" INT32 ", transId=%" INT32 "", 
 	//    h->m_hostId, (int32_t)this , m_slots[i]->m_transId );
 	// . let's sleep so we have a chance to launch to another host in
 	//   the same group in case this guy takes too long
@@ -1023,7 +1023,7 @@ bool Multicast::sendToHost ( int32_t i ) {
 	m_registeredSleep = true;
 #ifdef _GLOBALSPEC_
 	// debug msg
-	//logf(LOG_DEBUG,"net: mcast registered1 this=%08"XINT32"",(int32_t)this);
+	//logf(LOG_DEBUG,"net: mcast registered1 this=%08" XINT32 "",(int32_t)this);
 #endif
 	// successful launch
 	return true;
@@ -1057,7 +1057,7 @@ void sleepWrapper1 ( int bogusfd , void    *state ) {
 	char exact;
 	//int32_t hid = -1;
 	Host *hd;
-	//log("elapsed = %"INT32" type=0x%hhx",elapsed,THIS->m_msgType);
+	//log("elapsed = %" INT32 " type=0x%hhx",elapsed,THIS->m_msgType);
 
 	// . don't relaunch any niceness 1 stuff for a while
 	// . it often gets suspended due to query traffic
@@ -1217,7 +1217,7 @@ redirectTimedout:
 		char *ee = "";
 		if ( THIS->m_errnos[i] ) ee = mstrerror(THIS->m_errnos[i]);
 		log("net: Multicast::sleepWrapper1: tried host "
-		    "%s:%"INT32" %s" ,iptoa(THIS->m_slots[i]->m_ip),
+		    "%s:%" INT32 " %s" ,iptoa(THIS->m_slots[i]->m_ip),
 		    (int32_t)THIS->m_slots[i]->m_port , ee );
 	}		
 	}
@@ -1229,7 +1229,7 @@ redirectTimedout:
 	// if we were trying to contact a host in the secondary cluster, 
 	// mark the host as dead. this is our passive monitoring system.
 	if ( THIS->m_hostdb == &g_hostdb2 ) {
-		log("net: Marking hostid %"INT32" in secondary cluster as dead.",
+		log("net: Marking hostid %" INT32 " in secondary cluster as dead.",
 		    (int32_t)THIS->m_lastLaunchHost->m_hostId);
 		THIS->m_lastLaunchHost->m_ping = g_conf.m_deadHostTimeout;
 	}
@@ -1252,8 +1252,8 @@ redirectTimedout:
 		if ( hd ) hid = hd->m_hostId;
 		log(logtype,
 		    "net: Multicast::sleepWrapper1: rerouted msgType=0x%hhx "
-		    "from host #%"INT32" "
-		    "to new host after waiting %"INT32" ms", 
+		    "from host #%" INT32 " "
+		    "to new host after waiting %" INT32 " ms", 
 		    THIS->m_msgType, hid,elapsed);
 		// . mark it in the stats for PageStats.cpp
 		// . this is timeout based rerouting
@@ -1288,14 +1288,14 @@ redirectTimedout:
 void gotReplyWrapperM1 ( void *state , UdpSlot *slot ) {
 	Multicast *THIS = (Multicast *)state;
 	// debug msg
-	//log("gotReplyWrapperM1 for msg34=%"INT32"",(int32_t)(&THIS->m_msg34));
+	//log("gotReplyWrapperM1 for msg34=%" INT32 "",(int32_t)(&THIS->m_msg34));
         THIS->gotReply1 ( slot );
 }
 
 // come here if we've got a reply from a host that's not part of a group send
 void Multicast::gotReply1 ( UdpSlot *slot ) {		
 	// debug msg
-	//log("gotReply1: this=%"INT32" should exit",(int32_t)&m_msg34);
+	//log("gotReply1: this=%" INT32 " should exit",(int32_t)&m_msg34);
 	// count it as returned
 	m_numLaunched--;
 	// don't ever let UdpServer free this send buf (it is m_msg)
@@ -1327,7 +1327,7 @@ void Multicast::gotReply1 ( UdpSlot *slot ) {
 	// if he was marked as dead on the secondary cluster, mark him as up
 	Host *h = m_hostPtrs[i];
 	if ( m_hostdb == &g_hostdb2 && h && m_hostdb->isDead(h) ) {
-		log("net: Marking hostid %"INT32" in secondary cluster "
+		log("net: Marking hostid %" INT32 " in secondary cluster "
 		    "as alive.",
 		    (int32_t)h->m_hostId);
 		h->m_ping = 0;
@@ -1338,7 +1338,7 @@ void Multicast::gotReply1 ( UdpSlot *slot ) {
 	m_replyLaunchTime = m_launchTime[i];
 
 	if ( m_sentToTwin ) 
-		log("net: Twin msgType=0x%"XINT32" (this=0x%"PTRFMT") "
+		log("net: Twin msgType=0x%" XINT32 " (this=0x%" PTRFMT ") "
 		    "reply: %s.",
 		    (int32_t)m_msgType,(PTRTYPE)this,mstrerror(g_errno));
 
@@ -1359,16 +1359,16 @@ void Multicast::gotReply1 ( UdpSlot *slot ) {
 			logIt = false;
 		if ( h && logIt )
 			log("net: Multicast got error in reply from "
-			    "hostId %"INT32""
-			    " (msgType=0x%hhx transId=%"INT32" "
-			    "nice=%"INT32" net=%s): "
+			    "hostId %" INT32 ""
+			    " (msgType=0x%hhx transId=%" INT32 " "
+			    "nice=%" INT32 " net=%s): "
 			    "%s.",
 			    h->m_hostId, slot->m_msgType, slot->m_transId, 
 			    m_niceness,
 			    m_hostdb->getNetName(),mstrerror(g_errno ));
 		else if ( logIt )
-			log("net: Multicast got error in reply from %s:%"INT32" "
-			    "(msgType=0x%hhx transId=%"INT32" nice =%"INT32" net=%s): "
+			log("net: Multicast got error in reply from %s:%" INT32 " "
+			    "(msgType=0x%hhx transId=%" INT32 " nice =%" INT32 " net=%s): "
 			    "%s.",
 			    iptoa(slot->m_ip), (int32_t)slot->m_port, 
 			    slot->m_msgType, slot->m_transId,  m_niceness,
@@ -1436,8 +1436,8 @@ void Multicast::gotReply1 ( UdpSlot *slot ) {
 		if ( timeRemaining <= 0 ) sendToTwin = false;
 		// send to the twin
 		if ( sendToTwin && sendToHostLoop(0,-1,-1) ) {
-			log("net: Trying to send request msgType=0x%"XINT32" "
-			    "to a twin. (this=0x%"PTRFMT")",
+			log("net: Trying to send request msgType=0x%" XINT32 " "
+			    "to a twin. (this=0x%" PTRFMT ")",
 			    (int32_t)m_msgType,(PTRTYPE)this);
 			m_sentToTwin = true;
 			// . keep stats
@@ -1470,7 +1470,7 @@ void Multicast::closeUpShop ( UdpSlot *slot ) {
 	// sanity check
 	if ( ! m_inUse ) { char *xx=NULL;*xx=0; }
 	// debug msg
-	//log("Multicast exiting (this=%"INT32")",(int32_t)&m_msg34);
+	//log("Multicast exiting (this=%" INT32 ")",(int32_t)&m_msg34);
 	// destroy the OTHER slots we've spawned that are in progress
 	destroySlotsInProgress ( slot );
 	// if we have no slot per se, skip this stuff
@@ -1508,7 +1508,7 @@ void Multicast::closeUpShop ( UdpSlot *slot ) {
 		m_registeredSleep = false;
 #ifdef _GLOBALSPEC_
 		// debug msg
-		//logf(LOG_DEBUG,"net: mcast unregistered1 this= %08"XINT32"",
+		//logf(LOG_DEBUG,"net: mcast unregistered1 this= %08" XINT32 "",
 		//     (int32_t)this);
 #endif
 	}
@@ -1541,7 +1541,7 @@ void Multicast::closeUpShop ( UdpSlot *slot ) {
 		return;
 	}
 	if ( ! g_errno && m_retryCount > 0 ) 
-	       log("net: Multicast succeeded after %"INT32" retries.",m_retryCount);
+	       log("net: Multicast succeeded after %" INT32 " retries.",m_retryCount);
 	// allow us to be re-used now, callback might relaunch
 	m_inUse = false;
 	// now call the user callback if it exists
@@ -1559,7 +1559,7 @@ void Multicast::closeUpShop ( UdpSlot *slot ) {
 		m_callback ( m_state , m_state2 );
 		//if (g_conf.m_profilingEnabled) {
 		//	if(!g_profiler.endTimer(address,__PRETTY_FUNCTION__))
-		//		log(LOG_WARN,"admin: Couldn't add the fn %"INT32"",
+		//		log(LOG_WARN,"admin: Couldn't add the fn %" INT32 "",
 		//		    (int32_t)address);
 		//}
 	}
@@ -1579,7 +1579,7 @@ void sleepWrapper1b ( int bogusfd , void *state ) {
 		return;
 	}
 	// otherwise, retry forever
-	log("net: Failed to launch multicast request. THIS=%"PTRFMT". Waiting "
+	log("net: Failed to launch multicast request. THIS=%" PTRFMT ". Waiting "
 	    "and retrying.",(PTRTYPE)THIS);
 }
 
@@ -1621,7 +1621,7 @@ void Multicast::destroySlotsInProgress ( UdpSlot *slot ) {
 		// tripTime is always in milliseconds
 		//m_hostdb->stampHost ( hostId , tripTime , true/*timedOut?*/);
 		//#ifdef _DEBUG_
-		//fprintf(stderr,"stamping host #%"INT32" w/ tripTime=%"INT64"ms\n",
+		//fprintf(stderr,"stamping host #%" INT32 " w/ tripTime=%" INT64 "ms\n",
 		//	hostId, tripTime);
 		//#endif
 

@@ -62,7 +62,7 @@ void Query::reset ( ) {
 		QueryTerm *qt = &m_qterms[i];
 		HashTableX *ht = &qt->m_facetHashTable;
 		// debug note
-		// log("results: free fhtqt of %"PTRFMT" for q=%"PTRFMT 
+		// log("results: free fhtqt of %" PTRFMT " for q=%"PTRFMT 
 		//     " st0=%"PTRFMT,
 		//     (PTRTYPE)ht->m_buf,(PTRTYPE)this,(PTRTYPE)m_st0Ptr);
 		ht->reset();
@@ -175,8 +175,8 @@ bool Query::set2 ( char *query        ,
 	//m_collLen = collLen;
 	// truncate query if too big
 	if ( queryLen >= ABS_MAX_QUERY_LEN ) {
-		log("query: Query length of %"INT32" must be "
-		    "less than %"INT32". "
+		log("query: Query length of %" INT32 " must be "
+		    "less than %" INT32 ". "
 		    "Truncating.",queryLen,(int32_t)ABS_MAX_QUERY_LEN);
 		queryLen = ABS_MAX_QUERY_LEN - 1;
 		m_truncated = true;
@@ -283,8 +283,8 @@ bool Query::set2 ( char *query        ,
 			while ( is_digit(query[j]) ) j++;
 			char c = query[j];
 			if ( (c == 'a' || c == 'r') && query[j+1]==']' ) {
-				//sprintf ( p , " LeFtB %"INT32" %c RiGhB ",
-				m_sb.safePrintf(" LeFtB %"INT32" %c RiGhB ",
+				//sprintf ( p , " LeFtB %" INT32 " %c RiGhB ",
+				m_sb.safePrintf(" LeFtB %" INT32 " %c RiGhB ",
 					  val,c);
 				//p += gbstrlen(p);
 				i = j + 1;
@@ -292,8 +292,8 @@ bool Query::set2 ( char *query        ,
 			}
 			else if ( (c == 'a' || c == 'r') && 
 				  query[j+1]=='p' && query[j+2]==']') {
-				//sprintf ( p , " LeFtB %"INT32" %cp RiGhB ",
-				m_sb.safePrintf(" LeFtB %"INT32" %cp RiGhB ",
+				//sprintf ( p , " LeFtB %" INT32 " %cp RiGhB ",
+				m_sb.safePrintf(" LeFtB %" INT32 " %cp RiGhB ",
 				val,c);
 				//p += gbstrlen(p);
 				i = j + 2;
@@ -503,7 +503,7 @@ bool Query::set2 ( char *query        ,
 	// if they just hit the admin's ceiling, there's nothing we can do
 	if ( m_numTerms >= m_maxQueryTerms ) return true;
 	// a temp log message
-	log(LOG_DEBUG,"query: Encountered %"INT32" query terms.",m_numTerms);
+	log(LOG_DEBUG,"query: Encountered %" INT32 " query terms.",m_numTerms);
 
 	// otherwise, we're below m_maxQueryTerms BUT above MAX_QUERY_TERMS
 	// so we can use hard counts to get more power...
@@ -554,8 +554,8 @@ bool Query::set2 ( char *query        ,
 
 
 	// a temp log message
-	//log(LOG_DEBUG,"query: Compressed to %"INT32" query terms, %"INT32" hard. "
-	//    "(nt=%"INT32")",
+	//log(LOG_DEBUG,"query: Compressed to %" INT32 " query terms, %" INT32 " hard. "
+	//    "(nt=%" INT32 ")",
 	//     m_numExplicitBits,m_numTerms-m_numExplicitBits,m_numTerms);
 
 	//if ( ! m_isBoolean ) return true;
@@ -710,7 +710,7 @@ bool Query::setQTerms ( Words &words , Phrases &phrases ) {
 		// break out if no more explicit bits!
 		/*
 		if ( shift >= max ) {
-			log("query: Query1 has more than %"INT32" unique terms. "
+			log("query: Query1 has more than %" INT32 " unique terms. "
 			    "Truncating.",max);
 			m_truncated = true;
 			break; 
@@ -727,12 +727,12 @@ bool Query::setQTerms ( Words &words , Phrases &phrases ) {
 		// stop breach
 		if ( n >= ABS_MAX_QUERY_TERMS ) {
 			log("query: lost query phrase terms to max term "
-			    "limit of %"INT32"",(int32_t)ABS_MAX_QUERY_TERMS );
+			    "limit of %" INT32 "",(int32_t)ABS_MAX_QUERY_TERMS );
 			break;
 		}
 		if ( n >= m_maxQueryTerms ) {
 			log("query: lost query phrase terms to max term cr "
-			    "limit of %"INT32"",(int32_t)m_maxQueryTerms);
+			    "limit of %" INT32 "",(int32_t)m_maxQueryTerms);
 			break;
 		}
 
@@ -847,7 +847,7 @@ bool Query::setQTerms ( Words &words , Phrases &phrases ) {
 		//char tmp[1024];
 		//gbmemcpy ( tmp , qt->m_term , qt->m_termLen );
 		//tmp [ qt->m_termLen ] = 0;
-		//logf(LOG_DEBUG,"got term %s (%"INT32")",tmp,qt->m_termLen);
+		//logf(LOG_DEBUG,"got term %s (%" INT32 ")",tmp,qt->m_termLen);
 		// otherwise, add it
 		n++;
 	}
@@ -858,7 +858,7 @@ bool Query::setQTerms ( Words &words , Phrases &phrases ) {
 		/*
 		if ( shift >= max ) {
 			logf(LOG_DEBUG,
-			     "query: Query2 has more than %"INT32" unique terms. "
+			     "query: Query2 has more than %" INT32 " unique terms. "
 			    "Truncating.",max);
 			m_truncated = true;
 			break; 
@@ -890,12 +890,12 @@ bool Query::setQTerms ( Words &words , Phrases &phrases ) {
 		// stop breach
 		if ( n >= ABS_MAX_QUERY_TERMS ) {
 			log("query: lost query terms to max term "
-			    "limit of %"INT32"",(int32_t)ABS_MAX_QUERY_TERMS );
+			    "limit of %" INT32 "",(int32_t)ABS_MAX_QUERY_TERMS );
 			break;
 		}
 		if ( n >= m_maxQueryTerms ) {
 			log("query: lost query terms to max term cr "
-			    "limit of %"INT32"",(int32_t)m_maxQueryTerms);
+			    "limit of %" INT32 "",(int32_t)m_maxQueryTerms);
 			break;
 		}
 
@@ -1080,7 +1080,7 @@ bool Query::setQTerms ( Words &words , Phrases &phrases ) {
 		//char tmp[1024];
 		//gbmemcpy ( tmp , qt->m_term , qt->m_termLen );
 		//tmp [ qt->m_termLen ] = 0;
-		//logf(LOG_DEBUG,"got term %s (%"INT32")",tmp,qt->m_termLen);
+		//logf(LOG_DEBUG,"got term %s (%" INT32 ")",tmp,qt->m_termLen);
 		n++;
 	}
 	
@@ -1096,7 +1096,7 @@ bool Query::setQTerms ( Words &words , Phrases &phrases ) {
 
 		// break out if no more explicit bits!
 // 		if ( shift >= max ) {
-// 			log("query: Query has more than %"INT32" unique terms. "
+// 			log("query: Query has more than %" INT32 " unique terms. "
 // 			    "Truncating.",max);
 // 			m_truncated = true;
 // 			break; 
@@ -1245,7 +1245,7 @@ bool Query::setQTerms ( Words &words , Phrases &phrases ) {
  		// break out if no more explicit bits!
  		if ( shift >= max ) {
  			logf(LOG_DEBUG,
-			    "query: Query4 has more than %"INT32" unique terms. "
+			    "query: Query4 has more than %" INT32 " unique terms. "
  			    "Truncating.",max);
  			m_truncated = true;
  			break; 
@@ -1450,7 +1450,7 @@ bool Query::setQTerms ( Words &words , Phrases &phrases ) {
 			// stop breach
 			if ( n >= ABS_MAX_QUERY_TERMS ) {
 				log("query: lost synonyms due to max term "
-				    "limit of %"INT32"",
+				    "limit of %" INT32 "",
 				    (int32_t)ABS_MAX_QUERY_TERMS );
 				break;
 			}
@@ -1459,7 +1459,7 @@ bool Query::setQTerms ( Words &words , Phrases &phrases ) {
 
 			if ( n >= m_maxQueryTerms ) {
 				log("query: lost synonyms due to max cr term "
-				    "limit of %"INT32"",
+				    "limit of %" INT32 "",
 				    (int32_t)m_maxQueryTerms);
 				break;
 			}
@@ -2080,7 +2080,7 @@ bool Query::setQWords ( char boolFlag ,
 	int32_t numWords = words.getNumWords();
 	// truncate it
 	if ( numWords > ABS_MAX_QUERY_WORDS ) {
-		log("query: Had %"INT32" words. Max is %"INT32". Truncating.",
+		log("query: Had %" INT32 " words. Max is %" INT32 ". Truncating.",
 		    numWords,(int32_t)ABS_MAX_QUERY_WORDS);
 		numWords = ABS_MAX_QUERY_WORDS;
 		m_truncated = true;
@@ -2372,7 +2372,7 @@ bool Query::setQWords ( char boolFlag ,
 			if   ( inQuotes && i+1< numWords ) quoteStart =  i+1;
 			else                               quoteStart = -1;
 		}
-		//log(LOG_DEBUG, "Query: nq: %"INT32" inQuotes: %d,quoteStart: %"INT32"",
+		//log(LOG_DEBUG, "Query: nq: %" INT32 " inQuotes: %d,quoteStart: %" INT32 "",
 		//    nq, inQuotes, quoteStart);
 		// does word #i have a space in it? that will cancel fieldCode
 		// if we were in a field
@@ -5169,14 +5169,14 @@ void Query::printQueryTerms(){
 		gbmemcpy ( tt , getTerm(i) , ttlen );
 		tt[ttlen]='\0';
 		if ( c == '\0' ) c = ' ';
-		logf(LOG_DEBUG, "query: Query Term #%"INT32" "
-		     "phr=%"INT32" termId=%"UINT64" rawTermId=%"UINT64""
+		logf(LOG_DEBUG, "query: Query Term #%" INT32 " "
+		     "phr=%" INT32 " termId=%" UINT64 " rawTermId=%" UINT64 ""
 		     " sign=%c "
-		     "ebit=0x%0"XINT64" "
-		     "impBits=0x%0"XINT64" "
-		     "hc=%"INT32" "
-		     "component=%"INT32" "
-		     "otermLen=%"INT32" "
+		     "ebit=0x%0" XINT64 " "
+		     "impBits=0x%0" XINT64 " "
+		     "hc=%" INT32 " "
+		     "component=%" INT32 " "
+		     "otermLen=%" INT32 " "
 		     "term=%s ",
 		     i,
 		     (int32_t)isPhrase (i) ,
@@ -5226,7 +5226,7 @@ bool Query::setBooleanOperands ( ) {
 	if ( m_truncated ) {
 		g_errno = ETOOMANYOPERANDS;
 		return log("query: Maximum number of bool operands "
-			   "exceeded (%"INT32").",m_numTerms);
+			   "exceeded (%" INT32 ").",m_numTerms);
 	}
 
 	// set the QueryWord::m_opBit member of each query word.
@@ -5280,7 +5280,7 @@ bool Query::setBooleanOperands ( ) {
 	if ( status < 0 ) {
 		g_errno = ETOOMANYOPERANDS;
 		return log("query: Maximum number of bool operands "
-			   "(%"INT32") exceeded.",(int32_t)MAX_OPERANDS);
+			   "(%" INT32 ") exceeded.",(int32_t)MAX_OPERANDS);
 	}
 	while (e->m_parent) {
 		if (e == e->m_parent) {
@@ -5291,7 +5291,7 @@ bool Query::setBooleanOperands ( ) {
 		e = e->m_parent;
 	}
 
-	//log(LOG_DEBUG, "query: set %"INT32" operands",
+	//log(LOG_DEBUG, "query: set %" INT32 " operands",
 	//    m_numOperands);
 	if (g_conf.m_logDebugQuery) {
 		SafeBuf sbuf(1024);
@@ -5699,8 +5699,8 @@ void Operand::print(SafeBuf *sbuf) {
 // 	int32_t shift = 0;
 // 	while (m_termBits >> shift) shift++;
 // 	sbuf->safePrintf("%i", 1<<(shift-1));
-	if (m_hasNOT) sbuf->safePrintf("NOT 0x%"XINT64"",*(int64_t *)m_opBits);
-	else sbuf->safePrintf("0x%"XINT64"", *(int64_t *)m_opBits);
+	if (m_hasNOT) sbuf->safePrintf("NOT 0x%" XINT64 "",*(int64_t *)m_opBits);
+	else sbuf->safePrintf("0x%" XINT64 "", *(int64_t *)m_opBits);
 }
 */
 

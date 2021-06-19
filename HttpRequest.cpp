@@ -198,7 +198,7 @@ bool HttpRequest::set (char *url,int32_t offset,int32_t size,time_t ifModifiedSi
 	// then port
 	//uint16_t port = url->getPort();
 	if ( port != 80 ) {
-		sprintf ( host + hlen , ":%"UINT32"" , (uint32_t)port );
+		sprintf ( host + hlen , ":%" UINT32 "" , (uint32_t)port );
 		hlen += gbstrlen ( host + hlen );
 	}
 	// the if-modified-since field
@@ -307,7 +307,7 @@ bool HttpRequest::set (char *url,int32_t offset,int32_t size,time_t ifModifiedSi
 			   "Accept-Language: en\r\n"
 			   //"Accept: */*\r\n"
 			   "Accept: %s\r\n"
-			   "Range: bytes=%"INT32"-%"INT32"\r\n" 
+			   "Range: bytes=%" INT32 "-%" INT32 "\r\n" 
 			   "%s"
 			   ,
 				cmd,
@@ -331,7 +331,7 @@ bool HttpRequest::set (char *url,int32_t offset,int32_t size,time_t ifModifiedSi
 			   "Accept-Language: en\r\n"
 			   //"Accept: */*\r\n"
 			   "Accept: %s\r\n"
-			   "Range: bytes=%"INT32"-\r\n" 
+			   "Range: bytes=%" INT32 "-\r\n" 
 			   "%s"
 			   ,
 				cmd,
@@ -399,7 +399,7 @@ bool HttpRequest::set (char *url,int32_t offset,int32_t size,time_t ifModifiedSi
 		 if ( postData ) contentLen = strlen(postData);
 		 // this overrides if provided. -1 is default
 		 if ( postContentLen >= 0 ) contentLen = postContentLen;
-		 m_reqBuf.safePrintf ("Content-Length: %"INT32"\r\n", contentLen );
+		 m_reqBuf.safePrintf ("Content-Length: %" INT32 "\r\n", contentLen );
 		 m_reqBuf.safePrintf("\r\n");
 		 if ( postData ) m_reqBuf.safePrintf("%s",postData);
 		 // log it for debug
@@ -473,7 +473,7 @@ bool HttpRequest::set ( char *origReq , int32_t origReqLen , TcpSocket *sock ) {
 	 // m_bufLen = urlNormCode ( m_buf , MAX_REQ_LEN - 1 , req , i );
 	 // ensure it's big enough to be a valid request
 	 if ( reqLen < 5 ) { 
-		 log("http: got reqlen %"INT32"<5 = %s",reqLen,req);
+		 log("http: got reqlen %" INT32 "<5 = %s",reqLen,req);
 		 g_errno = EBADREQUEST; 
 		 return false; 
 	 }
@@ -718,7 +718,7 @@ bool HttpRequest::set ( char *origReq , int32_t origReqLen , TcpSocket *sock ) {
 	 // parse out the range if we got one
 	 //if ( s ) {
 	 //	int32_t x = 0;
-	 //	sscanf ( e ,"%"INT32"-%"INT32"" , &m_fileOffset , &x );
+	 //	sscanf ( e ,"%" INT32 "-%" INT32 "" , &m_fileOffset , &x );
 	 //	// get all file if range's 2nd number is non-existent
 	 //	if ( x == 0 ) m_fileSize = -1;
 	 //	else          m_fileSize = x - m_fileOffset;
@@ -1021,7 +1021,7 @@ bool HttpRequest::set ( char *origReq , int32_t origReqLen , TcpSocket *sock ) {
 		 int32_t newSize = m_cgiBuf2Size + bufLen+1;
 		 char *newBuf = (char*)mmalloc(newSize, "extraParms");
 		 if (!newBuf){
-			 return log("query: unable to allocate %"INT32" bytes "
+			 return log("query: unable to allocate %" INT32 " bytes "
 				    "for extraParms", newSize);
 		 }
 		 char *p = newBuf;
@@ -1472,7 +1472,7 @@ void HttpRequest::parseFields ( char *s , int32_t slen ) {
 	while ( s && s < send ) {
 		// watch out for overflow
 		if ( n >= MAX_CGI_PARMS ) {
-			log("http: Received more than %"INT32" CGI parms. "
+			log("http: Received more than %" INT32 " CGI parms. "
 			    "Truncating.",(int32_t)MAX_CGI_PARMS);
 			break;
 		}
@@ -1522,7 +1522,7 @@ void HttpRequest::parseFieldsMultipart ( char *s , int32_t slen ) {
  loop:
 	// watch out for overflow
 	if ( n >= MAX_CGI_PARMS ) {
-		log("http: Received more than %"INT32" CGI parms. "
+		log("http: Received more than %" INT32 " CGI parms. "
 		    "Truncating.",(int32_t)MAX_CGI_PARMS);
 		return;
 	}

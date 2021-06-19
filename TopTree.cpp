@@ -134,7 +134,7 @@ bool TopTree::setNumNodes ( int32_t docsWanted , bool doSiteClustering ) {
 		nn=(char *)mrealloc(m_nodes,oldsize,newsize,"TopTree");
 		updated = true;
 	}
-	if ( ! nn ) return log("query: Can not allocate %"INT64" bytes for "
+	if ( ! nn ) return log("query: Can not allocate %" INT64 " bytes for "
 			       "holding resulting docids.",  newsize);
 	// save this for freeing
 	m_allocSize = newsize;
@@ -361,7 +361,7 @@ bool TopTree::addNode ( TopNode *t , int32_t tnn ) {
 		// . dataPtr is not really a ptr, but the node
 		n = m_t2.addNode ( 0 , k , NULL , 4 );
 		//if ( n == 52 )
-		//	log("r2 node 52 has domHash=%"INT32"",domHash);
+		//	log("r2 node 52 has domHash=%" INT32 "",domHash);
 		// the next node before the current min will be the next min
 		int32_t next = m_t2.getNextNode(min);
 		// sanity check
@@ -381,13 +381,13 @@ bool TopTree::addNode ( TopNode *t , int32_t tnn ) {
 		//deleteNode ( nn , domHash );
 		// then delete him from the m_t2 tree
 		m_t2.deleteNode3 ( min , false );
-		//logf(LOG_DEBUG,"deleting1 %"INT32"",min);
+		//logf(LOG_DEBUG,"deleting1 %" INT32 "",min);
 	}
 	// if we have not violated the ridiculous max, just add ourselves
 	else if ( m_doSiteClustering ) {
 		n = m_t2.addNode ( 0 , k , NULL , 4 );
 		//if ( n == 52 )
-		//	log("r2 nodeb 52 has domHash=%"INT32"",domHash);
+		//	log("r2 nodeb 52 has domHash=%" INT32 "",domHash);
 		// sanity check
 		//if ( min > 0 ) {
 		//	key_t *kp1 = (key_t *)m_t2.getKey(min);
@@ -510,7 +510,7 @@ bool TopTree::addNode ( TopNode *t , int32_t tnn ) {
 		//if ( (kp2->n1) >>24 != domHash2 ) {char*xx=NULL;*xx=0;}
 		// the new min is the "next" of the old min
 		m_domMinNode[domHash2] = next;
-		//logf(LOG_DEBUG,"deleting %"INT32"",on);
+		//logf(LOG_DEBUG,"deleting %" INT32 "",on);
 	}
 	return true;
 }
@@ -532,8 +532,8 @@ void TopTree::deleteNode ( int32_t i , uint8_t domHash ) {
 	if ( i == m_lowNode ) {
 		m_lowNode = getNext ( i );
 		if ( m_lowNode == -1 ) { 
-			log("toptree: toptree delete error node #%"INT32" "
-			    "domHash=%"INT32" because next node is -1 numnodes=%"INT32"",
+			log("toptree: toptree delete error node #%" INT32 " "
+			    "domHash=%" INT32 " because next node is -1 numnodes=%" INT32 "",
 			    i,(int32_t)domHash,m_numUsedNodes);
 		//char *xx=NULL;*xx=0; }
 			//return;
@@ -547,7 +547,7 @@ void TopTree::deleteNode ( int32_t i , uint8_t domHash ) {
 	m_domCount[domHash]--;
 	// debug
 	//if ( domHash == 0x35 )
-	//	log("top: domCount down for 0x%"XINT32" now %"INT32"",domHash,m_domCount[domHash]);
+	//	log("top: domCount down for 0x%" XINT32 " now %" INT32 "",domHash,m_domCount[domHash]);
 
 	// parent of i
 	int32_t iparent ;
@@ -656,7 +656,7 @@ void TopTree::deleteNode ( int32_t i , uint8_t domHash ) {
 	// up to i decreases the total depth, in which case setDepths() fixes
 	DEPTH ( j ) = DEPTH ( i );
 	// debug msg
-	//fprintf(stderr,"... replaced %"INT32" it with %"INT32" (-1 means none)\n",i,j);
+	//fprintf(stderr,"... replaced %" INT32 " it with %" INT32 " (-1 means none)\n",i,j);
 	// . recalculate depths starting at old parent of j
 	// . stops at the first node to have the correct depth
 	// . will balance at pivot nodes that need it
@@ -769,7 +769,7 @@ void TopTree::setDepths ( int32_t i ) {
 		// . i may have change if we rotated, but same logic applies
 		if ( DEPTH(i) == oldDepth ) break;
 		// debug msg
-		//fprintf (stderr,"changed node %"INT32"'s depth from %"INT32" to %"INT32"\n",
+		//fprintf (stderr,"changed node %" INT32 "'s depth from %" INT32 " to %" INT32 "\n",
 		//i,oldDepth,newDepth);
 		// get his parent to continue the ascension
 		i = PARENT ( i );
@@ -832,8 +832,8 @@ int32_t TopTree::rotateRight ( int32_t i ) {
 	if ( W >= 0 ) Wdepth = DEPTH(W);
 	if ( X >= 0 ) Xdepth = DEPTH(X);
 	// debug msg
-	//fprintf(stderr,"A=%"INT32" AP=%"INT32" N=%"INT32" W=%"INT32" X=%"INT32" Q=%"INT32" T=%"INT32" "
-	//"Wdepth=%"INT32" Xdepth=%"INT32"\n",A,AP,N,W,X,Q,T,Wdepth,Xdepth);
+	//fprintf(stderr,"A=%" INT32 " AP=%" INT32 " N=%" INT32 " W=%" INT32 " X=%" INT32 " Q=%" INT32 " T=%" INT32 " "
+	//"Wdepth=%" INT32 " Xdepth=%" INT32 "\n",A,AP,N,W,X,Q,T,Wdepth,Xdepth);
 	// goto Xdeeper if X is deeper
 	if ( Wdepth < Xdepth ) goto Xdeeper;
 	// N's parent becomes A's parent
@@ -849,7 +849,7 @@ int32_t TopTree::rotateRight ( int32_t i ) {
 	}
 	// if A had no parent, it was the headNode
 	else {
-		//fprintf(stderr,"changing head node from %"INT32" to %"INT32"\n",
+		//fprintf(stderr,"changing head node from %" INT32 " to %" INT32 "\n",
 		//m_headNode,N);
 		m_headNode = N;
 	}
@@ -885,7 +885,7 @@ int32_t TopTree::rotateRight ( int32_t i ) {
 	}
 	// if A had no parent, it was the headNode
 	else {
-		//fprintf(stderr,"changing head node2 from %"INT32" to %"INT32"\n",
+		//fprintf(stderr,"changing head node2 from %" INT32 " to %" INT32 "\n",
 		//m_headNode,X);
 		m_headNode = X;
 	}
@@ -928,8 +928,8 @@ int32_t TopTree::rotateLeft ( int32_t i ) {
 	if ( W >= 0 ) Wdepth = DEPTH(W);
 	if ( X >= 0 ) Xdepth = DEPTH(X);
 	// debug msg
-	//fprintf(stderr,"A=%"INT32" AP=%"INT32" N=%"INT32" W=%"INT32" X=%"INT32" Q=%"INT32" T=%"INT32" "
-	//"Wdepth=%"INT32" Xdepth=%"INT32"\n",A,AP,N,W,X,Q,T,Wdepth,Xdepth);
+	//fprintf(stderr,"A=%" INT32 " AP=%" INT32 " N=%" INT32 " W=%" INT32 " X=%" INT32 " Q=%" INT32 " T=%" INT32 " "
+	//"Wdepth=%" INT32 " Xdepth=%" INT32 "\n",A,AP,N,W,X,Q,T,Wdepth,Xdepth);
 	// goto Xdeeper if X is deeper
 	if ( Wdepth < Xdepth ) goto Xdeeper;
 	// N's parent becomes A's parent
@@ -945,7 +945,7 @@ int32_t TopTree::rotateLeft ( int32_t i ) {
 	}
 	// if A had no parent, it was the headNode
 	else {
-		//fprintf(stderr,"changing head node from %"INT32" to %"INT32"\n",
+		//fprintf(stderr,"changing head node from %" INT32 " to %" INT32 "\n",
 		//m_headNode,N);
 		m_headNode = N;
 	}
@@ -981,7 +981,7 @@ int32_t TopTree::rotateLeft ( int32_t i ) {
 	}
 	// if A had no parent, it was the headNode
 	else {
-		//fprintf(stderr,"changing head node2 from %"INT32" to %"INT32"\n",
+		//fprintf(stderr,"changing head node2 from %" INT32 " to %" INT32 "\n",
 		//m_headNode,X);
 		m_headNode = X;
 	}
@@ -1012,34 +1012,34 @@ bool TopTree::checkTree ( bool printMsgs ) {
 		// if no left/right kid it MUST be -1
 		if ( LEFT(i) < -1 )
 			return log("query: toptree: checktree: left "
-				   "kid %"INT32" < -1",i);
+				   "kid %" INT32 " < -1",i);
 		if ( RIGHT(i) < -1 )
 			return log("query: toptree: checktree: right "
-				   "kid %"INT32" < -1",i);
+				   "kid %" INT32 " < -1",i);
 		// check left kid
 		if ( LEFT(i) >= 0 && PARENT(LEFT(i)) != i ) 
 			return log("query: toptree: checktree: tree has "
-				   "error %"INT32"",i);
+				   "error %" INT32 "",i);
 		// then right kid
 		if ( RIGHT(i) >= 0 && PARENT(RIGHT(i)) != i )
                        return log("query: toptree: checktree: tree has "
-				  "error2 %"INT32"",i);
+				  "error2 %" INT32 "",i);
 	}
 	// now return if we aren't doing active balancing
 	//if ( ! DEPTH ) return true;
 	// debug -- just always return now
-	if ( printMsgs ) log("***m_headNode=%"INT32", m_numUsedNodes=%"INT32"",
+	if ( printMsgs ) log("***m_headNode=%" INT32 ", m_numUsedNodes=%" INT32 "",
 			      m_headNode,m_numUsedNodes);
 	// verify that parent links correspond to kids
 	for ( int32_t i = 0 ; i < m_numUsedNodes ; i++ ) {
 		int32_t P = PARENT (i);
 		if ( P == -2 ) continue; // deleted node
 		if ( P == -1 && i != m_headNode ) 
-			return log("query: toptree: checktree: node %"INT32" has "
+			return log("query: toptree: checktree: node %" INT32 " has "
 				   "no parent",i);
 		// check kids
 		if ( P>=0 && LEFT(P) != i && RIGHT(P) != i ) 
-			return log("query: toptree: checktree: node %"INT32"'s "
+			return log("query: toptree: checktree: node %" INT32 "'s "
 				    "parent disowned",i);
 		// ensure i goes back to head node
 		int32_t j = i;
@@ -1048,18 +1048,18 @@ bool TopTree::checkTree ( bool printMsgs ) {
 			j = PARENT(j);
 		}
 		if ( j != m_headNode ) 
-			return log("query: toptree: checktree: node %"INT32"'s no "
+			return log("query: toptree: checktree: node %" INT32 "'s no "
 				   "head node above",i);
 		if ( printMsgs ) 
-			fprintf(stderr,"***node=%"INT32" left=%"INT32" rght=%"INT32" "
-				"prnt=%"INT32", depth=%"INT32"\n",
+			fprintf(stderr,"***node=%" INT32 " left=%" INT32 " rght=%" INT32 " "
+				"prnt=%" INT32 ", depth=%" INT32 "\n",
 				i,LEFT(i),RIGHT(i),PARENT(i),
 				(int32_t)DEPTH(i));
 		//ensure depth
 		int32_t newDepth = computeDepth ( i );
 		if ( DEPTH(i) != newDepth ) 
-			return log("query: toptree: checktree: node %"INT32"'s "
-				   "depth should be %"INT32"",i,newDepth);
+			return log("query: toptree: checktree: node %" INT32 "'s "
+				   "depth should be %" INT32 "",i,newDepth);
 	}
 	if ( printMsgs ) log("query: ---------------");
 	// no problems found

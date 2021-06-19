@@ -478,7 +478,7 @@ done:
 	static char eflag = 1;
 	if (numBadChars) {
 		if ( eflag )
-			log(LOG_DEBUG, "uni: ucToAny: got %"INT32" bad chars "
+			log(LOG_DEBUG, "uni: ucToAny: got %" INT32 " bad chars "
 			    "in conversion 2. Only reported once.",
 			    numBadChars);
 		// this flag makes it so no bad characters are reported

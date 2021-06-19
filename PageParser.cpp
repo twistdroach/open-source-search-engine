@@ -40,7 +40,7 @@ bool sendPageParser2 ( TcpSocket   *s ,
 		       void        *state ,
 		       void       (* callback)(void *state) ) {
 
-	//log("parser: read sock=%"INT32"",s->m_sd);
+	//log("parser: read sock=%" INT32 "",s->m_sd);
 
 	// might a simple request to addsomething to validated.*.txt file
 	// from XmlDoc::print() or XmlDoc::validateOutput()
@@ -206,7 +206,7 @@ bool sendPageParser2 ( TcpSocket   *s ,
 	char *oips   = "";
 	char *us     = "";
 	if ( st->m_u && st->m_u[0] ) us = st->m_u;
-	//if ( st->m_sfn != -1 ) sprintf ( rtu , "%"INT32"",st->m_sfn );
+	//if ( st->m_sfn != -1 ) sprintf ( rtu , "%" INT32 "",st->m_sfn );
 	if ( st->m_old ) dd = " checked";
 	if ( st->m_recycle            ) rr     = " checked";
 	if ( st->m_recycle2           ) rr2    = " checked";
@@ -284,7 +284,7 @@ bool sendPageParser2 ( TcpSocket   *s ,
 		  "Hop count to use: "
 		  "</td>"
 		  "<td>"
-		  "<input type=text name=\"hc\" size=\"4\" value=\"%"INT32"\"> "
+		  "<input type=text name=\"hc\" size=\"4\" value=\"%" INT32 "\"> "
 		  "</td>"
 		  "<td>"
 		  "(-1 is unknown. For root urls hopcount is always 0)<br>"
@@ -423,9 +423,9 @@ bool sendPageParser2 ( TcpSocket   *s ,
 		  "<td>"
 		       //"<input type=checkbox name=xml value=1> "
 		       "<select name=ctype>\n"
-		       "<option value=%"INT32" selected>HTML</option>\n"
-		       "<option value=%"INT32">XML</option>\n"
-		       "<option value=%"INT32">JSON</option>\n"
+		       "<option value=%" INT32 " selected>HTML</option>\n"
+		       "<option value=%" INT32 ">XML</option>\n"
+		       "<option value=%" INT32 ">JSON</option>\n"
 		       "</select>\n"
 
 		  "</td>"
@@ -517,7 +517,7 @@ bool sendPageParser2 ( TcpSocket   *s ,
 	bool isFacebook = (bool)strstr(st->m_u,"http://www.facebook.com/");
 	if ( isFacebook && ! content ) {
 		int64_t docId = g_titledb.getProbableDocId(st->m_u);
-		sprintf(sreq.m_url ,"%"UINT64"", docId );
+		sprintf(sreq.m_url ,"%" UINT64 "", docId );
 		sreq.m_isPageReindex = true;
 	}
 
@@ -599,7 +599,7 @@ bool processLoop ( void *state ) {
 	// print the final tail
 	//p += g_httpServer.printTail ( p , pend - p );
 
-	//log("parser: send sock=%"INT32"",st->m_s->m_sd);
+	//log("parser: send sock=%" INT32 "",st->m_s->m_sd);
 	
 	// now encapsulate it in html head/tail and send it off
 	bool status = g_httpServer.sendDynamicPage( st->m_s , 

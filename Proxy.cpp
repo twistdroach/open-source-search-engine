@@ -625,7 +625,7 @@ bool Proxy::handleRequest (TcpSocket *s){
 			s_count++;
 		else {
 			log("query: Too many sockets open. Sending 500 "
-			    "http status code to %s. (msgslogged=%"INT32")[2]",
+			    "http status code to %s. (msgslogged=%" INT32 ")[2]",
 			    iptoa(s->m_ip),s_count);
 			s_count = 0;
 			s_last = now;
@@ -669,8 +669,8 @@ bool Proxy::handleRequest (TcpSocket *s){
 				s_count++;
 			else {
 				log("query: Too many outstanding yippy search "
-				    "requests, %"INT32". closing socket on %s. "
-				    "(repeats=%"INT32")",
+				    "requests, %" INT32 ". closing socket on %s. "
+				    "(repeats=%" INT32 ")",
 				    ymax,
 				    iptoa(s->m_ip),s_count);
 				s_count = 0;
@@ -974,7 +974,7 @@ bool Proxy::handleRequest (TcpSocket *s){
 		s_reqNum++;
 		stC->m_start = gettimeofdayInMilliseconds();
 		// debug log debug
-		//log("proxy: forwarding reqNum=%"INT32" from %s to %s",
+		//log("proxy: forwarding reqNum=%" INT32 " from %s to %s",
 		//    stC->m_reqNum,iptoa(stC->m_s->m_ip),host);
 		// only allow so many outstanding to avoid overloading
 		// the teaski servers
@@ -1164,7 +1164,7 @@ bool Proxy::handleRequest (TcpSocket *s){
 		uint32_t h32 = hash32n(urlToAdd);
 		if ( h32 == 0 ) h32 = 1;
 		uint64_t rand64 = gettimeofdayInMillisecondsLocal();
-		msg.safePrintf( "&id=%"UINT32"&rand=%"UINT64"&confirmed=1';\n"
+		msg.safePrintf( "&id=%" UINT32 "&rand=%" UINT64 "&confirmed=1';\n"
 				 "client.open('GET', url );\n"
 				 "client.send();\n"
 				 "\">"
@@ -1209,8 +1209,8 @@ bool Proxy::forwardRequest ( StateControl *stC ) {
 
 	TcpSocket *s = stC->m_s;
 
-	//log (LOG_DEBUG,"query: proxy: (hash=%"UINT32") %s from "
-	//     "hostId #%"INT32", port %i", stC->m_hash, hr.getRequest(), 
+	//log (LOG_DEBUG,"query: proxy: (hash=%" UINT32 ") %s from "
+	//     "hostId #%" INT32 ", port %i", stC->m_hash, hr.getRequest(), 
 	//     h->m_hostId,h->m_httpPort);
 
 	// if sending to the temporary network, add one to port
@@ -1409,9 +1409,9 @@ void Proxy::gotReplyPage ( void *state, UdpSlot *slot ) {
 		uncountStripe ( stC );
 		// pick another host! should NEVER return NULL
 		Host *h = pickBestHost ( stC );
-		log("proxy: hostid #%"INT32" timed out. req=%s Rerouting "
+		log("proxy: hostid #%" INT32 " timed out. req=%s Rerouting "
 		    "forward request "
-		    "to hostid #%"INT32" instead.",stC->m_hostId,
+		    "to hostid #%" INT32 " instead.",stC->m_hostId,
 		    req,//stC->m_s->m_readBuf,
 		    h->m_hostId);
 		// . try a resend!
@@ -1472,7 +1472,7 @@ void Proxy::gotReplyPage ( void *state, UdpSlot *slot ) {
 		int32_t size1 = *(int32_t *)p; p += 4; // size of compressed mime
 		int32_t size2 = *(int32_t *)p; p += 4; // size of compressed content
 		// note it
-		//logf(LOG_DEBUG,"proxy: uncompressing from %"INT32" to %"INT32"",
+		//logf(LOG_DEBUG,"proxy: uncompressing from %" INT32 " to %" INT32 "",
 		//     size1+size2+12,need);
 		// make the decompressed buf
 		unsigned char *dbuf = (unsigned char *)mmalloc ( need,"pdbuf");
@@ -1606,9 +1606,9 @@ void Proxy::gotReplyPage ( void *state, UdpSlot *slot ) {
 		m_totalQueryTime += took;
 		if ( m_numSuccess % 20 == 0 ){
 			int32_t avgTime = m_totalQueryTime / m_numSuccess;
-			log ( LOG_INFO,"proxy: did the last %"INT32" successful "
-			      "queries in %"UINT64" ms, latency %"INT32" ms. Total "
-			      "queries %"INT32"",
+			log ( LOG_INFO,"proxy: did the last %" INT32 " successful "
+			      "queries in %" UINT64 " ms, latency %" INT32 " ms. Total "
+			      "queries %" INT32 "",
 			      m_numSuccess,m_totalQueryTime,avgTime,
 			      m_numQueries );
 		}
@@ -1627,8 +1627,8 @@ void Proxy::gotReplyPage ( void *state, UdpSlot *slot ) {
 	r.set(stC->m_s->m_readBuf, stC->m_s->m_readOffset, stC->m_s);
 
 	/*	if ( g_conf.m_logQueryTimes )
-		logf( LOG_TIMING,"query: proxy: got back %"INT32" bytes page "
-		      "with status %"INT32" for request %s in %"INT32" ms",
+		logf( LOG_TIMING,"query: proxy: got back %" INT32 " bytes page "
+		      "with status %" INT32 " for request %s in %" INT32 " ms",
 		      size, stC->m_hash, httpStatus, r.getRequest(), took  );*/
 
 	//char *content = s->m_readBuf + mime.getMimeLen();
@@ -1991,8 +1991,8 @@ void Proxy::printRequest(TcpSocket *s, HttpRequest *r,
 	if ( (int32_t)took < g_conf.m_logQueryTimeThreshold ) return;
 
 	if ( ! g_conf.m_logQueryReply || ! content || contentLen <= 0 ) {
-		logf (LOG_INFO,"http: Took %"UINT64" ms "
-		      "(len=%"INT32" bytes) "
+		logf (LOG_INFO,"http: Took %" UINT64 " ms "
+		      "(len=%" INT32 " bytes) "
 		      "for request %s",
 		      took, contentLen, r->getRequest());
 		return;
@@ -2012,8 +2012,8 @@ void Proxy::printRequest(TcpSocket *s, HttpRequest *r,
 	// null terminate
 	p[contentLen]=0;
 
-	logf (LOG_INFO,"http: Took %"UINT64" ms "
-	      "(len=%"INT32" bytes) "
+	logf (LOG_INFO,"http: Took %" UINT64 " ms "
+	      "(len=%" INT32 " bytes) "
 	      "for request %s reply=%s",
 	      took, contentLen, r->getRequest(),content);
 
@@ -2057,8 +2057,8 @@ void gotTcpReplyWrapper ( void *state , TcpSocket *s ) {
 		    ipbuf2,
 		    creq );
 		// debug log debug
-		//log("proxy: returning reply to %s replysize=%"INT32" "
-		//    "reqnum=%"INT32" (took=%"INT64"ms)",
+		//log("proxy: returning reply to %s replysize=%" INT32 " "
+		//    "reqnum=%" INT32 " (took=%" INT64 "ms)",
 		//    iptoa(stC->m_s->m_ip),
 		//    replySize,stC->m_reqNum,took);
 		g_httpServer.sendErrorReply(stC->m_s,500,mstrerror(g_errno));
@@ -2071,8 +2071,8 @@ void gotTcpReplyWrapper ( void *state , TcpSocket *s ) {
 		log("proxy: got error in reply from %s. err=%s",
 		    iptoa(s->m_ip),mstrerror(g_errno));
 		// debug log debug
-		//log("proxy: returning reply to %s replysize=%"INT32" "
-		//    "reqnum=%"INT32" (took=%"INT64"ms) (err=%s)",
+		//log("proxy: returning reply to %s replysize=%" INT32 " "
+		//    "reqnum=%" INT32 " (took=%" INT64 "ms) (err=%s)",
 		//    iptoa(stC->m_s->m_ip),
 		//    replySize,stC->m_reqNum,took,mstrerror(g_errno));
 		g_httpServer.sendErrorReply(stC->m_s,500,mstrerror(g_errno));
@@ -2093,11 +2093,11 @@ void gotTcpReplyWrapper ( void *state , TcpSocket *s ) {
 		reply[max] = 0;
 	}
 
-	//log("proxy: returning reply back to client. size=%"INT32" reply=%s",
+	//log("proxy: returning reply back to client. size=%" INT32 " reply=%s",
 	//    replySize,reply);
 
-	log("proxy: returning  reqNum=%"INT32" for  %s replysize=%"INT32" "
-	    "(took=%"INT64"ms)",
+	log("proxy: returning  reqNum=%" INT32 " for  %s replysize=%" INT32 " "
+	    "(took=%" INT64 "ms)",
 	    stC->m_reqNum,
 	    iptoa(stC->m_s->m_ip),
 	    replySize,took);
@@ -2201,7 +2201,7 @@ UserInfo *Proxy::getUserInfoForFeedAccess ( HttpRequest *hr ) {
 	
 	// if user name has no record, that's permission denied
 	if ( ! ui ) {
-		log("proxy: user not found for userid=%"INT32"",userId32);
+		log("proxy: user not found for userid=%" INT32 "",userId32);
 		g_errno = EPERMDENIED;
 		return NULL;
 	}
@@ -2209,7 +2209,7 @@ UserInfo *Proxy::getUserInfoForFeedAccess ( HttpRequest *hr ) {
 	// codes must match, too!
 	if ( ! code || strcmp(code,ui->m_xmlFeedCode) ) {
 		g_errno = EPERMDENIED;
-		log("proxy: permission denied for userid=%"INT32" code=%s",
+		log("proxy: permission denied for userid=%" INT32 " code=%s",
 		    userId32,code);
 		return NULL;
 	}
@@ -2347,7 +2347,7 @@ bool Proxy::addAccessPoint ( StateControl *stC ,
 
 	// error getting results? do not charge for it then...
 	if ( httpStatus != 200 ) {
-		log("proxy: got http reply error status=%"INT32"",httpStatus);
+		log("proxy: got http reply error status=%" INT32 "",httpStatus);
 		return true;
 	}
 
@@ -3103,8 +3103,8 @@ bool printLogoutPage ( StateUser *su ) {
 		sb.reset();
 		sb.safePrintf("<META HTTP-EQUIV=refresh "
 			      "content=\"0;URL=/account\">");
-		cb.safePrintf("Set-Cookie: sessionid=%"INT64";\r\n"
-			      "Set-Cookie: userid=%"INT32";\r\n"
+		cb.safePrintf("Set-Cookie: sessionid=%" INT64 ";\r\n"
+			      "Set-Cookie: userid=%" INT32 ";\r\n"
 			      , su->m_adminSessId
 			      , su->m_adminId );
 	}
@@ -3147,8 +3147,8 @@ bool sendRedirect ( StateUser *su ) {
 
 	// getLoggedInUserId should have set the sessionId64
 	SafeBuf cb;
-	cb.safePrintf("Set-Cookie: sessionid=%"INT64";\r\n"
-		      "Set-Cookie: userid=%"INT32";\r\n"
+	cb.safePrintf("Set-Cookie: sessionid=%" INT64 ";\r\n"
+		      "Set-Cookie: userid=%" INT32 ";\r\n"
 		      ,su->m_sessionId64
 		      ,su->m_userId32);
 	char *cookiePtr = NULL;
@@ -3198,7 +3198,7 @@ bool sendPageAccount ( TcpSocket *s , HttpRequest *hr2 ) {
 	if ( err5 ) {
 	hadError5:
 		g_errno = ENOMEM;
-		log("proxy: new(%"INT32"): %s",(int32_t)sizeof(StateUser),mstrerror(g_errno));
+		log("proxy: new(%" INT32 "): %s",(int32_t)sizeof(StateUser),mstrerror(g_errno));
 		g_httpServer.sendErrorReply(s,500,mstrerror(g_errno));
 		return true;
 	}
@@ -3404,7 +3404,7 @@ bool sendPageAccount ( TcpSocket *s , HttpRequest *hr2 ) {
 		su->m_deposit = MINCHARGE;
 		// make a random number for the search feed code
 		int32_t rc = rand() & 0x7fffffff;
-		sprintf(su->m_tmpBuf2,"%"INT32"",rc);
+		sprintf(su->m_tmpBuf2,"%" INT32 "",rc);
 		su->m_fc = su->m_tmpBuf2;
 	}
 
@@ -3543,12 +3543,12 @@ bool Proxy::hitCreditCard ( StateUser *su ) {
 	// see (List of API Fields at end)
 
 	url.safePrintf("x_card_num=%s"
-		       //"&x_cust_id=%"INT32""
+		       //"&x_cust_id=%" INT32 ""
 		       "&x_customer_ip=%s"
 		       "&x_delim_data=1" // must be 1 for AIM
 		       "&x_description=gigablast.com+search+engine+services"
-		       //"&x_invoice_num=%"INT32""
-		       "&x_email_customer=1" // %"INT32""
+		       //"&x_invoice_num=%" INT32 ""
+		       "&x_email_customer=1" // %" INT32 ""
 		       "&x_version=3.0"
 		       "&x_currency_code=USD"
 		       "&x_recurring_billing=0"
@@ -3573,11 +3573,11 @@ bool Proxy::hitCreditCard ( StateUser *su ) {
 			       // this is kinda bogus since we do not see it
 			       // has refunding original transactions but 
 			       // rather getting a withdrawal
-			       "&x_trans_id=%"INT64""
+			       "&x_trans_id=%" INT64 ""
 
 			       // do we need x_split_tender_id ???
 			       // use that INSTEAD of x_trans_id...
-			       //"&x_split_tender_id=%"INT64""
+			       //"&x_split_tender_id=%" INT64 ""
 
 			       "&x_amount=%.02f"
 			       , su->m_refundTransId
@@ -3724,12 +3724,12 @@ bool Proxy::gotDepositDoc ( StateUser *su ) {
 	int32_t status = mime.getHttpStatus();
 
 	if ( status != 200 ) {
-		log("proxy: bad authorize.net mime stats = %"INT32"",status);
+		log("proxy: bad authorize.net mime stats = %" INT32 "",status);
 		su->m_error = 1;
 		su->m_authNetMsg.safePrintf("Error communicating with "
 					    "authorize.net to charge "
 					    "credit card. HTTP status "
-					    "%"INT32"",status);
+					    "%" INT32 "",status);
 		// there was an error - redisplay the new user form
 		if ( su->m_submittingNewUser ) return printEditForm ( su );
 		// otherwise, we were making another deposit
@@ -3796,7 +3796,7 @@ bool Proxy::gotDepositDoc ( StateUser *su ) {
 	else                       amount =        su->m_deposit;
 
 	// log it for posterity
-	log("proxy: successfully charged $%.02f to userid %"INT32""
+	log("proxy: successfully charged $%.02f to userid %" INT32 ""
 	    ,amount
 	    ,su->m_userId32
 	    );
@@ -3806,7 +3806,7 @@ bool Proxy::gotDepositDoc ( StateUser *su ) {
 	if ( ! m_depositBuf.reserve (need) ) {
 		su->m_error = 1;
 		su->m_authNetMsg.safePrintf("Error adding deposit to buf. "
-					    "userid32=%"UINT32" amt=$%.02f"
+					    "userid32=%" UINT32 " amt=$%.02f"
 					    ,su->m_userId32
 					    ,amount);
 		char *xx=NULL;*xx=0; 
@@ -3833,7 +3833,7 @@ bool Proxy::gotDepositDoc ( StateUser *su ) {
 		tid[tlen] = c;
 		// the authorize.net transaction id
 		dr.m_authorizeNetTransactionId = transId;
-		log("proxy: got transactionid=%"INT64"",transId);
+		log("proxy: got transactionid=%" INT64 "",transId);
 	}
 	
 	// if depositing...
@@ -3904,7 +3904,7 @@ bool Proxy::gotDepositDoc ( StateUser *su ) {
 	u2.m_lastLoginIP = su->m_socket->m_ip;
 
 	// note this as well
-	log ("proxy: successfully added userid %"INT32" to userbuf",su->m_userId32);
+	log ("proxy: successfully added userid %" INT32 " to userbuf",su->m_userId32);
 
 	// store it
 	if ( ! m_userInfoBuf.safeMemcpy ( &u2 , sizeof(UserInfo) ) )
@@ -4285,7 +4285,7 @@ bool Proxy::loadUserBufs ( ) {
 		// int16_tcut
 		UserInfo *ui = &uis[i];
 		if ( ui->m_pending == 0.0 ) continue;
-		log("proxy: erasing pending=%.02f for uid=%"INT32"",
+		log("proxy: erasing pending=%.02f for uid=%" INT32 "",
 		    ui->m_pending,ui->m_userId32);
 		ui->m_pending = 0.0;
 	}
@@ -4479,7 +4479,7 @@ bool Proxy::printAccountingInfoPage ( StateUser *su , SafeBuf *errmsg ) {
 
 		       "<tr>"
 		       "<td><nobr>User ID</nobr></td>"
-		       "<td>%"INT32"</td>"
+		       "<td>%" INT32 "</td>"
 		       "<td>See the <a href=/searchfeed.html>XML Search "
 		       "Feed</a> page or the <a href=/seoapi.html>SEO API</a> "
 		       "page for details on using this.</td>"
@@ -4651,7 +4651,7 @@ bool Proxy::printAccountingInfoPage ( StateUser *su , SafeBuf *errmsg ) {
 		       "<td colspan=2>"
 			"<b>"
 			//"<center>"
-		       "Daily Breakdown for %s %"INT32""
+		       "Daily Breakdown for %s %" INT32 ""
 			//"</center>"
 			"</b>"
 		       "</td>"
@@ -4683,10 +4683,10 @@ bool Proxy::printAccountingInfoPage ( StateUser *su , SafeBuf *errmsg ) {
 		// they should be in order by date...
 		printedSomething = true;
 		sb->safePrintf("<tr>"
-			       //"<td>%02"INT32"/%02"INT32"</td>"
-			       "<td>%02"INT32"</td>"
+			       //"<td>%02" INT32 "/%02" INT32 "</td>"
+			       "<td>%02" INT32 "</td>"
 			       "<td>$%.02f</td>"
-			       "<td>%"INT32"</td>"
+			       "<td>%" INT32 "</td>"
 			       "<td>%s</td>" // "new search feed", etc.
 			       "</tr>\n"
 			       //, (int32_t)sr->m_month
@@ -4779,12 +4779,12 @@ bool Proxy::printAccountingInfoPage ( StateUser *su , SafeBuf *errmsg ) {
 		char *as = getAccessTypeString(cursor->m_accessType);
 		printedSomething = true;
 		sb->safePrintf("<tr>"
-			       "<td>%02"INT32"/%04"INT32"</td>"
+			       "<td>%02" INT32 "/%04" INT32 "</td>"
 			       "<td><nobr>%s</nobr></td>"
-			       "<td>%"INT32"</td>"
+			       "<td>%" INT32 "</td>"
 			       "<td>$%.02f</td>"
 			       "<td>$%.05f</td>"// price per access
-			       "<td>%"INT32"ms</td>"
+			       "<td>%" INT32 "ms</td>"
 			       "</td>"
 			       , (int32_t)cursor->m_month
 			       , (int32_t)cursor->m_year
@@ -4876,8 +4876,8 @@ bool Proxy::gotGif ( StateUser *su ) {
 	// make a cookie in case they just logged in through this page!
 	// otherwise the login doesn't "stick"
 	SafeBuf cb;
-	cb.safePrintf("Set-Cookie: sessionid=%"INT64";\r\n"
-		      "Set-Cookie: userid=%"INT32";\r\n"
+	cb.safePrintf("Set-Cookie: sessionid=%" INT64 ";\r\n"
+		      "Set-Cookie: userid=%" INT32 ";\r\n"
 		      ,su->m_sessionId64
 		      ,(int32_t)su->m_userId32);
 
@@ -4886,7 +4886,7 @@ bool Proxy::gotGif ( StateUser *su ) {
 	// so use this special cookie
 	UserInfo *ui = getUserInfoFromId ( su->m_userId32 );
 	if ( ui && (ui->m_flags & UIF_ADMIN) )
-		cb.safePrintf("Set-Cookie: adminsessid=%"INT64";\r\n"
+		cb.safePrintf("Set-Cookie: adminsessid=%" INT64 ";\r\n"
 			      ,su->m_sessionId64);
 
 	char *cookiePtr = NULL;
@@ -4940,7 +4940,7 @@ bool Proxy::printDepositTable ( SafeBuf *sb , int32_t userId32 ) {
 		time_t tt = dr->m_depositDate;//getTimeLocal();
 		struct tm *timeStruct = gmtime ( &tt );
 		sb->safePrintf("<tr><td>"
-			       "%"INT32"/%"INT32"/%"INT32" %"INT32":%02"INT32""
+			       "%" INT32 "/%" INT32 "/%" INT32 " %" INT32 ":%02" INT32 ""
 			       "</td>"
 			       , (int32_t)(timeStruct->tm_mon + 1) // month 0..11
 			       , (int32_t)timeStruct->tm_mday //day of month 1..31
@@ -4948,7 +4948,7 @@ bool Proxy::printDepositTable ( SafeBuf *sb , int32_t userId32 ) {
 			       , (int32_t)(timeStruct->tm_hour)
 			       , (int32_t)(timeStruct->tm_min)
 			       );
-		//sb->safePrintf("<td>%"INT32"</td>",dr->m_transactionId);
+		//sb->safePrintf("<td>%" INT32 "</td>",dr->m_transactionId);
 		char *bs1 = "<font color=green>";
 		char *bs2 = "</font>";
 		// is it a withdrawl?
@@ -4962,7 +4962,7 @@ bool Proxy::printDepositTable ( SafeBuf *sb , int32_t userId32 ) {
 		if ( dr->m_flags == DRF_WITHDRAW_FEE ) desc = "withdraw fee";
 		sb->safePrintf("<td>%s%.02f%s</td>"
 			       "<td>%s</td>"
-			       "<td>%"INT64"</td>"
+			       "<td>%" INT64 "</td>"
 			       , bs1 
 			       , dr->m_depositAmount 
 			       , bs2 
@@ -4979,7 +4979,7 @@ bool Proxy::printDepositTable ( SafeBuf *sb , int32_t userId32 ) {
 		// there is a 5% refund charge
 		//refundAmt *= 0.95;
 		sb->safePrintf("<td><a href=/account?refund=%.02f&"
-			       "transid=%"INT64">refund"
+			       "transid=%" INT64 ">refund"
 			       "</a></td>"
 			       , refundAmt 
 			       , dr->m_authorizeNetTransactionId
@@ -5166,7 +5166,7 @@ char *Proxy::storeLoginBar ( char *reply ,
 	// store our new content length as ascii into test buf
 	char test[64];
 
-	int32_t len =sprintf(test,"%"INT32"",(int32_t)(*newReplySize-mimeLen));
+	int32_t len =sprintf(test,"%" INT32 "",(int32_t)(*newReplySize-mimeLen));
 	// find end
 	char *end = mp;
 	while ( *end && is_digit(*end) ) end++;
@@ -5206,7 +5206,7 @@ void Proxy::printUsers ( SafeBuf *sb ) {
 		// but if admin we should still have set our cookie
 		// adminsessid to our current session id so we know we are
 		// also the admin!
-		sb->safePrintf("<td><nobr>%"INT32". "
+		sb->safePrintf("<td><nobr>%" INT32 ". "
 			       "<a href=/account?login=%s&password=%s>"
 			       "%s</a></nobr></td>"
 			       ,i

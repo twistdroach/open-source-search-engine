@@ -1307,7 +1307,7 @@ bool Pages::printAdminTop (SafeBuf     *sb   ,
 	//	sb->safePrintf("<input type=hidden name=master value=0>\n");
 	//}
 	// should any changes be broadcasted to all hosts?
-	//sb->safePrintf ("<input type=hidden name=cast value=\"%"INT32"\">\n",
+	//sb->safePrintf ("<input type=hidden name=cast value=\"%" INT32 "\">\n",
 	//		(int32_t)s_pages[page].m_cast);
 
 
@@ -1490,27 +1490,27 @@ bool Pages::printAdminTop (SafeBuf     *sb   ,
 		       );
 	sb->safePrintf(
 		       "<font color=black>"
-		       "&#x25cf;</font> spider is done (%"INT32")"
+		       "&#x25cf;</font> spider is done (%" INT32 ")"
 		       "<br>"
 		       "\n"
 
 		       "<font color=orange>"
-		       "&#x25cf;</font> spider is paused (%"INT32")"
+		       "&#x25cf;</font> spider is paused (%" INT32 ")"
 		       "<br>"
 		       "\n"
 
 		       "<font color=green>"
-		       "&#x25cf;</font> spider is active (%"INT32")"
+		       "&#x25cf;</font> spider is active (%" INT32 ")"
 		       "<br>"
 		       "\n"
 
 		       "<font color=gray>"
-		       "&#x25cf;</font> spider queue empty (%"INT32")"
+		       "&#x25cf;</font> spider queue empty (%" INT32 ")"
 		       "<br>"
 		       "\n"
 
 		       "<font color=blue>"
-		       "&#x25cf;</font> between rounds (%"INT32")"
+		       "&#x25cf;</font> between rounds (%" INT32 ")"
 		       "<br>"
 		       "\n"
 
@@ -1955,7 +1955,7 @@ void Pages::printFormData( SafeBuf *sb, TcpSocket *s, HttpRequest *r ) {
 	//}
 
 	// should any changes be broadcasted to all hosts?
-	sb->safePrintf ("<input type=\"hidden\" name=\"cast\" value=\"%"INT32"\" "
+	sb->safePrintf ("<input type=\"hidden\" name=\"cast\" value=\"%" INT32 "\" "
 			"/>\n",
 			(int32_t)s_pages[page].m_cast);
 
@@ -2333,7 +2333,7 @@ bool Pages::printHostLinks ( SafeBuf* sb     ,
 		sb->safePrintf("%s<a href=\"http://%s:%hu/%s?"
 			       //"username=%s&pwd=%s&"
 			       "c=%s%s\">"
-			       "%"INT32"</a>%s ",
+			       "%" INT32 "</a>%s ",
 			       ft,iptoa(ip),port,path,
 			       //username,password,
 			       coll,qs,i,bt);
@@ -2355,7 +2355,7 @@ bool Pages::printHostLinks ( SafeBuf* sb     ,
 		sb->safePrintf("%s<a href=\"http://%s:%hu/%s?"
 			       //"username=%s&pwd=%s&"
 			       "c=%s%s\">"
-			       "proxy%"INT32"</a>%s ",
+			       "proxy%" INT32 "</a>%s ",
 			       ft,iptoa(ip),port,path,
 			       //username,password,
 			       coll,qs,i,bt);
@@ -2636,7 +2636,7 @@ bool Pages::printCollectionNavBar ( SafeBuf *sb     ,
 
 
 	if ( isMasterAdmin )
-		sb->safePrintf ( "<center><nobr><b>%"INT32" Collection%s</b></nobr>"
+		sb->safePrintf ( "<center><nobr><b>%" INT32 " Collection%s</b></nobr>"
 				 "</center>\n",
 				 g_collectiondb.m_numRecsUsed , s );
 	else
@@ -2886,7 +2886,7 @@ char *Pages::printRulesetDropDown ( char *p            ,
 	// . 4 - good    site
 	// . 5 - super   site
 	if ( subscript <= 0 ) sprintf(p,"<select name=%s>\n"   ,cgi);
-	else                  sprintf(p,"<select name=%s%"INT32">\n",cgi,subscript);
+	else                  sprintf(p,"<select name=%s%" INT32 ">\n",cgi,subscript);
 	p += gbstrlen ( p );
 	// print NONE (PageReindex.cpp uses this one)
 
@@ -2921,17 +2921,17 @@ char *Pages::printRulesetDropDown ( char *p            ,
 		if ( s && slen > 0 ) {
 			char c = s[slen];
 			s[slen] = '\0';
-			sprintf ( p , "<option value=%"INT32"%s>%s%s "
-				  "[tagdb%"INT32".xml]",i,pp,rr,s,i);
+			sprintf ( p , "<option value=%" INT32 "%s>%s%s "
+				  "[tagdb%" INT32 ".xml]",i,pp,rr,s,i);
 			s[slen] = c;
 		}
 		// otherwise, print as number
 		else  
-			sprintf ( p , "<option value=%"INT32"%s>%stagdb%"INT32".xml",
+			sprintf ( p , "<option value=%" INT32 "%s>%stagdb%" INT32 ".xml",
 				  i,pp,rr,i);
 		p += gbstrlen ( p );
 	}
-	sprintf ( p , "<option value=%"INT32">Always Use Default", 
+	sprintf ( p , "<option value=%" INT32 ">Always Use Default", 
 		  (int32_t)USEDEFAULTSITEREC);
 	p += gbstrlen ( p );
 
@@ -2954,7 +2954,7 @@ bool Pages::printRulesetDropDown ( SafeBuf *sb        ,
 	// . 4 - good    site
 	// . 5 - super   site
 	if ( subscript <= 0 ) sb->safePrintf("<select name=%s>\n"   ,cgi);
-	else                  sb->safePrintf("<select name=%s%"INT32">\n",cgi,
+	else                  sb->safePrintf("<select name=%s%" INT32 ">\n",cgi,
 					     subscript);
 	// print NONE (PageReindex.cpp uses this one)
 
@@ -2988,16 +2988,16 @@ bool Pages::printRulesetDropDown ( SafeBuf *sb        ,
 		if ( s && slen > 0 ) {
 			char c = s[slen];
 			s[slen] = '\0';
-			sb->safePrintf ( "<option value=%"INT32"%s>%s%s "
-					 "[tagdb%"INT32".xml]",i,pp,rr,s,i);
+			sb->safePrintf ( "<option value=%" INT32 "%s>%s%s "
+					 "[tagdb%" INT32 ".xml]",i,pp,rr,s,i);
 			s[slen] = c;
 		}
 		// otherwise, print as number
 		else  
-			sb->safePrintf ( "<option value=%"INT32"%s>%stagdb%"INT32".xml",
+			sb->safePrintf ( "<option value=%" INT32 "%s>%stagdb%" INT32 ".xml",
 					 i,pp,rr,i);
 	}
-	sb->safePrintf ( "<option value=%"INT32">Always Use Default", 
+	sb->safePrintf ( "<option value=%" INT32 ">Always Use Default", 
 			 (int32_t)USEDEFAULTSITEREC);
 
 	sb->safePrintf ( "</select>\n" );
@@ -3023,7 +3023,7 @@ char *Pages::printRulesetDescriptions ( char *p , char *pend , int32_t user ) {
 		int32_t slen;
 		if ( ! xml->getString ( "description" , &slen ) ) continue;
 		// print number of ruleset
-		sprintf ( p , "<tr><td><b>tagdb%"INT32".xml</b></td><td>",i );
+		sprintf ( p , "<tr><td><b>tagdb%" INT32 ".xml</b></td><td>",i );
 		p += gbstrlen(p);
 		// print the name of ruleset, if any
 		char *s = xml->getString ( "name" , &slen );
@@ -3074,7 +3074,7 @@ bool Pages::printRulesetDescriptions ( SafeBuf *sb , int32_t user ) {
 		int32_t slen;
 		if ( ! xml->getString ( "description" , &slen ) ) continue;
 		// print number of ruleset
-		if ( ! sb->safePrintf( "<tr><td><b>tagdb%"INT32".xml</b>"
+		if ( ! sb->safePrintf( "<tr><td><b>tagdb%" INT32 ".xml</b>"
 				       "</td><td>",i ))
 			return false;
 		// print the name of ruleset, if any
@@ -3436,7 +3436,7 @@ bool printApiForPage ( SafeBuf *sb , int32_t PAGENUM , CollectionRec *cr ) {
 
 	// page display/output parms
 	sb->safePrintf("<tr bgcolor=%s>"
-		       "<td>%"INT32"</td>\n"
+		       "<td>%" INT32 "</td>\n"
 		       "<td><b>format</b></td>"
 		       "<td>STRING</td>"
 		       "<td>output format</td>"
@@ -3454,7 +3454,7 @@ bool printApiForPage ( SafeBuf *sb , int32_t PAGENUM , CollectionRec *cr ) {
 	//      PAGENUM == PAGE_SEARCH ||
 	//      PAGENUM == PAGE_SPIDER ) {
 	sb->safePrintf("<tr bgcolor=%s>"
-		       "<td>%"INT32"</td>\n"
+		       "<td>%" INT32 "</td>\n"
 		       "<td><b>showinput</b></td>"
 		       "<td>BOOL (0 or 1)</td>"
 		       "<td>show input and settings</td>"
@@ -3474,7 +3474,7 @@ bool printApiForPage ( SafeBuf *sb , int32_t PAGENUM , CollectionRec *cr ) {
 	//   show for selected pages here
 	// if ( PAGENUM != PAGE_MASTER ) {
 	// 	sb->safePrintf("<tr bgcolor=%s>"
-	// 		       "<td>%"INT32"</td>\n"
+	// 		       "<td>%" INT32 "</td>\n"
 	// 		       "<td><b>c</b></td>"
 	// 		       "<td>STRING</td>"
 	// 		       "<td>Collection</td>"
@@ -3545,7 +3545,7 @@ bool printApiForPage ( SafeBuf *sb , int32_t PAGENUM , CollectionRec *cr ) {
 		else
 			sb->safePrintf ( "<tr bgcolor=#%s>",blues[count%2]);
 
-		sb->safePrintf("<td>%"INT32"</td>",count++);
+		sb->safePrintf("<td>%" INT32 "</td>",count++);
 
 		// use m_cgi if no m_scgi
 		char *cgi = parm->m_cgi;
@@ -3567,8 +3567,8 @@ bool printApiForPage ( SafeBuf *sb , int32_t PAGENUM , CollectionRec *cr ) {
 		case TYPE_FLOAT: sb->safePrintf ( "FLOAT32" ); break;
 		case TYPE_DOUBLE: sb->safePrintf ( "FLOAT64" ); break;
 		case TYPE_IP: sb->safePrintf ( "IP" ); break;
-		case TYPE_LONG: sb->safePrintf ( "INT32" ); break;
-		case TYPE_LONG_LONG: sb->safePrintf ( "INT64" ); break;
+		case TYPE_LONG: sb->safePrintf ( " INT32 " ); break;
+		case TYPE_LONG_LONG: sb->safePrintf ( " INT64 " ); break;
 		case TYPE_CHARPTR: sb->safePrintf ( "STRING" ); break;
 		case TYPE_STRING: sb->safePrintf ( "STRING" ); break;
 		case TYPE_STRINGBOX: sb->safePrintf ( "STRING" ); break;
@@ -4435,7 +4435,7 @@ bool sendPageLogin ( TcpSocket *socket , HttpRequest *hr ) {
 		      , ff );
 
 	sb.safePrintf(
-		  "<input type=hidden name=ref value=\"%"INT32"\">"
+		  "<input type=hidden name=ref value=\"%" INT32 "\">"
 		  "<center>"
 		  "<br><br>"
 		  "<font color=ff0000><b>%s</b></font>"
@@ -4592,7 +4592,7 @@ bool printRedBox ( SafeBuf *mb , TcpSocket *sock , HttpRequest *hr ) {
 		char *s = "s are";
 		if ( out == 1 ) s = " is";
 		mb->safePrintf("%s",box);
-		mb->safePrintf("%"INT32" host%s over 98%% disk usage. "
+		mb->safePrintf("%" INT32 " host%s over 98%% disk usage. "
 			       "See the <a href=/admin/hosts?c=%s>"
 			       "hosts</a> table.",out,s,coll);
 		mb->safePrintf("%s",boxEnd);
@@ -4657,8 +4657,8 @@ bool printRedBox ( SafeBuf *mb , TcpSocket *sock , HttpRequest *hr ) {
 		char *s = "s are";
 		if ( out == 1 ) s = " is";
 		mb->safePrintf("%s",box);
-		mb->safePrintf("%"INT32" host%s jammed with "
-			       "over %"INT32" unhandled "
+		mb->safePrintf("%" INT32 " host%s jammed with "
+			       "over %" INT32 " unhandled "
 			       "incoming udp requests. "
 			       "See <a href=/admin/sockets?c=%s>sockets</a>"
 			       " table.",jammedHosts,s,400,coll);
@@ -4749,7 +4749,7 @@ bool printRedBox ( SafeBuf *mb , TcpSocket *sock , HttpRequest *hr ) {
 		char *s = "hosts are";
 		if ( ps->m_numHostsDead == 1 ) s = "host is";
 		mb->safePrintf("%s",box);
-		mb->safePrintf("%"INT32" %s dead and not responding to "
+		mb->safePrintf("%" INT32 " %s dead and not responding to "
 			      "pings. See the "
 			       "<a href=/admin/hosts?c=%s>hosts table</a>.",
 			       ps->m_numHostsDead ,s ,coll);

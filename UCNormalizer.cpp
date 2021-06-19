@@ -152,7 +152,7 @@ bool initCompositionTable(){
 				//return
 				log(LOG_WARN, "conf: "
 				    "UCNormalizer: bad canonical "
-				    "decomposition for %04"XINT32" (count: %"INT32")", 
+				    "decomposition for %04" XINT32 " (count: %" INT32 ")", 
 				    i, mapCount);
 				continue;
 			}

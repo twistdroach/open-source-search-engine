@@ -244,7 +244,7 @@ void Blaster::runBlaster(char *file1,char *file2,
 			}
 		}
 	}
-	log(LOG_INIT,"blaster: read %"INT32" urls into memory", 
+	log(LOG_INIT,"blaster: read %" INT32 " urls into memory", 
 	    m_totalUrls );
 
 	if(!isLogFile){
@@ -319,7 +319,7 @@ void Blaster:: processLogFile(void *state){
 	catch ( ... ) {
 		g_errno = ENOMEM;
 		log("blaster: Failed. "
-		    "Could not allocate %"INT32" bytes for query. "
+		    "Could not allocate %" INT32 " bytes for query. "
 		    "Returning HTTP status of 500.",
 		    (int32_t)sizeof(StateBD));
 		return;
@@ -351,7 +351,7 @@ void Blaster:: processLogFile(void *state){
 void Blaster::startBlastering(){
 	int64_t now=gettimeofdayInMilliseconds();
 	if(m_print && m_totalDone>0 && (m_totalDone % 20)==0){
-		log("blaster: Processed %"INT32" urls in %"INT32" ms",m_totalDone,
+		log("blaster: Processed %" INT32 " urls in %" INT32 " ms",m_totalDone,
 		    (int32_t) (now-m_startTime));
 		m_print=false;
 	}
@@ -365,7 +365,7 @@ void Blaster::startBlastering(){
 		catch ( ... ) {
 			g_errno = ENOMEM;
 			log("blaster: Failed. "
-			    "Could not allocate %"INT32" bytes for query. "
+			    "Could not allocate %" INT32 " bytes for query. "
 			    "Returning HTTP status of 500.",
 			    (int32_t)sizeof(StateBD));
 			return;
@@ -385,7 +385,7 @@ void Blaster::startBlastering(){
 			if ( s_flag ) {
 				s_flag = false;
 				log("blaster: injecting to host #0 at %s on "
-				    "http/tcp port %"INT32"",
+				    "http/tcp port %" INT32 "",
 				    iptoa(h0->m_ip),
 				    (int32_t)h0->m_httpPort);
 			}
@@ -495,14 +495,14 @@ void Blaster::gotDoc1( void *state, TcpSocket *s){
 	uint32_t h = hash32 ( content , contentLen );
 	// log msg
 	if ( g_errno ) 
-		logf(LOG_INFO,"blaster: got doc (%"INT32") (%"INT32" ms) %s : %s",
+		logf(LOG_INFO,"blaster: got doc (%" INT32 ") (%" INT32 " ms) %s : %s",
 		     s->m_readOffset      , 
 		     (int32_t)(now - s->m_startTime) , 
 		     st->m_u1   , 
 		     mstrerror(g_errno)   );
 	else
-		logf(LOG_INFO,"blaster: got doc (%"INT32") (%"INT32" ms) "
-		     "(hash=%"XINT32") %s",
+		logf(LOG_INFO,"blaster: got doc (%" INT32 ") (%" INT32 " ms) "
+		     "(hash=%" XINT32 ") %s",
 		     s->m_readOffset      , 
 		     (int32_t)(now - s->m_startTime) , 
 		     h ,
@@ -596,14 +596,14 @@ void Blaster::gotDoc2 ( void *state, TcpSocket *s){
 	uint32_t h = hash32 ( content1 , content1Len );
 	// log msg
 	if ( g_errno ) 
-		logf(LOG_INFO,"blaster: got doc (%"INT32") (%"INT32" ms) %s : %s",
+		logf(LOG_INFO,"blaster: got doc (%" INT32 ") (%" INT32 " ms) %s : %s",
 		     s->m_readOffset      , 
 		     (int32_t)(now - s->m_startTime) , 
 		     st->m_u2   , 
 		     mstrerror(g_errno)   );
 	else
-		logf(LOG_INFO,"blaster: got doc (%"INT32") (%"INT32" ms) "
-		     "(hash=%"XINT32") %s",
+		logf(LOG_INFO,"blaster: got doc (%" INT32 ") (%" INT32 " ms) "
+		     "(hash=%" XINT32 ") %s",
 		     s->m_readOffset      , 
 		     (int32_t)(now - s->m_startTime) , 
 		     h ,
@@ -611,7 +611,7 @@ void Blaster::gotDoc2 ( void *state, TcpSocket *s){
 
 
 	if (m_verbose){
-		log(LOG_WARN,"blaster: content1len=%"INT32", Content1 is =%s",
+		log(LOG_WARN,"blaster: content1len=%" INT32 ", Content1 is =%s",
 		    content1Len,content1);
 		log(LOG_WARN,"\n");
 	}
@@ -622,7 +622,7 @@ void Blaster::gotDoc2 ( void *state, TcpSocket *s){
 	char *content2    = reply2 + mime2.getMimeLen();
 	int32_t  content2Len = size2  - mime2.getMimeLen();
 	if (m_verbose)	
-		log(LOG_WARN,"blaster: content2len=%"INT32", Content2 is =%s",
+		log(LOG_WARN,"blaster: content2len=%" INT32 ", Content2 is =%s",
 		    content2Len,content2);
 
 	// Now that we've got the contents, lets get the url links out 
@@ -810,7 +810,7 @@ void Blaster::gotDoc2 ( void *state, TcpSocket *s){
 		catch ( ... ) {
 			g_errno = ENOMEM;
 			log("blaster: Failed. "
-			    "Could not allocate %"INT32" bytes for query. "
+			    "Could not allocate %" INT32 " bytes for query. "
 			    "Returning HTTP status of 500.",
 			    (int32_t)sizeof(StateBD2));
 			return;
@@ -847,7 +847,7 @@ void Blaster::gotDoc2 ( void *state, TcpSocket *s){
 	//has been put a check
 	if ( st->m_numUrlDocsReceived > 0 && 
 	     st->m_numUrlDocsReceived <= st->m_numUrlDocsSent ){
-		log(LOG_WARN,"blaster: %"INT32" docs could not be sent due to "
+		log(LOG_WARN,"blaster: %" INT32 " docs could not be sent due to "
 		    "error",st->m_numUrlDocsReceived);
 		m_launched--;
 		freeStateBD(st);
@@ -863,7 +863,7 @@ void Blaster::gotDoc2 ( void *state, TcpSocket *s){
 		freeStateBD(st);
 		return;
 	}
-	log(LOG_WARN,"blaster: %"INT32" urls from %s Not found in %s",
+	log(LOG_WARN,"blaster: %" INT32 " urls from %s Not found in %s",
 	    numUrlsNotFound,domain1,domain2);
 	if(m_justDisplay){
 		m_launched--;
@@ -1063,7 +1063,7 @@ void Blaster::gotDoc3 ( void *state, TcpSocket *s){
 		}
 	}
 	else if(httpStatus<200){
-		log(LOG_WARN,"blaster: Bad HTTP status %"INT32"",httpStatus);
+		log(LOG_WARN,"blaster: Bad HTTP status %" INT32 "",httpStatus);
 		st->m_numUrlDocsReceived++;
 	}
 	else{

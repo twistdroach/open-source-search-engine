@@ -110,7 +110,7 @@ bool Msg8b::getCatRec  ( Url     *url              ,
 		// size and check
 		m_requestSize = p - m_request;
 		if ( m_requestSize != requestSize ) {
-			log ( "Msg8b: request size %"INT32" != %"INT32", bad engineer.",
+			log ( "Msg8b: request size %" INT32 " != %" INT32 ", bad engineer.",
 			      m_requestSize, requestSize );
 			char *xx = NULL; *xx = 0;
 		}
@@ -339,8 +339,8 @@ void Msg8b::gotReply ( ) {
 		
 		// sanity check
 		if (p - reply != replySize) {
-			log("Msg8b: Deserialized reply size %"INT32" "
-			    "!= %"INT32"",
+			log("Msg8b: Deserialized reply size %" INT32 " "
+			    "!= %" INT32 "",
 			    (int32_t)(p - reply), replySize );
 			char *xx = NULL; *xx = 0;
 		}
@@ -361,7 +361,7 @@ void Msg8b::gotReply ( ) {
 	int64_t now = gettimeofdayInMilliseconds();
 	int64_t msg8bTook = now - startTime;
 	if(msg8bTook > 10)
-		log(LOG_INFO, "admin: gotreply for msg8b took %"INT64"", 
+		log(LOG_INFO, "admin: gotreply for msg8b took %" INT64 "", 
 		    msg8bTook);
 	
 }
@@ -402,7 +402,7 @@ void handleRequest8b ( UdpSlot *slot, int32_t netnice ) {
 	p += urlLen + 1;
 	// sanity check
 	if (p - request != requestSize) {
-		log("build: Msg8b: Read Request Size %"INT32" != %"INT32", "
+		log("build: Msg8b: Read Request Size %" INT32 " != %" INT32 ", "
 		    "bad engineer.",
 		    (int32_t)(p - request), requestSize);
 		char *xx = NULL; *xx = 0;
@@ -465,7 +465,7 @@ void gotCatRecWrapper ( void *state ) { // , CatRec *catrec ) {
 	if (dataSize > TMPBUFSIZE) {
 		data = (char*)mmalloc(dataSize, "Msg8breply"); 
 		if (!data) {
-			log("build: Msg8b: Can't allocate %"INT32" bytes for reply.",
+			log("build: Msg8b: Can't allocate %" INT32 " bytes for reply.",
 			    dataSize);
 			// clean up the state
 			mdelete ( st8b , sizeof(State08b) , "Msg8b" );
@@ -491,7 +491,7 @@ void gotCatRecWrapper ( void *state ) { // , CatRec *catrec ) {
 
 	// sanity check
 	if (p - data != dataSize) {
-		log("Msg8b: Reply Size %"INT32" != %"INT32"",
+		log("Msg8b: Reply Size %" INT32 " != %" INT32 "",
 		    (int32_t)(p - data), dataSize);
 		char *xx = NULL; *xx = 0;
 	}

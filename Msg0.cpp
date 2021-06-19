@@ -238,7 +238,7 @@ bool Msg0::getList ( int64_t hostId      , // host to ask (-1 if none)
 	//   UOR'd lists.
 	if ( maxCacheAge != 0 && ! addToCache && (numFiles > 0 || includeTree))
 		log(LOG_LOGIC,"net: msg0: "
-		    "Weird. check but don't add... rdbid=%"INT32".",(int32_t)m_rdbId);
+		    "Weird. check but don't add... rdbid=%" INT32 ".",(int32_t)m_rdbId);
 	// set this here since we may not call msg5 if list not local
 	//m_list->setFixedDataSize ( m_fixedDataSize );
 
@@ -380,10 +380,10 @@ skip:
 	// debug msg
 	if ( g_conf.m_logDebugQuery )
 		log(LOG_DEBUG,"net: msg0: Sending request for data to "
-		    "shard=%"UINT32" "
-		    "listPtr=%"PTRFMT" minRecSizes=%"INT32" termId=%"UINT64" "
-		    //"startKey.n1=%"XINT32",n0=%"XINT64" (niceness=%"INT32")",
-		    "startKey.n1=%"XINT64",n0=%"XINT64" (niceness=%"INT32")",
+		    "shard=%" UINT32 " "
+		    "listPtr=%" PTRFMT " minRecSizes=%" INT32 " termId=%" UINT64 " "
+		    //"startKey.n1=%" XINT32 ",n0=%" XINT64 " (niceness=%" INT32 ")",
+		    "startKey.n1=%" XINT64 ",n0=%" XINT64 " (niceness=%" INT32 ")",
 		    //g_hostdb.makeHostId ( m_groupId ) ,
 		    m_shardNum,
 		    (PTRTYPE)m_list,
@@ -435,7 +435,7 @@ skip:
 			replyBuf = (char *) mmalloc(replyBufMaxSize , "Msg0");
 		// g_errno is set and we return true if it failed
 		if ( ! replyBuf ) {
-			log("net: Failed to pre-allocate %"INT32" bytes to hold "
+			log("net: Failed to pre-allocate %" INT32 " bytes to hold "
 			    "data read remotely from %s: %s.",
 			    replyBufMaxSize,getDbnameFromId(m_rdbId),
 			    mstrerror(g_errno));
@@ -474,7 +474,7 @@ skip:
 		Host *h = g_hostdb.getHost ( m_hostId );
 		if ( ! h ) { 
 			g_errno = EBADHOSTID; 
-			log(LOG_LOGIC,"net: msg0: Bad hostId of %"INT64".",
+			log(LOG_LOGIC,"net: msg0: Bad hostId of %" INT64 ".",
 			    m_hostId);
 			return true;
 		}
@@ -515,8 +515,8 @@ skip:
 	else
 		m_startTime = 0;
 	//if ( m_rdbId == RDB_INDEXDB ) log("Msg0:: getting remote indexlist. "
-	//			"termId=%"UINT64", "
-	//			"groupNum=%"UINT32"",
+	//			"termId=%" UINT64 ", "
+	//			"groupNum=%" UINT32 "",
 	//			g_indexdb.getTermId(m_startKey) ,
 	//			g_hostdb.makeHostId ( m_groupId ) );
 
@@ -623,7 +623,7 @@ skip:
 			      rdbId           ,
 			      minRecSizes     ) ) {
 		log("net: Failed to send request for data from %s in shard "
-		    "#%"UINT32" over network: %s.",
+		    "#%" UINT32 " over network: %s.",
 		    getDbnameFromId(m_rdbId),m_shardNum, mstrerror(g_errno));
 		// no, multicast will free this when it is destroyed
 		//if (replyBuf) mfree ( replyBuf , replyBufMaxSize , "Msg22" );
@@ -751,7 +751,7 @@ void Msg0::gotSplitReply ( ) {
 		totalSize += lists[i].m_listSize;
 
 		QUICKPOLL(m_niceness);
-		//log(LOG_INFO, "Msg0: ls=%"INT32" rs=%"INT32" rms=%"INT32" fi=%"INT32" r=%"XINT32"",
+		//log(LOG_INFO, "Msg0: ls=%" INT32 " rs=%" INT32 " rms=%" INT32 " fi=%" INT32 " r=%" XINT32 "",
 		//	      lists[i].m_listSize, replySize,
 		//	      replyMaxSize, (int32_t)freeit, reply);
 		//log(LOG_INFO, "Msg0: ------------------------------------");
@@ -773,7 +773,7 @@ void Msg0::gotSplitReply ( ) {
 	char *alloc = (char*)mmalloc(totalSize, "Msg0");
 	if ( !alloc ) {
 		g_errno = ENOMEM;
-		log ( "Msg0: Could not allocate %"INT32" bytes for split merge",
+		log ( "Msg0: Could not allocate %" INT32 " bytes for split merge",
 		      totalSize );
 		return;
 	}
@@ -811,7 +811,7 @@ void Msg0::gotSplitReply ( ) {
 			       false         , // fast merge?
 			       m_niceness    );
 	//log(LOG_INFO, "Msg0: ------------------------------------");
-	//log(LOG_INFO, "Msg0: ls=%"INT32"",
+	//log(LOG_INFO, "Msg0: ls=%" INT32 "",
 	//	      m_list->m_listSize);
 	//m_list->printList();
 	// cache?
@@ -826,8 +826,8 @@ void Msg0::gotSplitReply ( ) {
 void Msg0::gotReply ( char *reply , int32_t replySize , int32_t replyMaxSize ) {
 	// timing debug
 	if ( g_conf.m_logTimingNet && m_rdbId==RDB_POSDB && m_startTime > 0 )
-		log(LOG_TIMING,"net: msg0: Got termlist, termId=%"UINT64". "
-		    "Took %"INT64" ms, replySize=%"INT32" (niceness=%"INT32").",
+		log(LOG_TIMING,"net: msg0: Got termlist, termId=%" UINT64 ". "
+		    "Took %" INT64 " ms, replySize=%" INT32 " (niceness=%" INT32 ").",
 		    g_posdb.getTermId ( m_startKey ) ,
 		    gettimeofdayInMilliseconds()-m_startTime,
 		    replySize,m_niceness);
@@ -934,8 +934,8 @@ void handleRequest0 ( UdpSlot *slot , int32_t netnice ) {
 	int32_t  requestSize = slot->m_readBufSize;
 	// collection is now stored in the request, so i commented this out
 	//if ( requestSize != MSG0_REQ_SIZE ) {
-	//	log("net: Received bad data request size of %"INT32" bytes. "
-	//	    "Should be %"INT32".", requestSize ,(int32_t)MSG0_REQ_SIZE);
+	//	log("net: Received bad data request size of %" INT32 " bytes. "
+	//	    "Should be %" INT32 ".", requestSize ,(int32_t)MSG0_REQ_SIZE);
 	//	us->sendErrorReply ( slot , EBADREQUESTSIZE );
 	//	return;
 	//}
@@ -1130,7 +1130,7 @@ void handleRequest0 ( UdpSlot *slot , int32_t netnice ) {
 						 true // promoteRec?
 						 )){
 			// debug
-			//log("msg0: got sectiondblist in cache datasize=%"INT32"",
+			//log("msg0: got sectiondblist in cache datasize=%" INT32 "",
 			//    dataSize);
 			// send that back
 			g_udpServer.sendReply_ass ( data            ,
@@ -1155,7 +1155,7 @@ void handleRequest0 ( UdpSlot *slot , int32_t netnice ) {
 	try { st0 = new (State00); }
 	catch ( ... ) { 
 		g_errno = ENOMEM;
-		log("Msg0: new(%"INT32"): %s", 
+		log("Msg0: new(%" INT32 "): %s", 
 		    (int32_t)sizeof(State00),mstrerror(g_errno));
 		us->sendErrorReply ( slot , g_errno ); 
 		return; 
@@ -1176,7 +1176,7 @@ void handleRequest0 ( UdpSlot *slot , int32_t netnice ) {
 
 	// debug msg
 	if ( maxCacheAge != 0 && ! addToCache )
-		log(LOG_LOGIC,"net: msg0: check but don't add... rdbid=%"INT32".",
+		log(LOG_LOGIC,"net: msg0: check but don't add... rdbid=%" INT32 ".",
 		    (int32_t)rdbId);
 	// . if this request came over on the high priority udp server
 	//   make sure the priority gets passed along
@@ -1230,14 +1230,14 @@ void gotListWrapper ( void *state , RdbList *listb , Msg5 *msg5xx ) {
 	//	log("HEY! niceness is not 0");
 	// timing debug
 	if ( g_conf.m_logTimingNet || g_conf.m_logDebugNet ) {
-		//log("Msg0:hndled request %"UINT64"",gettimeofdayInMilliseconds());
+		//log("Msg0:hndled request %" UINT64 "",gettimeofdayInMilliseconds());
 		int32_t size = -1;
 		if ( list ) size     = list->getListSize();
 		log(LOG_TIMING|LOG_DEBUG,
 		    "net: msg0: Handled request for data. "
-		    "Now sending data termId=%"UINT64" size=%"INT32""
-		    " transId=%"INT32" ip=%s port=%i took=%"INT64" "
-		    "(niceness=%"INT32").",
+		    "Now sending data termId=%" UINT64 " size=%" INT32 ""
+		    " transId=%" INT32 " ip=%s port=%i took=%" INT64 " "
+		    "(niceness=%" INT32 ").",
 		    g_posdb.getTermId(msg5->m_startKey),
 		    size,slot->m_transId,
 		    iptoa(slot->m_ip),slot->m_port,
@@ -1281,8 +1281,8 @@ void gotListWrapper ( void *state , RdbList *listb , Msg5 *msg5xx ) {
 	     // do not annoy me with these linkdb msgs
 	     dataSize > newSize+100 ) 
 		log(LOG_LOGIC,"net: msg0: Sending more data than what was "
-		    "requested. Ineffcient. Bad engineer. dataSize=%"INT32" "
-		    "minRecSizes=%"INT32".",dataSize,oldSize);
+		    "requested. Ineffcient. Bad engineer. dataSize=%" INT32 " "
+		    "minRecSizes=%" INT32 ".",dataSize,oldSize);
 	/*
 	// always compress these lists
 	if ( st0->m_rdbId == RDB_SECTIONDB ) { // && 1 == 3) {
@@ -1292,12 +1292,12 @@ void gotListWrapper ( void *state , RdbList *listb , Msg5 *msg5xx ) {
 		int64_t sh48 = g_datedb.getTermId(startKey);
 
 		// debug
-		//log("msg0: got sectiondblist from disk listsize=%"INT32"",
+		//log("msg0: got sectiondblist from disk listsize=%" INT32 "",
 		//    list->getListSize());
 
 		if ( dataSize > 50000 )
-			log("msg0: sending back list rdb=%"INT32" "
-			    "listsize=%"INT32" sh48=0x%"XINT64"",
+			log("msg0: sending back list rdb=%" INT32 " "
+			    "listsize=%" INT32 " sh48=0x%" XINT64 "",
 			    (int32_t)st0->m_rdbId,
 			    dataSize,
 			    sh48);
@@ -1368,7 +1368,7 @@ void gotListWrapper ( void *state , RdbList *listb , Msg5 *msg5xx ) {
 
 		// debug
 		//log("msg0: compressed sectiondblist from disk "
-		//    "newlistsize=%"INT32"", dataSize);
+		//    "newlistsize=%" INT32 "", dataSize);
 		
 		// use this timestamp
 		int32_t now = getTimeLocal();//Global();
@@ -1436,7 +1436,7 @@ void gotListWrapper ( void *state , RdbList *listb , Msg5 *msg5xx ) {
 	}
 
 
-	//log("sending replySize=%"INT32" min=%"INT32"",dataSize,msg5->m_minRecSizes);
+	//log("sending replySize=%" INT32 " min=%" INT32 "",dataSize,msg5->m_minRecSizes);
 	// . TODO: dataSize may not equal list->getListMaxSize() so
 	//         Mem class may show an imblanace
 	// . now g_udpServer is responsible for freeing data/dataSize
@@ -1471,8 +1471,8 @@ void doneSending_ass ( void *state , UdpSlot *slot ) {
 		double mbps ;
 		mbps = (((double)slot->m_sendBufSize) * 8.0 / (1024.0*1024.0))/
 			(((double)slot->m_startTime)/1000.0);
-		log("net: msg0: Sent %"INT32" bytes of data in %"INT64" ms (%3.1fMbps) "
-		      "(niceness=%"INT32").",
+		log("net: msg0: Sent %" INT32 " bytes of data in %" INT64 " ms (%3.1fMbps) "
+		      "(niceness=%" INT32 ").",
 		      slot->m_sendBufSize , now - slot->m_startTime , mbps ,
 		      st0->m_niceness );
 	}

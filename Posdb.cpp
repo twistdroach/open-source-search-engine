@@ -108,7 +108,7 @@ bool Posdb::init ( ) {
 	char *p = list.m_list;
 	char *pend = p + list.m_listSize;
 	for ( ; p < pend ; p++ )
-		log("db: %02"INT32") 0x%02"XINT32"",p-list.m_list,
+		log("db: %02" INT32 ") 0x%02" XINT32 "",p-list.m_list,
 		    (int32_t)(*(unsigned char *)p));
 	list.resetListPtr();
 	list.checkList_r(false,true,RDB_POSDB);
@@ -297,7 +297,7 @@ bool Posdb::verify ( char *coll ) {
 		if ( shardNum == getMyShardNum() ) got++;
 		else if ( !printedKey ) {
 			log ( "db: Found bad key in list (only printing once): "
-			      "%"XINT64" %"XINT64" %"XINT32"", k.n2, k.n1 ,(int32_t)k.n0);
+			      "%" XINT64 " %" XINT64 " %" XINT32 "", k.n2, k.n1 ,(int32_t)k.n0);
 			printedKey = true;
 		}
 		if ( k.n1 == 0 && k.n0 == 0 ) {
@@ -313,7 +313,7 @@ bool Posdb::verify ( char *coll ) {
 	if ( got != count ) {
 		// tally it up
 		g_rebalance.m_numForeignRecs += count - got;
-		log ("db: Out of first %"INT32" records in posdb, only %"INT32" belong "
+		log ("db: Out of first %" INT32 " records in posdb, only %" INT32 " belong "
 		     "to our group.",count,got);
 		// exit if NONE, we probably got the wrong data
 		if ( got == 0 ) log("db: Are you sure you have the "
@@ -324,7 +324,7 @@ bool Posdb::verify ( char *coll ) {
 		g_threads.enableThreads();
 		return g_conf.m_bypassValidation;
 	}
-	log ( LOG_DEBUG, "db: Posdb passed verification successfully for %"INT32" "
+	log ( LOG_DEBUG, "db: Posdb passed verification successfully for %" INT32 " "
 			"recs.", count );
 	// DONE
 	g_threads.enableThreads();
@@ -574,7 +574,7 @@ int64_t Posdb::getTermFreq ( collnum_t collnum, int64_t termId ) {
 	// -1 means not found in cache. if found, return it though.
 	// do not return even if found if we are doing a qa test.
 	if ( val >= 0 && ! qaTest ) {
-		//log("posdb: got %"INT64" in cache",val);
+		//log("posdb: got %" INT64 " in cache",val);
 		return val;
 	}
 
@@ -646,7 +646,7 @@ int64_t Posdb::getTermFreq ( collnum_t collnum, int64_t termId ) {
 	//maxRecs /= 8;
 
 	// log it
-	//log("posdb: approx=%"INT64" exact=%"INT64"",maxRecs,numBytes);
+	//log("posdb: approx=%" INT64 " exact=%" INT64 "",maxRecs,numBytes);
 
 	// now cache it. it sets g_errno to zero.
 	g_termFreqCache.addLongLong2 ( collnum, termId, maxRecs );
@@ -848,7 +848,7 @@ bool PosdbTable::allocTopTree ( ) {
 		if ( list->isEmpty() ) continue;
 		// show if debug
 		if ( m_debug )
-			log("toptree: adding listsize %"INT32" to nn2",
+			log("toptree: adding listsize %" INT32 " to nn2",
 			    list->m_listSize);
 		// tally. each new docid in this termlist will compress
 		// the 6 byte termid out, so reduce by 6.
@@ -907,12 +907,12 @@ bool PosdbTable::allocTopTree ( ) {
 	if ( nn > 2000000000 ) nn = 2000000000;
 
 	if ( m_debug )
-		log("toptree: toptree: initializing %"INT64" nodes",nn);
+		log("toptree: toptree: initializing %" INT64 " nodes",nn);
 
 	if ( nn < m_r->m_docsToGet && m_debug )
-		log("query: warning only getting up to %"INT64" docids "
-		    "even though %"INT32" requested because termlist "
-		    "sizes are so small!! splits=%"INT32""
+		log("query: warning only getting up to %" INT64 " docids "
+		    "even though %" INT32 " requested because termlist "
+		    "sizes are so small!! splits=%" INT32 ""
 		    , nn
 		    , m_r->m_docsToGet 
 		    , (int32_t)m_r->m_numDocIdSplits
@@ -1440,8 +1440,8 @@ void PosdbTable::evalSlidingWindow ( char **ptrs ,
 				// must be in right order!
 				if ( dist < 0 ) {
 					max = -1.0;
-					//log("ddd0: i=%"INT32" j=%"INT32" "
-					//    "dist=%"INT32" qdist=%"INT32"",
+					//log("ddd0: i=%" INT32 " j=%" INT32 " "
+					//    "dist=%" INT32 " qdist=%" INT32 "",
 					//    i,j,dist,qdist);
 				}
 				// allow for a discrepancy of 1 unit in case 
@@ -1449,19 +1449,19 @@ void PosdbTable::evalSlidingWindow ( char **ptrs ,
 				// unit
 				else if ( dist > qdist && dist - qdist > 1 ) {
 					max = -1.0;
-					//log("ddd1: i=%"INT32" j=%"INT32" "
-					//    "dist=%"INT32" qdist=%"INT32"",
+					//log("ddd1: i=%" INT32 " j=%" INT32 " "
+					//    "dist=%" INT32 " qdist=%" INT32 "",
 					//    i,j,dist,qdist);
 				}
 				else if ( dist < qdist && qdist - dist > 1 ) {
 					max = -1.0;
-					//log("ddd2: i=%"INT32" j=%"INT32" "
-					//    "dist=%"INT32" qdist=%"INT32"",
+					//log("ddd2: i=%" INT32 " j=%" INT32 " "
+					//    "dist=%" INT32 " qdist=%" INT32 "",
 					//    i,j,dist,qdist);
 				}
 				//else {
-				//	log("ddd3: i=%"INT32" j=%"INT32" "
-				//	    "dist=%"INT32" qdist=%"INT32"",
+				//	log("ddd3: i=%" INT32 " j=%" INT32 " "
+				//	    "dist=%" INT32 " qdist=%" INT32 "",
 				//	    i,j,dist,qdist);
 				//}
 			}
@@ -1502,7 +1502,7 @@ void PosdbTable::evalSlidingWindow ( char **ptrs ,
 		//if ( winners2[i*MAX_QUERY_TERMS+j])
 		//unsigned char hg2;
 		//hg2=g_posdb.getHashGroup(winners2[i*MAX_QUERY_TERMS+j]
-		//log("winner %"INT32" x %"INT32" 0x%"XINT32" 0x%"XINT32"",i,j,
+		//log("winner %" INT32 " x %" INT32 " 0x%" XINT32 " 0x%" XINT32 "",i,j,
 		//    (int32_t)winners1[i*MAX_QUERY_TERMS+j],
 		//    (int32_t)winners1[i*MAX_QUERY_TERMS+j]);
 	}
@@ -1593,7 +1593,7 @@ void PosdbTable::intersectLists9_r ( ) {
 			// only once
 			m_dt.addKey ( &sh32 );
 			// log it
-			//log("usite: %08"XINT32" %"INT64" rs=%"INT32"",sh32,d,rs);
+			//log("usite: %08" XINT32 " %" INT64 " rs=%" INT32 "",sh32,d,rs);
 			// stop if too much so we do not try to 
 			// re-alloc in a thread!
 			if ( m_dt.m_numSlotsUsed >= 1000000 ) break;
@@ -1678,7 +1678,7 @@ void PosdbTable::intersectLists9_r ( ) {
 		list->m_list      = p;
 		// print total list sizes
 		if ( ! m_debug ) continue;
-		log("query: termlist #%"INT32" totalSize=%"INT64"",k,total);
+		log("query: termlist #%" INT32 " totalSize=%" INT64 "",k,total);
 	}
 
 
@@ -1933,7 +1933,7 @@ void PosdbTable::intersectLists9_r ( ) {
 		termFreqWeights[nrg] = ((float *)m_r->ptr_termFreqWeights)[i];
 		// crazy?
 		if ( nn >= MAX_SUBLISTS ) {
-			log("query: too many sublists. %"INT32" >= %"INT32"",
+			log("query: too many sublists. %" INT32 " >= %" INT32 "",
 			    nn,(int32_t)MAX_SUBLISTS);
 			return;
 			char *xx=NULL; *xx=0; 
@@ -2189,7 +2189,7 @@ void PosdbTable::intersectLists9_r ( ) {
 		if ( mptr > mend ) { char *xx=NULL;*xx=0; }
 		int64_t endTime = gettimeofdayInMilliseconds();
 		int64_t took = endTime - startTime;
-		log("posdb: synlist merge took %"INT64" ms", took);
+		log("posdb: synlist merge took %" INT64 " ms", took);
 	}
 	//
 	//
@@ -2347,7 +2347,7 @@ void PosdbTable::intersectLists9_r ( ) {
 			ends   [i] = mergedListEnd[i];
 			docId = currentDocId;
 			// debug
-			//log("posdb: matched d=%"INT64"",currentDocId);
+			//log("posdb: matched d=%" INT64 "",currentDocId);
 		}
 	skipMinList:
 		// advance mini's docid
@@ -2488,8 +2488,8 @@ void PosdbTable::intersectLists9_r ( ) {
 				char hgx = g_posdb.getHashGroup(xx);
 				int32_t pos = g_posdb.getWordPos(xx);
 				logf(LOG_DEBUG,
-				     "posdb: premerge k=%"INT32" j=%"INT32",nsub=%"INT32" "
-				    "hg=%s pos=%"INT32"",k,j,nsub,
+				     "posdb: premerge k=%" INT32 " j=%" INT32 ",nsub=%" INT32 " "
+				    "hg=%s pos=%" INT32 "",k,j,nsub,
 				    getHashGroupString(hgx),pos);
 			}	
 
@@ -2582,7 +2582,7 @@ void PosdbTable::intersectLists9_r ( ) {
 			// show hg
 			//char hgx = g_posdb.getHashGroup(mptr);
 			//int32_t pos = g_posdb.getWordPos(mptr);
-			//log("j=%"INT32" mink=%"INT32" hgx=%"INT32" pos=%"INT32"",j,mink,hgx,pos);
+			//log("j=%" INT32 " mink=%" INT32 " hgx=%" INT32 " pos=%" INT32 "",j,mink,hgx,pos);
 			lastMptr = mptr;
 			mptr += 12;
 			isFirstKey = false;
@@ -2616,7 +2616,7 @@ void PosdbTable::intersectLists9_r ( ) {
 			// show hg
 			//char hgx = g_posdb.getHashGroup(mptr);
 			//int32_t pos = g_posdb.getWordPos(mptr);
-			//log("j=%"INT32" mink=%"INT32" hgx=%"INT32" pos=%"INT32"",j,mink,hgx,pos);
+			//log("j=%" INT32 " mink=%" INT32 " hgx=%" INT32 " pos=%" INT32 "",j,mink,hgx,pos);
 			//if ( pos == 8949 ) { // 73779 ) {
 			//	char *xx=NULL;*xx=0; }
 			// save it
@@ -3409,14 +3409,14 @@ void PosdbTable::getTermPairScoreForNonBody ( int32_t i, int32_t j,
 		if ( ! m_msg2 && m_r->m_seoDebug >= 2 )
 		log("seo: "
 		    "gottermpairscore=%.05f "
-		    "term1=%"INT32" "
-		    "term2=%"INT32" "
-		    "wpos1=%"INT32" "
-		    "wpos2=%"INT32" "
+		    "term1=%" INT32 " "
+		    "term2=%" INT32 " "
+		    "wpos1=%" INT32 " "
+		    "wpos2=%" INT32 " "
 		    "hg1=%s "
 		    "hg2=%s "
-		    "dr1=%"INT32" "
-		    "dr2=%"INT32" "
+		    "dr1=%" INT32 " "
+		    "dr2=%" INT32 " "
 		    ,score
 		    ,i
 		    ,j
@@ -3735,7 +3735,7 @@ float PosdbTable::getTermPairScoreForAny ( int32_t i, int32_t j,
  loop:
 
 	// pos = 19536
-	//log("hg1=%"INT32" hg2=%"INT32" pos1=%"INT32" pos2=%"INT32"",
+	//log("hg1=%" INT32 " hg2=%" INT32 " pos1=%" INT32 " pos2=%" INT32 "",
 	//    (int32_t)hg1,(int32_t)hg2,(int32_t)p1,(int32_t)p2);
 
 	// . if p1/p2 is in body and not in window, skip
@@ -3757,8 +3757,8 @@ float PosdbTable::getTermPairScoreForAny ( int32_t i, int32_t j,
 		// if in the same quoted phrase, order is bad!
 		if ( inSameQuotedPhrase ) {
 			// debug
-			//log("dddx: i=%"INT32" j=%"INT32" dist=%"INT32" qdist=%"INT32" posi=%"INT32" "
-			//    "posj=%"INT32"",
+			//log("dddx: i=%" INT32 " j=%" INT32 " dist=%" INT32 " qdist=%" INT32 " posi=%" INT32 " "
+			//    "posj=%" INT32 "",
 			//    i,j,dist,qdist,p1,p2);
 			// TODO: allow for off by 1
 			// if it has punct in it then dist will be 3, 
@@ -3833,18 +3833,18 @@ float PosdbTable::getTermPairScoreForAny ( int32_t i, int32_t j,
 		if ( ! m_msg2 && m_debug >= 2 )
 		log("seo: "
 		    "gottermpairscore2=%.010f "
-		    "term1=%"INT32" "
-		    "term2=%"INT32" "
-		    "wpos1=%"INT32" "
-		    "wpos2=%"INT32" "
-		    "dist=%"INT32" "
-		    "qdist=%"INT32" "
-		    "syn1=%"INT32" "
-		    "syn2=%"INT32" "
+		    "term1=%" INT32 " "
+		    "term2=%" INT32 " "
+		    "wpos1=%" INT32 " "
+		    "wpos2=%" INT32 " "
+		    "dist=%" INT32 " "
+		    "qdist=%" INT32 " "
+		    "syn1=%" INT32 " "
+		    "syn2=%" INT32 " "
 		    "hg1=%s "
 		    "hg2=%s "
-		    "dr1=%"INT32" "
-		    "dr2=%"INT32" "
+		    "dr1=%" INT32 " "
+		    "dr2=%" INT32 " "
 		    "wts=%f "
 		    "tfw1=%f "
 		    "tfw2=%f "
@@ -3966,8 +3966,8 @@ float PosdbTable::getTermPairScoreForAny ( int32_t i, int32_t j,
 		// if in the same quoted phrase, order is bad!
 		if ( inSameQuotedPhrase ) {
 			// debug
-			//log("dddy: i=%"INT32" j=%"INT32" dist=%"INT32" qdist=%"INT32" posi=%"INT32" "
-			//    "posj=%"INT32"",
+			//log("dddy: i=%" INT32 " j=%" INT32 " dist=%" INT32 " qdist=%" INT32 " posi=%" INT32 " "
+			//    "posj=%" INT32 "",
 			//    i,j,dist,qdist,p1,p2);
 			goto skip2;
 		}
@@ -4035,18 +4035,18 @@ float PosdbTable::getTermPairScoreForAny ( int32_t i, int32_t j,
 		if ( ! m_msg2 && m_debug >= 2 )
 		log("seo: "
 		    "gottermpairscore3=%.010f "
-		    "term1=%"INT32" "
-		    "term2=%"INT32" "
-		    "wpos1=%"INT32" "
-		    "wpos2=%"INT32" "
-		    "dist=%"INT32" "
-		    "qdist=%"INT32" "
-		    "syn1=%"INT32" "
-		    "syn2=%"INT32" "
+		    "term1=%" INT32 " "
+		    "term2=%" INT32 " "
+		    "wpos1=%" INT32 " "
+		    "wpos2=%" INT32 " "
+		    "dist=%" INT32 " "
+		    "qdist=%" INT32 " "
+		    "syn1=%" INT32 " "
+		    "syn2=%" INT32 " "
 		    "hg1=%s "
 		    "hg2=%s "
-		    "dr1=%"INT32" "
-		    "dr2=%"INT32" "
+		    "dr1=%" INT32 " "
+		    "dr2=%" INT32 " "
 		    "wts=%f "
 		    "tfw1=%f "
 		    "tfw2=%f "
@@ -4170,7 +4170,7 @@ float PosdbTable::getTermPairScoreForAny ( int32_t i, int32_t j,
 
 	if ( m_debug >= 2 ) {
 		for ( int32_t k = 0 ; k < numTop ; k++ )
-			log("posdb: best score #%"INT32" = %f",k,bestScores[k]);
+			log("posdb: best score #%" INT32 " = %f",k,bestScores[k]);
 		log("posdb: best score sum = %f",sum);
 	}
 
@@ -4221,7 +4221,7 @@ float PosdbTable::getTermPairScoreForAny ( int32_t i, int32_t j,
 	m_pairScoreBuf.incrementLength(need);
 
 	//if ( m_debug )
-	//	log("posdb: DOCID=%"INT64" BESTSCORE=%f",m_docId,sum);
+	//	log("posdb: DOCID=%" INT64 " BESTSCORE=%f",m_docId,sum);
 
 	// set each of the top scoring terms individiually
 	for ( int32_t k = 0 ; k < numTop ; k++ , px++ ) {
@@ -4282,31 +4282,31 @@ float PosdbTable::getTermPairScoreForAny ( int32_t i, int32_t j,
 		// only log for debug if it is one result
 		if ( m_debug < 2 ) continue;
 		// log each one for debug
-		log("posdb: result #%"INT32" "
-		    "i=%"INT32" "
-		    "j=%"INT32" "
-		    "termNum0=%"INT32" "
-		    "termNum1=%"INT32" "
+		log("posdb: result #%" INT32 " "
+		    "i=%" INT32 " "
+		    "j=%" INT32 " "
+		    "termNum0=%" INT32 " "
+		    "termNum1=%" INT32 " "
 		    "finalscore=%f "
 		    "tfw0=%f "
 		    "tfw1=%f "
-		    "fixeddist=%"INT32" " // bool
+		    "fixeddist=%" INT32 " " // bool
 		    "wts=%f "
-		    "bflags0=%"INT32" "
-		    "bflags1=%"INT32" "
-		    "syn0=%"INT32" "
-		    "syn1=%"INT32" "
-		    "div0=%"INT32" "
-		    "div1=%"INT32" "
-		    "wspam0=%"INT32" "
-		    "wspam1=%"INT32" "
+		    "bflags0=%" INT32 " "
+		    "bflags1=%" INT32 " "
+		    "syn0=%" INT32 " "
+		    "syn1=%" INT32 " "
+		    "div0=%" INT32 " "
+		    "div1=%" INT32 " "
+		    "wspam0=%" INT32 " "
+		    "wspam1=%" INT32 " "
 		    "hgrp0=%s "
 		    "hgrp1=%s "
-		    "qdist=%"INT32" "
-		    "wpos0=%"INT32" "
-		    "wpos1=%"INT32" "
-		    "dens0=%"INT32" "
-		    "dens1=%"INT32" "
+		    "qdist=%" INT32 " "
+		    "wpos0=%" INT32 " "
+		    "wpos1=%" INT32 " "
+		    "dens0=%" INT32 " "
+		    "dens1=%" INT32 " "
 		    ,k
 		    ,i
 		    ,j
@@ -4736,7 +4736,7 @@ bool PosdbTable::setQueryTermInfo ( ) {
 		qti->m_termFreqWeight =((float *)m_r->ptr_termFreqWeights)[i];
 		// crazy?
 		if ( nn >= MAX_SUBLISTS ) {
-			log("query: too many sublists. %"INT32" >= %"INT32"",
+			log("query: too many sublists. %" INT32 " >= %" INT32 "",
 			    nn,(int32_t)MAX_SUBLISTS);
 			return false;
 			char *xx=NULL; *xx=0; 
@@ -5014,7 +5014,7 @@ int64_t PosdbTable::countUniqueDocids( QueryTermInfo *qti ) {
 	if ( recPtr >= subListEnd ) {
 		if ( m_debug )
 			log(LOG_DEBUG,"posdb: term list size of %"
-			    INT32" has %"INT64" unique docids"
+			    INT32" has %" INT64 " unique docids"
 			    , (int32_t)(subListEnd-start),count);
 		return count;
 	}
@@ -5315,7 +5315,7 @@ void PosdbTable::addDocIdVotes ( QueryTermInfo *qti , int32_t   listGroupNum) {
 	/*
 	// debug
 	int64_t dd = g_posdb.getDocId(minRecPtr);
-	log("posdb: adding docid %"INT64"", dd);
+	log("posdb: adding docid %" INT64 "", dd);
 	// test
 	uint64_t actualDocId;
 	actualDocId = *(uint32_t *)(dp+1);
@@ -5506,7 +5506,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			// only once
 			m_dt.addKey ( &sh32 );
 			// log it
-			//log("usite: %08"XINT32" %"INT64" rs=%"INT32"",sh32,d,rs);
+			//log("usite: %08" XINT32 " %" INT64 " rs=%" INT32 "",sh32,d,rs);
 			// stop if too much so we do not try to 
 			// re-alloc in a thread!
 			if ( m_dt.m_numSlotsUsed >= 1000000 ) break;
@@ -5553,12 +5553,12 @@ void PosdbTable::intersectLists10_r ( ) {
 		// sanity test
 		int64_t d1 = g_posdb.getDocId(list->getList());
 		if ( d1 > m_msg2->m_docIdEnd ) { 
-			log("posdb: d1=%"INT64" > %"INT64"",
+			log("posdb: d1=%" INT64 " > %" INT64 "",
 			    d1,m_msg2->m_docIdEnd);
 			//char *xx=NULL;*xx=0; 
 		}
 		if ( d1 < m_msg2->m_docIdStart ) { 
-			log("posdb: d1=%"INT64" < %"INT64"",
+			log("posdb: d1=%" INT64 " < %" INT64 "",
 			    d1,m_msg2->m_docIdStart);
 			//char *xx=NULL;*xx=0; 
 		}
@@ -5699,7 +5699,7 @@ void PosdbTable::intersectLists10_r ( ) {
 		list->m_list      = p;
 		// print total list sizes
 		if ( ! m_debug ) continue;
-		log("query: termlist #%"INT32" totalSize=%"INT64"",k,total);
+		log("query: termlist #%" INT32 " totalSize=%" INT64 "",k,total);
 	}
 
 	//static int32_t s_special = 0;
@@ -5817,7 +5817,7 @@ void PosdbTable::intersectLists10_r ( ) {
 		actualDocId <<= 8;
 		actualDocId |= (unsigned char)xdp[0];
 		actualDocId >>= 2;
-		log("posdb: intact docid %"INT64"",actualDocId);
+		log("posdb: intact docid %" INT64 "",actualDocId);
 	}
 	*/
 
@@ -5869,7 +5869,7 @@ void PosdbTable::intersectLists10_r ( ) {
 		actualDocId <<= 8;
 		actualDocId |= (unsigned char)xdp[0];
 		actualDocId >>= 2;
-		log("posdb: intact docid %"INT64"",actualDocId);
+		log("posdb: intact docid %" INT64 "",actualDocId);
 	}
 	*/
 
@@ -5878,7 +5878,7 @@ void PosdbTable::intersectLists10_r ( ) {
 	if ( m_debug ) {
 		now = gettimeofdayInMilliseconds();
 		took = now - lastTime;
-		log("posdb: new algo phase %"INT32" took %"INT64" ms", phase,took);
+		log("posdb: new algo phase %" INT32 " took %" INT64 " ms", phase,took);
 		lastTime = now;
 		phase++;
 	}
@@ -5916,7 +5916,7 @@ void PosdbTable::intersectLists10_r ( ) {
 	if ( m_debug ) {
 		now = gettimeofdayInMilliseconds();
 		took = now - lastTime;
-		log("posdb: new algo phase %"INT32" took %"INT64" ms", phase,took);
+		log("posdb: new algo phase %" INT32 " took %" INT64 " ms", phase,took);
 		lastTime = now;
 		phase++;
 	}
@@ -6277,7 +6277,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			// save it
 			qti->m_savedCursor[j] = xc;
 			// get new docid
-			//log("new docid %"INT64"",g_posdb.getDocId(xc) );
+			//log("new docid %" INT64 "",g_posdb.getDocId(xc) );
 			// advance the cursors. skip our 12
 			xc += 12;
 			// then skip any following 6 byte keys because they
@@ -6539,11 +6539,11 @@ void PosdbTable::intersectLists10_r ( ) {
 	// into one list
  seoHackSkip2:
 
-	//log("seo: special=%"INT32"",s_special);
+	//log("seo: special=%" INT32 "",s_special);
 	//s_special++;
 	//if ( m_q->m_numTerms >= 3 && 
 	//     strncmp(m_q->m_qterms[1].m_term,"fine ",5)==0)
-	//	log("seo: debug. (special=%"INT32") posdblistptr2size=%"INT32"",
+	//	log("seo: debug. (special=%" INT32 ") posdblistptr2size=%" INT32 "",
 	//	    special,m_q->m_qterms[2].m_posdbListPtr->m_listSize);
 
 	//
@@ -6618,8 +6618,8 @@ void PosdbTable::intersectLists10_r ( ) {
 					ks = g_posdb.getKeySize(xx);
 					char hgx = g_posdb.getHashGroup(xx);
 					int32_t pos = g_posdb.getWordPos(xx);
-					log("seo: term#=%"INT32",nsub=%"INT32" "
-					    "hgx=%"INT32" pos=%"INT32"",
+					log("seo: term#=%" INT32 ",nsub=%" INT32 " "
+					    "hgx=%" INT32 " pos=%" INT32 "",
 					    j,k,(int32_t)hgx,pos);
 				}	
 			}
@@ -6717,7 +6717,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			// show hg
 			//char hgx = g_posdb.getHashGroup(mptr);
 			//int32_t pos = g_posdb.getWordPos(mptr);
-			//log("j1=%"INT32" mink=%"INT32" hgx=%"INT32" pos=%"INT32"",
+			//log("j1=%" INT32 " mink=%" INT32 " hgx=%" INT32 " pos=%" INT32 "",
 			//    (int32_t)j,(int32_t)mink,(int32_t)hgx,(int32_t)pos);
 			lastMptr = mptr;
 			mptr += 12;
@@ -6753,7 +6753,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			// show hg
 			//char hgx = g_posdb.getHashGroup(mptr);
 			//int32_t pos = g_posdb.getWordPos(mptr);
-			//log("j2=%"INT32" mink=%"INT32" hgx=%"INT32" pos=%"INT32"",
+			//log("j2=%" INT32 " mink=%" INT32 " hgx=%" INT32 " pos=%" INT32 "",
 			//    (int32_t)j,(int32_t)mink,(int32_t)hgx,(int32_t)pos);
 			//if ( pos == 8949 ) { // 73779 ) {
 			//	char *xx=NULL;*xx=0; }
@@ -6762,7 +6762,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			mptr += 6;
 		}
 	skipOver:
-		//log("skipping ks=%"INT32"",(int32_t)ks);
+		//log("skipping ks=%" INT32 "",(int32_t)ks);
 		// advance the cursor over the key we used.
 		nwp[mink] += ks; // g_posdb.getKeySize(nwp[mink]);
 		// exhausted?
@@ -6823,9 +6823,9 @@ void PosdbTable::intersectLists10_r ( ) {
 			char *xx=NULL;*xx=0; }
 		// show it
 		//if ( ! m_msg2 && m_r->m_seoDebug ) {
-		//	log("seo: dumping mergedlist #%"INT32"",i);
+		//	log("seo: dumping mergedlist #%" INT32 "",i);
 		//	printTermList(i,plist,psize);
-		//	log("seo: DONE dumping mergedlist #%"INT32"",i);
+		//	log("seo: DONE dumping mergedlist #%" INT32 "",i);
 		//}
 	}
 
@@ -7161,7 +7161,7 @@ void PosdbTable::intersectLists10_r ( ) {
 	minPairScore = -1.0;
 
 	// debug
-	//log("posdb: eval docid %"INT64"",m_docId);
+	//log("posdb: eval docid %" INT64 "",m_docId);
 
 	//
 	//
@@ -7473,8 +7473,8 @@ void PosdbTable::intersectLists10_r ( ) {
 			HashTableX *ft = &qt->m_facetHashTable;
 			fe=(FacetEntry *)ft->getValue(&val32);
 			// debug 
-			//log("facets: got entry for key=%"UINT32" "
-			//d=%"UINT64"",  val32,m_docId);
+			//log("facets: got entry for key=%" UINT32 " "
+			//d=%" UINT64 "",  val32,m_docId);
 			// if not there, init it... but NOT if doing ranges
 			// because we already initialized the ranges above
 			// so there is already one bucket for each range 
@@ -7574,7 +7574,7 @@ void PosdbTable::intersectLists10_r ( ) {
 		// just in case?
 		if ( m_r->m_seoDebug ) m_scoreInfoBuf.reset();
 		// show it, 190255775595
-		//log("posdb: storing score info for d=%"INT64"",m_docId);
+		//log("posdb: storing score info for d=%" INT64 "",m_docId);
 		// copy into the safebuf for holding the scoring info
 		m_scoreInfoBuf.safeMemcpy ( (char *)&dcs, sizeof(DocIdScore) );
 		// save that
@@ -7637,7 +7637,7 @@ void PosdbTable::intersectLists10_r ( ) {
 		// note it because it is slow
 		// this is only used if getting score info, which is
 		// not default when getting an xml or json feed
-		//log("query: kicking out docid %"INT64" from score buf",
+		//log("query: kicking out docid %" INT64 " from score buf",
 		//    si->m_docId);
 
 		// get his single and pair offsets
@@ -7740,7 +7740,7 @@ void PosdbTable::intersectLists10_r ( ) {
 	if ( m_debug ) {
 		now = gettimeofdayInMilliseconds();
 		took = now - lastTime;
-		log("posdb: new algo phase %"INT32" took %"INT64" ms", phase,took);
+		log("posdb: new algo phase %" INT32 " took %" INT64 " ms", phase,took);
 		lastTime = now;
 		phase++;
 	}
@@ -7771,11 +7771,11 @@ void PosdbTable::intersectLists10_r ( ) {
 	}
 
 	if ( m_debug ) {
-		log("posdb: # fail0 = %"INT32" ", fail0 );
-		log("posdb: # pass0 = %"INT32" ", pass0 );
+		log("posdb: # fail0 = %" INT32 " ", fail0 );
+		log("posdb: # pass0 = %" INT32 " ", pass0 );
 
-		log("posdb: # fail = %"INT32" ", fail );
-		log("posdb: # pass = %"INT32" ", pass );
+		log("posdb: # fail = %" INT32 " ", fail );
+		log("posdb: # pass = %" INT32 " ", pass );
 	}
 
 
@@ -7969,7 +7969,7 @@ void printTermList ( int32_t i, char *list, int32_t listSize ) {
 		int32_t dr = g_posdb.getDensityRank(px);
 		int32_t hg = g_posdb.getHashGroup(px);
 		int32_t syn = g_posdb.getIsSynonym(px);
-		log("seo: qterm#%"INT32" pos=%"INT32" dr=%"INT32" hg=%s syn=%"INT32""
+		log("seo: qterm#%" INT32 " pos=%" INT32 " dr=%" INT32 " hg=%s syn=%" INT32 ""
 		    , i
 		    , wp
 		    , dr
@@ -8155,7 +8155,7 @@ bool PosdbTable::makeDocIdVoteBufForBoolQuery_r ( ) {
 
 	// debug info
 	// int32_t nc = m_bt.getLongestString();
-	// log("posdb: string of %"INT32" filled slots!",nc);
+	// log("posdb: string of %" INT32 " filled slots!",nc);
 
 	char *dst = m_docIdVoteBuf.getBufStart();
 
@@ -8176,7 +8176,7 @@ bool PosdbTable::makeDocIdVoteBufForBoolQuery_r ( ) {
 		// it passes, add the ocid
 		if ( m_debug ) {
 			int64_t docId =*(int64_t *)m_bt.getKeyFromSlot(i);
-			log("query: eval d=%"UINT64" vec[0]=%"XINT32" h64=%"INT64"",
+			log("query: eval d=%" UINT64 " vec[0]=%" XINT32 " h64=%" INT64 "",
 			    docId,(int32_t)vec[0],h64);
 			//if ( docId == 47801316261LL )
 			//	log("hy");
@@ -8188,8 +8188,8 @@ bool PosdbTable::makeDocIdVoteBufForBoolQuery_r ( ) {
 			int64_t docId =*(int64_t *)m_bt.getKeyFromSlot(i);
 			// fix it up
 			if ( m_debug ) {
-				log("query: adding d=%"UINT64" bitVecSize=%"INT32" "
-				    "bitvec[0]=0x%"XINT32" (TRUE)",
+				log("query: adding d=%" UINT64 " bitVecSize=%" INT32 " "
+				    "bitvec[0]=0x%" XINT32 " (TRUE)",
 				    docId,m_vecSize,(int32_t)vec[0]);
 			}
 			// shift up
@@ -8207,7 +8207,7 @@ bool PosdbTable::makeDocIdVoteBufForBoolQuery_r ( ) {
 			int64_t docId =*(int64_t *)m_bt.getKeyFromSlot(i);
 			// fix it up
 			if ( m_debug ) {
-				log("query: adding d=%"UINT64" vec[0]=0x%"XINT32"",
+				log("query: adding d=%" UINT64 " vec[0]=0x%" XINT32 "",
 				    docId,(int32_t)vec[0]);
 			}
 			// shift up
@@ -8278,7 +8278,7 @@ int Posdb::printList ( RdbList &list ) {
 			//int64_t nd3 = g_posdb.getDocId(rec+18);
 			// what size is it really?
 			// seems like 12 bytes
-			//log("debug1: d=%"INT64" nd1=%"INT64" nd2=%"INT64" nd3=%"INT64"",
+			//log("debug1: d=%" INT64 " nd1=%" INT64 " nd2=%" INT64 " nd3=%" INT64 "",
 			//d,nd1,nd2,nd3);
 			err = " (alignerror1)";
 			if ( nd1 < d ) err = " (alignordererror1)";
@@ -8292,7 +8292,7 @@ int Posdb::printList ( RdbList &list ) {
 			//int64_t nd3 = g_posdb.getDocId(rec+18);
 			// what size is it really?
 			// seems like 12 bytes
-			//log("debug1: d=%"INT64" nd1=%"INT64" nd2=%"INT64" nd3=%"INT64"",
+			//log("debug1: d=%" INT64 " nd1=%" INT64 " nd2=%" INT64 " nd3=%" INT64 "",
 			//d,nd1,nd2,nd3);
 			//if ( nd2 < d ) { char *xx=NULL;*xx=0; }
 			//char *xx=NULL;*xx=0;
@@ -8308,7 +8308,7 @@ int Posdb::printList ( RdbList &list ) {
 			//int64_t nd3 = g_posdb.getDocId(rec+18);
 			// what size is it really?
 			// seems like 12 bytes really as well!
-			//log("debug2: d=%"INT64" nd1=%"INT64" nd2=%"INT64" nd3=%"INT64"",
+			//log("debug2: d=%" INT64 " nd1=%" INT64 " nd2=%" INT64 " nd3=%" INT64 "",
 			//d,nd1,nd2,nd3);
 			//char *xx=NULL;*xx=0;
 			err = " (alignerror3)";
@@ -8326,22 +8326,22 @@ int Posdb::printList ( RdbList &list ) {
 			//fprintf(stderr,
 			log(
 			       "k=%s "
-			       "tid=%015"UINT64" "
-			       "docId=%012"INT64" "
+			       "tid=%015" UINT64 " "
+			       "docId=%012" INT64 " "
 
-			       "siterank=%02"INT32" "
-			       "langid=%02"INT32" "
-			       "pos=%06"INT32" "
-			       "hgrp=%02"INT32" "
-			       "spamrank=%02"INT32" "
-			       "divrank=%02"INT32" "
-			       "syn=%01"INT32" "
-			       "densrank=%02"INT32" "
-			       //"outlnktxt=%01"INT32" "
-			       "mult=%02"INT32" "
+			       "siterank=%02" INT32 " "
+			       "langid=%02" INT32 " "
+			       "pos=%06" INT32 " "
+			       "hgrp=%02" INT32 " "
+			       "spamrank=%02" INT32 " "
+			       "divrank=%02" INT32 " "
+			       "syn=%01" INT32 " "
+			       "densrank=%02" INT32 " "
+			       //"outlnktxt=%01" INT32 " "
+			       "mult=%02" INT32 " "
 
-			       "dh=0x%02"XINT32" "
-			       "rs=%"INT32"" //recSize
+			       "dh=0x%02" XINT32 " "
+			       "rs=%" INT32 "" //recSize
 			       "%s" // dd
 			       "%s" // err
 			       "\n" , 
@@ -8366,22 +8366,22 @@ int Posdb::printList ( RdbList &list ) {
 		else
 			log(//fprintf(stderr,
 			       "k=%s "
-			       "tid=%015"UINT64" "
-			       "docId=%012"INT64" "
+			       "tid=%015" UINT64 " "
+			       "docId=%012" INT64 " "
 
-			       "siterank=%02"INT32" "
-			       "langid=%02"INT32" "
-			       "pos=%06"INT32" "
-			       "hgrp=%02"INT32" "
-			       "spamrank=%02"INT32" "
-			       "divrank=%02"INT32" "
-			       "syn=%01"INT32" "
-			       "densrank=%02"INT32" "
-			       //"outlnktxt=%01"INT32" "
-			       "mult=%02"INT32" "
-			       //"senth32=0x%08"XINT32" "
-			       "recSize=%"INT32" "
-			       "dh=0x%02"XINT32"%s%s\n" , 
+			       "siterank=%02" INT32 " "
+			       "langid=%02" INT32 " "
+			       "pos=%06" INT32 " "
+			       "hgrp=%02" INT32 " "
+			       "spamrank=%02" INT32 " "
+			       "divrank=%02" INT32 " "
+			       "syn=%01" INT32 " "
+			       "densrank=%02" INT32 " "
+			       //"outlnktxt=%01" INT32 " "
+			       "mult=%02" INT32 " "
+			       //"senth32=0x%08" XINT32 " "
+			       "recSize=%" INT32 " "
+			       "dh=0x%02" XINT32 "%s%s\n" , 
 			       KEYSTR(&k,sizeof(key144_t)),
 			       (int64_t)g_posdb.getTermId(&k),
 			       d , 

@@ -259,7 +259,7 @@ bool Msg7::sendInjectionRequestToHost ( InjectionRequest *ir ,
 	Host *host = getHostToHandleInjection ( ir->ptr_url );
 
 	log("inject: sending injection request of url %s reqsize=%i "
-	    "to host #%"INT32"",
+	    "to host #%" INT32 "",
 	    ir->ptr_url,(int)sirSize,host->m_hostId);
 
 	// . ok, forward it to another host now
@@ -473,7 +473,7 @@ bool sendHttpReply ( void *state ) {
 	// a success reply, include docid and url i guess
 	if ( format == FORMAT_XML ) {
 		am.safePrintf("<response>\n");
-		am.safePrintf("\t<statusCode>%"INT32"</statusCode>\n",
+		am.safePrintf("\t<statusCode>%" INT32 "</statusCode>\n",
 			      (int32_t)g_errno);
 		am.safePrintf("\t<statusMsg><![CDATA[");
 		am.cdataEncode(mstrerror(g_errno));
@@ -483,7 +483,7 @@ bool sendHttpReply ( void *state ) {
 		// we do not index container docs.
 		//int64_t docId = xd->m_docId;
 		//if ( ! xd->m_docIdValid ) docId = 0;
-		am.safePrintf("\t<docId>%"INT64"</docId>\n",docId);
+		am.safePrintf("\t<docId>%" INT64 "</docId>\n",docId);
 		// this will have to be re-tooled if we deem necessary.
 		// was being use to do section voting for diffbot
 		// upon a url being injected.
@@ -502,11 +502,11 @@ bool sendHttpReply ( void *state ) {
 
 	if ( format == FORMAT_JSON ) {
 		am.safePrintf("{\"response\":{\n");
-		am.safePrintf("\t\"statusCode\":%"INT32",\n",(int32_t)g_errno);
+		am.safePrintf("\t\"statusCode\":%" INT32 ",\n",(int32_t)g_errno);
 		am.safePrintf("\t\"statusMsg\":\"");
 		am.jsonEncode(mstrerror(g_errno));
 		am.safePrintf("\",\n");
-		am.safePrintf("\t\"docId\":%"INT64",\n",docId);//xd->m_docId);
+		am.safePrintf("\t\"docId\":%" INT64 ",\n",docId);//xd->m_docId);
 		// this will have to be re-tooled if we deem necessary.
 		// was being use to do section voting for diffbot
 		// upon a url being injected.
@@ -579,11 +579,11 @@ bool sendHttpReply ( void *state ) {
 		char *p = buf;
 		// return docid and hostid
 		if ( ! g_errno ) p += sprintf ( p , 
-						"0,docId=%"INT64","
-						"hostId=%"INT32"," , 
+						"0,docId=%" INT64 ","
+						"hostId=%" INT32 "," , 
 						docId , hostId );
 		// print error number here
-		else  p += sprintf ( p , "%"INT32",0,0,", (int32_t)g_errno );
+		else  p += sprintf ( p , "%" INT32 ",0,0,", (int32_t)g_errno );
 		// print error msg out, too or "Success"
 		p += sprintf ( p , "%s", mstrerror(g_errno));
 		mdelete ( msg7, sizeof(Msg7) , "PageInject" );
@@ -1314,7 +1314,7 @@ bool resumeImports ( ) {
 		try { is = new (ImportState); }
 		catch ( ... ) { 
 			g_errno = ENOMEM;
-			log("PageInject: new(%"INT32"): %s", 
+			log("PageInject: new(%" INT32 "): %s", 
 			    (int32_t)sizeof(ImportState),mstrerror(g_errno));
 			return false;
 		}
@@ -1415,7 +1415,7 @@ bool ImportState::setCurrentTitleFileAndOffset ( ) {
 			m_loadedPlaceHolder = true;
 			// get the placeholder
 			sscanf ( ff.getBufStart() 
-				 , "%"UINT64",%"INT32""
+				 , "%" UINT64 ",%" INT32 ""
 				 , &m_fileOffset
 				 , &minFileId
 				 );
@@ -1428,7 +1428,7 @@ bool ImportState::setCurrentTitleFileAndOffset ( ) {
 	// set up s_bf then
 	//if ( m_bfFileId != minFileId ) {
 	SafeBuf tmp;
-	tmp.safePrintf("titledb%04"INT32"-000.dat"
+	tmp.safePrintf("titledb%04" INT32 "-000.dat"
 		       //,dir.getDirname()
 		       ,minFileId);
 	m_bf.set ( dir.getDirname() ,tmp.getBufStart() );
@@ -1473,7 +1473,7 @@ bool ImportState::importLoop ( ) {
 
 	if ( ! cr || g_hostdb.m_hostId != 0 ) { 
 		// if coll was deleted!
-		log("import: collnum %"INT32" deleted while importing into",
+		log("import: collnum %" INT32 " deleted while importing into",
 		    (int32_t)m_collnum);
 		//if ( m_numOut > m_numIn ) return true;
 		// delete the entire import state i guess
@@ -1498,7 +1498,7 @@ bool ImportState::importLoop ( ) {
 		// wait for all to return
 		if ( out > 0 ) return false;
 		// then delete it
-		log("import: collnum %"INT32" import loop disabled",
+		log("import: collnum %" INT32 " import loop disabled",
 		    (int32_t)m_collnum);
 		mdelete ( this, sizeof(ImportState) , "impstate");
 		delete (this);
@@ -1550,7 +1550,7 @@ bool ImportState::importLoop ( ) {
 	int32_t reqSize;
 
 	if ( m_fileOffset >= m_bfFileSize ) {
-		log("inject: import: done processing file %"INT32" %s",
+		log("inject: import: done processing file %" INT32 " %s",
 		    m_bfFileId,m_bf.getFilename());
 		goto nextFile;
 	}
@@ -1586,7 +1586,7 @@ bool ImportState::importLoop ( ) {
 	need += 4; // collnum, first 4 bytes
 	if ( dataSize < 0 || dataSize > 500000000 ) {
 		log("main: could not scan in titledb rec of "
-		    "corrupt dataSize of %"INT32". BAILING ENTIRE "
+		    "corrupt dataSize of %" INT32 ". BAILING ENTIRE "
 		    "SCAN of file %s",dataSize,m_bf.getFilename());
 		goto nextFile;
 	}
@@ -1792,7 +1792,7 @@ void gotMulticastReplyWrapper ( void *state , void *state2 ) {
 
 	is->m_numIn++;
 
-	log("import: imported %"INT64" docs (off=%"INT64")",
+	log("import: imported %" INT64 " docs (off=%" INT64 ")",
 	    is->m_numIn,is->m_fileOffset);
 
 	if ( ! is->importLoop() ) return;
@@ -1892,6 +1892,6 @@ void ImportState::saveFileBookMark ( ) { //Msg7 *msg7 ) {
 	char fname[256];
 	sprintf(fname,"%slasttitledbinjectinfo.dat",g_hostdb.m_dir);
 	SafeBuf ff;
-	ff.safePrintf("%"INT64",%"INT32"",minOff,minFileId);//_fileOffset,m_bfFileId);
+	ff.safePrintf("%" INT64 ",%" INT32 "",minOff,minFileId);//_fileOffset,m_bfFileId);
 	ff.save ( fname );
 }

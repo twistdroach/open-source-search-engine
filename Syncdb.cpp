@@ -60,8 +60,8 @@ bool Syncdb::gotMetaListRequest ( char *req , int32_t reqSize , uint32_t sid ) {
 		// if in range, that is strange
 		if ( k <= ck ) {
 			log("sync: got msg4 meta list with expired key: "
-			    "k .n1=0x%"XINT64" k .n0=0x%"XINT64" "
-			    "ck.n1=0x%"XINT64" ck.n0=0x%"XINT64" " ,
+			    "k .n1=0x%" XINT64 " k .n0=0x%" XINT64 " "
+			    "ck.n1=0x%" XINT64 " ck.n0=0x%" XINT64 " " ,
 			    k.n1,k.n0,ck.n1,ck.n0 );
 			// pretend we added it
 			return true;
@@ -129,7 +129,7 @@ bool Syncdb::gotMetaListRequest ( char *req , int32_t reqSize , uint32_t sid ) {
 	}
 
 	logf(LOG_DEBUG,"syncdb: added a b c and d keys to quick tree "
-	     "tid=%"UINT32" sid=%"UINT32" zid=%"UINT64"",(int32_t)tid,(int32_t)sid,(int64_t)zid);
+	     "tid=%" UINT32 " sid=%" UINT32 " zid=%" UINT64 "",(int32_t)tid,(int32_t)sid,(int64_t)zid);
 
 
 	// success
@@ -589,8 +589,8 @@ bool Syncdb::loop4 ( ) {
 		key128_t dk = makeKey(0,0,0,1,0,sid,zid,1);
 		if ( m_qt.getNode ( 0 , (char *)&dk ) >= 0 ) continue;
 		// note it
-		log("sync: requesting meta list sid=%"UINT32" zid=%"UINT64" age=%"UINT64" "
-		    "from twin hostid #%"INT32"",
+		log("sync: requesting meta list sid=%" UINT32 " zid=%" UINT64 " age=%" UINT64 " "
+		    "from twin hostid #%" INT32 "",
 		    (uint32_t)sid,
 		    (uint64_t)zid,
 		    (uint64_t)age,
@@ -731,8 +731,8 @@ void Syncdb::loop5 ( ) {
 		// get sid
 		uint32_t sid = getSid ( &k );
 		// note it
-		log("sync: storing key for meta request list sid=%"UINT32" zid=%"UINT64" "
-		    "from twin hostid #%"INT32"",(uint32_t)sid,
+		log("sync: storing key for meta request list sid=%" UINT32 " zid=%" UINT64 " "
+		    "from twin hostid #%" INT32 "",(uint32_t)sid,
 		    (uint64_t)zid,(int32_t)tid);
 		// make the key. make NEGATIVE "b" keys.
 		m_keys [ m_nk++ ] = makeKey ( 0,1,0,0,0,sid,zid,0 );
@@ -940,7 +940,7 @@ bool Syncdb::init ( ) {
 	}
 	// bad val?
 	if ( val < 0 || val > 2 ) 
-		return log("sync: insync.dat had bad value of %"INT32"",val);
+		return log("sync: insync.dat had bad value of %" INT32 "",val);
 	// report if in sync or not
 	if ( val == 0 ) log("sync: insync.dat says out of sync");
 	if ( val == 1 ) log("sync: insync.dat says in sync");
@@ -1076,8 +1076,8 @@ bool Syncdb::verify ( char *coll ) {
 		if ( shardNum == getMyShardNum() ) got++;
 	}
 	if ( got != count ) {
-		log ("db: Out of first %"INT32" records in syncdb, "
-		     "only %"INT32" belong to our group.",count,got);
+		log ("db: Out of first %" INT32 " records in syncdb, "
+		     "only %" INT32 " belong to our group.",count,got);
 		// exit if NONE, we probably got the wrong data
 		if ( got == 0 ) log("db: Are you sure you have the "
 					   "right "
@@ -1088,7 +1088,7 @@ bool Syncdb::verify ( char *coll ) {
 		return g_conf.m_bypassValidation;
 	}
 	log ( LOG_INFO, "db: Syncdb passed verification successfully for "
-			"%"INT32" recs.", count );
+			"%" INT32 " recs.", count );
 	// DONE
 	g_threads.enableThreads();
 	return true;
@@ -1098,7 +1098,7 @@ bool Syncdb::verify ( char *coll ) {
 // . called from PageHosts.cpp!!!
 bool Syncdb::syncHost ( int32_t syncHostId ) {
 	Host *sh = g_hostdb.getHost ( syncHostId );
-	if ( ! sh ) return log("sync: bad host id %"INT32"",syncHostId);
+	if ( ! sh ) return log("sync: bad host id %" INT32 "",syncHostId);
 	// get its group
 	//Host *hosts = g_hostdb.getGroup ( sh->m_groupId );
 	Host *hosts = g_hostdb.getShard ( sh->m_shardNum );
@@ -1115,7 +1115,7 @@ bool Syncdb::syncHost ( int32_t syncHostId ) {
 		// save it
 		int32_t tmp = syncHostId;
 		// log it
-		log("sync: sending sync request to host id #%"INT32"",h->m_hostId);
+		log("sync: sending sync request to host id #%" INT32 "",h->m_hostId);
 		// int16_tcut
 		UdpServer *us = &g_udpServer;
 		// use that guy
@@ -1137,7 +1137,7 @@ bool Syncdb::syncHost ( int32_t syncHostId ) {
 			// success
 			return true;
 		// note it
-		log("sync: had error sending sync request to host id #%"INT32": %s",
+		log("sync: had error sending sync request to host id #%" INT32 ": %s",
 		    h->m_hostId,mstrerror(g_errno));
 		// error!
 		return false;
@@ -1218,7 +1218,7 @@ void handleRequest55 ( UdpSlot *slot , int32_t netnice ) {
 	// check the size
 	int32_t checkSize = atol(cmd);
 	if ( checkSize > 4096 || checkSize <= 0 ) {
-		log("sync: Detected %"INT32" bytes in directory to "
+		log("sync: Detected %" INT32 " bytes in directory to "
 		    "sync.  Must be empty.  Is .antiword dir in "
 		    "there?", checkSize);
 		us->sendErrorReply ( slot , EBADENGINEER );
@@ -1246,7 +1246,7 @@ void Syncdb::rcpFiles ( ) {
 	}
 
 	// log the start
-	log ( LOG_INFO, "sync: Copying our data files to host %"INT32".", 
+	log ( LOG_INFO, "sync: Copying our data files to host %" INT32 ".", 
 	      g_hostdb.m_syncHost->m_hostId );
 
 	// start the sync in a thread, complete when it's done
@@ -1319,7 +1319,7 @@ void Syncdb::syncStart_r ( bool amThread ) {
 	// and num
 	int32_t collnum = base->m_collnum;
 	// make the dir
-	sprintf ( cmd , "ssh %s 'mkdir %scoll.%s.%"INT32"'",
+	sprintf ( cmd , "ssh %s 'mkdir %scoll.%s.%" INT32 "'",
 		  ips,dir,coll,collnum);
 	// execute
 	log ( LOG_INFO, "sync: %s", cmd );
@@ -1336,7 +1336,7 @@ void Syncdb::syncStart_r ( bool amThread ) {
 	// get map
 	RdbMap *map = base->m_maps[k];
 	// copy the map file
-	sprintf ( cmd , "rcp %s %s:%scoll.%s.%"INT32"/'",
+	sprintf ( cmd , "rcp %s %s:%scoll.%s.%" INT32 "/'",
 		  map->getFilename(),ips,dir,coll,collnum);
 	log ( LOG_INFO, "sync: %s", cmd );
 	// MDW: take out for now
@@ -1351,7 +1351,7 @@ void Syncdb::syncStart_r ( bool amThread ) {
 	// get part file
 	File *p = f->getFile2(m);//m_files[m];
 	// copy that
-	sprintf ( cmd , "rcp %s %s:%scoll.%s.%"INT32"/'",
+	sprintf ( cmd , "rcp %s %s:%scoll.%s.%" INT32 "/'",
 		  p->getFilename(),ips,dir,coll,collnum);
 	// execute
 	log ( LOG_INFO, "sync: %s", cmd );
@@ -1431,7 +1431,7 @@ void Syncdb::syncDone ( ) {
 	log ( LOG_INFO, "init: Sync copy done.  Starting host." );
 	g_hostdb.m_syncHost->m_doingSync = 0;
 	char cmd[1024];
-	sprintf(cmd, "./gb start %"INT32"", g_hostdb.m_syncHost->m_hostId);
+	sprintf(cmd, "./gb start %" INT32 "", g_hostdb.m_syncHost->m_hostId);
 	log ( LOG_INFO, "init: %s", cmd );
 	system(cmd);
 	g_hostdb.m_syncHost = NULL;

@@ -390,7 +390,7 @@ bool LangList::loadLists ( ) {
 	for ( int32_t i = 0; i < MAX_LANGUAGES; i++ ) {
 		// load the file for reading
 		char ff[128];
-		sprintf(ff, "%slanglist/langlist.%"INT32"", g_hostdb.m_dir, i );
+		sprintf(ff, "%slanglist/langlist.%" INT32 "", g_hostdb.m_dir, i );
 		int fd = open ( ff, O_RDONLY );
 		// no language file, don't complain
 		if ( fd < 0 ) continue;
@@ -414,7 +414,7 @@ bool LangList::loadLists ( ) {
 		}
 		if ( !buf ) {
 			close(fd);
-			log ( "lang: Could not allocate %"INT32" bytes for "
+			log ( "lang: Could not allocate %" INT32 " bytes for "
 			      "langlist buffer: %s.",
 			      thisAllocSize, mstrerror(g_errno) );
 			return false;
@@ -479,7 +479,7 @@ bool LangList::loadLists ( ) {
 		
 		if ( wordsInList > 0 )
 		log ( LOG_DEBUG, 
-		      "lang: Successfully Loaded %"INT32" out of %"INT32" (%"INT32" bytes) "
+		      "lang: Successfully Loaded %" INT32 " out of %" INT32 " (%" INT32 " bytes) "
 		      "words from %s dictionary.",
 		      wordsInList, numWords>>1, writtenLen, getLanguageString(i) );
 		
@@ -490,8 +490,8 @@ bool LangList::loadLists ( ) {
 	if(buf)	mfree ( buf, allocSize, "LangList" );
 
 
-	log ( LOG_INIT, "lang: Successfully Loaded %"INT32" Language Lists and "
-			"%"INT32" duplicate word hashes.",
+	log ( LOG_INIT, "lang: Successfully Loaded %" INT32 " Language Lists and "
+			"%" INT32 " duplicate word hashes.",
 			listCount, dupCount );
 	// all good
 	return true;

@@ -152,7 +152,7 @@ void Matches::setQuery ( Query *q ) {
 		// don't breach. MDW: i made this >= from > (2/11/09)
 		if ( numToMatch < MAX_QUERY_WORDS_TO_MATCH ) continue;
 		// note it
-		log("matches: hit %"INT32" max query words to match limit",
+		log("matches: hit %" INT32 " max query words to match limit",
 		    (int32_t)MAX_QUERY_WORDS_TO_MATCH);
 		break;
 	}
@@ -536,7 +536,7 @@ bool Matches::set ( XmlDoc   *xd         ,
 		if ( tmpLen > 500 ) tmpLen = 500;
 		gbmemcpy ( tmp , qw , tmpLen );
 		tmp[tmpLen] = '\0';
-		log(LOG_DEBUG,"query: term#=%"INT32" fieldLen=%"INT32":%s",i,tmpLen,tmp);
+		log(LOG_DEBUG,"query: term#=%" INT32 " fieldLen=%" INT32 ":%s",i,tmpLen,tmp);
 
 		if ( fc == FIELD_GBLANG ) {
 			char lang = atoi( tmp );
@@ -769,8 +769,8 @@ bool Matches::addMatches ( char      *s         ,
 	if ( m_numMatchGroups >= MAX_MATCHGROUPS ) {
 		// . log it
 		// . often we have a ton of inlink text!!
-		//log("matches: could not add matches1 for docid=%"INT64" because "
-		//    "already have %"INT32" matchgroups",docId,
+		//log("matches: could not add matches1 for docid=%" INT64 " because "
+		//    "already have %" INT32 " matchgroups",docId,
 		//    (int32_t)MAX_MATCHGROUPS);
 		return true;
 	}
@@ -880,8 +880,8 @@ bool Matches::addMatches ( Words    *words               ,
 	if ( m_numMatchGroups >= MAX_MATCHGROUPS ) {
 		// . log it
 		// . often we have a ton of inlink text!!
-		//log("matches: could not add matches2 for docid=%"INT64" because "
-		//    "already have %"INT32" matchgroups",docId,
+		//log("matches: could not add matches2 for docid=%" INT64 " because "
+		//    "already have %" INT32 " matchgroups",docId,
 		//    (int32_t)MAX_MATCHGROUPS);
 		return true;
 	}
@@ -1301,7 +1301,7 @@ bool Matches::addMatches ( Words    *words               ,
 		if ( max < -1 ) {
 			log("query: found neg word in doc! should be taken "
 			    "care of in summary and doc should not be "
-			    "displayed! query=%s docId=%"INT64"",
+			    "displayed! query=%s docId=%" INT64 "",
 			    m_q->m_orig, docId);
 			return false;
 		}
@@ -1309,7 +1309,7 @@ bool Matches::addMatches ( Words    *words               ,
 		if ( m_tscores && max == -1 ) { 
 			g_errno = EBADENGINEER;
 			log("query: bad matches error. fix me! query=%s "
-			    "docId=%"INT64"", m_q->m_orig, docId);
+			    "docId=%" INT64 "", m_q->m_orig, docId);
 			return false;
 			char *xx = NULL; *xx = 0; 
 		}
@@ -1379,7 +1379,7 @@ bool Matches::addMatches ( Words    *words               ,
 		//if ( m_explicitsMatched & m_matchableRequiredBits ) {
 		//	log(LOG_DEBUG,
 		//	    "query: found all query terms for big hack after "
-		//	    "%"INT32" matches. docId=%"INT64"", m_numMatches, docId);
+		//	    "%" INT32 " matches. docId=%" INT64 "", m_numMatches, docId);
 		//	break;
 		//}
 		//bool hadPhrases ;
@@ -1388,13 +1388,13 @@ bool Matches::addMatches ( Words    *words               ,
 		//if ( (matchedBits & reqMask) == reqMask && 
 		//     !(matchedBits & negMask) ) {
 		//	log("query: found all query terms for big hack after "
-		//	    "%"INT32" matches. docId=%"INT64"", m_numMatches, docId);
+		//	    "%" INT32 " matches. docId=%" INT64 "", m_numMatches, docId);
 		//	break;
 		//}
 		// don't breech MAX_MATCHES_FOR_BIG_HACK
 		if ( m_numMatches < MAX_MATCHES_FOR_BIG_HACK ) continue;
 		
-		log("query: Exceed match buffer of %"INT32" matches. docId=%"INT64"",
+		log("query: Exceed match buffer of %" INT32 " matches. docId=%" INT64 "",
 		    (int32_t)MAX_MATCHES_FOR_BIG_HACK, docId);
 		break;
 	}

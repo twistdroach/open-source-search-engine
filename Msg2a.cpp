@@ -82,7 +82,7 @@ bool Msg2a::makeCatdb( char  *coll,
 	m_urlsBufferSize = URL_BUFFER_SIZE;
 	m_urls = (char*)mmalloc(m_urlsBufferSize, "Msg2a");
 	if (!m_urls) {
-		log("db: Unable to allocate %"INT32" bytes for urls",
+		log("db: Unable to allocate %" INT32 " bytes for urls",
 		    (int32_t)sizeof(char)*m_urlsBufferSize);
 		g_errno = ENOMEM;
 		return gotAllReplies();
@@ -91,7 +91,7 @@ bool Msg2a::makeCatdb( char  *coll,
 	m_catidsBufferSize = CATID_BUFFER_SIZE;
 	m_catids = (int32_t*)mmalloc(sizeof(int32_t)*m_catidsBufferSize, "Msg2a");
 	if (!m_catids) {
-		log("db: Unable to allocate %"INT32" bytes for catids",
+		log("db: Unable to allocate %" INT32 " bytes for catids",
 		    (int32_t)sizeof(int32_t)*m_catidsBufferSize);
 		g_errno = ENOMEM;
 		return gotAllReplies();
@@ -102,7 +102,7 @@ bool Msg2a::makeCatdb( char  *coll,
 		m_numNumCatids = m_numUrls;
 		m_numCatids = (unsigned char*)mmalloc(m_numNumCatids, "Msg2a");
 		if (!m_numCatids) {
-			log("db: Unable to allocate %"INT32" bytes for numCatids",
+			log("db: Unable to allocate %" INT32 " bytes for numCatids",
 			    m_numNumCatids);
 			g_errno = ENOMEM;
 			return gotAllReplies();
@@ -146,7 +146,7 @@ bool Msg2a::makeCatdb( char  *coll,
 		m_updateIndexes = (int32_t*)mmalloc(
 				sizeof(int32_t)*m_numUpdateIndexes, "Msg2a");
 		if ( !m_updateIndexes ) {
-			log("db: Unable to allocate %"INT32" bytes for "
+			log("db: Unable to allocate %" INT32 " bytes for "
 			    "updateIndexes", m_numNumCatids);
 			g_errno = ENOMEM;
 			return gotAllReplies();
@@ -156,7 +156,7 @@ bool Msg2a::makeCatdb( char  *coll,
 		m_numNumCatids = m_numUpdateIndexes + m_numRemoveUrls;
 		m_numCatids = (unsigned char*)mmalloc(m_numNumCatids, "Msg2a");
 		if (!m_numCatids) {
-			log("db: Unable to allocate %"INT32" bytes for numCatids",
+			log("db: Unable to allocate %" INT32 " bytes for numCatids",
 		    	    m_numNumCatids);
 			g_errno = ENOMEM;
 			return gotAllReplies();
@@ -196,7 +196,7 @@ bool Msg2a::makeCatdb( char  *coll,
 				break;
 			if ( urlLen <= 0 ) {
 				log(LOG_WARN, "db: FOUND %i LENGTH URL AT "
-					      "%"INT32" FOR REMOVE, EXITING.",
+					      "%" INT32 " FOR REMOVE, EXITING.",
 					      urlLen, i );
 				return gotAllReplies();
 			}
@@ -208,7 +208,7 @@ bool Msg2a::makeCatdb( char  *coll,
 						       URL_BUFFER_SIZE),
 					       "Msg2a");
 				if (!re_urls) {
-					log("db: Unable to allocate %"INT32""
+					log("db: Unable to allocate %" INT32 ""
 					    " bytes for urls",
 					    (int32_t)sizeof(char)*m_urlsBufferSize+
 					    URL_BUFFER_SIZE);
@@ -246,7 +246,7 @@ bool Msg2a::makeCatdb( char  *coll,
 		//diffInStream.close();
 		close(diffInStream);
 	}
-	log(LOG_INFO, "db: Read %"INT32" urls to remove (%"INT32")\n",
+	log(LOG_INFO, "db: Read %" INT32 " urls to remove (%" INT32 ")\n",
 		      currUrl, m_numRemoveUrls);
 
 	// fill the buffers
@@ -303,7 +303,7 @@ bool Msg2a::makeCatdb( char  *coll,
 						       URL_BUFFER_SIZE),
 					       "Msg2a");
 			if (!re_urls) {
-				log("db: Unable to allocate %"INT32""
+				log("db: Unable to allocate %" INT32 ""
 				    " bytes for urls",
 				    m_urlsBufferSize+
 				    URL_BUFFER_SIZE);
@@ -335,7 +335,7 @@ bool Msg2a::makeCatdb( char  *coll,
 		//log("gencat: url=%s",sb.getBufStart());
 
 	}
-	log(LOG_INFO, "db: Wrote %"INT32" urls to update (%"INT32")\n",
+	log(LOG_INFO, "db: Wrote %" INT32 " urls to update (%" INT32 ")\n",
 		      currUrl - m_numRemoveUrls, m_numUpdateIndexes);
 	//currUrl = 0;
 	currUrl = m_numRemoveUrls;
@@ -392,7 +392,7 @@ bool Msg2a::makeCatdb( char  *coll,
 						CATID_BUFFER_SIZE),
 					"Msg2a");
 			if (!re_catids) {
-				log("db: Unable to allocate %"INT32""
+				log("db: Unable to allocate %" INT32 ""
 				    " bytes for catids",
 				    (int32_t)sizeof(int32_t)*m_catidsBufferSize+
 				    	CATID_BUFFER_SIZE);
@@ -414,7 +414,7 @@ bool Msg2a::makeCatdb( char  *coll,
 		catidp += m_numCatids[currUrl];
 		currUrl++;
 	}
-	log(LOG_INFO, "db: Num Urls: %"INT32"  Num Links: %"INT32"",
+	log(LOG_INFO, "db: Num Urls: %" INT32 "  Num Links: %" INT32 "",
 			currUrl, catidp);
 	// send the Msg9
 	if (!m_msg9b.addCatRecs ( m_urls,

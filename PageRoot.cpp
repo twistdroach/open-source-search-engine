@@ -279,8 +279,8 @@ bool printLogo ( SafeBuf& sb , SearchInput *si ) {
 		sb.safePrintf ( "<a href=\"%s\">", si->m_imgLink );
 	// print image width and length
 	if ( si->m_imgWidth >= 0 && si->m_imgHeight >= 0 ) 
-		//p += sprintf ( p , "<img width=%"INT32" height=%"INT32" ",
-		sb.safePrintf( "<img width=%"INT32" height=%"INT32" ",
+		//p += sprintf ( p , "<img width=%" INT32 " height=%" INT32 " ",
+		sb.safePrintf( "<img width=%" INT32 " height=%" INT32 " ",
 			       si->m_imgWidth , si->m_imgHeight );
 	else
 		//p += sprintf ( p , "<img " );
@@ -543,17 +543,17 @@ bool expandHtml (  SafeBuf& sb,
 			// char kname[4];
 			// g_httpServer.getKey (&key,kname,NULL,0,time(NULL),0,
 			// 		     10);
-			//sprintf (p , "<input type=hidden name=%s value=%"INT32">",
+			//sprintf (p , "<input type=hidden name=%s value=%" INT32 ">",
 			//	  kname,key);
 			//p += gbstrlen ( p );
 			// sb.safePrintf( "<input type=hidden name=%s "
-			//"value=%"INT32">",
+			//"value=%" INT32 ">",
 			// 	       kname,key);
 
 			//adds param for default screen size
 			//if(cr)
 			//	sb.safePrintf("<input type=hidden "
-			//"id='screenWidth' name='ws' value=%"INT32">", 
+			//"id='screenWidth' name='ws' value=%" INT32 ">", 
 			//cr->m_screenWidth);
 
 			// insert collection name too
@@ -1065,7 +1065,7 @@ bool printWebHomePage ( SafeBuf &sb , HttpRequest *r , TcpSocket *sock ) {
 
 	sb.safePrintf("<input name=q type=text "
 		      "style=\""
-		      //"width:%"INT32"px;"
+		      //"width:%" INT32 "px;"
 		      "height:26px;"
 		      "padding:0px;"
 		      "font-weight:bold;"
@@ -1620,7 +1620,7 @@ bool printAddUrlHomePage ( SafeBuf &sb , char *url , HttpRequest *r ) {
 
 	sb.safePrintf("<input name=urls type=text "
 		      "style=\""
-		      //"width:%"INT32"px;"
+		      //"width:%" INT32 "px;"
 		      "height:26px;"
 		      "padding:0px;"
 		      "font-weight:bold;"
@@ -1726,7 +1726,7 @@ bool printAddUrlHomePage ( SafeBuf &sb , char *url , HttpRequest *r ) {
 		sb.urlEncode ( url );
 		// propagate "admin" if set
 		//int32_t admin = hr->getLong("admin",-1);
-		//if ( admin != -1 ) sb.safePrintf("&admin=%"INT32"",admin);
+		//if ( admin != -1 ) sb.safePrintf("&admin=%" INT32 "",admin);
 		// provide hash of the query so clients can't just pass in
 		// a bogus id to get search results from us
 		uint32_t h32 = hash32n(url);
@@ -1734,7 +1734,7 @@ bool printAddUrlHomePage ( SafeBuf &sb , char *url , HttpRequest *r ) {
 		uint64_t rand64 = gettimeofdayInMillisecondsLocal();
 		// msg7 needs an explicit collection for /addurl for injecting
 		// in PageInject.cpp. it does not use defaults for safety.
-		sb.safePrintf("&id=%"UINT32"&c=%s&rand=%"UINT64"';\n"
+		sb.safePrintf("&id=%" UINT32 "&c=%s&rand=%" UINT64 "';\n"
 			      "client.open('GET', url );\n"
 			      "client.send();\n"
 			      "</script>\n"
@@ -1793,7 +1793,7 @@ bool printDirHomePage ( SafeBuf &sb , HttpRequest *r ) {
 
 	sb.safePrintf("<input name=q type=text "
 		      "style=\""
-		      //"width:%"INT32"px;"
+		      //"width:%" INT32 "px;"
 		      "height:26px;"
 		      "padding:0px;"
 		      "font-weight:bold;"
@@ -1976,7 +1976,7 @@ int32_t printLastQueries ( char *p , char *pend ) {
 	// remember start for returning # of bytes stored
 	char *start = p;
 	// begin table (no border)
-	sprintf (p,"<br><table border=0><tr><td><center>Last %"INT32" queries:"
+	sprintf (p,"<br><table border=0><tr><td><center>Last %" INT32 " queries:"
 		 "</td></tr>", (int32_t)QBUF_NUMQUERIES );
 	p += gbstrlen ( p );		
 	// point to last query added
@@ -2647,7 +2647,7 @@ void doneInjectingWrapper3 ( void *st ) {
 			log("addurls: Failed for user at %s: "
 			    "quota breeched.", iptoa(sock->m_ip));
 
-			//rb.safePrintf("Error. %"INT32" urls have "
+			//rb.safePrintf("Error. %" INT32 " urls have "
 			//	      "already been submitted by "
 			//	      "this IP address for the "
 			//	      "last 24 hours. ",
@@ -2729,7 +2729,7 @@ void doneInjectingWrapper3 ( void *st ) {
 			uint32_t rand32 = rand();
 			// in the mime to 0 seconds!
 			sb.safePrintf("<b>Url successfully added. "
-				      "<a href=/search?rand=%"UINT32"&"
+				      "<a href=/search?rand=%" UINT32 "&"
 				      "c=%s&q=url%%3A",
 				      rand32,
 				      coll);

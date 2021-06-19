@@ -38,7 +38,7 @@ bool Indexdb::setGroupIdTable ( ) {
 	m_groupIdTable =(uint32_t*)mmalloc(m_groupIdTableSize, "Indexdb");
 	if ( ! m_groupIdTable ) {
 		g_errno = ENOMEM;
-		log ( "Could not allocate %"INT32" bytes for groupIdTable",
+		log ( "Could not allocate %" INT32 " bytes for groupIdTable",
 		      m_groupIdTableSize );
 		return false;
 	}
@@ -243,7 +243,7 @@ bool Indexdb::verify ( char *coll ) {
 		if ( shardNum == getMyShardNum() ) got++;
 		else if ( !printedKey ) {
 			log ( "db: Found bad key in list (only printing once): "
-			      "%"XINT32" %"XINT64"", k.n1, k.n0 );
+			      "%" XINT32 " %" XINT64 "", k.n1, k.n0 );
 			printedKey = true;
 		}
 		if ( k.n1 == 0 && k.n0 == 0 ) {
@@ -257,7 +257,7 @@ bool Indexdb::verify ( char *coll ) {
 		}
 	}
 	if ( got != count ) {
-		log ("db: Out of first %"INT32" records in indexdb, only %"INT32" belong "
+		log ("db: Out of first %" INT32 " records in indexdb, only %" INT32 " belong "
 		     "to our group.",count,got);
 		// exit if NONE, we probably got the wrong data
 		if ( got == 0 ) log("db: Are you sure you have the "
@@ -268,7 +268,7 @@ bool Indexdb::verify ( char *coll ) {
 		g_threads.enableThreads();
 		return g_conf.m_bypassValidation;
 	}
-	log ( LOG_INFO, "db: Indexdb passed verification successfully for %"INT32" "
+	log ( LOG_INFO, "db: Indexdb passed verification successfully for %" INT32 " "
 			"recs.", count );
 	// DONE
 	g_threads.enableThreads();
@@ -298,7 +298,7 @@ deepLoop:
 	// done after scanning all files
 	if ( currentFile >= numFiles ) {
 		g_threads.enableThreads();
-		log ( LOG_INFO, "db: Finished deep verify for %"INT32" files.",
+		log ( LOG_INFO, "db: Finished deep verify for %" INT32 " files.",
 				numFiles );
 		return;
 	}
@@ -344,13 +344,13 @@ deepLoop:
 	}
 	if ( got != count ) {
 		BigFile *f = rdbBase->getFile(currentFile);
-		log ("db: File %s: Out of first %"INT32" records in indexdb, "
-		     "only %"INT32" belong to our group.",
+		log ("db: File %s: Out of first %" INT32 " records in indexdb, "
+		     "only %" INT32 " belong to our group.",
 		     f->getFilename(),count,got );
 	}
 	//else
-	//	log ( LOG_INFO, "db: File %"INT32": Indexdb passed verification "
-	//	      "successfully for %"INT32" recs.",currentFile,count );
+	//	log ( LOG_INFO, "db: File %" INT32 ": Indexdb passed verification "
+	//	      "successfully for %" INT32 " recs.",currentFile,count );
 	// next file
 	currentFile++;
 	goto deepLoop;
@@ -437,7 +437,7 @@ int64_t Indexdb::getTermFreq ( collnum_t collnum , int64_t termId ) {
 	numRecs += remaining;
 
 	// log it
-	log(LOG_DEBUG,"query: Adding %"INT32" (%"INT32") to score --> %"INT64".", 
+	log(LOG_DEBUG,"query: Adding %" INT32 " (%" INT32 ") to score --> %" INT64 ".", 
 	    remaining,lastChunk,numRecs);
 
 	// . if we got a meta tag here, scores are MOSTLY the same
@@ -447,8 +447,8 @@ int64_t Indexdb::getTermFreq ( collnum_t collnum , int64_t termId ) {
 	if ( shy > 20 ) shy = 0;
 
 	// debug msg
-	//log("endKey.n0=%"XINT64" startKey.n0=%"XINT64"", endKey.n0 , startKey.n0 );
-	//log("maxRecs=%"UINT64" maxKey.n0=%"XINT64" shy=%"INT32"",maxRecs,maxKey.n0,shy);
+	//log("endKey.n0=%" XINT64 " startKey.n0=%" XINT64 "", endKey.n0 , startKey.n0 );
+	//log("maxRecs=%" UINT64 " maxKey.n0=%" XINT64 " shy=%" INT32 "",maxRecs,maxKey.n0,shy);
 
 	// don't loop forever
 	if ( shy == 0 ) shy = 1;
@@ -479,10 +479,10 @@ int64_t Indexdb::getTermFreq ( collnum_t collnum , int64_t termId ) {
 	}
 
 	// log it
-	log(LOG_DEBUG,"query: Interpolated tf to %"INT64".", numRecs );
+	log(LOG_DEBUG,"query: Interpolated tf to %" INT64 ".", numRecs );
 
 	// debug msg
-	//log("numRecs=%"UINT64"",numRecs);
+	//log("numRecs=%" UINT64 "",numRecs);
 
 	// . see PageRoot.cpp for explanation of this:
 	// . so starting with Lars we'll use checksumdb

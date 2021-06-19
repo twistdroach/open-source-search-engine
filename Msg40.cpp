@@ -294,7 +294,7 @@ bool Msg40::getResults ( SearchInput *si      ,
 	// ok, need some sane limit though to prevent malloc from 
 	// trying to get 7800003 docids and going ENOMEM
 	if ( get > MAXDOCIDSTOCOMPUTE ) {
-		log("msg40: asking for too many docids. reducing to %"INT32"",
+		log("msg40: asking for too many docids. reducing to %" INT32 "",
 		    (int32_t)MAXDOCIDSTOCOMPUTE);
 		get = MAXDOCIDSTOCOMPUTE;
 	}
@@ -355,7 +355,7 @@ bool Msg40::getResults ( SearchInput *si      ,
 
 	// debug msg
 	if ( m_si->m_debug ) 
-		logf(LOG_DEBUG,"query: msg40 mapped %"INT32" wanted to %"INT32" to get",
+		logf(LOG_DEBUG,"query: msg40 mapped %" INT32 " wanted to %" INT32 " to get",
 		     m_docsToGetVisible,m_docsToGet );
 
 	// let's try using msg 0xfd like Proxy.cpp uses to forward an http
@@ -539,8 +539,8 @@ bool Msg40::gotCacheReply ( ) {
 		int64_t now  = gettimeofdayInMilliseconds();
 		int64_t took = now - m_startTime;
 		log(LOG_TIMING,
-		    "query: [%"PTRFMT"] found in cache. "
-		    "lookup took %"INT64" ms.",(PTRTYPE)this,took);
+		    "query: [%" PTRFMT "] found in cache. "
+		    "lookup took %" INT64 " ms.",(PTRTYPE)this,took);
 	}
 	m_cachedTime = m_msg17.getCachedTime();
 	m_cachedResults = true;
@@ -554,16 +554,16 @@ bool Msg40::prepareToGetDocIds ( ) {
 	if ( g_conf.m_logTimingQuery || m_si->m_debug ) {
 		int64_t now  = gettimeofdayInMilliseconds();
 		int64_t took = now - m_startTime;
-		logf(LOG_TIMING,"query: [%"PTRFMT"] Not found in cache. "
-		     "Lookup took %"INT64" ms.",(PTRTYPE)this,took);
+		logf(LOG_TIMING,"query: [%" PTRFMT "] Not found in cache. "
+		     "Lookup took %" INT64 " ms.",(PTRTYPE)this,took);
 		m_startTime = now;
-		logf(LOG_TIMING,"query: msg40: [%"PTRFMT"] Getting up to %"INT32" "
-		     "(docToGet=%"INT32") docids", (PTRTYPE)this,
+		logf(LOG_TIMING,"query: msg40: [%" PTRFMT "] Getting up to %" INT32 " "
+		     "(docToGet=%" INT32 ") docids", (PTRTYPE)this,
 		     m_docsToGetVisible,  m_docsToGet);
 	}
 
 	//if ( m_si->m_compoundListMaxSize <= 0 )
-	//	log("query: Compound list max size is %"INT32". That is bad. You "
+	//	log("query: Compound list max size is %" INT32 ". That is bad. You "
 	//	    "will not get back some search results for UOR queries.",
 	//	    m_si->m_compoundListMaxSize );
 
@@ -809,9 +809,9 @@ bool Msg40::gotDocIds ( ) {
 
 	if ( g_conf.m_logTimingQuery || m_si->m_debug||g_conf.m_logDebugQuery){
 		int64_t took = now - m_startTime;
-		logf(LOG_DEBUG,"query: msg40: [%"PTRFMT"] Got %"INT32" docids in %"INT64" ms",
+		logf(LOG_DEBUG,"query: msg40: [%" PTRFMT "] Got %" INT32 " docids in %" INT64 " ms",
 		     (PTRTYPE)this,m_msg3a.getNumDocIds(),took);
-		logf(LOG_DEBUG,"query: msg40: [%"PTRFMT"] Getting up to %"INT32" "
+		logf(LOG_DEBUG,"query: msg40: [%" PTRFMT "] Getting up to %" INT32 " "
 		     "summaries", (PTRTYPE)this,m_docsToGetVisible);
 	}
 
@@ -910,7 +910,7 @@ bool Msg40::gotDocIds ( ) {
 
 	// debug msg
 	if ( m_si->m_debug || g_conf.m_logDebugQuery )
-		logf(LOG_DEBUG,"query: [%"PTRFMT"] Getting topics/gigabits, "
+		logf(LOG_DEBUG,"query: [%" PTRFMT "] Getting topics/gigabits, "
 		     "reference pages and dir pages.",(PTRTYPE)this);
 
 	// . do not bother getting topics if we are passed first page
@@ -1152,7 +1152,7 @@ bool Msg40::reallocMsg20Buf ( ) {
 			if ( k >= m_numMsg20s ) {
 				/*
 				logf(LOG_DEBUG,"query: msg40: could not match "
-				     "docid %"INT64" (max=%"INT32") "
+				     "docid %" INT64 " (max=%" INT32 ") "
 				     "to msg20. newBitScore=0x%hhx q=%s",
 				     m_msg3a.m_docIds[i],
 				     (char)m_msg3a.m_bitScores[i],
@@ -1180,7 +1180,7 @@ bool Msg40::reallocMsg20Buf ( ) {
 					mismatch2 = m_msg3a.m_docIds[i];
 				continue;
 				//logf(LOG_DEBUG,"query: msg40: docid mismatch"
-				//   " at #%"INT32". olddocid=%"INT64" newdocid=%"INT64"",i,
+				//   " at #%" INT32 ". olddocid=%" INT64 " newdocid=%" INT64 "",i,
 				//   tmp[i]->m_docId,m_msg3a.m_docIds[i]);
 				// core for testing on gb1d only!!!
 				//char *xx = NULL; *xx = 0; 
@@ -1221,8 +1221,8 @@ bool Msg40::reallocMsg20Buf ( ) {
 		//log("query: msg40: rellocated msg20 buffer");
 		// show mismatch stats
 		//if ( mismatches )
-		//	logf(LOG_DEBUG,"query: msg40: docid %"INT64" mismatched "
-		//	     "%"INT64". Total of %"INT32" mismathes. q=%s",
+		//	logf(LOG_DEBUG,"query: msg40: docid %" INT64 " mismatched "
+		//	     "%" INT64 ". Total of %" INT32 " mismathes. q=%s",
 		//	     mismatch1,mismatch2,mismatches,
 		//	     m_msg3a.m_q->m_orig );
 		// all done
@@ -1361,9 +1361,9 @@ bool Msg40::launchMsg20s ( bool recalled ) {
 	if ( need > 50 ) need = 50;
 
 	if ( m_si->m_debug || g_conf.m_logDebugQuery )
-		logf(LOG_DEBUG,"query: msg40: can launch %"INT32" more msg20s. "
-		     "%"INT32" out. %"INT32" completed. %"INT32" visible. %"INT32" gaps. "
-		     "%"INT32" contiguous. %"INT32" toGet. ",
+		logf(LOG_DEBUG,"query: msg40: can launch %" INT32 " more msg20s. "
+		     "%" INT32 " out. %" INT32 " completed. %" INT32 " visible. %" INT32 " gaps. "
+		     "%" INT32 " contiguous. %" INT32 " toGet. ",
 		     need,m_numRequests-m_numReplies,sample,allGood,gaps,
 		     m_numContiguous,m_docsToGet);
 	*/
@@ -1400,7 +1400,7 @@ bool Msg40::launchMsg20s ( bool recalled ) {
 		m_numRequests = m_si->m_firstResultNum;
 		m_numReplies  = m_si->m_firstResultNum;
 		m_didSummarySkip = true;
-		log("query: skipping summary generation of first %"INT32" docs",
+		log("query: skipping summary generation of first %" INT32 " docs",
 		    m_si->m_firstResultNum);
 	}
 
@@ -1445,10 +1445,10 @@ bool Msg40::launchMsg20s ( bool recalled ) {
 		// us to get all summaries for every docid. but when we
 		// do federated search we can get a ton of docids.
 		// if ( m_printi >= m_docsToGetVisible ) {
-		// 	logf(LOG_DEBUG,"query: got %"INT32" >= %"INT32" "
+		// 	logf(LOG_DEBUG,"query: got %" INT32 " >= %" INT32 " "
 		// 	     "summaries. done. "
 		// 	     "waiting on remaining "
-		// 	     "%"INT32" to return."
+		// 	     "%" INT32 " to return."
 		// 	     , m_printi
 		// 	     , m_docsToGetVisible
 		// 	     , m_numRequests-m_numReplies);
@@ -1477,10 +1477,10 @@ bool Msg40::launchMsg20s ( bool recalled ) {
 		// us to get all summaries for every docid. but when we
 		// do federated search we can get a ton of docids.
 		// if ( m_printi >= m_docsToGetVisible ) {
-		// 	logf(LOG_DEBUG,"query: got %"INT32" >= %"INT32" "
+		// 	logf(LOG_DEBUG,"query: got %" INT32 " >= %" INT32 " "
 		// 	     "summaries. done. "
 		// 	     "waiting on remaining "
-		// 	     "%"INT32" to return."
+		// 	     "%" INT32 " to return."
 		// 	     , m_printi
 		// 	     , m_docsToGetVisible
 		// 	     , m_numRequests-m_numReplies);
@@ -1519,8 +1519,8 @@ bool Msg40::launchMsg20s ( bool recalled ) {
 		     // periodically
 		     ! m_si->m_streamResults ) {
 			log("msg40: skipping summary "
-			    "lookup #%"INT32" of "
-			    "docid %"INT64" for dead shard #%"INT32""
+			    "lookup #%" INT32 " of "
+			    "docid %" INT64 " for dead shard #%" INT32 ""
 			    , i
 			    , docId
 			    , shardNum );
@@ -1558,8 +1558,8 @@ bool Msg40::launchMsg20s ( bool recalled ) {
 		g_errno = 0;
 		// debug msg
 		if ( m_si->m_debug || g_conf.m_logDebugQuery )
-			logf(LOG_DEBUG,"query: msg40: [%"PTRFMT"] Getting "
-			     "summary #%"INT32" for docId=%"INT64"",
+			logf(LOG_DEBUG,"query: msg40: [%" PTRFMT "] Getting "
+			     "summary #%" INT32 " for docId=%" INT64 "",
 			     (PTRTYPE)this,i,m_msg3a.m_docIds[i]);
 		// launch it
 		m_numRequests++;
@@ -1780,7 +1780,7 @@ bool gotSummaryWrapper ( void *state ) {
 	THIS->m_numReplies++;
 	// log every 1000 i guess
 	if ( (THIS->m_numReplies % 1000) == 0 )
-		log("msg40: got %"INT32" summaries out of %"INT32"",
+		log("msg40: got %" INT32 " summaries out of %" INT32 "",
 		    THIS->m_numReplies,
 		    THIS->m_msg3a.m_numDocIds);
 	// it returns false if we're still awaiting replies
@@ -1831,8 +1831,8 @@ void doneSendingWrapper9 ( void *state , TcpSocket *sock ) {
 bool Msg40::gotSummary ( ) {
 	// now m_linkInfo[i] (for some i, i dunno which) is filled
 	if ( m_si->m_debug || g_conf.m_logDebugQuery )
-		logf(LOG_DEBUG,"query: msg40: [%"PTRFMT"] Got summary. "
-		     "Total got=#%"INT32".",
+		logf(LOG_DEBUG,"query: msg40: [%" PTRFMT "] Got summary. "
+		     "Total got=#%" INT32 ".",
 		     (PTRTYPE)this,m_numReplies);
 
 	// come back up here if we have to get more docids from Msg3a and
@@ -1870,7 +1870,7 @@ bool Msg40::gotSummary ( ) {
 	     st->m_socket->m_numDestroys == st->m_numDestroys ) {
 		m_lastHeartbeat = now2;
 		int n = ::send ( st->m_socket->m_sd , " " , 1 , 0 );
-		log("msg40: sent heartbeat of %"INT32" bytes on sd=%"INT32"",
+		log("msg40: sent heartbeat of %" INT32 " bytes on sd=%" INT32 "",
 		    (int32_t)n,(int32_t)st->m_socket->m_sd);
 	}
 	*/
@@ -1888,7 +1888,7 @@ bool Msg40::gotSummary ( ) {
 		if ( ! cc ) continue;
 		//if ( ! strstr(cc,"Modern Marketing KF400032MA") )  continue;
 		//log("hey");
-		//fprintf(stderr,"msg %"INT32" = %s\n",i,cc );
+		//fprintf(stderr,"msg %" INT32 " = %s\n",i,cc );
 		if ( i == 48329 ) { char *xx=NULL;*xx=0; }
 		mr->ptr_content = NULL;
 	}
@@ -1956,7 +1956,7 @@ bool Msg40::gotSummary ( ) {
 		//Msg20 *m20 = m_msg20[m_printi];
 
 		//if ( ! m20 ) {
-		//	log("msg40: m20 NULL #%"INT32"",m_printi);
+		//	log("msg40: m20 NULL #%" INT32 "",m_printi);
 		//	continue;
 		//}
 
@@ -1969,7 +1969,7 @@ bool Msg40::gotSummary ( ) {
 		//	break;
 
 		if ( m20->m_errno ) {
-			log("msg40: sum #%"INT32" error: %s",
+			log("msg40: sum #%" INT32 " error: %s",
 			    m_printi,mstrerror(m20->m_errno));
 			// make it available to be reused
 			m20->reset();
@@ -1992,8 +1992,8 @@ bool Msg40::gotSummary ( ) {
 		     mr->m_contentType != CT_STATUS &&
 		     m_dedupTable.isInTable ( &mr->m_contentHash32 ) ) {
 			//if ( g_conf.m_logDebugQuery )
-			log("msg40: dup sum #%"INT32" (%"UINT32")"
-			    "(d=%"INT64")",m_printi,
+			log("msg40: dup sum #%" INT32 " (%" UINT32 ")"
+			    "(d=%" INT64 ")",m_printi,
 			    mr->m_contentHash32,mr->m_docId);
 			// make it available to be reused
 			m20->reset();
@@ -2002,7 +2002,7 @@ bool Msg40::gotSummary ( ) {
 
 		// static int32_t s_bs = 0;
 		// if ( (s_bs++ % 5) != 0 ) {
-		// 	log("msg40: FAKE dup sum #%"INT32" (%"UINT32")(d=%"INT64")",m_printi,
+		// 	log("msg40: FAKE dup sum #%" INT32 " (%" UINT32 ")(d=%" INT64 ")",m_printi,
 		// 	    mr->m_contentHash32,mr->m_docId);
 		// 	// make it available to be reused
 		// 	m20->reset();
@@ -2026,13 +2026,13 @@ bool Msg40::gotSummary ( ) {
 
 		// assume we show this to the user
 		m_numDisplayed++;
-		//log("msg40: numdisplayed=%"INT32"",m_numDisplayed);
+		//log("msg40: numdisplayed=%" INT32 "",m_numDisplayed);
 
 		// do not print it if before the &s=X start position though
 		if ( m_si && m_numDisplayed <= m_si->m_firstResultNum ){
 			if ( m_printCount == 0 ) 
-				log("msg40: hiding #%"INT32" (%"UINT32")"
-				    "(d=%"INT64")",
+				log("msg40: hiding #%" INT32 " (%" UINT32 ")"
+				    "(d=%" INT64 ")",
 				    m_printi,mr->m_contentHash32,mr->m_docId);
 		        m_printCount++;
 			if ( m_printCount == 100 ) m_printCount = 0;
@@ -2045,7 +2045,7 @@ bool Msg40::gotSummary ( ) {
 		printSearchResult9 ( m_printi , &m_numPrintedSoFar , mr );
 
 		//m_numPrintedSoFar++;
-		//log("msg40: printedsofar=%"INT32"",m_numPrintedSoFar);
+		//log("msg40: printedsofar=%" INT32 "",m_numPrintedSoFar);
 
 		// now free the reply to save memory since we could be 
 		// streaming back 1M+. we call reset below, no need for this.
@@ -2100,9 +2100,9 @@ bool Msg40::gotSummary ( ) {
 		log("msg40: too many summaries deduped. "
 		    "getting more "
 		    "docids from msg3a merge and getting summaries. "
-		    "%"INT32" are visible, need %"INT32". "
-		    "changing docsToGet from %"INT32" to %"INT32". "
-		    "numReplies=%"INT32" numRequests=%"INT32"",
+		    "%" INT32 " are visible, need %" INT32 ". "
+		    "changing docsToGet from %" INT32 " to %" INT32 ". "
+		    "numReplies=%" INT32 " numRequests=%" INT32 "",
 		    m_numDisplayed,
 		    m_docsToGetVisible,
 		    m_msg3a.m_docsToGet, 
@@ -2251,7 +2251,7 @@ bool Msg40::gotSummary ( ) {
 		//delete st;
 		// otherwise, all done!
 		log("msg40: did not send last search result summary. "
-		    "this=0x%"PTRFMT" because had error: %s",(PTRTYPE)this,
+		    "this=0x%" PTRFMT " because had error: %s",(PTRTYPE)this,
 		    mstrerror(m_socketHadError));
 		return true;
 	}
@@ -2341,7 +2341,7 @@ bool Msg40::gotSummary ( ) {
 	//Query *q = m_msg3a.m_q;
 	Query *q = &m_si->m_q;
         
-	//log(LOG_DEBUG, "query: msg40: deduping from %"INT32" to %"INT32"", 
+	//log(LOG_DEBUG, "query: msg40: deduping from %" INT32 " to %" INT32 "", 
 	//oldNumContiguous, m_numContiguous);
 
 	// count how many are visible!
@@ -2381,7 +2381,7 @@ bool Msg40::gotSummary ( ) {
 		// doesn't match the query, maybe because of indexdb corruption
 		if ( m->m_errno ) {
 			if ( m_si->m_debug || g_conf.m_logDebugQuery )
-			logf( LOG_DEBUG, "query: result %"INT32" (docid=%"INT64") had "
+			logf( LOG_DEBUG, "query: result %" INT32 " (docid=%" INT64 ") had "
 			     "an error (%s) and will not be shown.", i,
 			      m_msg3a.m_docIds[i],  mstrerror(m->m_errno));
 			// update our m_errno while here
@@ -2406,8 +2406,8 @@ bool Msg40::gotSummary ( ) {
 		}
 		if ( ! m_si->m_showBanned && mr && mr->m_isBanned ) {
 			if ( m_si->m_debug || g_conf.m_logDebugQuery )
-			logf ( LOG_DEBUG, "query: result %"INT32" "
-			       "(docid=%"INT64") is "
+			logf ( LOG_DEBUG, "query: result %" INT32 " "
+			       "(docid=%" INT64 ") is "
 			       "banned and will not be shown.", i, 
 			       m_msg3a.m_docIds[i] );
 			*level = CR_BANNED_URL;
@@ -2435,8 +2435,8 @@ bool Msg40::gotSummary ( ) {
 		}
 		if( mr && ! mr->m_hasAllQueryTerms ) {
 			if ( m_si->m_debug || g_conf.m_logDebugQuery )
-			logf( LOG_DEBUG, "query: result %"INT32" "
-			      "(docid=%"INT64") is "
+			logf( LOG_DEBUG, "query: result %" INT32 " "
+			      "(docid=%" INT64 ") is "
 			      "missing query terms and will not be"
 			      " shown.", i, m_msg3a.m_docIds[i] );
 			*level = CR_MISSING_TERMS;
@@ -2506,9 +2506,9 @@ bool Msg40::gotSummary ( ) {
 			if ( (int32_t)s < dedupPercent ) continue;
 			// otherwise mark it as a summary dup
 			if ( m_si->m_debug || g_conf.m_logDebugQuery )
-				logf( LOG_DEBUG, "query: result #%"INT32" "
-				      "(docid=%"INT64") is %.02f%% similar-"
-				      "summary of #%"INT32" (docid=%"INT64")", 
+				logf( LOG_DEBUG, "query: result #%" INT32 " "
+				      "(docid=%" INT64 ") is %.02f%% similar-"
+				      "summary of #%" INT32 " (docid=%" INT64 ")", 
 				      m, m_msg3a.m_docIds[m] , 
 				      s, i, m_msg3a.m_docIds[i] );
 			*level = CR_DUP_SUMMARY;
@@ -2583,10 +2583,10 @@ bool Msg40::gotSummary ( ) {
                                 // cluster level URL already exited previously
                                 char *level = &m_msg3a.m_clusterLevels[i];
                                 if(m_si->m_debug || g_conf.m_logDebugQuery)
-                                        logf(LOG_DEBUG, "query: result #%"INT32" "
-                                                        "(docid=%"INT64") is the "
+                                        logf(LOG_DEBUG, "query: result #%" INT32 " "
+                                                        "(docid=%" INT64 ") is the "
                                                         "same URL as "
-                                                        "(docid=%"INT64")", 
+                                                        "(docid=%" INT64 ")", 
                                                         i,m_msg3a.m_docIds[i], 
                                                         m_urlTable.
 					     getValueFromSlot(slot));
@@ -2626,7 +2626,7 @@ bool Msg40::gotSummary ( ) {
 	// show time
 	took = gettimeofdayInMilliseconds() - startTime;
 	if ( took > 3 )
-		log(LOG_INFO,"query: Took %"INT64" ms to do clustering and dup "
+		log(LOG_INFO,"query: Took %" INT64 " ms to do clustering and dup "
 		    "removal.",took);
 
 	// do we have enough visible at this point?
@@ -2654,14 +2654,14 @@ bool Msg40::gotSummary ( ) {
 		if ( cn < 0 || cn >= CR_END ) { char *xx=NULL;*xx=0; }
 		char *s = g_crStrings[cn];
 		if ( ! s ) { char *xx=NULL;*xx=0; }
-		logf(LOG_DEBUG, "query: msg40 final hit #%"INT32") d=%"UINT64" "
-		     "cl=%"INT32" (%s)", 
+		logf(LOG_DEBUG, "query: msg40 final hit #%" INT32 ") d=%" UINT64 " "
+		     "cl=%" INT32 " (%s)", 
 		     i,m_msg3a.m_docIds[i],(int32_t)m_msg3a.m_clusterLevels[i],s);
 	}
 	if ( debug )
-		logf (LOG_DEBUG,"query: msg40: firstResult=%"INT32", "
-		      "totalDocIds=%"INT32", resultsWanted=%"INT32" "
-		      "visible=%"INT32" toGet=%"INT32" recallCnt=%"INT32"",
+		logf (LOG_DEBUG,"query: msg40: firstResult=%" INT32 ", "
+		      "totalDocIds=%" INT32 ", resultsWanted=%" INT32 " "
+		      "visible=%" INT32 " toGet=%" INT32 " recallCnt=%" INT32 "",
 		      m_si->m_firstResultNum, m_msg3a.m_numDocIds ,
 		      m_docsToGetVisible, visible,
 		      //m_numContiguous, 
@@ -2682,9 +2682,9 @@ bool Msg40::gotSummary ( ) {
 		// note it
 		log("msg40: too many summaries invisible. getting more "
 		    "docids from msg3a merge and getting summaries. "
-		    "%"INT32" are visible, need %"INT32". "
-		    "%"INT32" to %"INT32". "
-		    "numReplies=%"INT32" numRequests=%"INT32"",
+		    "%" INT32 " are visible, need %" INT32 ". "
+		    "%" INT32 " to %" INT32 ". "
+		    "numReplies=%" INT32 " numRequests=%" INT32 "",
 		    visible, m_docsToGetVisible,
 		    m_msg3a.m_docsToGet, need,
 		    m_numReplies, m_numRequests);
@@ -2760,7 +2760,7 @@ bool Msg40::gotSummary ( ) {
 			// debug msg
 			//if ( g_conf.m_logDebugQuery || m_si->m_debug )
 			logf(LOG_DEBUG,"query: msg40: recalling msg3a "
-			     "merge oldactual=%"INT32" newactual=%"INT32"",
+			     "merge oldactual=%" INT32 " newactual=%" INT32 "",
 			     m_docsToGet,get);
 			// ok, we got a new number to get now
 			m_docsToGet = get;
@@ -2825,8 +2825,8 @@ bool Msg40::gotSummary ( ) {
 			    0x008220ff  );
 	// timestamp log
 	if ( g_conf.m_logTimingQuery || m_si->m_debug )
-		logf(LOG_DEBUG,"query: msg40: [%"PTRFMT"] Got %"INT32" summaries in "
-		    "%"INT64" ms",
+		logf(LOG_DEBUG,"query: msg40: [%" PTRFMT "] Got %" INT32 " summaries in "
+		    "%" INT64 " ms",
 		     (PTRTYPE)this ,
 		     visible, // m_visibleContiguous,
 		     now - m_startTime );
@@ -2893,7 +2893,7 @@ bool Msg40::gotSummary ( ) {
 		// debug it
 		if ( ! m_si->m_debugGigabits ) continue;
 		SafeBuf msg;
-		msg.safePrintf("gbits: qpop=%"INT32" qweight=%"INT32" "
+		msg.safePrintf("gbits: qpop=%" INT32 " qweight=%" INT32 " "
 			       "queryterm=",
 			       qpop,qpopWeight);
 		msg.safeMemcpy(qt->m_term,qt->m_termLen);
@@ -2970,7 +2970,7 @@ bool Msg40::gotSummary ( ) {
 		// time it
 		int64_t took = gettimeofdayInMilliseconds() - stt;
 		if ( took > 5 )
-			logf(LOG_DEBUG,"query: make gigabits took %"INT64" ms",
+			logf(LOG_DEBUG,"query: make gigabits took %" INT64 " ms",
 			     took);
 	}
 
@@ -3057,8 +3057,8 @@ bool Msg40::gotSummary ( ) {
 
 	// debug
 	for ( int32_t i = 0 ; debug && i < m_msg3a.m_numDocIds ; i++ )
-		logf(LOG_DEBUG, "query: msg40 clipped hit #%"INT32") d=%"UINT64" "
-		     "cl=%"INT32" (%s)", 
+		logf(LOG_DEBUG, "query: msg40 clipped hit #%" INT32 ") d=%" UINT64 " "
+		     "cl=%" INT32 " (%s)", 
 		     i,m_msg3a.m_docIds[i],(int32_t)m_msg3a.m_clusterLevels[i],
 		     g_crStrings[(int32_t)m_msg3a.m_clusterLevels[i]]);
 
@@ -3091,7 +3091,7 @@ bool Msg40::gotSummary ( ) {
 	if ( ! uc ) return true;
 	// debug
 	if ( m_si->m_debug )
-		logf(LOG_DEBUG,"query: [%"PTRFMT"] Storing output in cache.",
+		logf(LOG_DEBUG,"query: [%" PTRFMT "] Storing output in cache.",
 		     (PTRTYPE)this);
 	// store in this buffer
 	char tmpBuf [ 64 * 1024 ];
@@ -3107,7 +3107,7 @@ bool Msg40::gotSummary ( ) {
 		g_errno = 0;
 		logf ( LOG_INFO ,
 		       "query: Size of cached search results page (and "
-		       "all associated data) is %"INT32" bytes. Max is %i. "
+		       "all associated data) is %" INT32 " bytes. Max is %i. "
 		       "Page not cached.", tmpSize, 32*1024 );
 		return true;
 	}
@@ -3117,8 +3117,8 @@ bool Msg40::gotSummary ( ) {
 	if ( nb != tmpSize || nb == 0 ) {
 		g_errno = EBADENGINEER;
 		log (LOG_LOGIC,
-		     "query: Size of cached search results page (%"INT32") "
-		     "does not match what it should be. (%"INT32")",
+		     "query: Size of cached search results page (%" INT32 ") "
+		     "does not match what it should be. (%" INT32 ")",
 		     nb, tmpSize );
 		return true;
 	}
@@ -3179,8 +3179,8 @@ void Msg40::uncluster ( int32_t m ) {
 		//m_numContiguous     = 0; 
 		//m_visibleContiguous = 0;
 		// debug note
-		logf(LOG_DEBUG,"query: msg40: unclustering docid #%"INT32" %"INT64". "
-		     "(unclusterCount=%"INT32")",
+		logf(LOG_DEBUG,"query: msg40: unclustering docid #%" INT32 " %" INT64 ". "
+		     "(unclusterCount=%" INT32 ")",
 		     k,m_msg3a.m_docIds[k],m_unclusterCount);
 		// . steal the msg20!
 		// . sanity check -- should have been NULL!
@@ -3279,14 +3279,14 @@ int32_t Msg40::serialize ( char *buf , int32_t bufLen ) {
 		int32_t nb = m_msg20[i]->serialize ( p , pend - p ) ;
 		// count it
 		if ( m_msg3a.m_rrr.m_debug )
-			log("query: msg40 serialize msg20size=%"INT32"",nb);
+			log("query: msg40 serialize msg20size=%" INT32 "",nb);
 		//if ( m_r.m_debug ) {
 		//	int32_t mcount = 0;
 		//	Msg20Reply *mr = m_msg20[i]->m_r;
 		//	for ( int32_t *mm = &mr->size_tbuf ; 
 		//	      mm <= &mr->size_templateVector ; 
 		//	      mm++ ) {
-		//		log("query: msg20 #%"INT32" = %"INT32"",
+		//		log("query: msg20 #%" INT32 " = %" INT32 "",
 		//		    mcount,*mm);
 		//		mcount++;
 		//	}
@@ -3309,8 +3309,8 @@ int32_t Msg40::serialize ( char *buf , int32_t bufLen ) {
 	//p += z;
 
 	if ( m_msg3a.m_rrr.m_debug )
-		log("query: msg40 serialize nd=%"INT32" "
-		    "msg3asize=%"INT32" ",m_msg3a.m_numDocIds,nb);
+		log("query: msg40 serialize nd=%" INT32 " "
+		    "msg3asize=%" INT32 " ",m_msg3a.m_numDocIds,nb);
 
 	// return bytes stored
 	return p - buf;
@@ -3554,7 +3554,7 @@ bool Msg40::computeGigabits( TopicGroup *tg ) {
 		if (maxWords + sampleWords > 0x08000000) {
 			log("gbits: too many words in samples. "
 			    "Discarding the remaining samples "
-			    "(maxWords=%"INT32")", maxWords);
+			    "(maxWords=%" INT32 ")", maxWords);
 			// return -1 with g_errno set on error
 			g_errno = EBUFTOOSMALL;
 			return -1;
@@ -3686,7 +3686,7 @@ bool Msg40::computeGigabits( TopicGroup *tg ) {
 		ff[len] = '\0';
 		// we can have html entities in here now
 		//if ( ! is_alnum(ff[0]) ) { char *xx = NULL; *xx = 0; }
-		log("%08"INT32" %s",score,ff);
+		log("%08" INT32 " %s",score,ff);
 	}
 	*/
 
@@ -4106,7 +4106,7 @@ bool hashGigabitSample ( Query *q,
 	// docid
 	while ( p < pend ) {
 		// debug
-		//log("docId=%"INT64" EXCERPT=%s",docId,p);
+		//log("docId=%" INT64 " EXCERPT=%s",docId,p);
 		int32_t plen = gbstrlen(p);
 		// parse into words
 		Words ww;
@@ -4203,10 +4203,10 @@ bool hashGigabitSample ( Query *q,
 
 	}
 
-	//log("TOOK %"INT64" ms plen=%"INT32"",gettimeofdayInMilliseconds()-start,
+	//log("TOOK %" INT64 " ms plen=%" INT32 "",gettimeofdayInMilliseconds()-start,
 	//    bufLen);
 
-	//log("have %"INT32" terms in termtable. adding to master.",
+	//log("have %" INT32 " terms in termtable. adding to master.",
 	//     tt.getNumTermsUsed());
 
 
@@ -4281,12 +4281,12 @@ bool hashGigabitSample ( Query *q,
 		char c      = ww[wwlen];
 		ww[wwlen]='\0';
 		logf(LOG_DEBUG,"gbits: master "
-		     "termId=%020"UINT64" "
-		     "d=%018"INT64" "
+		     "termId=%020" UINT64 " "
+		     "d=%018" INT64 " "
 		     "score=%7.1f "
 		     "cumscore=%7.1f "
-		     "pages=%"INT32" "
-		     "len=%02"INT32" term=%s",
+		     "pages=%" INT32 " "
+		     "len=%02" INT32 " term=%s",
 		     termId64,
 		     docId,
 		     gc->m_gbscore, // this time score
@@ -4297,7 +4297,7 @@ bool hashGigabitSample ( Query *q,
 		ww[wwlen]=c;
 	}
 
-	//log("master has %"INT32" terms",master.getNumTermsUsed());
+	//log("master has %" INT32 " terms",master.getNumTermsUsed());
 	// clear any error
 	if ( g_errno ) {
 		log("gbits: Had error getting topic candidates from "
@@ -4374,7 +4374,7 @@ void hashExcerpt ( Query *q ,
 	int32_t need = nw * sizeof(WordInfo);
 	if ( ! wibuf.reserve ( need ) ) {
 		log("gigabits: could not allocate local buffer "
-		    "(%"INT32" bytes required)", need);
+		    "(%" INT32 " bytes required)", need);
 		return;
 	}
 	WordInfo *wis = (WordInfo *)wibuf.getBufStart();
@@ -4397,7 +4397,7 @@ void hashExcerpt ( Query *q ,
 	posBuf.setLabel("m40posbuf");
 	if ( ! posBuf.reserve ( need2 ) ) {
 		log("gigabits: could not allocate 2 local buffer "
-		    "(%"INT32" bytes required)", need2);
+		    "(%" INT32 " bytes required)", need2);
 		return;
 	}
 	PosInfo *pis = (PosInfo *)posBuf.getBufStart();
@@ -4484,7 +4484,7 @@ void hashExcerpt ( Query *q ,
 		int32_t  slen = ww.getWordLen(i);
 		char  c    = s[slen];
 		s[slen]='\0';
-		log("icw=%"INT32" %s",icw[i],s);
+		log("icw=%" INT32 " %s",icw[i],s);
 		s[slen]=c;
 		*/
 		// is it a query term? if so, record its word # in "pos" arry
@@ -4733,7 +4733,7 @@ void hashExcerpt ( Query *q ,
 		// give a boost for multiple hits 
 		// the more terms in range, the bigger the boost...
 		if ( nm > 1 ) {
-			//log("nm=%"INT32"",nm);
+			//log("nm=%" INT32 "",nm);
 			// hmmm...  try to rely on more pages mentioning it!
 			//score += MULTIPLE_HIT_BOOST * nm;
 		};
@@ -4761,8 +4761,8 @@ void hashExcerpt ( Query *q ,
 		// log that
 		if ( ! debugGigabits ) continue;
 		SafeBuf msg;
-		msg.safePrintf("gbits: wordpos=%3"INT32" "
-			       "repeatscore=%3"INT32" "
+		msg.safePrintf("gbits: wordpos=%3" INT32 " "
+			       "repeatscore=%3" INT32 " "
 			       "wordproxscore=%6.1f word=",
 			       i,
 			       (int32_t)wi->m_repeatScore,
@@ -5132,8 +5132,8 @@ void hashExcerpt ( Query *q ,
 			// debug msg
 			//char c     = ww[wwlen];
 			//ww[wwlen]='\0';
-			//fprintf(stderr,"tid=%"UINT32" score=%"INT32" pop=%"INT32" len=%"INT32" "
-			// "repeat=%"INT32" term=%s\n",h,ss,pop,wwlen,
+			//fprintf(stderr,"tid=%" UINT32 " score=%" INT32 " pop=%" INT32 " len=%" INT32 " "
+			// "repeat=%" INT32 " term=%s\n",h,ss,pop,wwlen,
 			//	repeatScores[i],ww);
 			//ww[wwlen]=c;
 			// include any ending or starting ( or )
@@ -5255,14 +5255,14 @@ void hashExcerpt ( Query *q ,
 			if ( debugGigabits ) {
 				SafeBuf msg;
 				msg.safePrintf("gbits: adding gigabit "
-					       "d=%018"UINT64" "
-					       "termId=%020"UINT64" "
+					       "d=%018" UINT64 " "
+					       "termId=%020" UINT64 " "
 					       "popModScore=%7.1f "
 					       //"wordProxSum=%7.1f "
 					       "wordProxMax=%7.1f "
-					       "nhw=%2"INT32" "
+					       "nhw=%2" INT32 " "
 					       "minWordPopBoost=%2.1f "
-					       "minWordPop=%5"INT32" "
+					       "minWordPop=%5" INT32 " "
 					       "term=\"",
 					       reply->m_docId,
 					       ph64,
@@ -5553,7 +5553,7 @@ bool Msg40::computeFastFacts ( ) {
 			// otherwise, skip the \0
 			else p++;
 			// debug
-			//log("docId=%"INT64" EXCERPT=%s",docId,p);
+			//log("docId=%" INT64 " EXCERPT=%s",docId,p);
 			// . add facts that have the query and a gigabit
 			// . set Fact::m_score based on gigabit it contains
 			// . limit to complete sentences, surrounded by *'s
@@ -5777,7 +5777,7 @@ bool Msg40::printSearchResult9 ( int32_t ix , int32_t *numPrintedSoFar ,
 		// hide if above limit
 		if ( m_printCount == 0 )
 			log(LOG_INFO,"msg40: hiding above docsWanted "
-			    "#%"INT32" (%"UINT32")(d=%"INT64")",
+			    "#%" INT32 " (%" UINT32 ")(d=%" INT64 ")",
 			    m_printi,mr->m_contentHash32,mr->m_docId);
 		m_printCount++;
 		if ( m_printCount == 100 ) m_printCount = 0;
@@ -5788,7 +5788,7 @@ bool Msg40::printSearchResult9 ( int32_t ix , int32_t *numPrintedSoFar ,
 	// prints in xml or html
 	if ( m_si->m_format == FORMAT_CSV ) {
 		printJsonItemInCSV ( st , ix );
-		//log("print: printing #%"INT32" csv",(int32_t)ix);
+		//log("print: printing #%" INT32 " csv",(int32_t)ix);
 	}
 	// print that out into st->m_sb safebuf
 	else if ( ! printResult ( st , ix , numPrintedSoFar ) ) {
@@ -5799,7 +5799,7 @@ bool Msg40::printSearchResult9 ( int32_t ix , int32_t *numPrintedSoFar ,
 	}
 
 	
-	// log(LOG_INFO,"msg40: printing #%"INT32" (%"UINT32")(d=%"INT64")",
+	// log(LOG_INFO,"msg40: printing #%" INT32 " (%" UINT32 ")(d=%" INT64 ")",
 	//     m_printi,mr->m_contentHash32,mr->m_docId);
 
 	// count it
@@ -6177,7 +6177,7 @@ bool Msg40::printJsonItemInCSV ( State0 *st , int32_t ix ) {
 			// print numbers without double quotes
 			if ( ji->m_valueDouble *10000000.0 == 
 			     (double)ji->m_valueLong * 10000000.0 )
-				sb->safePrintf("%"INT32"",ji->m_valueLong);
+				sb->safePrintf("%" INT32 "",ji->m_valueLong);
 			else
 				sb->safePrintf("%f",ji->m_valueDouble);
 			continue;
@@ -6259,7 +6259,7 @@ static bool gotFacetTextWrapper ( void *state ) {
 void Msg40::gotFacetText ( Msg20 *msg20 ) {
 
 	m_numMsg20sIn++;
-	//log("msg40: numin=%"INT32"",m_numMsg20sIn);
+	//log("msg40: numin=%" INT32 "",m_numMsg20sIn);
 
 	if ( ! msg20->m_r ) {
 		log("msg40: msg20 reply is NULL");
@@ -6410,7 +6410,7 @@ void Msg40::lookupFacets2 ( ) {
 			// get it
 			if ( ! msg20->getSummary ( &req ) ) {
 				m_numMsg20sOut++;
-				//log("msg40: numout=%"INT32"",m_numMsg20sOut);
+				//log("msg40: numout=%" INT32 "",m_numMsg20sOut);
 				continue;
 			}
 
@@ -6591,7 +6591,7 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 			
 		if ( qt->m_fieldCode == FIELD_GBFACETINT && 
 		     qw->m_numFacetRanges == 0 ) {
-			sb9.safePrintf("%"INT32"",(int32_t)*fvh);
+			sb9.safePrintf("%" INT32 "",(int32_t)*fvh);
 			text = sb9.getBufStart();
 		}
 
@@ -6611,7 +6611,7 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 				continue;
 			if ( *(int32_t *)fvh >= qw->m_facetRangeIntB[k])
 				continue;
-			sb9.safePrintf("[%"INT32"-%"INT32")"
+			sb9.safePrintf("[%" INT32 "-%" INT32 ")"
 				       ,qw->m_facetRangeIntA[k]
 				       ,qw->m_facetRangeIntB[k]
 				       );
@@ -6645,7 +6645,7 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 			// wtf?
 			if ( ! offset ) {
 				log("msg40: missing facet text for "
-				    "val32=%"UINT32"",
+				    "val32=%" UINT32 "",
 				    (uint32_t)*fvh);
 				continue;
 			}
@@ -6658,23 +6658,23 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 			sb->safePrintf("\t<facet>\n"
 				       "\t\t<field>%s</field>\n"
 				       , term );
-			sb->safePrintf("\t\t<totalDocsWithField>%"INT64""
+			sb->safePrintf("\t\t<totalDocsWithField>%" INT64 ""
 				       "</totalDocsWithField>\n"
 				       , qt->m_numDocsThatHaveFacet );
 			sb->safePrintf("\t\t<totalDocsWithFieldAndValue>"
-				       "%"INT64""
+				       "%" INT64 ""
 				       "</totalDocsWithFieldAndValue>\n"
 				       , allCount );
 			sb->safePrintf("\t\t<value>");
 
 			if ( isString )
-				sb->safePrintf("<![CDATA[%"UINT32",",
+				sb->safePrintf("<![CDATA[%" UINT32 ",",
 					       (uint32_t)*fvh);
 			sb->cdataEncode ( text );
 			if ( isString )
 				sb->safePrintf("]]>");
 			sb->safePrintf("</value>\n");
-			sb->safePrintf("\t\t<docCount>%"INT32""
+			sb->safePrintf("\t\t<docCount>%" INT32 ""
 				       "</docCount>\n"
 				       ,count);
 			// some stats now for floats
@@ -6702,10 +6702,10 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 				sb->safePrintf("\t\t</average>\n");
 				sb->safePrintf("\t\t<min>");
 				int32_t min = fe->m_min;
-				sb->safePrintf("%"INT32"</min>\n",min);
+				sb->safePrintf("%" INT32 "</min>\n",min);
 				sb->safePrintf("\t\t<max>");
 				int32_t max = fe->m_max;
-				sb->safePrintf("%"INT32"</max>\n",max);
+				sb->safePrintf("%" INT32 "</max>\n",max);
 			}
 			sb->safePrintf("\t</facet>\n");
 			continue;
@@ -6752,16 +6752,16 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 				       "\t\"field\":\"%s\",\n"
 				       , term 
 				       );
-			sb->safePrintf("\t\"totalDocsWithField\":%"INT64""
+			sb->safePrintf("\t\"totalDocsWithField\":%" INT64 ""
 				       ",\n", qt->m_numDocsThatHaveFacet );
 			sb->safePrintf("\t\"totalDocsWithFieldAndValue\":"
-				       "%"INT64""
+				       "%" INT64 ""
 				       ",\n", 
 				       allCount );
 			sb->safePrintf("\t\"value\":\"");
 
 			if (  isString )
-				sb->safePrintf("%"UINT32","
+				sb->safePrintf("%" UINT32 ","
 					       , (uint32_t)*fvh);
 			sb->jsonEncode ( text );
 			//if ( isString )
@@ -6769,7 +6769,7 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 			sb->safePrintf("\"");
 			sb->safePrintf(",\n");
 
-			sb->safePrintf("\t\"docCount\":%"INT32""
+			sb->safePrintf("\t\"docCount\":%" INT32 ""
 				       , count );
 			// if it's a # then we print stats after
 			if ( isString || fe->m_count == 0 )
@@ -6803,10 +6803,10 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 				sb->safePrintf(",\n");
 				sb->safePrintf("\t\"min\":");
 				int32_t min = fe->m_min;
-				sb->safePrintf("%"INT32",\n",min);
+				sb->safePrintf("%" INT32 ",\n",min);
 				sb->safePrintf("\t\"max\":");
 				int32_t max = fe->m_max;
-				sb->safePrintf("%"INT32"\n",max);
+				sb->safePrintf("%" INT32 "\n",max);
 			}
 
 			sb->safePrintf("}\n,\n" );
@@ -6829,13 +6829,13 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 		     int32_t max = qw->m_facetRangeIntB[k2];
 		     if ( min == max )
 			     newStuff.safePrintf("prepend="
-						 "gbequalint%%3A%s%%3A%"UINT32"+"
+						 "gbequalint%%3A%s%%3A%" UINT32 "+"
 						 ,term
 						 ,(int32_t)*fvh);
 		     else
 			     newStuff.safePrintf("prepend="
-						 "gbminint%%3A%s%%3A%"UINT32"+"
-						 "gbmaxint%%3A%s%%3A%"UINT32"+"
+						 "gbminint%%3A%s%%3A%" UINT32 "+"
+						 "gbmaxint%%3A%s%%3A%" UINT32 "+"
 						 ,term
 						 ,min
 						 ,term
@@ -6868,7 +6868,7 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 					    *(float *)fvh);
 		else if ( qt->m_fieldCode == FIELD_GBFACETINT )
 			newStuff.safePrintf("prepend="
-					    "gbequalint%%3A%s%%3A%"UINT32"",
+					    "gbequalint%%3A%s%%3A%" UINT32 "",
 					    term,
 					    (int32_t)*fvh);
 		else if ( qt->m_fieldCode == FIELD_GBFACETSTR &&
@@ -6882,14 +6882,14 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 				   "gbfacetstr:gbxpathsitehash",26) )
 			newStuff.safePrintf("prepend="
 					    "gbequalint%%3Agbfacetstr%%3A"
-					    "%s%%3A%"UINT32"",
+					    "%s%%3A%" UINT32 "",
 					    term,
 					    (int32_t)*fvh);
 		else if ( qt->m_fieldCode == FIELD_GBFACETSTR ) {
 			newStuff.safePrintf("prepend="
 					    "gbfieldmatch%%3A%s%%3A%%22"
 					    ,term
-					    //"gbequalint%%3A%s%%3A%"UINT32""
+					    //"gbequalint%%3A%s%%3A%" UINT32 ""
 					    //,(int32_t)*fvh
 					    );
 			newStuff.urlEncode(text);
@@ -6908,7 +6908,7 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 		// and get it from the cached page later
 		sb->safePrintf("<tr><td width=200px; valign=top>"
 			       //"<a href=?search="//gbfacet%3A"
-			       //"%s:%"UINT32""
+			       //"%s:%" UINT32 ""
 			       // make a search to just show those
 			       // docs from this facet with that
 			       // value. actually gbmin/max would work
@@ -6916,7 +6916,7 @@ int32_t Msg40::printFacetsForTable ( SafeBuf *sb , QueryTerm *qt ) {
 			       , newUrl.getBufStart()
 			       );
 
-		sb->safePrintf("%s (%"UINT32" documents)"
+		sb->safePrintf("%s (%" UINT32 " documents)"
 			       "</a>"
 			       "</td></tr>\n"
 			       ,text

@@ -1006,11 +1006,11 @@ bool Addresses::set ( Sections  *sections    ,
 		h1 = hash64 ( a->m_adm1.m_hash , h1 );
 		h1 = hash64 ( a->m_ctry.m_hash , h1 );
 		// note it
-		//logf(LOG_DEBUG,"add: lookuphash=%"XINT64"",a->m_street.m_hash);
+		//logf(LOG_DEBUG,"add: lookuphash=%" XINT64 "",a->m_street.m_hash);
 		// test that
 		//if ( a->m_street.m_hash == 0x14a2446f2d5a2647LL ) {
 		//	setHashes ( &a->m_street );
-		//	logf(LOG_DEBUG,"Add: had=%"XINT64"",a->m_street.m_hash);
+		//	logf(LOG_DEBUG,"Add: had=%" XINT64 "",a->m_street.m_hash);
 		//}
 		// get hash of street, i.e. hash of name
 		// see if we have that in the table
@@ -1066,7 +1066,7 @@ bool Addresses::set ( Sections  *sections    ,
 	try { m_msg2c = new (Msg2c); }
 	catch ( ... ) {
 		g_errno = ENOMEM;
-		log("addr: msg2c: new(%"INT32"): %s", (int32_t)sizeof(Msg2c), 
+		log("addr: msg2c: new(%" INT32 "): %s", (int32_t)sizeof(Msg2c), 
 		    mstrerror(g_errno));
 		// return true on error with g_errno set
 		return true;
@@ -1162,7 +1162,7 @@ bool Addresses::updateAddresses ( ) {
 		// a bunch of suites in 500 marquette ave.
 		//if ( replySize > 3000 ) { char *xx=NULL;*xx=0; }
 		if ( replySize > 5000 ) 
-			logf(LOG_DEBUG,"addr: got large addr reply of %"INT32" "
+			logf(LOG_DEBUG,"addr: got large addr reply of %" INT32 " "
 			     "bytes",replySize);
 		// sanity check
 		if ( replySize < 0 ) { char *xx=NULL;*xx=0; }
@@ -3419,7 +3419,7 @@ bool Addresses::setGeocoderLatLons ( void *state,
 		// for debugging
 		//char *start = p;
 		// request needs street,state,city (and zip if there)
-		p += sprintf(p,"addr%"INT32"=",num++);
+		p += sprintf(p,"addr%" INT32 "=",num++);
 		gbmemcpy(p,aa->m_street->m_str,aa->m_street->m_strlen);
 		p += aa->m_street->m_strlen;
 		*p++ = ',';
@@ -3464,7 +3464,7 @@ bool Addresses::setGeocoderLatLons ( void *state,
 	char *qq = strstr(requestBuf,"xxxxxx");
 	if ( ! qq ) { char *xx=NULL;*xx=0; }
 	if ( p-contentStart > 999999 ) { char *xx=NULL;*xx=0; }
-	sprintf(qq,"%06"INT32"",(int32_t)(p-contentStart));
+	sprintf(qq,"%06" INT32 "",(int32_t)(p-contentStart));
 	qq[6]='\r'; // sprintf might have written a \0, so put \r back
 
 	// finish it
@@ -3538,21 +3538,21 @@ bool Addresses::processGeocoderReply ( TcpSocket *s ) {
 		num++;
 		// make the tag name
 		char tagName[32];
-		sprintf(tagName,"<addr%"INT32">",num);
+		sprintf(tagName,"<addr%" INT32 ">",num);
 		// ok now get that reply
 		char *p = strstr(reply,tagName);
 		// not found?
 		if ( ! p ) {
-			log("addr: missing geocoder reply for addr #%"INT32"",num);
+			log("addr: missing geocoder reply for addr #%" INT32 "",num);
 			continue;
 		}
 		// get end tag of it
 		char endTagName[32];
-		sprintf(endTagName,"</addr%"INT32">",num);
+		sprintf(endTagName,"</addr%" INT32 ">",num);
 		char *end = strstr(p,endTagName);
 		// strange!
 		if ( ! end ) {
-			log("addr: missing geocoder endtag for addr #%"INT32"",num);
+			log("addr: missing geocoder endtag for addr #%" INT32 "",num);
 			continue;
 		}
 		// tmp shutoff
@@ -6831,7 +6831,7 @@ bool Addresses::set2 ( ) {
 		// get the street that we center the address around
 		Place *street = (Place *)m_sm.getPtr(X);
 		// debug
-		//logf(LOG_DEBUG,"events: ****** X=%"INT32" *****",X);
+		//logf(LOG_DEBUG,"events: ****** X=%" INT32 " *****",X);
 		// reset these
 		nc = 0;
 		na = bn;
@@ -8102,7 +8102,7 @@ bool Addresses::set2 ( ) {
 			// note it if crazy...
 			if ( plen >= 200 ) 
 				// note it
-				log("addr: got place name of %"INT32" chars int32_t",
+				log("addr: got place name of %" INT32 " chars int32_t",
 				    plen);
 			// sanity check
 			//if ( m_np >= MAX_PLACES ) { char *xx=NULL;*xx=0; }
@@ -8909,8 +8909,8 @@ bool Addresses::set2 ( ) {
 			//}
 
 
-			//log("events: i1=%"INT32" i2=%"INT32" i3=%"INT32" i4=%"INT32" "
-			//    "i5=%"INT32" i6=%"INT32" i7=%"INT32"",
+			//log("events: i1=%" INT32 " i2=%" INT32 " i3=%" INT32 " i4=%" INT32 " "
+			//    "i5=%" INT32 " i6=%" INT32 " i7=%" INT32 "",
 			//    i1,i2,i3,i4,i5,i6,i7);
 
 			// clear
@@ -9024,7 +9024,7 @@ bool Addresses::set2 ( ) {
 	//
 	setAmbiguousFlags();
 
-	//log("events: combos=%"INT32"",combos);
+	//log("events: combos=%" INT32 "",combos);
 	//char *xx=NULL;*xx=0;
 	//log("events: sleeping 3 seconds. waiting for possible Ctrl-C");
 	//sleep(3);
@@ -10226,7 +10226,7 @@ void Addresses::print ( SafeBuf *pbuf , int64_t uh64 ) {
 			   "<span class=validated "
 			   "style=background-color:#9090e0>"
 			   "<input type=checkbox "
-			   "onclick=\"senddiv(this,'%"INT64"');\" "
+			   "onclick=\"senddiv(this,'%" INT64 "');\" "
 			   "unchecked>"
 			   "<div class=validated style=display:inline>"
 			   " Has <b>address</b> parsing issue. Flag to fix."
@@ -11169,7 +11169,7 @@ bool Addresses::addAddress ( Place   *name1   ,
 	// advance m_na iff we did not overwrite a previous address
 	//m_na++;
 
-	//log("addr: u=%s addr # = %"INT32"",m_url->m_url,m_na-1);
+	//log("addr: u=%s addr # = %" INT32 "",m_url->m_url,m_na-1);
 	// uncomment this for debug to the log
 	//dst->print ( );
 		
@@ -12546,7 +12546,7 @@ int32_t Address::serialize ( char *buf , int32_t bufSize , char *origUrl ,
 	// sanity check
 	if ( m_domHash32 == 0 ) { char *xx=NULL;*xx=0; }
 	// serialize 32-bit domain hash
-	p += sprintf( p , "%"UINT32"", m_domHash32 );
+	p += sprintf( p , "%" UINT32 "", m_domHash32 );
 	*p++ = ';';
 
 	// sanity check
@@ -12577,12 +12577,12 @@ int32_t Address::serialize ( char *buf , int32_t bufSize , char *origUrl ,
 	if ( includeHash ) {
 		*p++ = ';';
 		// finally the address hash in ascii
-		p += sprintf ( p , "%"UINT64"" , m_hash );
+		p += sprintf ( p , "%" UINT64 "" , m_hash );
 	}
 
 	// . then timezone off, a single signed byte really
 	// . we add 100 to this to signify that it does NOT use DST
-	//p += sprintf(p,"%"INT32"", (int32_t)m_timeZoneOffset);
+	//p += sprintf(p,"%" INT32 "", (int32_t)m_timeZoneOffset);
 
 	*p++ = '\0';
 
@@ -12629,19 +12629,19 @@ int32_t Address::print2 ( int32_t i , SafeBuf *pbuf , int64_t uh64 ) {
 		// dump it
 		// . for the sake of doing delta diffs in Test.cpp
 		//   eliminate the number!
-		//pbuf->safePrintf ( "<td>%"INT32"/%"INT32"</td>", num ,m_street.m_a);
+		//pbuf->safePrintf ( "<td>%" INT32 "/%" INT32 "</td>", num ,m_street.m_a);
 		//if ( m_street.m_a >= 0 )
-		//	pbuf->safePrintf ( "<td>%"INT32"</td>", m_street.m_a);
+		//	pbuf->safePrintf ( "<td>%" INT32 "</td>", m_street.m_a);
 		//else
 		int32_t napos = -1;
 		if ( m_name1 ) napos = m_name1->m_a;
 
 		int32_t stra = -1;
 		if ( m_street ) stra = m_street->m_a;
-		pbuf->safePrintf ( "<td>%"INT32"/%"INT32"</td>", napos,stra );
+		pbuf->safePrintf ( "<td>%" INT32 "/%" INT32 "</td>", napos,stra );
 		
 		//pbuf->safePrintf ( "<td>%.06f</td>", m_score );
-		//pbuf->safePrintf("<td>0x%"XINT32"</td>", m_section->m_tagHash);
+		//pbuf->safePrintf("<td>0x%" XINT32 "</td>", m_section->m_tagHash);
 
 		printEssentials ( pbuf , false , uh64 );
 
@@ -12656,7 +12656,7 @@ int32_t Address::print2 ( int32_t i , SafeBuf *pbuf , int64_t uh64 ) {
 		else
 			pbuf->safePrintf("notinlined ");
 		if ( m_alias )
-			pbuf->safePrintf("alias[a=%"INT32"] ",
+			pbuf->safePrintf("alias[a=%" INT32 "] ",
 					 m_alias->m_street->m_a);
 
 		if ( m_flags3 & AF2_HAS_REQUIRED_CITY )
@@ -12711,9 +12711,9 @@ int32_t Address::print2 ( int32_t i , SafeBuf *pbuf , int64_t uh64 ) {
 		// it doesn't show up on the test qa run diffs
 		//int32_t offset = this - base;
 		int32_t offset = i;
-		pbuf->safePrintf("<td>%"UINT32"</td>",(int32_t)offset);
+		pbuf->safePrintf("<td>%" UINT32 "</td>",(int32_t)offset);
 
-		pbuf->safePrintf("<td><nobr>0x%"XINT64" (%"INT32")</nobr></td>",
+		pbuf->safePrintf("<td><nobr>0x%" XINT64 " (%" INT32 ")</nobr></td>",
 				 m_hash,m_score2);
 
 
@@ -12763,17 +12763,17 @@ int32_t Address::print2 ( int32_t i , SafeBuf *pbuf , int64_t uh64 ) {
 		int64_t strh = 0LL;
 		if ( m_street ) strh = m_street->m_hash;
 		pbuf->safePrintf("<td><nobr>"
-				 "k.n1=0x%16"XINT64" n0=0x%16"XINT64" "
-				 //"addrhash=0x%"XINT64" "
-				 "bigHash64=0x%016"XINT64" "
-				 "docId=%"UINT64" "
-				 "streetNumHash25=0x%08"XINT32" "
-				 "cityHash=0x%016"XINT64" "
-				 "cityId=0x08%"XINT32" "
-				 "streetHash=0x%016"XINT64" "
-				 "adm1Hash=0x%04"XINT32" "
-				 "name1Hash=0x%016"XINT64" "
-				 "name2Hash=0x%016"XINT64" "
+				 "k.n1=0x%16" XINT64 " n0=0x%16" XINT64 " "
+				 //"addrhash=0x%" XINT64 " "
+				 "bigHash64=0x%016" XINT64 " "
+				 "docId=%" UINT64 " "
+				 "streetNumHash25=0x%08" XINT32 " "
+				 "cityHash=0x%016" XINT64 " "
+				 "cityId=0x08%" XINT32 " "
+				 "streetHash=0x%016" XINT64 " "
+				 "adm1Hash=0x%04" XINT32 " "
+				 "name1Hash=0x%016" XINT64 " "
+				 "name2Hash=0x%016" XINT64 " "
 				 "</nobr>"
 				 "</td>"
 				 ,
@@ -12833,7 +12833,7 @@ int32_t Address::print2 ( int32_t i , SafeBuf *pbuf , int64_t uh64 ) {
 		sb.safeMemcpy(m_name2->m_str,m_name2->m_strlen);
 	}
 	if ( m_street ) {
-		sb.safePrintf(" street[%"INT32"]=",m_street->m_a);
+		sb.safePrintf(" street[%" INT32 "]=",m_street->m_a);
 		sb.safeMemcpy(m_street->m_str,m_street->m_strlen);
 	}
 	//if ( m_zip ) {
@@ -12845,11 +12845,11 @@ int32_t Address::print2 ( int32_t i , SafeBuf *pbuf , int64_t uh64 ) {
 		sb.safeMemcpy(m_suite->m_str,m_suite->m_strlen);
 	}
 	if ( m_city ) {
-		sb.safePrintf(" city[%"INT32"]=",m_city->m_a);
+		sb.safePrintf(" city[%" INT32 "]=",m_city->m_a);
 		sb.safeMemcpy(m_city->m_str,m_city->m_strlen);
 	}
 	if ( m_adm1 ) {
-		sb.safePrintf(" adm1[%"INT32"]=",m_adm1->m_a);
+		sb.safePrintf(" adm1[%" INT32 "]=",m_adm1->m_a);
 		sb.safeMemcpy(m_adm1->m_str,m_adm1->m_strlen);
 		sb.pushChar('|');
 		sb.safeMemcpy(m_adm1->m_adm1,2);//str,m_adm1->m_strlen);
@@ -12867,7 +12867,7 @@ int32_t Address::print2 ( int32_t i , SafeBuf *pbuf , int64_t uh64 ) {
 	//	sb.safeMemcpy(m_ctry->m_str,m_ctry->m_strlen);
 	//}
 
-	sb.safePrintf(" score2=%"INT32"",m_score2);
+	sb.safePrintf(" score2=%" INT32 "",m_score2);
 
 	sb.safePrintf(" flags=");
 	if ( (m_flags) & AF_INLINED )
@@ -12894,7 +12894,7 @@ int32_t Address::print2 ( int32_t i , SafeBuf *pbuf , int64_t uh64 ) {
 	if ( m_street && (m_street->m_flags2 & PLF2_AFTER_AT ))
 		sb.safePrintf("afterat ");
 
-	//sb.safePrintf(" a=%"INT32" b=%"INT32"",m_a,m_b);
+	//sb.safePrintf(" a=%" INT32 " b=%" INT32 "",m_a,m_b);
 
 	// null term
 	sb.safeMemcpy ( "\0",1 );
@@ -12925,7 +12925,7 @@ void Address::printEssentials ( SafeBuf *pbuf , bool forEvents ,
 			 "<!--ignore-->" // ignore for Test.cpp diff
 			 "<span class=validated>"
 			 "<input type=checkbox "
-			 "onclick=\"senddiv(this,'%"INT64"');\" "
+			 "onclick=\"senddiv(this,'%" INT64 "');\" "
 			 "unchecked> "
 			 "<div class=validated style=\"display:none\">",
 			 // this must be unsigned
@@ -13195,12 +13195,12 @@ void Address::printEssentials ( SafeBuf *pbuf , bool forEvents ,
 	lon = m_importedLongitude;
 	pbuf->safePrintf("<td><nobr>");
 	if ( lat != NO_LATITUDE && lat != AMBIG_LATITUDE ) 
-		pbuf->safePrintf("%f (%"INT32")",lat,m_importedVotes);
+		pbuf->safePrintf("%f (%" INT32 ")",lat,m_importedVotes);
 	pbuf->safePrintf("</nobr></td>\n");
 
 	pbuf->safePrintf("<td><nobr>");
 	if ( lon != NO_LONGITUDE && lon != AMBIG_LONGITUDE )
-		pbuf->safePrintf("%f (%"INT32")",lon,m_importedVotes);
+		pbuf->safePrintf("%f (%" INT32 ")",lon,m_importedVotes);
 	pbuf->safePrintf("</nobr></td>\n");
 }
 			
@@ -13327,7 +13327,7 @@ void printPlaces ( PlaceMem *pm , SafeBuf *pbuf , Sections *sections,
 		if ( pi->m_unverifiedAddress )
 			f += sprintf(f,"inunverifiedaddress ");
 		if ( pi->m_alias )
-			f += sprintf(f,"alias[a=%"INT32"] ",
+			f += sprintf(f,"alias[a=%" INT32 "] ",
 				     pi->m_alias->m_street->m_a);
 
 		if ( flags & PLF_INFILE ) 
@@ -13406,7 +13406,7 @@ void printPlaces ( PlaceMem *pm , SafeBuf *pbuf , Sections *sections,
 
 		if ( pbuf ) {
 			pbuf->safePrintf ( "<tr>"
-					   //"<td>%"INT32"</td>"
+					   //"<td>%" INT32 "</td>"
 					   "<td><nobr>" );
 			// print it right. niceness = 0
 			pbuf->htmlEncode ( p , gbstrlen(p) , true,0);
@@ -13415,16 +13415,16 @@ void printPlaces ( PlaceMem *pm , SafeBuf *pbuf , Sections *sections,
 					   //"<td>%.02f</td>"
 
 					   "<td><nobr>%s</nobr></td>"
-					   "<td>0x%"XINT64"</td>"
-					   "<td>%"INT32"</td>"
-					   "<td>%"INT32"</td>"
-					   "<td>%"INT32"</td>"
-					   "<td>%"INT32"</td>"
-					   "<td>%"INT32"</td>"
-					   //"<td>%"INT32"</td>"
-					   //"<td>%"INT32"</td>"
-					   //"<td>%"INT32"</td>"
-					   "<td>0x%"XINT32"</td>"
+					   "<td>0x%" XINT64 "</td>"
+					   "<td>%" INT32 "</td>"
+					   "<td>%" INT32 "</td>"
+					   "<td>%" INT32 "</td>"
+					   "<td>%" INT32 "</td>"
+					   "<td>%" INT32 "</td>"
+					   //"<td>%" INT32 "</td>"
+					   //"<td>%" INT32 "</td>"
+					   //"<td>%" INT32 "</td>"
+					   "<td>0x%" XINT32 "</td>"
 					   "</tr>\n" , 
 					   //i,
 					  //p,
@@ -13444,9 +13444,9 @@ void printPlaces ( PlaceMem *pm , SafeBuf *pbuf , Sections *sections,
 					   secHash);
 		}
 		else
-			logf(LOG_DEBUG,"events: place #%"INT32" \"%s\" "
-			     "flags=%s alnuma=%"INT32" alnumb=%"INT32" "
-			     //"taghash=0x%"XINT32""
+			logf(LOG_DEBUG,"events: place #%" INT32 " \"%s\" "
+			     "flags=%s alnuma=%" INT32 " alnumb=%" INT32 " "
+			     //"taghash=0x%" XINT32 ""
 			     ,  
 			     i,p,
 			     //pi->m_score,
@@ -14385,7 +14385,7 @@ bool initPlaceDescTable ( ) {
 
 	int32_t vv = 185747;
 	if ( g_timeZones.m_numSlotsUsed && g_timeZones.m_numSlotsUsed!=vv){
-		log("places: bad timezones.dat file %"INT32" != %"INT32"",
+		log("places: bad timezones.dat file %" INT32 " != %" INT32 "",
 		    g_timeZones.m_numSlotsUsed,vv);
 		return false;
 	}
@@ -14533,7 +14533,7 @@ pd=(PlaceDesc *)g_cities.getValueFromSlot(pd->getSlot());
 		char *city="Albuquerque";
 		int64_t ch = hash64Lower_utf8(city,gbstrlen(city));
 		//int32_t ch = (int32_t)(th64&0xffffffff);
-		log("places: %s hash = %"UINT64"",city,ch);
+		log("places: %s hash = %" UINT64 "",city,ch);
 		// a nested loop
 		for ( ; slot >= 0 ; slot = g_zips.getNextSlot(slot,&h)) {
 			// get the place
@@ -14545,8 +14545,8 @@ pd=(PlaceDesc *)g_cities.getValueFromSlot(pd->getSlot());
 			if ( ! sd ) { char *xx=NULL;*xx=0; }
 			//if(!is_ascii(zd->m_adm1[0]) ) {char *xx=NULL;*xx=0;}
 			// print it
-			log("places: h=%s cityhash=%"UINT64" adm1=%s "//adm1=%c%c "
-			    "pd=0x%"PTRFMT"",
+			log("places: h=%s cityhash=%" UINT64 " adm1=%s "//adm1=%c%c "
+			    "pd=0x%" PTRFMT "",
 			    zstr,
 			    zd->m_cityHash,
 			    sd->m_name1,
@@ -14709,8 +14709,8 @@ pd=(PlaceDesc *)g_cities.getValueFromSlot(pd->getSlot());
 
 		// log it
 		if ( (line % 10000) == 0 )
-			log(LOG_INFO,"places: read line #%"INT32" out of "
-			    "6,900,574 (%"INT32" places added)",line,
+			log(LOG_INFO,"places: read line #%" INT32 " out of "
+			    "6,900,574 (%" INT32 " places added)",line,
 			    g_cities.m_numSlotsUsed);
 		line++;
 
@@ -15084,7 +15084,7 @@ pd=(PlaceDesc *)g_cities.getValueFromSlot(pd->getSlot());
 			char tv = csd->m_timeZoneOffset;
 			if ( tv != tzoff ) { 
 				log("places: bad city timezone "
-				    "csh=%"UINT32" z: %s",
+				    "csh=%" UINT32 " z: %s",
 				    (uint32_t)cid32,
 				    name);
 				//char *xx=NULL;*xx=0; }
@@ -15176,8 +15176,8 @@ pd=(PlaceDesc *)g_cities.getValueFromSlot(pd->getSlot());
 	// close that file
 	fclose(fd);
 
-	//logf(LOG_INFO,"places: allCountries.txt had %"INT32" bad entries.",
-	logf(LOG_INFO,"places: places.txt had %"INT32" bad entries.",
+	//logf(LOG_INFO,"places: allCountries.txt had %" INT32 " bad entries.",
+	logf(LOG_INFO,"places: places.txt had %" INT32 " bad entries.",
 	     badEntry);
 
 	// reset for this file
@@ -15233,8 +15233,8 @@ pd=(PlaceDesc *)g_cities.getValueFromSlot(pd->getSlot());
 
 		// log it
 		if ( (line % 10000) == 0 )
-			log(LOG_INFO,"places: read postal line #%"INT32" out of "
-			    "848,226 (%"INT32" places added)",line,
+			log(LOG_INFO,"places: read postal line #%" INT32 " out of "
+			    "848,226 (%" INT32 " places added)",line,
 			    g_cities.m_numSlotsUsed);
 		line++;
 
@@ -15537,7 +15537,7 @@ pd=(PlaceDesc *)g_cities.getValueFromSlot(pd->getSlot());
 		buf[wlen-1]='\0';
 		// log it
 		if ( (line % 10000) == 0 )
-			log(LOG_INFO,"places: read line #%"INT32"",line);
+			log(LOG_INFO,"places: read line #%" INT32 "",line);
 		line++;
 		// for debug
 		char *p = buf;
@@ -15588,10 +15588,10 @@ pd=(PlaceDesc *)g_cities.getValueFromSlot(pd->getSlot());
 		     zd->m_longitude == 999.0    ) 
 			missed++;
 	}
-	logf(LOG_INFO,"places: missed lat/lon for %"INT32" zipcodes",missed);
+	logf(LOG_INFO,"places: missed lat/lon for %" INT32 " zipcodes",missed);
 
 
-	logf(LOG_INFO,"places: postalCodes.txt had %"INT32" bad entries.",
+	logf(LOG_INFO,"places: postalCodes.txt had %" INT32 " bad entries.",
 	     badEntry);
 
 	/*
@@ -16397,7 +16397,7 @@ void gotMsg2cReplyWrapper ( void *state , void *state2 ) {
 	// test it
 	//if ( r && replySize != 1 ) { char *xx=NULL; *xx=0; }
 	// show it
-	//log("addr: got reply=%"INT32" replyaddr=0x%"XINT32"",(int32_t)*r,(int32_t)r);
+	//log("addr: got reply=%" INT32 " replyaddr=0x%" XINT32 "",(int32_t)*r,(int32_t)r);
 	// launchGetRequests() returns false if still waiting for replies...
 	if ( ! THIS->launchRequests() ) return;
 	// set g_errno for the callback
@@ -16468,7 +16468,7 @@ void handleRequest2c ( UdpSlot *slot , int32_t nicenessWTF ) {
 	try { st = new (State2c); }
 	catch ( ... ) {
 		g_errno = ENOMEM;
-		log("msg2c: new(%"INT32"): %s", (int32_t)sizeof(State2c), mstrerror(g_errno));
+		log("msg2c: new(%" INT32 "): %s", (int32_t)sizeof(State2c), mstrerror(g_errno));
 		return g_udpServer.sendErrorReply ( slot, g_errno );
 	}
 	mnew ( st , sizeof(State2c) , "hndl2c" );
@@ -17398,7 +17398,7 @@ bool Addresses::setFirstPlaceNums ( ) {
 		int32_t aa = -1;
 		if ( street->m_address ) sa = street->m_address->m_street->m_a;
 		if ( street->m_alias ) sa = street->m_alias->m_street->m_a;
-		log("dbug: (a=%"INT32",b=%"INT32") sec=%"XINT32" %s addr=%"INT32" alias=%"INT32" "
+		log("dbug: (a=%" INT32 ",b=%" INT32 ") sec=%" XINT32 " %s addr=%" INT32 " alias=%" INT32 " "
 		    "url=%s",
 		    a,b,
 		    (int32_t)sp[a],
@@ -18540,9 +18540,9 @@ bool printTesterPage ( SafeBuf &sb ) {
 	
 		sb.safePrintf ( "<img src=\""
 				"http://maps.google.com/maps/api/staticmap?"
-				"size=%"INT32"x%"INT32"&maptype=roadmap&sensor=false" ,
+				"size=%" INT32 "x%" INT32 "&maptype=roadmap&sensor=false" ,
 				width, height );
-		sb.safePrintf("&zoom=%"INT32""
+		sb.safePrintf("&zoom=%" INT32 ""
 			      "&markers="
 			      "size:medium"
 			      "%%7Ccolor:%s"
@@ -19869,8 +19869,8 @@ bool generatePlacesFile ( ) {
 		int32_t  off2; // dst
 		sscanf ( buf , 
 			 "%s\t" // timezone name
-			 "%"INT32"\t" // off1
-			 "%"INT32"" // off2
+			 "%" INT32 "\t" // off1
+			 "%" INT32 "" // off2
 			 , timeZoneStr
 			 , &off1
 			 , &off2
@@ -19997,7 +19997,7 @@ bool generatePlacesFile ( ) {
 
 		// skip if no timezone for now
 		if ( ! timeZoneStr[0] ) {
-			log("places: no timezone for geoid=%"INT32" name=%s",
+			log("places: no timezone for geoid=%" INT32 " name=%s",
 			    geoId,officialName);
 			continue;
 		}

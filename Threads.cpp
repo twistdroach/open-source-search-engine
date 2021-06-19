@@ -195,14 +195,14 @@ void Threads::setPid ( ) {
 	// on 64bit arch pid is 32 bit and pthread_t is 64 bit
 	s_pid = (pthread_t)pthread_self();
 	//log(LOG_INFO,
-	//    "threads: main process THREAD id = %"UINT32"",(int32_t unsigned)s_pid);
+	//    "threads: main process THREAD id = %" UINT32 "",(int32_t unsigned)s_pid);
 	pthread_t tid = pthread_self();
 	sched_param param;
 	int policy;
 	// scheduling parameters of target thread
 	pthread_getschedparam ( tid, &policy, &param);
 	//log(LOG_INFO,
-	//  "threads: min/max thread priority settings = %"INT32"/%"INT32" (policy=%"INT32")",
+	//  "threads: min/max thread priority settings = %" INT32 "/%" INT32 " (policy=%" INT32 ")",
 	//    (int32_t)sched_get_priority_min(policy),
 	//    (int32_t)sched_get_priority_max(policy),
 	//    (int32_t)policy);
@@ -272,7 +272,7 @@ bool Threads::init ( ) {
 		return log("thread: Failed to initialize timer callback2.");
 
 	// debug
-	//log("thread: main process has pid=%"INT32"",(int32_t)s_pid);
+	//log("thread: main process has pid=%" INT32 "",(int32_t)s_pid);
 
 	// . set priority of the main process to 0
 	// . setpriority() only applies to SCHED_OTHER threads
@@ -360,9 +360,9 @@ bool Threads::init ( ) {
 	// clear stack to help check for overwrites
 	s_stackAlloc = (char *) mcalloc ( s_stackAllocSize , "ThreadStack" );
 	if ( ! s_stackAlloc ) 
-		return log("thread: Unable to allocate %"INT32" bytes for thread "
+		return log("thread: Unable to allocate %" INT32 " bytes for thread "
 			   "stacks.", s_stackAllocSize);
-	log(LOG_INIT,"thread: Using %"INT32" bytes for %"INT32" thread stacks.",
+	log(LOG_INIT,"thread: Using %" INT32 " bytes for %" INT32 " thread stacks.",
 	    s_stackAllocSize,maxThreads);
 	// align
 	s_stack = (char *)(((uint64_t)s_stackAlloc+THRPAGESIZE-1)&~(THRPAGESIZE-1));
@@ -490,7 +490,7 @@ bool Threads::call ( char   type                         ,
 	//	return log("thread: call: top 4 bytes of state != callback");
 	//}
 	// debug msg
-	//log("adding thread to queue, type=%"INT32"",(int32_t)type);
+	//log("adding thread to queue, type=%" INT32 "",(int32_t)type);
 	// find the type
 	int32_t i;
 	for ( i = 0 ; i < m_numQueues ; i++ ) 
@@ -499,7 +499,7 @@ bool Threads::call ( char   type                         ,
 	if ( i == m_numQueues ) {
 		g_errno = EBADENGINEER;
 		return log(LOG_LOGIC,"thread: addtoqueue: Unregistered "
-			   "thread type %"INT32"",(int32_t)type);
+			   "thread type %" INT32 "",(int32_t)type);
 	}
 	// debug msg
 	//log("thread: call: adding entry for thread");
@@ -551,8 +551,8 @@ static void killStalledFiltersWrapper ( int fd , void *state ) {
 	if ( timeout <= 0 ) timeout = 30;
 	if ( g_ticker++ < timeout ) return;
 	// debug
-	log("threads: killing stalled filter process of age %"INT32" "
-	    "seconds and pid=%"INT32".",g_ticker,(int32_t)g_pid);
+	log("threads: killing stalled filter process of age %" INT32 " "
+	    "seconds and pid=%" INT32 ".",g_ticker,(int32_t)g_pid);
 	// kill him
 	int err = kill ( g_pid , 9 );
 	// don't kill again
@@ -647,7 +647,7 @@ void checkList  ( ThreadEntry **headPtr , ThreadEntry **tailPtr ) {
 // remove from a head-only linked list
 void removeLink ( ThreadEntry **headPtr , ThreadEntry *t ) {
 	// if ( g_conf.m_logDebugThread )
-	// 	logf(LOG_DEBUG,"thread: removeLink [t=0x%"PTRFMT"]",
+	// 	logf(LOG_DEBUG,"thread: removeLink [t=0x%" PTRFMT "]",
 	// 	     (PTRTYPE)t);
 	if ( g_conf.m_logDebugThread )
 		checkList ( headPtr , NULL );
@@ -664,7 +664,7 @@ void removeLink2 ( ThreadEntry **headPtr ,
 		   ThreadEntry **tailPtr ,
 		   ThreadEntry *t ) {
 	// if ( g_conf.m_logDebugThread )
-	// 	logf(LOG_DEBUG,"thread: removeLink2 [t=0x%"PTRFMT"]",
+	// 	logf(LOG_DEBUG,"thread: removeLink2 [t=0x%" PTRFMT "]",
 	// 	     (PTRTYPE)t);
 	if ( g_conf.m_logDebugThread )
 		checkList ( headPtr , tailPtr );
@@ -683,7 +683,7 @@ void addLinkToTail ( ThreadEntry **headPtr ,
 		     ThreadEntry **tailPtr ,
 		     ThreadEntry *t ) {
 	// if ( g_conf.m_logDebugThread )
-	// 	logf(LOG_DEBUG,"thread: addLinkToTail [t=0x%"PTRFMT"]",
+	// 	logf(LOG_DEBUG,"thread: addLinkToTail [t=0x%" PTRFMT "]",
 	// 	     (PTRTYPE)t);
 	if ( g_conf.m_logDebugThread )
 		checkList ( headPtr , tailPtr );
@@ -708,7 +708,7 @@ void addLinkToHead ( ThreadEntry **headPtr ,
 		     ThreadEntry **tailPtr ,
 		     ThreadEntry *t ) {
 	// if ( g_conf.m_logDebugThread )
-	// 	logf(LOG_DEBUG,"thread: addLinkToHead [t=0x%"PTRFMT"]",
+	// 	logf(LOG_DEBUG,"thread: addLinkToHead [t=0x%" PTRFMT "]",
 	// 	     (PTRTYPE)t);
 	if ( g_conf.m_logDebugThread )
 		checkList ( headPtr , tailPtr );
@@ -732,7 +732,7 @@ void addLinkToHead ( ThreadEntry **headPtr ,
 void addLink ( ThreadEntry **headPtr ,
 	       ThreadEntry *t ) {
 	// if ( g_conf.m_logDebugThread )
-	// 	logf(LOG_DEBUG,"thread: addLink [t=0x%"PTRFMT"]",
+	// 	logf(LOG_DEBUG,"thread: addLink [t=0x%" PTRFMT "]",
 	// 	     (PTRTYPE)t);
 	if ( g_conf.m_logDebugThread )
 		checkList ( headPtr , NULL );
@@ -811,7 +811,7 @@ bool ThreadQueue::init ( char threadType, int32_t maxThreads, int32_t maxEntries
 	m_maxEntries  = maxEntries;
 	m_entriesSize = sizeof(ThreadEntry)*m_maxEntries;
 	m_entries = (ThreadEntry *)mmalloc ( m_entriesSize , "Threads" );
-	if ( ! m_entries ) return log("thread: Failed to allocate %"INT32" bytes "
+	if ( ! m_entries ) return log("thread: Failed to allocate %" INT32 " bytes "
 				      "for thread queue.",m_entriesSize);
 	// debug msg
 	//log("INIT CALLED. setting all m_isDone to 1.");
@@ -943,7 +943,7 @@ ThreadEntry *ThreadQueue::addEntry ( int32_t   niceness                     ,
 		time_t now = getTime();
 		if ( now - s_time > 5 ) {
 			log("thread: Could not add thread to queue. Already "
-			    "have %"INT32" entries.",m_maxEntries);
+			    "have %" INT32 " entries.",m_maxEntries);
 			s_time = now;
 		}
 		return NULL;
@@ -968,17 +968,17 @@ ThreadEntry *ThreadQueue::addEntry ( int32_t   niceness                     ,
 	// 	time_t now = getTime();
 	// 	if ( now - s_time > 5 ) {
 	// 		log("thread: Could not add thread to queue. Already "
-	// 		    "have %"INT32" entries.",max);
+	// 		    "have %" INT32 " entries.",max);
 	// 		s_time = now;
 	// 	}
 	// 	return NULL;
 	// }
 	// debug msg
-	//fprintf(stderr,"addEntry my pid=%"UINT32"\n", (int32_t)getpid() );
+	//fprintf(stderr,"addEntry my pid=%" UINT32 "\n", (int32_t)getpid() );
 	// get an available entry
 	//ThreadEntry *t = &m_entries [ i ];
 	// debug msg
-	//log("claiming entry state=%"UINT32", occupied=%"INT32"",(int32_t)t->m_state, 
+	//log("claiming entry state=%" UINT32 ", occupied=%" INT32 "",(int32_t)t->m_state, 
 	//    (int32_t)t->m_isOccupied);
 	// stick it in
 	t->m_niceness     = niceness;
@@ -989,7 +989,7 @@ ThreadEntry *ThreadQueue::addEntry ( int32_t   niceness                     ,
 	t->m_isCancelled  = false;
 	t->m_stack        = NULL;
 	// debug msg
-	//log("setting t=%"UINT32" m_isDone to 0", (int32_t)t );
+	//log("setting t=%" UINT32 " m_isDone to 0", (int32_t)t );
 	t->m_isDone       = false;
 	t->m_isLaunched   = false;
 	t->m_queuedTime   = gettimeofdayInMilliseconds();
@@ -1019,7 +1019,7 @@ ThreadEntry *ThreadQueue::addEntry ( int32_t   niceness                     ,
 	// inc the used count
 	//m_entriesUsed++;
 	// debug msg
-	//log("m_entriesUsed now %"INT32"",m_entriesUsed);
+	//log("m_entriesUsed now %" INT32 "",m_entriesUsed);
 	// might have to inc top as well
 	//if ( i == m_top ) m_top++;
 
@@ -1047,9 +1047,9 @@ ThreadEntry *ThreadQueue::addEntry ( int32_t   niceness                     ,
 		addLinkToTail ( bestHeadPtr , bestTailPtr , t );
 		// debug msg
 		if ( g_conf.m_logDebugThread )
-			log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] "
+			log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] "
 			    "queued %s thread for launch1. "
-			    "niceness=%"INT32". ", (PTRTYPE)t,
+			    "niceness=%" INT32 ". ", (PTRTYPE)t,
 			    getThreadType(), (int32_t)niceness );
 		return t;
 	}
@@ -1100,7 +1100,7 @@ ThreadEntry *ThreadQueue::addEntry ( int32_t   niceness                     ,
 
 
 	if ( g_conf.m_logDebugThread )
-		log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] "
+		log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] "
 		    "remove from empty list, add to wait list",
 		    (PTRTYPE)t);
 
@@ -1113,9 +1113,9 @@ ThreadEntry *ThreadQueue::addEntry ( int32_t   niceness                     ,
 
 	// debug msg
 	if ( g_conf.m_logDebugThread )
-		log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] "
+		log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] "
 		    "queued %s thread for launch2. "
-		    "niceness=%"INT32". ", (PTRTYPE)t,
+		    "niceness=%" INT32 ". ", (PTRTYPE)t,
 		    getThreadType(), (int32_t)niceness );
 	// success
 	return t;
@@ -1330,15 +1330,15 @@ bool ThreadQueue::timedCleanUp ( int32_t maxNiceness ) {
 			}
 
 			if ( status != 0 ) {
-				log("threads: pthread_join %"INT64" = %s (%"INT32")",
+				log("threads: pthread_join %" INT64 " = %s (%" INT32 ")",
 				    (int64_t)t->m_joinTid,mstrerror(status),
 				    status);
 			}
 			// debug msg
 			if ( g_conf.m_logDebugThread )
 				log(LOG_DEBUG,"thread: joined1 with "
-				    "t=0x%"PTRFMT" "
-				    "jointid=0x%"XINT64".",
+				    "t=0x%" PTRFMT " "
+				    "jointid=0x%" XINT64 ".",
 				    (PTRTYPE)t,(int64_t)t->m_joinTid);
 
 			// re-protect this stack
@@ -1358,15 +1358,15 @@ bool ThreadQueue::timedCleanUp ( int32_t maxNiceness ) {
 		int err = errno;
 		// debug the waitpid
 		if ( g_conf.m_logDebugThread || g_process.m_exiting ) 
-			log(LOG_DEBUG,"thread: Waiting for t=0x%"PTRFMT" "
-			    "pid=%"INT32".",
+			log(LOG_DEBUG,"thread: Waiting for t=0x%" PTRFMT " "
+			    "pid=%" INT32 ".",
 			    (PTRTYPE)t,(int32_t)t->m_pid);
 		// bitch and continue if join failed
 		if ( pid != t->m_pid ) {
 			// waitpid() gets interrupted by various signals so
 			// we need to repeat (SIGCHLD?)
 			if ( err == EINTR ) goto again;
-			log("thread: Call to waitpid(%"INT32") returned %"INT32": %s.",
+			log("thread: Call to waitpid(%" INT32 ") returned %" INT32 ": %s.",
 			    (int32_t)t->m_pid,(int32_t)pid,mstrerror(err));
 			continue;
 		}
@@ -1374,7 +1374,7 @@ bool ThreadQueue::timedCleanUp ( int32_t maxNiceness ) {
 		if ( ! WIFEXITED(status) ) {
 			if ( WIFSIGNALED(status) )
 				log("thread: Child process (pid=%i) exited "
-				    "from unhandled signal number %"INT32".",
+				    "from unhandled signal number %" INT32 ".",
 				    pid,(int32_t)WTERMSIG(status));
 			else
 				log("thread: Child process (pid=%i) exited "
@@ -1388,7 +1388,7 @@ bool ThreadQueue::timedCleanUp ( int32_t maxNiceness ) {
 		t->m_stack = NULL;
 		// debug msg
 		if ( g_conf.m_logDebugThread )
-			log(LOG_DEBUG,"thread: joined with pid=%"INT32" pid=%"INT32".",
+			log(LOG_DEBUG,"thread: joined with pid=%" INT32 " pid=%" INT32 ".",
 			    (int32_t)t->m_pid,(int32_t)t->m_pid);
 
 
@@ -1476,7 +1476,7 @@ bool ThreadQueue::timedCleanUp ( int32_t maxNiceness ) {
 		// 		m_top--;
 
 		if ( g_conf.m_logDebugThread )
-			log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] "
+			log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] "
 			    "remove from launched list, add to empty list",
 			    (PTRTYPE)t);
 
@@ -1490,7 +1490,7 @@ bool ThreadQueue::timedCleanUp ( int32_t maxNiceness ) {
 		// one less entry occupied
 		//m_entriesUsed--;
 		// debug msg
-		//log("m_entriesUsed now %"INT32"",m_entriesUsed);
+		//log("m_entriesUsed now %" INT32 "",m_entriesUsed);
 		// one more returned
 		//m_returned++;
 		// clear the g_errno in case set by a previous callback
@@ -1511,8 +1511,8 @@ bool ThreadQueue::timedCleanUp ( int32_t maxNiceness ) {
 		//if(took > 8 && maxNiceness > 0) {
 		//	if(g_conf.m_sequentialProfiling)
 		//		log(LOG_TIMING, 
-		//		    "admin: Threads spent %"INT64" ms to callback "
-		//		    "%"INT32" callbacks, nice: %"INT32"",
+		//		    "admin: Threads spent %" INT64 " ms to callback "
+		//		    "%" INT32 " callbacks, nice: %" INT32 "",
 		//		    took, numCallbacks, maxNiceness);
 		//	g_threads.m_needBottom = true;
 		//	maxNiceness = 0;
@@ -1523,12 +1523,12 @@ bool ThreadQueue::timedCleanUp ( int32_t maxNiceness ) {
 
 		if ( g_conf.m_logDebugThread ) {
 			int64_t now = gettimeofdayInMilliseconds();
-			log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] %s done1. "
-			    "active=%"INT32" "
-			    "time since queued = %"UINT64" ms  "
-			    "time since launch = %"UINT64" ms  "
-			    "time since pre-exit = %"UINT64" ms  "
-			    "time since exit = %"UINT64" ms",
+			log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] %s done1. "
+			    "active=%" INT32 " "
+			    "time since queued = %" UINT64 " ms  "
+			    "time since launch = %" UINT64 " ms  "
+			    "time since pre-exit = %" UINT64 " ms  "
+			    "time since exit = %" UINT64 " ms",
 			    (PTRTYPE)t, 
 			    getThreadType() ,
 			    (int32_t)(m_launched - m_returned) ,
@@ -1560,10 +1560,10 @@ void makeCallback ( ThreadEntry *t ) {
 
 	// log it now
 	if ( g_conf.m_logDebugLoop || g_conf.m_logDebugThread )
-		log(LOG_DEBUG,"thread: enter thread callback t=0x%"PTRFMT" "
+		log(LOG_DEBUG,"thread: enter thread callback t=0x%" PTRFMT " "
 		    //"type=%s "
-		    "state=0x%"PTRFMT" "
-		    "nice=%"INT32"",
+		    "state=0x%" PTRFMT " "
+		    "nice=%" INT32 "",
 		    (PTRTYPE)t,
 		    //getThreadType(),
 		    (PTRTYPE)t->m_state,
@@ -1585,17 +1585,17 @@ void makeCallback ( ThreadEntry *t ) {
 	if ( g_conf.m_maxCallbackDelay >= 0 ) {
 		int64_t elapsed = gettimeofdayInMillisecondsLocal() - start;
 		if ( elapsed >= g_conf.m_maxCallbackDelay )
-			log("threads: Took %"INT64" ms to call "
-			    "thread callback niceness=%"INT32"",
+			log("threads: Took %" INT64 " ms to call "
+			    "thread callback niceness=%" INT32 "",
 			    elapsed,(int32_t)saved);
 	}
 
 
 	// log it now
 	if ( g_conf.m_logDebugLoop || g_conf.m_logDebugThread )
-		log(LOG_DEBUG,"loop: exit thread callback t=0x%"PTRFMT" "
+		log(LOG_DEBUG,"loop: exit thread callback t=0x%" PTRFMT " "
 		    //"type=%s "
-		    "nice=%"INT32"", 
+		    "nice=%" INT32 "", 
 		    (PTRTYPE)t,
 		    //getThreadType(),
 		    (int32_t)t->m_niceness);
@@ -1695,15 +1695,15 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 			int32_t status =  pthread_join ( t->m_joinTid , NULL );
 			if ( status != 0 ) {
 				log("threads: "
-				    "pthread_join2 %"INT64" = %s (%"INT32")",
+				    "pthread_join2 %" INT64 " = %s (%" INT32 ")",
 				    (int64_t)t->m_joinTid,mstrerror(status),
 				    status);
 			}
 			// debug msg
 			if ( g_conf.m_logDebugThread )
 				log(LOG_DEBUG,"thread: joined2 with "
-				    "t=0x%"PTRFMT" "
-				    "jointid=0x%"XINT64".",
+				    "t=0x%" PTRFMT " "
+				    "jointid=0x%" XINT64 ".",
 				    (PTRTYPE)t,(int64_t)t->m_joinTid);
 
 			// re-protect this stack
@@ -1723,14 +1723,14 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 		// debug the waitpid
 		if ( g_conf.m_logDebugThread ) 
 			log(LOG_DEBUG,"thread: Waiting for "
-			    "t=0x%"PTRFMT" pid=%"INT32".",
+			    "t=0x%" PTRFMT " pid=%" INT32 ".",
 			    (PTRTYPE)t,(int32_t)t->m_pid);
 		// bitch and continue if join failed
 		if ( pid != t->m_pid ) {
 			// waitpid() gets interrupted by various signals so
 			// we need to repeat (SIGCHLD?)
 			if ( err == EINTR ) goto again;
-			log("thread: Call to waitpid(%"INT32") returned %"INT32": %s.",
+			log("thread: Call to waitpid(%" INT32 ") returned %" INT32 ": %s.",
 			    (int32_t)t->m_pid,(int32_t)pid,mstrerror(err));
 			continue;
 		}
@@ -1738,7 +1738,7 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 		if ( ! WIFEXITED(status) ) {
 			if ( WIFSIGNALED(status) )
 				log("thread: Child process (pid=%i) exited "
-				    "from unhandled signal number %"INT32".",
+				    "from unhandled signal number %" INT32 ".",
 				    pid,(int32_t)WTERMSIG(status));
 			else
 				log("thread: Child process (pid=%i) exited "
@@ -1755,7 +1755,7 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 
 		// debug msg
 		if ( g_conf.m_logDebugThread )
-			log(LOG_DEBUG,"thread: joined with pid=%"INT32" pid=%"INT32".",
+			log(LOG_DEBUG,"thread: joined with pid=%" INT32 " pid=%" INT32 ".",
 			    (int32_t)t->m_pid,(int32_t)t->m_pid);
 
 
@@ -1838,12 +1838,12 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 			continue;
 		}
 		// debug msg
-		//log("[%"UINT32"] CLEANING UP THREAD type=%"INT32", numLaunched=%"INT32"",
+		//log("[%" UINT32 "] CLEANING UP THREAD type=%" INT32 ", numLaunched=%" INT32 "",
 		//     m_entries[i].m_tid , m_threadType , m_launched );
 		// remove it
 		// debug msg
-		//log("CLN  TID=%"UINT32" t=%"UINT32"",(int32_t)t->m_tid , (int32_t)t);
-		//log("thread callback for tid=%"UINT32"",(int32_t)t->m_tid );
+		//log("CLN  TID=%" UINT32 " t=%" UINT32 "",(int32_t)t->m_tid , (int32_t)t);
+		//log("thread callback for tid=%" UINT32 "",(int32_t)t->m_tid );
 		// . save important stuff before freeing up the ThreadEntry
 		//   for possible take over.
 		// . calling the callback may launch a thread which may
@@ -1874,7 +1874,7 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 		//		m_top--;
 
 		if ( g_conf.m_logDebugThread )
-			log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] "
+			log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] "
 			    "remove from launched list, add to empty list",
 			    (PTRTYPE)t);
 
@@ -1888,7 +1888,7 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 		// one less entry occupied
 		//m_entriesUsed--;
 		// debug msg
-		//log("m_entriesUsed now %"INT32"",m_entriesUsed);
+		//log("m_entriesUsed now %" INT32 "",m_entriesUsed);
 		// one more returned
 		//m_returned++;
 		// clear the g_errno in case set by a previous callback
@@ -1906,8 +1906,8 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 // 		if(took > 8 && maxNiceness > 0) {
 // 			if(g_conf.m_sequentialProfiling)
 // 				log(LOG_TIMING, 
-// 				    "admin: Threads spent %"INT64" ms to callback "
-// 				    "%"INT32" callbacks, nice: %"INT32"",
+// 				    "admin: Threads spent %" INT64 " ms to callback "
+// 				    "%" INT32 " callbacks, nice: %" INT32 "",
 // 				    took, numCallbacks, maxNiceness);
 // 			g_threads.m_needBottom = true;
 // 			maxNiceness = 0;
@@ -1918,12 +1918,12 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 
 		if ( g_conf.m_logDebugThread ) {
 			int64_t now = gettimeofdayInMilliseconds();
-			log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] %s done2. "
-			    "active=%"INT32" "
-			    "time since queued = %"UINT64" ms  "
-			    "time since launch = %"UINT64" ms  "
-			    "time since pre-exit = %"UINT64" ms  "
-			    "time since exit = %"UINT64" ms",
+			log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] %s done2. "
+			    "active=%" INT32 " "
+			    "time since queued = %" UINT64 " ms  "
+			    "time since launch = %" UINT64 " ms  "
+			    "time since pre-exit = %" UINT64 " ms  "
+			    "time since exit = %" UINT64 " ms",
 			    (PTRTYPE)t, 
 			    getThreadType() ,
 			    (int32_t)(m_launched - m_returned) ,
@@ -1937,21 +1937,21 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 
 
 		// calling thread callback
-		//log("calling thread id %"INT32" callback", (int32_t)(t->m_tid));
+		//log("calling thread id %" INT32 " callback", (int32_t)(t->m_tid));
 		// first call it's callback
 		//callback ( state );
 		// clear after just in case
 		//g_errno = 0;
 		// debug msg
-		//log("CLN2 TID=%"UINT32" t=%"INT32"",(int32_t)t->m_tid ,(int32_t)t);
+		//log("CLN2 TID=%" UINT32 " t=%" INT32 "",(int32_t)t->m_tid ,(int32_t)t);
 		// return now if tt was specified
 		//if ( tt ) return;
 	}
 
 	int64_t took2 = gettimeofdayInMilliseconds()-startTime;
 	if(numCallbacks > 0 && took2 > 5)
-		log(LOG_DEBUG, "threads: took %"INT64" ms to callback %"INT32" "
-		    "callbacks, nice: %"INT32"", took2, numCallbacks, maxNiceness);
+		log(LOG_DEBUG, "threads: took %" INT64 " ms to callback %" INT32 " "
+		    "callbacks, nice: %" INT32 "", took2, numCallbacks, maxNiceness);
 
 	//since we need finer grained control in loop, we no longer collect
 	//the callbacks, sort, then call them.  we now call them right away
@@ -1964,12 +1964,12 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 	if ( g_conf.m_logDebugThread ) {
 		int64_t now = gettimeofdayInMilliseconds();
 		for ( int32_t i = 0 ; i < numCallbacks ; i++ ) 
-			log(LOG_DEBUG,"thread: [tid=%"PTRFMT"] %s done3. "
-			    "active=%"INT32" "
-			    "time since queued = %"UINT64" ms  "
-			    "time since launch = %"UINT64" ms  "
-			    "time since pre-exit = %"UINT64" ms  "
-			    "time since exit = %"UINT64" ms",
+			log(LOG_DEBUG,"thread: [tid=%" PTRFMT "] %s done3. "
+			    "active=%" INT32 " "
+			    "time since queued = %" UINT64 " ms  "
+			    "time since launch = %" UINT64 " ms  "
+			    "time since pre-exit = %" UINT64 " ms  "
+			    "time since exit = %" UINT64 " ms",
 			    (PTRTYPE)tids[i], 
 			    getThreadType() ,
 			    (int32_t)(m_launched - m_returned) ,
@@ -2018,8 +2018,8 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 
 	int64_t took = gettimeofdayInMilliseconds()-now;
 	if(numCallbacks > 0 && took > 5)
-		log(LOG_TIMING, "admin: took %"INT64" ms to callback %"INT32" "
-		    "callbacks, nice: %"INT32"", took, numCallbacks, maxNiceness);
+		log(LOG_TIMING, "admin: took %" INT64 " ms to callback %" INT32 " "
+		    "callbacks, nice: %" INT32 "", took, numCallbacks, maxNiceness);
 
 #if 0   //I think this is more efficient, for now we'll just use the old way
 	//theres no reason to sort these, lets just find the top one
@@ -2109,8 +2109,8 @@ bool ThreadQueue::launchThread2 ( ) {
 	int64_t active = m_launched - m_returned ;
 	// debug msg
 	if ( g_conf.m_logDebugThread && m_threadType == DISK_THREAD ) 
-		log(LOG_DEBUG,"thread: q=%s launchThread: active=%"INT64" "
-		    "max=%"INT32".",getThreadType(), active,m_maxLaunched);
+		log(LOG_DEBUG,"thread: q=%s launchThread: active=%" INT64 " "
+		    "max=%" INT32 ".",getThreadType(), active,m_maxLaunched);
 	// return if the max is already launched for this thread queue
 	if ( active >= m_maxLaunched ) return false;
 
@@ -2151,7 +2151,7 @@ bool ThreadQueue::launchThread2 ( ) {
 	// use several queues
 
 	// debug msg
-	//log("trying to launch for type=%"INT32"",(int32_t)m_threadType);
+	//log("trying to launch for type=%" INT32 "",(int32_t)m_threadType);
 	// clean up any threads that have exited
 	//cleanUp ();
 
@@ -2160,7 +2160,7 @@ bool ThreadQueue::launchThread2 ( ) {
 
 
 
-	//	return log("MAX. %"INT32" are launched. %"INT32" now in queue.",
+	//	return log("MAX. %" INT32 " are launched. %" INT32 " now in queue.",
 	//		   active , m_entriesUsed );
 	// . sanity check
 	// . a thread can NOT call this
@@ -2540,7 +2540,7 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 			}
 			else 
 				log("thread: read buf alloc failed "
-				    "for %"INT32" bytes.",need);
+				    "for %" INT32 " bytes.",need);
 			// just let the BigFile::readWrite_r() handle the
 			// error for the NULL read buf
 		}
@@ -2601,8 +2601,8 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 	*/
 	// debug msg
 	//if ( m_threadType == 0 ) 
-	//	log("creating thread, t=%"UINT32" state=%"UINT32" 
-	//launched = %"INT32"", 
+	//	log("creating thread, t=%" UINT32 " state=%" UINT32 " 
+	//launched = %" INT32 "", 
 	//	     t , (int32_t)t->m_state , m_launched );
 	// and set the flag
 	t->m_isLaunched = true;
@@ -2615,9 +2615,9 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 	if ( g_conf.m_logDebugThread ) {
 		int32_t active = m_launched - m_returned ;		
 		int64_t now = gettimeofdayInMilliseconds();
-		log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] launched %s thread. "
-		    "active=%"INT32" "
-		     "niceness=%"INT32". waited %"UINT64" ms in queue.",
+		log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] launched %s thread. "
+		    "active=%" INT32 " "
+		     "niceness=%" INT32 ". waited %" UINT64 " ms in queue.",
 		    (PTRTYPE)t, getThreadType(), active, t->m_niceness ,
 		     now - t->m_queuedTime);
 	}
@@ -2665,14 +2665,14 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 	t->m_pid = pid;
 	// might as well bitch if we should here
 	if ( s_bad ) {
-		log(LOG_LOGIC,"thread: PID received: %"INT32" > %"INT32". Bad.",
+		log(LOG_LOGIC,"thread: PID received: %" INT32 " > %" INT32 ". Bad.",
 		    s_badPid, (int32_t)MAX_PID);
 		//char *xx = NULL; *xx = 0;
 	}
 	// wait for him
 	//ret = waitpid ( -1*pid , &status , 0 );
 	//if ( ret != pid )
-	//	log("waitpid(pid=%"INT32"): ret=%"INT32" err=%s",
+	//	log("waitpid(pid=%" INT32 "): ret=%" INT32 " err=%s",
 	//	     (int32_t)pid,(int32_t)ret,mstrerror(errno));
 	// check if he's done
 	//if ( ! t->m_isDone ) log("NOT DONE");
@@ -2726,7 +2726,7 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 	pthread_attr_setstack ( &attr , t->m_stack , t->m_stackSize );
 
 	if ( g_conf.m_logDebugThread )
-		log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] "
+		log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] "
 		    "remove from wait list, add to launch list",
 		    (PTRTYPE)t);
 
@@ -2743,7 +2743,7 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 	// debug
 	if ( g_conf.m_logDebugThread )
 		log("threads: pthread_create: "
-		    "stack=%"PTRFMT" stacksize=%"INT64""
+		    "stack=%" PTRFMT " stacksize=%" INT64 ""
 		    , (PTRTYPE)t->m_stack
 		    , (int64_t)t->m_stackSize );
 
@@ -2759,7 +2759,7 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 	// we're back from pthread_create
 	if ( g_conf.m_logDebugThread ) 
 		log(LOG_DEBUG,"thread: Back from clone "
-		    "t=0x%"PTRFMT" pid=%"INT32".",
+		    "t=0x%" PTRFMT " pid=%" INT32 ".",
 		    (PTRTYPE)t,(int32_t)pid);
 
 
@@ -2768,7 +2768,7 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 		// good stuff, the thread needs a join now
 		t->m_needsJoin = true;
 		if ( count > 0 ) 
-			log("thread: Call to clone looped %"INT32" times.",
+			log("thread: Call to clone looped %" INT32 " times.",
 			    count);
 		return true;
 	}
@@ -2785,7 +2785,7 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 		goto hadError;
 	}
 	// debug msg
-	//	log("created tid=%"INT32"",(int32_t)t->m_tid);
+	//	log("created tid=%" INT32 "",(int32_t)t->m_tid);
 	//	return true;
 	//}
 	// do again if g_errno is AGAIN
@@ -2856,7 +2856,7 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 	log("thread: Call to clone had error: %s.", mstrerror(g_errno));
 	// correction on this error
 	log("thread: Try not using so much memory. "
-	    "memused now =%"INT64".",g_mem.getUsedMem());
+	    "memused now =%" INT64 ".",g_mem.getUsedMem());
 	// free allocated buffer
 	if ( allocated ) {
 		mfree ( fs->m_allocBuf , fs->m_allocSize , "ThreadReadBuf" );
@@ -2864,7 +2864,7 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 	}
 
 	if ( g_conf.m_logDebugThread )
-		log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] "
+		log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] "
 		    "remove from launched list, RE-add to wait list",
 		    (PTRTYPE)t);
 
@@ -2900,7 +2900,7 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 	t->m_startRoutine ( t->m_state , t );
 	//if (g_conf.m_profilingEnabled) {
 	//	if(!g_profiler.endTimer(address, __PRETTY_FUNCTION__))
-	//		log(LOG_WARN,"admin: Couldn't add the fn %"INT32"",
+	//		log(LOG_WARN,"admin: Couldn't add the fn %" INT32 "",
 	//		    (int32_t)address);
 	//}
 	t->m_exitTime = gettimeofdayInMilliseconds();
@@ -2969,11 +2969,11 @@ int startUp ( void *state ) {
 	//t->m_tid = pthread_self();
 	// debug
 	if ( g_conf.m_logDebugThread ) 
-		log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] "
-		    "in startup pid=%"INT64" pppid=%"INT32"",
+		log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] "
+		    "in startup pid=%" INT64 " pppid=%" INT32 "",
 		    (PTRTYPE)t,(int64_t)getpidtid(),(int32_t)getppid());
 	// debug msg
-	//fprintf(stderr,"new thread tid=%"INT32" pid=%"INT32"\n",
+	//fprintf(stderr,"new thread tid=%" INT32 " pid=%" INT32 "\n",
 	//	(int32_t)t->m_tid,(int32_t)t->m_pid);
 	// . set this process's priority
 	// . setpriority() is only used for SCHED_OTHER threads
@@ -2983,7 +2983,7 @@ int startUp ( void *state ) {
 		// do we even support logging from a thread?
 		if ( s_firstTime ) {
 			log("thread: Call to "
-			    "setpriority(%"UINT32",%i) in thread "
+			    "setpriority(%" UINT32 ",%i) in thread "
 			    "failed: %s. This "
 			    "message will not be repeated.",
 			    (uint32_t)getpidtid(),p,mstrerror(errno));
@@ -3003,11 +3003,11 @@ int startUp ( void *state ) {
 	sp.sched_priority = p;
 	// and reassign
 	err = pthread_setschedparam ( t->m_tid , SCHED_OTHER , &sp ) ;
-	log("thread: startUp: pthread_setschedparam(%"INT32"): %s",
+	log("thread: startUp: pthread_setschedparam(%" INT32 "): %s",
 		       p,mstrerror(err));
 	*/
 	// somehow, it works ok when we have this print statement delay!!!
-	//fprintf(stderr,"thread pid = %"INT32"\n",(int32_t)getpid());
+	//fprintf(stderr,"thread pid = %" INT32 "\n",(int32_t)getpid());
 	// . call the startRoutine
 	// . IMPORTANT: this can NEVER do non-blocking stuff
 	t->m_startRoutine ( t->m_state , t );
@@ -3029,8 +3029,8 @@ int startUp ( void *state ) {
 	t->m_exitTime    = now;
 	if ( g_conf.m_logDebugThread ) {
 
-		log(LOG_DEBUG,"thread: [t=0x%"PTRFMT"] "
-		    "done with startup pid=%"INT64"",
+		log(LOG_DEBUG,"thread: [t=0x%" PTRFMT "] "
+		    "done with startup pid=%" INT64 "",
 		    (PTRTYPE)t,(int64_t)getpidtid());
 	}
 
@@ -3122,8 +3122,8 @@ void ThreadQueue::print ( ) {
 	for ( int32_t i = 0 ; i < m_top ; i++ ) {
 		ThreadEntry *t = &m_entries[i];
 		// print it
-		log(LOG_INIT,"thread: address=%"PTRFMT" "
-		    "pid=%u state=%"PTRFMT" "
+		log(LOG_INIT,"thread: address=%" PTRFMT " "
+		    "pid=%u state=%" PTRFMT " "
 		    "occ=%i done=%i lnch=%i",
 		     (PTRTYPE)t , t->m_pid , 
 		     (PTRTYPE)t->m_state , t->m_isOccupied , t->m_isDone ,
@@ -3236,7 +3236,7 @@ void ThreadQueue::removeThreads2 ( ThreadEntry **headPtr ,
 		fs->m_errno2 = EFILECLOSED;
 		// log it
 		logf(LOG_INFO,"disk: Removing/flagging operation in thread "
-		    "queue. fs=0x%"PTRFMT"", (PTRTYPE)fs);
+		    "queue. fs=0x%" PTRFMT "", (PTRTYPE)fs);
 		// skip if already done
 		if ( t->m_isDone ) continue;
 		// skip if launched
@@ -3291,7 +3291,7 @@ void Threads::printState() {
 		//if( total == 0) continue;
 		// log(LOG_TIMING,
 		//     "admin: Thread counts: type:%s "
-		//     "%"INT32":low %"INT32":med%"INT32":high %"INT32":total",
+		//     "%" INT32 ":low %" INT32 ":med%" INT32 ":high %" INT32 ":total",
 		//     q->getThreadType(),loActive, mdActive, hiActive, total);
 
 		for ( int32_t j = 0 ; j < q->m_top ; j++ ) {
@@ -3301,11 +3301,11 @@ void Threads::printState() {
 			if(t->m_isDone) {
 				log(LOG_TIMING,
 				    "admin: Thread -done- "
-				    "nice: %"INT32" "
-				    "totalTime: %"INT64" (ms) "
-				    "queuedTime: %"INT64"(ms) "
-				    "runTime: %"INT64"(ms) "
-				    "cleanup: %"INT64"(ms) "
+				    "nice: %" INT32 " "
+				    "totalTime: %" INT64 " (ms) "
+				    "queuedTime: %" INT64 "(ms) "
+				    "runTime: %" INT64 "(ms) "
+				    "cleanup: %" INT64 "(ms) "
 				    "callback:%s",
 				    t->m_niceness, 
 				    now - t->m_queuedTime, 
@@ -3319,10 +3319,10 @@ void Threads::printState() {
 			if(t->m_isLaunched) {
 				log(LOG_TIMING,
 				    "admin: Thread -launched- "
-				    "nice: %"INT32" "
-				    "totalTime: %"INT64"(ms) "
-				    "queuedTime: %"INT64"(ms) "
-				    "runTime: %"INT64"(ms) "
+				    "nice: %" INT32 " "
+				    "totalTime: %" INT64 "(ms) "
+				    "queuedTime: %" INT64 "(ms) "
+				    "runTime: %" INT64 "(ms) "
 				    "callback:%s",
 				    t->m_niceness, 
 				    now - t->m_queuedTime, 
@@ -3335,8 +3335,8 @@ void Threads::printState() {
 
 			log(LOG_TIMING,
 			    "admin: Thread -queued- "
-			    "nice: %"INT32" "
-			    "queueTime: %"INT64"(ms) "
+			    "nice: %" INT32 " "
+			    "queueTime: %" INT64 "(ms) "
 			    "callback:%s",
 			    t->m_niceness, 
 			    now - t->m_queuedTime, 

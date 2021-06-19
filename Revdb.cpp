@@ -132,8 +132,8 @@ bool Revdb::verify ( char *coll ) {
 		if ( shardNum == getMyShardNum() ) got++;
 	}
 	if ( got != count ) {
-		log ("db: Out of first %"INT32" records in revdb, "
-		     "only %"INT32" belong to our group.",count,got);
+		log ("db: Out of first %" INT32 " records in revdb, "
+		     "only %" INT32 " belong to our group.",count,got);
 		// exit if NONE, we probably got the wrong data
 		if ( count > 10 && got == 0 ) 
 			log("db: Are you sure you have the right "
@@ -144,7 +144,7 @@ bool Revdb::verify ( char *coll ) {
 		return g_conf.m_bypassValidation;
 	}
 
-	log ( LOG_INFO, "db: Revdb passed verification successfully for %"INT32""
+	log ( LOG_INFO, "db: Revdb passed verification successfully for %" INT32 ""
 			" recs.", count );
 	// DONE
 	g_threads.enableThreads();
