@@ -216,7 +216,7 @@ inline bool relabel   ( void *ptr , int32_t size , const char *note ) {
 //#endif
 //#ifndef DMALLOC
 void operator delete ( void *p ) throw();
-void * operator new (size_t size) throw (std::bad_alloc);
+void * operator new (size_t size) noexcept(false);
 // you MUST call mmalloc, mcalloc and mrealloc!!
 #define malloc coreme 
 #define calloc coreme 
