@@ -211,7 +211,7 @@ retry16:
 		meth = SSLv23_method();
 		m_ctx = SSL_CTX_new(meth);
 		// get the certificate location
-		char sslCertificate[256];
+		char sslCertificate[263];
 		sprintf(sslCertificate, "%sgb.pem", g_hostdb.m_dir);
 		//char sslBundleFilename[256];
 		//sprintf(sslBundleFilename, "%sgd_bundle.crt",g_hostdb.m_dir);

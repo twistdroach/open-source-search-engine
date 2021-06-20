@@ -2281,7 +2281,7 @@ void Hostdb::syncStart_r ( bool amThread ) {
 	Host *srcHost = &shard[numHostsInShard - 1];
 	if ( srcHost == m_syncHost ) srcHost = &shard[numHostsInShard-2];
 	// create the rcp command
-	char cmd[1024];
+	char cmd[1644];
 	int32_t ip1 = m_syncHost->m_ip;
 	if ( m_syncSecondaryIps ) ip1 = m_syncHost->m_ipShotgun;
 	char ip1str[32];

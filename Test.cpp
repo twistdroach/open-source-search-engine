@@ -188,7 +188,7 @@ void Test::initTestRun ( ) {
 
 	// scan for file named "run.start.%" INT32 ".txt" which is a dump of all
 	// the conf and parms 
-	char filename[100];
+	char filename[278];
 	File f;
 	int32_t i; for ( i = 0 ; i < 9999 ; i++ ) {
 		// make filename. base it off working dir, g_hostdb.m_dir
@@ -217,8 +217,8 @@ void Test::initTestRun ( ) {
 	f.close();
 
 	// create the run.%" INT32 ".version.txt file
-	char cmd[1000];
-	char vfile[200];
+	char cmd[1136];
+	char vfile[276];
 	sprintf(vfile,"%s/%s/run.%" INT32 ".version.txt",g_hostdb.m_dir,testDir,i);
 	sprintf(cmd,
 		"%s/gb -v >& %s ; "
@@ -253,7 +253,7 @@ void Test::initTestRun ( ) {
 	//
 	// log out the global parms
 	//
-	char fbuf[100]; 
+	char fbuf[278]; 
 	// print our global parms into a file called run.%" INT32 ".start.txt
 	sprintf(fbuf,"%s/%s/run.%" INT32 ".confparms.txt",g_hostdb.m_dir,testDir,i);
 	// this saves it as xml i think
@@ -466,7 +466,7 @@ void Test::stopIt ( ) {
 			sprintf(df2,"%s/%s/run.%" INT32 ".confparms.txt",dir,
 				testDir,i-1);
 			// do the diff
-			char cmd[600];
+			char cmd[608];
 			sprintf(cmd,"diff %s %s > %s",df1,df2,diff1);
 			log("test: system(\"%s\")",cmd);
 			system (cmd);
@@ -488,7 +488,7 @@ void Test::stopIt ( ) {
 			sprintf(df2,"%s/%s/run.%" INT32 ".collparms.txt",dir,
 				testDir,i-1);
 			// do the diff
-			char cmd[600];
+			char cmd[608];
 			sprintf(cmd,"diff %s %s > %s",df1,df2,diff2);
 			log("test: system(\"%s\")",cmd);
 			system (cmd);
@@ -634,7 +634,7 @@ void Test::stopIt ( ) {
 				sprintf(tmp1,"%s/%s/t1.html",dir,testDir);
 				sprintf(tmp2,"%s/%s/t2.html",dir,testDir);
 				// filter first
-				char cmd[600];
+				char cmd[837];
 				sprintf(cmd,
 					"cat %s | "
 					"grep -v \"<!--ignore-->\" "
@@ -699,7 +699,7 @@ void Test::stopIt ( ) {
 			// . if we do not find such a tag in the parser output
 			//   any more then Spider.cpp creates this file!
 			if ( ri == m_runId ) {
-				char cfile[256];
+				char cfile[275];
 				sprintf(cfile,"%s/%s/critical.%" UINT64 ".%" INT32 ".txt",
 					g_hostdb.m_dir,testDir,h,ri);
 				SafeBuf ttt;
@@ -854,7 +854,7 @@ void Test::stopIt ( ) {
 
 	sb.safePrintf("</html>\n");
 
-	char dfile[200];
+	char dfile[266];
 	sprintf(dfile,"%s/%s/qa.html",g_hostdb.m_dir,testDir);
 	sb.dumpToFile ( dfile );
 

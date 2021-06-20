@@ -23,7 +23,7 @@
 #define MAX_CHARS 256
 #define TOP_POP_PHRASES 40 * 1024
 #define NUM_CHARS 40
-#define MAX_FRAG_SIZE 1024
+#define MAX_FRAG_SIZE 1030
 // max chars that start the rule
 
 #define MAX_PHRASE_LEN 80

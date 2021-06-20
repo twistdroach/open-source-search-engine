@@ -548,7 +548,7 @@ bool getTestIp ( char *url , int32_t *retIp , bool *found , int32_t niceness ,
 		s_testBuf = NULL;
 		//char *testDir = g_test.getTestDir();
 		// filename
-		char fn[100]; 
+		char fn[266];
 		sprintf(fn,"%s/%s/ips.txt",g_hostdb.m_dir,testDir);
 		// set it
 		File f; f.set ( fn );
@@ -724,7 +724,7 @@ bool saveTestBuf ( char *testDir ) {
 	// ensure ./qa/ subdir exsts. in qa.cpp
 	makeQADir();
 	// filename
-	char fn[100]; sprintf(fn,"%s/%s/ips.txt",g_hostdb.m_dir, testDir);
+	char fn[266]; sprintf(fn,"%s/%s/ips.txt",g_hostdb.m_dir, testDir);
 	// set it
 	File f; f.set ( fn );
 	// open it

@@ -55,7 +55,7 @@ bool Msg2a::makeCatdb( char  *coll,
 	m_state         = state;
 	m_callback      = callback;
 	// load the content and url files
-	char inFile[256];
+	char inFile[290];
 	// url info (content) file
 	if ( m_updateFromNew )
 		sprintf(inFile, "%scatdb/gbdmoz.content.dat.new", g_hostdb.m_dir);

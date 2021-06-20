@@ -35588,12 +35588,12 @@ int gbcompress7 ( unsigned char *dest      ,
 	//int32_t id = 1;
 	// pass the input to the program through this file
 	// rather than a pipe, since popen() seems broken
-	char in[64];
+	char in[264];
 	if ( compress ) sprintf ( in , "%s/in.7z", g_hostdb.m_dir );
 	else  sprintf ( in , "%s/out.7z", g_hostdb.m_dir );
 	unlink ( in );
 	// collect the output from the filter from this file
-	char out[64];
+	char out[264];
 	if ( compress ) sprintf ( out , "%s/out.7z", g_hostdb.m_dir );
 	else sprintf ( out , "%s/in.7z", g_hostdb.m_dir );
 	if ( ! compress )

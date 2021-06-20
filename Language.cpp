@@ -4841,7 +4841,7 @@ int32_t Language::spellcheckDict(){
 
 	// create the output file
 	int fdw;
-	char outfile[1024];
+	char outfile[1036];
 	sprintf ( outfile , "%s.spellcheck", ff );
 
 	// delete it first

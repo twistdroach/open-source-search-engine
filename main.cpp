@@ -1843,7 +1843,7 @@ int main2 ( int argc , char *argv[] ) {
 
 	if(strcmp(cmd, "catcountry") == 0) {
 		// Load categories and generate country table
-		char structureFile[256];
+		char structureFile[283];
 		g_conf.m_maxMem = 1000000000LL; // 1G
 		//g_mem.m_maxMem  = 1000000000LL; // 1G
 		sprintf(structureFile, "%scatdb/gbdmoz.structure.dat", g_hostdb.m_dir);
@@ -2536,7 +2536,7 @@ int main2 ( int argc , char *argv[] ) {
 		char urlnote[1024];
 		urlEncode(urlnote, 1024, note, gbstrlen(note));
 		log ( LOG_INIT, "conf: setnote %" INT32 ": %s", hostId, urlnote );
-		char setnoteCmd[256];
+		char setnoteCmd[1057];
 		sprintf(setnoteCmd, "setnote=1&host=%" INT32 "&note=%s",
 				    hostId, urlnote);
 		return doCmd ( setnoteCmd, -1, "admin/hosts" ,
@@ -2555,7 +2555,7 @@ int main2 ( int argc , char *argv[] ) {
 		char urlnote[1024];
 		urlEncode(urlnote, 1024, note, gbstrlen(note));
 		log(LOG_INIT, "conf: setsparenote %" INT32 ": %s", spareId, urlnote);
-		char setnoteCmd[256];
+		char setnoteCmd[1064];
 		sprintf(setnoteCmd, "setsparenote=1&spare=%" INT32 "&note=%s",
 				    spareId, urlnote);
 		return doCmd ( setnoteCmd, -1, "admin/hosts" ,
@@ -3635,7 +3635,7 @@ int main2 ( int argc , char *argv[] ) {
 	//countdomains was HERE, moved up to access more mem.
 
 	// load up the dmoz categories here
-	char structureFile[256];
+	char structureFile[283];
 	sprintf(structureFile, "%scatdb/gbdmoz.structure.dat", g_hostdb.m_dir);
 	g_categories = &g_categories1;
 	if (g_categories->loadCategories(structureFile) != 0) {
@@ -4675,7 +4675,7 @@ int install ( install_flag_konst_t installFlag , int32_t hostId , char *dir ,
 	// then it was not given, so restrict to just hostId
 	if ( hostId2 == -1 ) hostId2 = hostId;
 
-	char tmp[1024];
+	char tmp[1468];
 	/*
 	int32_t i,j;
 	if( installFlag == ifk_distributeC ) {
@@ -4759,7 +4759,7 @@ int install ( install_flag_konst_t installFlag , int32_t hostId , char *dir ,
 			if ( hostId >= 0 && h2->m_hostId != hostId ) continue;
 
 			// . save old log now, too
-			char tmp2[1024];
+			char tmp2[1246];
 			tmp2[0]='\0';
 			// let's do this for everyone now
 			//if ( h2->m_hostId == 0 )
@@ -17590,7 +17590,7 @@ void countdomains( char* coll, int32_t numRecs, int32_t verbosity, int32_t outpu
 		loop = 0;
 
 		FILE *fhndl;		
-		char out[128];
+		char out[268];
 		if( output != 9 ) goto printHtml;
 		// Dump raw data to a file to parse later
 		sprintf( out, "%scntdom.xml", g_hostdb.m_dir );

@@ -216,10 +216,10 @@ bool Wiktionary::test2 ( ) {
 bool Wiktionary::load() {
 
 	// load it from .dat file if exists and is newer
-	char ff1[256];
+	char ff1[274];
 	//char ff2[256];
-	char ff3[256];
-	char ff4[256];
+	char ff3[276];
+	char ff4[275];
 	sprintf(ff1, "%swiktionary.txt.aa", g_hostdb.m_dir);
 	//sprintf(ff2, "%swiktionary-mybuf.txt", g_hostdb.m_dir);
 	sprintf(ff3, "%swiktionary-syns.dat", g_hostdb.m_dir);
@@ -516,7 +516,7 @@ bool Wiktionary::generateHashTableFromWiktionaryTxt ( int32_t sizen ) {
 	// wiktionary-buf.txt   (one syn set per line)
 	// wiktionary-lang.txt  (<landId>|<word>\n) (used by Speller.cpp)
 	//
-	char ff1[256];
+	char ff1[274];
 	sprintf(ff1, "%swiktionary.txt.aa", g_hostdb.m_dir);
 	log(LOG_INFO,"wikt: Loading %s",ff1);
         int fd1 = open ( ff1 , O_RDONLY );

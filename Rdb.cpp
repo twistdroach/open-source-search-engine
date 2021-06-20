@@ -371,7 +371,7 @@ bool Rdb::updateToRebuildFiles ( Rdb *rdb2 , char *coll ) {
 	if ( ! g_repairMode ) { char *xx = NULL; *xx = 0; }
 	// make a dir in the trash subfolder to hold them
 	uint32_t t = (uint32_t)getTime();
-	char dstDir[256];
+	char dstDir[282];
 	// make the trash dir if not there
 	sprintf ( dstDir , "%s/trash/" , g_hostdb.m_dir );
 	int32_t status = ::mkdir ( dstDir , getDirCreationFlags() );
@@ -1147,7 +1147,7 @@ bool Rdb::loadTree ( ) {
 				m_buckets.setNeedsSave(false);
 			}
 			else {
-				char newFilename[256];
+				char newFilename[273];
 				sprintf(newFilename,"%s-%" INT32 ".old",
 					filename, (int32_t)getTime());
 				bool usingThreads = g_conf.m_useThreads;

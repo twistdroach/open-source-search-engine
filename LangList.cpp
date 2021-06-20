@@ -389,7 +389,7 @@ bool LangList::loadLists ( ) {
 	Words w;
 	for ( int32_t i = 0; i < MAX_LANGUAGES; i++ ) {
 		// load the file for reading
-		char ff[128];
+		char ff[286];
 		sprintf(ff, "%slanglist/langlist.%" INT32 "", g_hostdb.m_dir, i );
 		int fd = open ( ff, O_RDONLY );
 		// no language file, don't complain

@@ -256,7 +256,7 @@ bool Proxy::initProxy ( int32_t proxyId, uint16_t udpPort,
 	//forward. html/gif's, etc can be taken care here itself.
 	g_pages.init ( );
 	// load up the dmoz categories here
-	char structureFile[256];
+	char structureFile[283];
 	sprintf(structureFile, "%scatdb/gbdmoz.structure.dat", g_hostdb.m_dir);
 	g_categories = &g_categories1;
 	if (g_categories->loadCategories(structureFile) != 0) {

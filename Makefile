@@ -98,7 +98,7 @@ XMLDOCOPT := -O2
 endif
 
 # Onlyjob: -O3 is _very_ unstable and causes segfaults all over (e.g. #172).
-CC_OPT_ARG ?= -O2
+CC_OPT_ARG ?= -O0
 
 
 ifeq ("titan","$(HOST)")

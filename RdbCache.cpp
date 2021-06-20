@@ -1476,7 +1476,7 @@ void *saveWrapper ( void *state , ThreadEntry *te ) {
 // returns false with errno set on error
 bool RdbCache::save_r ( ) {
 	// append .cache to "dbname" to get cache filename
-	char filename [ 64 ];
+	char filename [ 263 ];
 	if ( gbstrlen(m_dbname) > 50 )
 		return log("db: Dbname too long. Could not save cache.");
 	sprintf ( filename , "%s%s.cache" , g_hostdb.m_dir , m_dbname );
