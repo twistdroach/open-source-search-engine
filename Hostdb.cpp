@@ -1,14 +1,13 @@
-#include <ifaddrs.h>
 #include "gb-include.h"
-
+#include <ifaddrs.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include "Hostdb.h"
 #include "HashTableT.h"
 #include "UdpServer.h"
 #include "Threads.h"
 #include "Process.h"
 #include <sched.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include "sort.h"
 #include "Rdb.h" // RDB_INDEXDB,...
 //#include "Indexdb.h"

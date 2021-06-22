@@ -647,6 +647,71 @@ public:
 	bool contains2 ( int32_t a ) { return ( m_a <= a && m_b > a ); };
 
 	bool isVirtualSection ( ) ;
+
+	void clear() {
+
+	    m_parent = {};
+	    m_next = {};
+	    m_prev = {};
+	    m_aa = {};
+	    m_listContainer = {};
+	    m_prevBrother = {};
+	    m_nextBrother = {};
+	    m_sentenceSection = {};
+	    m_stats = {};
+	    m_firstPlaceNum = {};
+	    m_votesForDup = {};
+	    m_votesForNotDup = {};
+	    m_firstWordPos = {};
+	    m_lastWordPos = {};
+	    m_alnumPosA = {};
+	    m_alnumPosB = {};
+	    m_senta = {};
+	    m_sentb = {};
+	    m_prevSent = {};
+	    m_nextSent = {};
+	    m_phoneXor = {};
+	    m_emailXor = {};
+	    m_priceXor = {};
+	    m_todXor = {};
+	    m_dayXor = {};
+	    m_addrXor = {};
+	    m_monthXor = {};
+	    m_dowXor = {};
+	    m_rowNum = {};
+	    m_colNum = {};
+	    m_tableSec = {};
+	    m_headColSection = {};
+	    m_headRowSection = {};
+	    m_leftCell = {};
+	    m_aboveCell = {};
+	    m_tagHash = {};
+	    m_turkTagHash32 = {};
+	    m_colorHash = {};
+	    m_tagId = {};
+	    m_baseHash = {};
+	    m_turkBaseHash = {};
+	    m_xmlNameHash = {};
+	    m_occNum = {};
+	    m_numOccurences = {};
+	    m_topDist = {};
+	    m_contentHash64 = {};
+	    m_sentenceContentHash64 = {};
+	    m_lastLinkContentHash32 = {};
+	    m_indirectSentHash64 = {};
+	    m_a = {};
+	    m_b = {};
+	    m_sentFlags = {};
+	    m_exclusive = {};
+	    m_depth = {};
+	    m_flags = {};
+	    m_mark = {};
+	    m_firstDate = {};
+	    m_dateBits = {};
+	    m_used = {};
+	    m_processedHash = {};
+	    m_gbFrameNum = {};
+	}
 };
 
 

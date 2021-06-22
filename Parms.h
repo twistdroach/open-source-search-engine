@@ -198,6 +198,35 @@ class GigablastRequest {
 	SafeBuf m_tmpBuf1;
 	SafeBuf m_tmpBuf2;
 	SafeBuf m_tmpBuf3;
+
+	void clear() {
+
+	    m_hr = {};
+	    m_socket = {};
+	    m_coll = {};
+	    m_formatStr = {};
+	    m_url = {};
+	    m_importDir = {};
+	    m_importInjects = {};
+	    m_docId = {};
+	    m_strip = {};
+	    m_includeHeader = {};
+	    m_highlightQuery = {};
+	    m_urlsBuf = {};
+	    m_stripBox = {};
+	    m_harvestLinks = {};
+	    m_listBuf = {};
+	    m_msg4 = {};
+	    m_query = {};
+	    m_srn = {};
+	    m_ern = {};
+	    m_qlang = {};
+	    m_forceDel = {};
+	    m_recycleContent = {};
+	    m_tmpBuf1 = {};
+	    m_tmpBuf2 = {};
+	    m_tmpBuf3 = {};
+	}
 };
 
 

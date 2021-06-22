@@ -1118,7 +1118,7 @@ bool Parms::setGigablastRequest ( TcpSocket *socket ,
 	}
 
 	// just in case
-	memset ( gr , 0 , sizeof(GigablastRequest) );
+	gr->clear();
 
 	gr->m_socket = socket;
 

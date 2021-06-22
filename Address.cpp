@@ -4136,7 +4136,7 @@ bool Addresses::set2 ( ) {
 	// init
 	int32_t dc = 0;
 	// first address is the empty one
-	memset ( &da[0] , 0 , sizeof(Address) );
+	da[0].clear();
 	// skip it 
 	dc++;
 

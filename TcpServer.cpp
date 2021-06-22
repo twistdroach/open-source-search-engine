@@ -966,7 +966,8 @@ TcpSocket *TcpServer::wrapSocket ( int sd , int32_t niceness , bool isIncoming )
 	// save this i guess
 	//int32_t saved = s->m_numDestroys;
 	// clear it
-	memset ( s , 0 , sizeof(TcpSocket) );
+	s->clear();
+
 	// restore
 	//s->m_numDestroys = saved;
 	// store sd in our TcpSocket

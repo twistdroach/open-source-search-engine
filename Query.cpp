@@ -2216,7 +2216,7 @@ bool Query::setQWords ( char boolFlag ,
 		// convenience var, these are 1-1 with "words"
 		QueryWord *qw = &m_qwords[i];
 		// set to defaults?
-		memset ( qw , 0 , sizeof(QueryWord) );
+		qw->clear();
 		// but quotestart should be -1
 		qw->m_quoteStart = -1;
 		qw->m_leftPhraseStart = -1;

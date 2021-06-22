@@ -736,13 +736,85 @@ class SpiderRequest {
 	// . basic functions
 	// . clear all
 	void reset() { 
-		memset ( this , 0 , (char *)m_url - (char *)&m_key ); 
-		// -1 means uninitialized, this is required now
-		m_ufn = -1;
-		// this too
-		m_priority = -1;
-		// this happens to be zero already, but just in case it changes
-		m_parentLangId = langUnknown;
+
+	    m_key                     = {};
+	    m_dataSize                = {};
+	    m_firstIp                 = {};
+	    m_hostHash32              = {};
+	    m_domHash32               = {};
+	    m_siteHash32              = {};
+	    m_siteNumInlinks          = {};
+	    m_addedTime               = {};
+	    m_parentPrevSpiderTime    = {};
+	    m_pageNumInlinks          = {};
+	    m_reservedb2              = {};
+	    m_reservedb3              = {};
+	    m_reservedb4              = {};
+	    m_parentHostHash32        = {};
+	    m_parentDomHash32         = {};
+	    m_parentSiteHash32        = {};
+	    m_discoveryTime           = {};
+	    m_reservedc2              = {};
+	    m_contentHash32           = {};
+	    m_hopCount                = {};
+	    m_parentLangId            = {};
+	    m_ignoreDocUnchangedError = {};
+	    m_recycleContent          = {};
+	    m_hasMediaExtension       = {};
+	    m_hasMediaExtensionValid  = {};
+	    m_reserved2e              = {};
+	    m_reserved2f              = {};
+	    m_reserved2g              = {};
+	    m_reserved2h              = {};
+	    m_hopCountValid           = {};
+	    m_isAddUrl                = {};
+	    m_isPageReindex           = {};
+	    m_isPageInject            = {};
+	    m_isPageParser            = {};
+	    m_parentIsSiteMap         = {};
+	    m_urlIsDocId              = {};
+	    m_isRSSExt                = {};
+	    m_isUrlPermalinkFormat    = {};
+	    m_isPingServer            = {};
+	    m_forceDelete             = {};
+	    m_isInjecting             = {};
+	    m_hadReply                = {};
+	    m_isScraping              = {};
+	    m_hasContent              = {};
+	    m_fakeFirstIp             = {};
+	    m_isWWWSubdomain          = {};
+	    m_isNewOutlink            = {};
+	    m_sameDom                 = {};
+	    m_sameHost                = {};
+	    m_sameSite                = {};
+	    m_wasParentIndexed        = {};
+	    m_parentIsRSS             = {};
+	    m_parentIsPermalink       = {};
+	    m_parentIsPingServer      = {};
+	    m_parentHasAddress        = {};
+	    m_isMenuOutlink           = {};
+	    m_inGoogle                = {};
+	    m_hasAuthorityInlink      = {};
+	    m_hasContactInfo          = {};
+	    m_isContacty              = {};
+	    m_hasSiteVenue            = {};
+	    m_inGoogleValid           = {};
+	    m_hasAuthorityInlinkValid = {};
+	    m_hasContactInfoValid     = {};
+	    m_isContactyValid         = {};
+	    m_hasAddressValid         = {};
+	    m_hasTODValid             = {};
+	    m_hasSiteVenueValid       = {};
+	    m_siteNumInlinksValid     = {};
+	    m_avoidSpiderLinks        = {};
+	    m_ignoreExternalErrors    = {};
+
+	    // -1 means uninitialized, this is required now
+	    m_ufn                     = -1;
+	    // this too
+	    m_priority                = -1;
+	    // this happens to be zero already, but just in case it changes
+	    m_parentLangId            = langUnknown;
 	};
 
 	static int32_t getNeededSize ( int32_t urlLen ) {
@@ -953,7 +1025,48 @@ class SpiderReply {
 	int32_t getRecSize () { return m_dataSize + 4 + sizeof(key128_t); }
 
 	// clear all
-	void reset() { memset ( this , 0 , sizeof(SpiderReply) ); };
+	void reset() {
+	    m_key                     = {};
+	    m_dataSize                = {};
+	    m_firstIp                 = {};
+	    m_siteHash32              = {};
+	    m_domHash32               = {};
+	    m_percentChangedPerDay    = {};
+	    m_spideredTime            = {};
+	    m_errCode                 = {};
+	    m_siteNumInlinks          = {};
+	    m_pubDate                 = {};
+	    m_contentHash32           = {};
+	    m_crawlDelayMS            = {};
+	    m_downloadEndTime         = {};
+	    m_httpStatus              = {};
+	    m_errCount                = {};
+	    m_langId                  = {};
+	    m_isRSS                   = {};
+	    m_isPermalink             = {};
+	    m_isPingServer            = {};
+	    m_isIndexed               = {};
+	    m_inGoogle                = {};
+	    m_hasAuthorityInlink      = {};
+	    m_hasContactInfo          = {};
+	    m_isContacty              = {};
+	    m_hasAddress              = {};
+	    m_hasTOD                  = {};
+	    m_isIndexedINValid        = {};
+	    m_inGoogleValid           = {};
+	    m_hasContactInfoValid     = {};
+	    m_hasAuthorityInlinkValid = {};
+	    m_isContactyValid         = {};
+	    m_hasAddressValid         = {};
+	    m_hasTODValid             = {};
+	    m_reserved2               = {};
+	    m_siteNumInlinksValid     = {};
+	    m_fromInjectionRequest    = {}; 
+	    m_sentToDiffbotThisTime   = {};
+	    m_hadDiffbotError         = {};
+	    m_wasIndexed              = {};
+	    m_wasIndexedValid         = {};
+        };
 
 	void setKey ( int32_t firstIp,
 		      int64_t parentDocId , 

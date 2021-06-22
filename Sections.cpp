@@ -360,7 +360,7 @@ bool Sections::set ( Words     *w                       ,
 		// record this i guess
 		rootSection = &m_sections[m_numSections];
 		// clear
-		memset ( rootSection , 0 , sizeof(Section) );
+		rootSection->clear();
 		// . the current section we are in
 		// . let's use a root section
 		current = rootSection;
@@ -418,7 +418,7 @@ bool Sections::set ( Words     *w                       ,
 			// get the section
 			Section *sn = &m_sections[m_numSections];
 			// clear
-			memset ( sn , 0 , sizeof(Section) );
+			sn->clear();
 			// inc it
 			m_numSections++;
 			// sanity check - breach check
@@ -444,7 +444,7 @@ bool Sections::set ( Words     *w                       ,
 			// get the section
 			Section *sn = &m_sections[m_numSections];
 			// clear
-			memset ( sn , 0 , sizeof(Section) );
+			sn->clear();
 			// inc it
 			m_numSections++;
 			// sanity check - breach check
@@ -934,7 +934,7 @@ bool Sections::set ( Words     *w                       ,
 		// get the section
 		Section *sn = &m_sections[m_numSections];
 		// clear
-		memset ( sn , 0 , sizeof(Section) );
+		sn->clear();
 		// inc it
 		m_numSections++;
 		// sanity check - breach check
@@ -11150,7 +11150,7 @@ Section *Sections::insertSubSection ( Section *parentArg , int32_t a , int32_t b
 	//
 	Section *sk = &m_sections[m_numSections];
 	// clear
-	memset ( sk , 0 , sizeof(Section) );
+	sk->clear();
 	// inc it
 	m_numSections++;
 	// now set it

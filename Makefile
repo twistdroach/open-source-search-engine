@@ -83,7 +83,7 @@ FFF = /etc/redhat-release
 ifneq ($(wildcard $(FFF)),)
 OS_RHEL := true
 STATIC :=
-XMLDOCOPT := -O2
+XMLDOCOPT := -O0
 else
 OS_DEB := true
 # let's remove static now by default to be safe because we don't always
@@ -94,7 +94,7 @@ STATIC := -Wno-misleading-indentation
 # test if this is -O3. strange.
 # Debian Jessie doesn't like -O3, it will core right away when spidering
 # so change this to -O2 from -O3 as well.
-XMLDOCOPT := -O2
+XMLDOCOPT := -O0
 endif
 
 # Onlyjob: -O3 is _very_ unstable and causes segfaults all over (e.g. #172).
