@@ -46218,7 +46218,9 @@ SafeBuf *XmlDoc::getMatchingQueriesScoredForFullQuery ( ) {
 	if ( m_numMsg3aRequests >= maxFullQueries ) exhausted = true;
 	// if client closed browser connection by hitting the stop sign
 	// then stop here!
-	if ( clientClosedConnection() ) m_hadMatchError = ESOCKETCLOSED;
+	if ( clientClosedConnection() )
+	    m_hadMatchError = (int)ESOCKETCLOSED;
+
 	if ( m_hadMatchError ) exhausted = true;
 
 	// if nothing to launch
