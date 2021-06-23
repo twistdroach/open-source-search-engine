@@ -2757,7 +2757,8 @@ bool Parms::printParm ( SafeBuf* sb,
 		//time is stored as a string
 		//if time is not stored properly, just write 00:00
 		if ( s[2] != ':' )
-			strncpy ( s, "00:00", 5 );
+			strcpy ( s, "00:00" );
+
 		char hr[3];
 		char min[3];
 		gbmemcpy ( hr, s, 2 );
