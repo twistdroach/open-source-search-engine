@@ -6,7 +6,7 @@
 #ifndef  _URL_H_
 #define  _URL_H_
 
-#define MAX_URL_LEN 1024
+#define MAX_URL_LEN 2083
 
 // where should i put this #define? for now i'll keep it here
 #define MAX_COLL_LEN  64
