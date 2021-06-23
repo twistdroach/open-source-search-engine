@@ -6,6 +6,13 @@
 #include "PingServer.h"
 //#include "AutoBan.h"
 #include "Hostdb.h"
+#include <openssl/opensslv.h>
+
+#ifndef OPENSSL_V_1_1 
+    #if OPENSSL_VERSION_NUMBER >= 0x10101000
+	#define OPENSSL_V_1_1
+    #endif
+#endif // OPENSSL_V_1_1 
 
 // . TODO: deleting nodes from under Loop::callCallbacks is dangerous!!
 
@@ -58,8 +65,11 @@ void TcpServer::reset() {
 	if (m_useSSL && m_ctx) {
 		SSL_CTX_free(m_ctx);
 		// clean up the SSL crap
+		#ifndef OPENSSL_V_1_1
 		ERR_free_strings();
 		ERR_remove_state(0);
+		#endif
+
 		m_ctx = NULL;
 	}
 }
@@ -204,7 +214,11 @@ retry16:
 		const SSL_METHOD *meth = NULL;
 		//#endif
 		SSL_library_init();
+
+		#ifndef OPENSSL_V_1_1
 		SSL_load_error_strings();
+		#endif
+
 		//SSLeay_add_all_algorithms();
 		//SSLeay_add_ssl_algorithms();
 		signal(SIGPIPE, sigpipe_handle);
