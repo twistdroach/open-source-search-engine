@@ -171,7 +171,7 @@ void doneReindexing ( void *state ) {
 	/*
 	if ( st->m_updateTags )
 		sprintf ( mesg , "<center><font color=red><b>Success. "
-			  "Updated tagrecs and index for %"INT32" docid(s)"
+			  "Updated tagrecs and index for %" INT32 " docid(s)"
 			  "</b></font></center><br>" , 
 			  st->m_msg1d.m_numDocIds );
 	else
@@ -198,7 +198,7 @@ void doneReindexing ( void *state ) {
 		sb.safePrintf("<response>\n"
 			      "\t<statusCode>0</statusCode>\n"
 			      "\t<statusMsg>Success</statusMsg>\n"
-			      "\t<matchingResults>%"INT32"</matchingResults>\n"
+			      "\t<matchingResults>%" INT32 "</matchingResults>\n"
 			      "</response>"
 			      , st->m_msg1c.m_numDocIdsAdded
 			      );
@@ -218,7 +218,7 @@ void doneReindexing ( void *state ) {
 		sb.safePrintf("{\"response\":{\n"
 			      "\t\"statusCode\":0,\n"
 			      "\t\"statusMsg\":\"Success\",\n"
-			      "\t\"matchingResults\":%"INT32"\n"
+			      "\t\"matchingResults\":%" INT32 "\n"
 			      "}\n"
 			      "}\n"
 			      , st->m_msg1c.m_numDocIdsAdded
@@ -249,7 +249,7 @@ void doneReindexing ( void *state ) {
 
 	if ( gr->m_query && gr->m_query[0] && ! g_errno )
 		sb.safePrintf ( "<center><font color=red><b>Success. "
-			  "Added %"INT32" docid(s) to "
+			  "Added %" INT32 " docid(s) to "
 			  "spider queue.</b></font></center><br>" , 
 			  st->m_msg1c.m_numDocIdsAdded );
 
@@ -348,7 +348,7 @@ bool Msg1c::reindexQuery ( char *query ,
 	//m_req.m_debug = 1;
 
 	// log for now
-	logf(LOG_DEBUG,"reindex: qlangid=%"INT32" q=%s",langId,query);
+	logf(LOG_DEBUG,"reindex: qlangid=%" INT32 " q=%s",langId,query);
 
 	g_errno = 0;
 	// . get the docIds
@@ -388,7 +388,7 @@ bool Msg1c::gotList ( ) {
 
 	m_numDocIds = numDocIds; // save for reporting
 	// log it
-	log(LOG_INFO,"admin: Got %"INT32" docIds for query reindex.", numDocIds);
+	log(LOG_INFO,"admin: Got %" INT32 " docIds for query reindex.", numDocIds);
 	// bail if no need
 	if ( numDocIds <= 0 ) return true;
 
@@ -426,14 +426,14 @@ bool Msg1c::gotList ( ) {
 		// this causes a sigalarm log msg to wait forever for lock
 		//char *msg = "Reindexing";
 		//if ( m_forceDel ) msg = "Deleting";
-		//logf(LOG_INFO,"build: %s docid #%"INT32"/%"INT32") %"INT64"",
+		//logf(LOG_INFO,"build: %s docid #%" INT32 "/%" INT32 ") %"INT64"",
 		//     msg,i,count++,docId);
 
 		SpiderRequest sr;
 		sr.reset();
 
 		// url is a docid!
-		sprintf ( sr.m_url , "%"UINT64"" , docId );
+		sprintf ( sr.m_url , "%" UINT64 "" , docId );
 		// make a fake first ip
 		// use only 64k values so we don't stress doledb/waittrees/etc.
 		// for large #'s of docids
@@ -498,7 +498,7 @@ bool Msg1c::gotList ( ) {
 			if ( ! g_errno ) { char *xx=NULL;*xx=0; }
 			//s_isRunning = false;
 			log(LOG_LOGIC,
-			    "admin: Query reindex size of %"INT32" "
+			    "admin: Query reindex size of %" INT32 " "
 			    "too big. Aborting. Bad engineer." , 
 			    (int32_t)0);//m_list.getListSize() );
 			return true;
@@ -674,7 +674,7 @@ bool Msg1d::updateTagTerms ( ) {
 		if ( ! m_gotLock++ ) {
 			// note it
 			//log("reindex: getting lock for %s",mr->ptr_ubuf);
-			log("reindex: getting lock for %"UINT64"",mr->m_urlHash48);
+			log("reindex: getting lock for %" UINT64 "",mr->m_urlHash48);
 			// try to get the lock
 			if ( ! m_msg12.getLocks ( mr->m_docId,//urlHash48 ,
 						  mr->ptr_ubuf , // url
@@ -688,7 +688,7 @@ bool Msg1d::updateTagTerms ( ) {
 			//log("reindex: did not block");
 			// wait for lock?
 			if ( ! m_msg12.m_hasLock ) {
-				log("reindex: waiting for lock for uh=%"UINT64"",
+				log("reindex: waiting for lock for uh=%" UINT64 "",
 				    mr->m_urlHash48);
 				g_loop.registerSleepCallback(100,this,
 							     sleepBack,0);
@@ -701,7 +701,7 @@ bool Msg1d::updateTagTerms ( ) {
 		if ( ! m_gotTagRec++ ) {
 			// make the fake url
 			char fbuf[1024];
-			sprintf(fbuf,"gbeventhash%"UINT64".com",mr->m_eventHash64 );
+			sprintf(fbuf,"gbeventhash%" UINT64 ".com",mr->m_eventHash64 );
 			m_fakeUrl.set ( fbuf );
 			// note it
 			//log("reindex: getting tag rec for %s",mr->ptr_ubuf);
@@ -761,8 +761,8 @@ bool Msg1d::updateTagTerms ( ) {
 			m_metaList     = m_addBuf.getBufStart();
 			m_metaListSize = m_addBuf.getBufUsed();
 			// debug log
-			log("reindex: event reindex d=%"UINT64" eid=%"UINT32" "
-			    "eventhash=%"UINT64"",
+			log("reindex: event reindex d=%" UINT64 " eid=%"UINT32" "
+			    "eventhash=%" UINT64 "",
 			    mr->m_docId,mr->m_eventId,mr->m_eventHash64);
 		}
 		// add using msg4
@@ -780,7 +780,7 @@ bool Msg1d::updateTagTerms ( ) {
 		// return lock just for our uh48
 		if ( ! m_removeLock++ ) {
 			// note it
-			log("reindex: removing lock for %"UINT64"",mr->m_urlHash48);
+			log("reindex: removing lock for %" UINT64 "",mr->m_urlHash48);
 			if ( ! m_msg12.removeAllLocks ( ) )
 				return false;
 		}

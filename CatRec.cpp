@@ -195,7 +195,7 @@ bool CatRec::set ( Url *url , char *data , int32_t dataSize , bool gotByIp ) {
 
 	// sanity check
 	if ( p - m_data != m_dataSize ) {
-		log ( "tagdb: Deserialized datasize %"INT32" != %"INT32" for url %s so "
+		log ( "tagdb: Deserialized datasize %" INT32 " != %" INT32 " for url %s so "
 		      "ignoring tagdb record.",
 		      (int32_t)(p - m_data), m_dataSize , url->getUrl() );
 		return false;
@@ -217,7 +217,7 @@ bool CatRec::set ( Url *url , char *data , int32_t dataSize , bool gotByIp ) {
 	//if ( m_xml ) return true;
 	// should NEVER be NULL
 	//g_errno = ENODATA;
-	//return log("db: Could not find the ruleset file %stagdb%"INT32".xml.",
+	//return log("db: Could not find the ruleset file %stagdb%" INT32 ".xml.",
 	//	   g_hostdb.m_dir,m_filenum);
 	return true;
 }
@@ -415,7 +415,7 @@ bool CatRec::set ( Url *site ,
 
 	// sanity check
 	if ( p - m_data != m_dataSize ) {
-		log ( "catrec: Serialized datasize %"INT32" != %"INT32"",
+		log ( "catrec: Serialized datasize %" INT32 " != %" INT32 "",
 		      (int32_t)(p - m_data), (int32_t)m_dataSize );
 		char *xx = NULL; *xx = 0;
 	}
@@ -433,7 +433,7 @@ bool CatRec::set ( Url *site ,
 	//if ( m_xml ) return true;	
 	// should NEVER be NULL
 	//g_errno = ENODATA;
-	//return log("db: Could not find the ruleset file %stagdb%"INT32".xml.",
+	//return log("db: Could not find the ruleset file %stagdb%" INT32 ".xml.",
 	//	   g_hostdb.m_dir,m_filenum);
 	return true;
 }
@@ -449,7 +449,7 @@ bool CatRec::set ( int32_t filenum ) {
 	if ( m_xml ) return true;	
 	// should NEVER be NULL
 	g_errno = ENODATA;
-	return log("db: Could not find the ruleset file %stagdb%"INT32".xml.",
+	return log("db: Could not find the ruleset file %stagdb%" INT32 ".xml.",
 		   g_hostdb.m_dir,m_filenum);
 }
 */
@@ -535,7 +535,7 @@ int32_t CatRec::getMaxScoreFromQuality    ( int32_t n0, int32_t n1, int32_t qual
 //	int32_t max=getY (n0,n1,quality,"index.quality4","index.maxCount4",
 //		       9999999);
 //	if ( max < 0 ) {
-//		log("db: Encountered maxScore from quality of %"INT32" in ruleset "
+//		log("db: Encountered maxScore from quality of %" INT32 " in ruleset "
 //		    "file. Setting to 0.",max);
 //		max = 0;
 //	}
@@ -650,12 +650,12 @@ int32_t getY(Xml *xml, int32_t n0,int32_t n1,int32_t X,char *strx,char *stry,int
 	int32_t i;
 	for ( i = 0 ; i < 32 ; i++ ) {
 		// get the x value (i.e. "quality23")
-		sprintf ( buf, "%s%"INT32"", strx , i+1 );
+		sprintf ( buf, "%s%" INT32 "", strx , i+1 );
 		x[i] = xml->getLong ( n0, n1, buf , -1 );
 		// break if this x point ain't present
 		if ( x[i] == -1 ) break;
 		// get the y value (i.e. "maxScore23")
-		sprintf ( buf, "%s%"INT32"", stry , i+1 );
+		sprintf ( buf, "%s%" INT32 "", stry , i+1 );
 		y[i] = xml->getLong ( n0, n1, buf , -1 );
 		// break if this y point ain't present
 		if ( y[i] == -1 ) break;
@@ -674,7 +674,7 @@ int32_t getY(Xml *xml, int32_t n0,int32_t n1,int32_t X,char *strx,char *stry,int
 			return def;
 		s_flag = 1;
 		log("db: No map present in a ruleset file (tagdb*.xml) for "
-		    "%s/%s. Using default of %"INT32".",strx,stry,def);
+		    "%s/%s. Using default of %" INT32 ".",strx,stry,def);
 		return def;
 	}
 	// if we only have one point then there'll be no interpolation
@@ -708,16 +708,16 @@ void CatRec::printFormattedRec(SafeBuf *sb) {
 	strftime ( tbuf, 64 , "%b-%d-%Y(%H:%M:%S) ", timeStruct );
 
 	sb->safePrintf("<tr><td>Site:            </td><td>%s</td></tr>\n"
-		       "<tr><td>Site File Number:</td><td>%"INT32"</td></tr>\n"
+		       "<tr><td>Site File Number:</td><td>%" INT32 "</td></tr>\n"
 		       "<tr><td>Had Rec:         </td><td>%s</td></tr>\n"
-		       "<tr><td>Version:         </td><td>%"INT32"</td></tr>\n"
+		       "<tr><td>Version:         </td><td>%" INT32 "</td></tr>\n"
 		       "<tr><td>Timestamp:       </td><td>%s</td></tr>\n"
 		       "<tr><td>Comment:         </td><td>%s</td></tr>\n"
 		       "<tr><td>Username:        </td><td>%s</td></tr>\n"
-		       "<tr><td>Site Quality:    </td><td>%"INT32"</td></tr>\n"
+		       "<tr><td>Site Quality:    </td><td>%" INT32 "</td></tr>\n"
 		       "<tr><td>Spam Status:     </td><td>%s</td></tr>\n"
 		       "<tr><td>Adult Level:     </td><td>%s</td></tr>\n"
-		       "<tr><td>Alexa Rank:      </td><td>%"INT32"</td></tr>\n",
+		       "<tr><td>Alexa Rank:      </td><td>%" INT32 "</td></tr>\n",
 		       m_site.getUrl(),
 		       (int32_t)m_filenum,
 		       m_hadRec?"YES":"NO",
@@ -731,12 +731,12 @@ void CatRec::printFormattedRec(SafeBuf *sb) {
 		       g_siteBonus.getAlexaRanking(&m_site));
 
 	for(int32_t i = 0;i < m_numTypes; i++) {
-		sb->safePrintf("<tr><td>%s:</td><td>%"INT32"</td></tr>\n",
+		sb->safePrintf("<tr><td>%s:</td><td>%" INT32 "</td></tr>\n",
 			       SiteType::getSiteTypeStr(m_siteTypes[i].m_type),
 			       (int32_t)m_siteTypes[i].m_score);
 	}
 	for(int32_t i = 0;i < m_numLangs; i++) {
-		sb->safePrintf("<tr><td>%s:</td><td>%"INT32"</td></tr>\n",
+		sb->safePrintf("<tr><td>%s:</td><td>%" INT32 "</td></tr>\n",
 			       getLanguageString(m_siteLangs[i].m_type),
 			       (int32_t)m_siteLangs[i].m_score);
 	}
@@ -745,15 +745,15 @@ void CatRec::printFormattedRec(SafeBuf *sb) {
 char* CatRec::printFormattedRec(char* p) {
 	p += sprintf(p, 
 		     "<tr><td>Site:            </td><td>%s</td></tr>\n"
-		     "<tr><td>Site File Number:</td><td>%"INT32"</td></tr>\n"
+		     "<tr><td>Site File Number:</td><td>%" INT32 "</td></tr>\n"
 		     "<tr><td>Had Rec:         </td><td>%s</td></tr>\n"
-		     "<tr><td>Version:         </td><td>%"INT32"</td></tr>\n"
-		     "<tr><td>Timestamp:       </td><td>%"INT32"</td></tr>\n"
+		     "<tr><td>Version:         </td><td>%" INT32 "</td></tr>\n"
+		     "<tr><td>Timestamp:       </td><td>%" INT32 "</td></tr>\n"
 		     "<tr><td>Comment:         </td><td>%s</td></tr>\n"
 		     "<tr><td>Username:        </td><td>%s</td></tr>\n"
 		     "<tr><td>Spam Status:     </td><td>%s</td></tr>\n"
 		     "<tr><td>Adult Level:     </td><td>%s</td></tr>\n"
-		     "<tr><td>Alexa Rank:      </td><td>%"INT32"</td></tr>\n",
+		     "<tr><td>Alexa Rank:      </td><td>%" INT32 "</td></tr>\n",
 		     m_site.getUrl(),
 		     (int32_t)m_filenum,
 		     m_hadRec?"YES":"NO",
@@ -767,13 +767,13 @@ char* CatRec::printFormattedRec(char* p) {
 
 	for(int32_t i = 0;i < m_numTypes; i++) {
 		p += sprintf(p, 
-			     "<tr><td>%s:</td><td>%"INT32"</td></tr>\n",
+			     "<tr><td>%s:</td><td>%" INT32 "</td></tr>\n",
 			     SiteType::getSiteTypeStr(m_siteTypes[i].m_type),
 			     (int32_t)m_siteTypes[i].m_score);
 	}
 
 	for(int32_t i = 0;i < m_numLangs; i++) {
-		p += sprintf("<tr><td>%s:</td><td>%"INT32"</td></tr>\n",
+		p += sprintf("<tr><td>%s:</td><td>%" INT32 "</td></tr>\n",
 			     getLanguageString(m_siteLangs[i].m_type),
 			     (int32_t)m_siteLangs[i].m_score);
 	}
@@ -833,16 +833,16 @@ void CatRec::addSiteType ( uint8_t type, uint32_t score ) {
 char* CatRec::printXmlRec(char* p) {
 	p += sprintf(p, 
 		     "\t<site><![CDATA[%s]]></site>\n"
-		     "\t<siteFileNumber>%"INT32"</siteFileNumber>\n"
+		     "\t<siteFileNumber>%" INT32 "</siteFileNumber>\n"
 		     "\t<hadRec><![CDATA[%s]]></hadRec>\n"
-		     "\t<version>%"INT32"</version>\n"
-		     "\t<timestamp>%"INT32"</timestamp>\n"
+		     "\t<version>%" INT32 "</version>\n"
+		     "\t<timestamp>%" INT32 "</timestamp>\n"
 		     "\t<comment><![CDATA[%s]]></comment>\n"
 		     "\t<username><![CDATA[%s]]></username>\n"
-		     "\t<siteQuality>%"INT32"</siteQuality>\n"
+		     "\t<siteQuality>%" INT32 "</siteQuality>\n"
 		     "\t<spamStatus><![CDATA[%s]]></spamStatus>\n"
 		     "\t<adultLevel><![CDATA[%s]]></adultLevel>\n"
-		     "\t<alexaRank>%"INT32"</alexaRank>\n"
+		     "\t<alexaRank>%" INT32 "</alexaRank>\n"
 		     "\t<banned>%i</banned>\n",
 		     m_site.getUrl(),
 		     (int32_t)m_filenum,
@@ -861,16 +861,16 @@ char* CatRec::printXmlRec(char* p) {
 
 void CatRec::printXmlRec( SafeBuf *sb ) {
 	sb->safePrintf("\t<site><![CDATA[%s]]></site>\n"
-		       "\t<siteFileNumber>%"INT32"</siteFileNumber>\n"
+		       "\t<siteFileNumber>%" INT32 "</siteFileNumber>\n"
                        "\t<hadRec><![CDATA[%s]]></hadRec>\n"
-                       "\t<version>%"INT32"</version>\n"
-                       "\t<timestamp>%"INT32"</timestamp>\n"
+                       "\t<version>%" INT32 "</version>\n"
+                       "\t<timestamp>%" INT32 "</timestamp>\n"
                        "\t<comment><![CDATA[%s]]></comment>\n"
                        "\t<username><![CDATA[%s]]></username>\n"
-                       "\t<siteQuality>%"INT32"</siteQuality>\n"
+                       "\t<siteQuality>%" INT32 "</siteQuality>\n"
                        "\t<spamStatus><![CDATA[%s]]></spamStatus>\n"
                        "\t<adultLevel><![CDATA[%s]]></adultLevel>\n"
-                       "\t<alexaRank>%"INT32"</alexaRank>\n"
+                       "\t<alexaRank>%" INT32 "</alexaRank>\n"
                        "\t<banned>%i</banned>\n",
                        m_site.getUrl(),
                        (int32_t)m_filenum,

@@ -397,6 +397,62 @@ class QueryWord {
 	//int32_t  m_opBitNum;
 	// when an operand is an expression...
 	class Expression *m_expressionPtr;
+
+	void clear() {
+
+	    m_word = {};
+	    m_wordLen = {};
+	    m_phraseLen = {};
+	    m_wordId = {};
+	    m_phraseId = {};
+	    m_prefixHash = {};
+	    m_wordNum = {};
+	    m_posNum = {};
+	    m_wikiPhraseId = {};
+	    m_wikiPhraseStart = {};
+	    m_numWordsInWikiPhrase = {};
+	    m_rawWordId = {};
+	    m_rawPhraseId = {};
+	    m_rightRawWordId = {};
+	    m_fieldCode = {};
+	    m_wordSign = {};
+	    m_phraseSign = {};
+	    m_hardCount = {};
+	    m_level = {};
+	    m_isQueryStopWord = {};
+	    m_isStopWord = {};
+	    m_isPunct = {};
+	    m_opcode = {};
+	    m_ignoreWord = {};
+	    m_ignorePhrase = {};
+	    m_ignoreWordInBoolQuery = {};
+	    m_inQuotes = {};
+	    m_inQuotedPhrase = {};
+	    m_quoteStart = {};
+	    m_quoteEnd = {};
+	    m_leftConnected = {};
+	    m_rightConnected = {};
+	    m_leftPhraseStart = {};
+	    m_queryPhraseTerm = {};
+	    m_queryWordTerm = {};
+	    m_userWeight = {};
+	    m_userType = {};
+	    m_userWeightPhrase = {};
+	    m_userTypePhrase = {};
+	    m_queryOp = {};
+	    m_underNOT = {};
+	    m_piped = {};
+	    m_colorNum = {};
+	    m_float = {};
+	    m_int = {};
+	    m_synWordBuf = {};
+	    m_facetRangeIntA   [MAX_FACET_RANGES] = {};
+	    m_facetRangeIntB   [MAX_FACET_RANGES] = {};
+	    m_facetRangeFloatA [MAX_FACET_RANGES] = {};
+	    m_facetRangeFloatB [MAX_FACET_RANGES] = {};
+	    m_numFacetRanges = {};
+	    m_expressionPtr = {};
+	}
 };
 
 // . we filter the QueryWords and turn them into QueryTerms

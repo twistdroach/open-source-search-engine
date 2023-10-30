@@ -20,23 +20,23 @@ bool isClockInSync() {
 
 bool print96 ( char *k ) {
         key_t *kp = (key_t *)k;
-        printf("n1=0x%"XINT32" n0=0x%"XINT64"\n",(int32_t)kp->n1,(int64_t)kp->n0);
+        printf("n1=0x%" XINT32 " n0=0x%" XINT64 "\n",(int32_t)kp->n1,(int64_t)kp->n0);
 	return true;
 }
 
 bool print96 ( key_t *kp ) {
-        printf("n1=0x%"XINT32" n0=0x%"XINT64"\n",(int32_t)kp->n1,(int64_t)kp->n0);
+        printf("n1=0x%" XINT32 " n0=0x%" XINT64 "\n",(int32_t)kp->n1,(int64_t)kp->n0);
 	return true;
 }
 
 bool print128 ( char *k ) {
         key128_t *kp = (key128_t *)k;
-        printf("n1=0x%"XINT64" n0=0x%"XINT64"\n",(int64_t)kp->n1,(int64_t)kp->n0);
+        printf("n1=0x%" XINT64 " n0=0x%" XINT64 "\n",(int64_t)kp->n1,(int64_t)kp->n0);
 	return true;
 }
 
 bool print128 ( key128_t *kp ) {
-        printf("n1=0x%"XINT64" n0=0x%"XINT64"\n",(int64_t)kp->n1,(int64_t)kp->n0);
+        printf("n1=0x%" XINT64 " n0=0x%" XINT64 "\n",(int64_t)kp->n1,(int64_t)kp->n0);
 	return true;
 }
 
@@ -945,8 +945,8 @@ int32_t ulltoa ( char *s , uint64_t n ) {
 	// print the hunks separated by comma
 	for ( int32_t i = lastHunk ; i >= 0 ; i-- ) {
 		// pad all hunks except highest hunk with zeroes
-		if ( i != lastHunk ) sprintf ( s , "%03"INT32"" , hunks[i] );
-		else                 sprintf ( s , "%"INT32"" , hunks[i] );
+		if ( i != lastHunk ) sprintf ( s , "%03" INT32 "" , hunks[i] );
+		else                 sprintf ( s , "%" INT32 "" , hunks[i] );
 		s += gbstrlen(s);
 		// comma after all hunks but lowest hunk
 		if ( i != 0 ) *s++ = ',';
@@ -1791,7 +1791,7 @@ bool loadTimeAdjustment ( ) {
 	// parse the text line
 	int64_t stampTime = 0LL;
 	int64_t clockAdj  = 0LL;
-	sscanf ( rbuf , "%"UINT64" %"INT64"", &stampTime, &clockAdj );
+	sscanf ( rbuf , "%" UINT64 " %" INT64 "", &stampTime, &clockAdj );
 	// get stamp age
 	int64_t local = gettimeofdayInMillisecondsLocal();
 	int64_t stampAge = local - stampTime;
@@ -1804,7 +1804,7 @@ bool loadTimeAdjustment ( ) {
 	// and really slow down loadups
 	g_clockInSync = true;
 	// note it
-	log("util: loaded %s and put clock in sync. age=%"UINT64" adj=%"INT64"",
+	log("util: loaded %s and put clock in sync. age=%" UINT64 " adj=%" INT64 "",
 	    s_tafile,stampAge,clockAdj);
 	return true;
 }
@@ -1819,7 +1819,7 @@ bool saveTimeAdjustment ( ) {
 	// store it
 	int64_t local = gettimeofdayInMillisecondsLocal();
 	char wbuf[1024];
-	sprintf (wbuf,"%"UINT64" %"INT64"\n",local,s_adjustment);
+	sprintf (wbuf,"%" UINT64 " %" INT64 "\n",local,s_adjustment);
 	// write it out
 	int fd = open ( s_tafile , O_CREAT|O_RDWR|O_TRUNC , 00666 );
 	if ( fd < 0 ) {
@@ -1861,7 +1861,7 @@ void settimeofdayInMillisecondsGlobal ( int64_t newTime ) {
 	int64_t delta = s_adjustment - (newTime - now) ;
 	if ( delta > 100 || delta < -100 )
 		logf(LOG_INFO,"gb: Updating clock adjustment from "
-		     "%"INT64" ms to %"INT64" ms", s_adjustment , newTime - now );
+		     "%" INT64 " ms to %" INT64 " ms", s_adjustment , newTime - now );
 	// set adjustment
 	s_adjustment = newTime - now;
 	// return?
@@ -2574,7 +2574,7 @@ time_t mktime_utc ( struct tm *ttt ) {
 		ff.tm_min  = 0;
 		ff.tm_sec  = 0;
 		int32_t qq = mktime ( &ff );
-		//fprintf(stderr,"qq=%"INT32"\n",qq);
+		//fprintf(stderr,"qq=%" INT32 "\n",qq);
 		// . set this then
 		// . we subtract s_localOff to further mktime() returns to
 		//   get it into utc
@@ -2584,7 +2584,7 @@ time_t mktime_utc ( struct tm *ttt ) {
 	}
 	*/
 	// see what our timezone is!
-	//fprintf(stderr,"%"INT32"=tz\n",timezone);
+	//fprintf(stderr,"%" INT32 "=tz\n",timezone);
 	// mod that
 	return local - timezone;
 }

@@ -152,7 +152,7 @@ bool RdbDump::set ( //char     *coll          ,
 	// debug test
 	//char buf1[10*1024];
 	//int32_t n1 = m_file->write ( buf1 , 10*1024 , 0 );
-	//log("bytes written=%"INT32"\n",n1);
+	//log("bytes written=%" INT32 "\n",n1);
 	// we're now considered to be in dumping state
 	m_isDumping = true;
 	// . if no tree was provided to dump it must be RdbMerge calling us
@@ -170,7 +170,7 @@ bool RdbDump::set ( //char     *coll          ,
 		structureName = "buckets";
 	}
 	// debug msg
-	log(LOG_INFO,"db: Dumping %"INT32" recs from %s to files.",
+	log(LOG_INFO,"db: Dumping %" INT32 " recs from %s to files.",
 	    nr, structureName);
 	//    nr , m_file->getFilename() );
 	// keep a total count for reporting when done
@@ -208,8 +208,8 @@ void RdbDump::doneDumping ( ) {
 	m_isDumping = false;
 	// print stats
 	log(LOG_INFO,
-	    "db: Dumped %"INT32" positive and %"INT32" negative recs. "
-	    "Total = %"INT32".",
+	    "db: Dumped %" INT32 " positive and %" INT32 " negative recs. "
+	    "Total = %" INT32 ".",
 	     m_totalPosDumped , m_totalNegDumped ,
 	     m_totalPosDumped + m_totalNegDumped );
 
@@ -217,7 +217,7 @@ void RdbDump::doneDumping ( ) {
 	// . if continueDumping called us with no collectionrec, it got
 	//   deleted so RdbBase::m_map is nuked too i guess
 	if ( saved != ENOCOLLREC && m_map )
-		log("db: map # pos=%"INT64" neg=%"INT64"",
+		log("db: map # pos=%" INT64 " neg=%" INT64 "",
 		    m_map->getNumPositiveRecs(),
 		    m_map->getNumNegativeRecs()
 		    );
@@ -249,7 +249,7 @@ void RdbDump::doneDumping ( ) {
 		collnum_t collnum = g_collectiondb.getCollnum ( m_coll );
 		class RdbBase *base = m_rdb->m_bases[collnum];
 		int32_t startFileNum = base->getNumFiles()-1;
-		log("sanity: startfilenum=%"INT32"",startFileNum);
+		log("sanity: startfilenum=%" INT32 "",startFileNum);
 		dumpPosdb(m_coll,
 			  startFileNum, // startFileNum
 			   1                    , // numFiles
@@ -397,8 +397,8 @@ bool RdbDump::dumpTree ( bool recall ) {
 		if ( ! status ) goto hadError;
 		// debug msg
 		t2 = gettimeofdayInMilliseconds();
-		log(LOG_INFO,"db: Get list took %"INT64" ms. "
-		    "%"INT32" positive. %"INT32" negative.",
+		log(LOG_INFO,"db: Get list took %" INT64 " ms. "
+		    "%" INT32 " positive. %" INT32 " negative.",
 		    t2 - m_t1 , m_numPosRecs , m_numNegRecs );
 		// keep a total count for reporting when done
 		m_totalPosDumped += m_numPosRecs;
@@ -452,8 +452,8 @@ bool RdbDump::dumpTree ( bool recall ) {
 		KEYADD(m_nextKey,1,m_ks);
 		if (KEYCMP(m_nextKey,lastKey,m_ks)<0) m_rolledOver = true;
 	      // debug msg
-	      //log(0,"RdbDump:lastKey.n1=%"UINT32",n0=%"UINT64"",lastKey.n1,lastKey.n0);
-	      //log(0,"RdbDump:next.n1=%"UINT32",n0=%"UINT64"",m_nextKey.n1,m_nextKey.n0);
+	      //log(0,"RdbDump:lastKey.n1=%" UINT32 ",n0=%" UINT64 "",lastKey.n1,lastKey.n0);
+	      //log(0,"RdbDump:next.n1=%" UINT32 ",n0=%" UINT64 "",m_nextKey.n1,m_nextKey.n0);
 	}
 	// . return true on error, g_errno should have been set
 	// . this is probably out of memory error
@@ -542,7 +542,7 @@ bool RdbDump::dumpList ( RdbList *list , int32_t niceness , bool recall ) {
 		//if ( k <= lastKey ) {
 		if ( KEYCMP(k,lastKey,m_ks)<=0 ) {
 			log(LOG_LOGIC,"db: Dumping list key out of order. "
-			    //"lastKey.n1=%"XINT32" n0=%"XINT64" k.n1=%"XINT32" n0=%"XINT64"",
+			    //"lastKey.n1=%" XINT32 " n0=%" XINT64 " k.n1=%" XINT32 " n0=%" XINT64 "",
 			    //lastKey.n1,lastKey.n0,k.n1,k.n0);
 			    "lastKey=%s k=%s",
 			    KEYSTR(lastKey,m_ks),
@@ -662,7 +662,7 @@ bool RdbDump::dumpList ( RdbList *list , int32_t niceness , bool recall ) {
 	//m_bytesWritten = 0;
 
 	// sanity check
-	//log("dump: writing %"INT32" bytes at offset %"INT64"",m_bytesToWrite,offset);
+	//log("dump: writing %" INT32 " bytes at offset %" INT64 "",m_bytesToWrite,offset);
 
 	// . if we're called by RdbMerge directly use m_callback/m_state
 	// . otherwise, use doneWritingWrapper() which will call dumpTree()
@@ -676,7 +676,7 @@ bool RdbDump::dumpList ( RdbList *list , int32_t niceness , bool recall ) {
 				      doneWritingWrapper ,
 				      niceness         );
 	// debug msg
-	//log("RdbDump dumped %"INT32" bytes, done=%"INT32"\n",
+	//log("RdbDump dumped %" INT32 " bytes, done=%" INT32 "\n",
 	//	m_bytesToWrite,isDone); 
 	// return false if it blocked
 	if ( ! isDone ) return false;
@@ -744,7 +744,7 @@ bool RdbDump::doneDumpingList ( bool addToMap ) {
 	// corruption from those pesky Western Digitals and Maxtors?
 	if ( g_conf.m_verifyWrites ) {
 		// a debug message, if log disk debug messages is enabled
-		log(LOG_DEBUG,"disk: Verifying %"INT32" bytes written.",
+		log(LOG_DEBUG,"disk: Verifying %" INT32 " bytes written.",
 		    m_bytesToWrite);
 		// make a read buf
 		if ( m_verifyBuf && m_verifyBufSize < m_bytesToWrite ) {
@@ -768,7 +768,7 @@ bool RdbDump::doneDumpingList ( bool addToMap ) {
 					     doneReadingForVerifyWrapper ,
 					     m_niceness      );
 		// debug msg
-		//log("RdbDump dumped %"INT32" bytes, done=%"INT32"\n",
+		//log("RdbDump dumped %" INT32 " bytes, done=%" INT32 "\n",
 		//	m_bytesToWrite,isDone); 
 		// return false if it blocked
 		if ( ! isDone ) return false;
@@ -808,8 +808,8 @@ bool RdbDump::doneReadingForVerify ( ) {
 	if ( m_verifyBuf && g_conf.m_verifyWrites &&
 	     memcmp(m_verifyBuf,m_buf,m_bytesToWrite) != 0 &&
 	     ! g_errno ) {
-		log("disk: Write verification of %"INT32" bytes to file %s "
-		    "failed at offset=%"INT64". Retrying.",
+		log("disk: Write verification of %" INT32 " bytes to file %s "
+		    "failed at offset=%" INT64 ". Retrying.",
 		    m_bytesToWrite,
 		    m_file->getFilename(),
 		    m_offset - m_bytesToWrite);
@@ -856,7 +856,7 @@ bool RdbDump::doneReadingForVerify ( ) {
 
 	// debug msg
 	int64_t now = gettimeofdayInMilliseconds();
-	log(LOG_TIMING,"db: adding to map took %"UINT64" ms" , now - t );
+	log(LOG_TIMING,"db: adding to map took %" UINT64 " ms" , now - t );
 
 	// . Msg5.cpp and RdbList::merge_r() should remove titleRecs
 	//   that are not supported by tfndb, so we only need to add tfndb
@@ -968,7 +968,7 @@ bool RdbDump::doneReadingForVerify ( ) {
 		    "Fixing. Your memory had an error. Consider replacing it.",
 		    m_file->getFilename());
 		log("db: was collection restarted/reset/deleted before we "
-		    "could delete list from tree? collnum=%"INT32"",
+		    "could delete list from tree? collnum=%" INT32 "",
 		    (int32_t)m_collnum);
 		// reset error in that case
 		g_errno = 0;
@@ -982,7 +982,7 @@ bool RdbDump::doneReadingForVerify ( ) {
 	//if ( m_rdb ) m_rdb->m_needsSave = true;
 	// debug msg
 	int64_t t2 = gettimeofdayInMilliseconds();
-	log(LOG_TIMING,"db: dump: deleteList: took %"INT64"",t2-t1);
+	log(LOG_TIMING,"db: dump: deleteList: took %" INT64 "",t2-t1);
 	return true;
 }
 /*
@@ -1040,8 +1040,8 @@ bool RdbDump::updateTfndbLoop () {
 	key_t tk = g_tfndb.makeKey ( d, uh48, tfn, false );
 	KEYSET(m_tkey,(char *)&tk,sizeof(key_t));
 	// debug msg
-	//logf(LOG_DEBUG,"db: rdbdump: updateTfndbLoop: tbadd docId=%"INT64" "
-	//    "tfn=%03"INT32"", g_tfndb.getDocId((key_t *)m_tkey ),
+	//logf(LOG_DEBUG,"db: rdbdump: updateTfndbLoop: tbadd docId=%" INT64 " "
+	//    "tfn=%03" INT32 "", g_tfndb.getDocId((key_t *)m_tkey ),
 	//    (int32_t)g_tfndb.getTitleFileNum((key_t *)m_tkey));
 	// . add it, returns false and sets g_errno on error
 	// . this will override any existing tfndb record for this docid
@@ -1183,7 +1183,7 @@ bool RdbDump::load ( Rdb *rdb ,  int32_t fixedDataSize, BigFile *file ,
 	if ( bufSize == 0 ) return true;
 	// otherwise, alloc space to read the WHOLE file
 	char *buf  = (char *) mmalloc( bufSize ,"RdbDump");
-	if ( ! buf ) return log("db: Could not allocate %"INT32" bytes to load "
+	if ( ! buf ) return log("db: Could not allocate %" INT32 " bytes to load "
 				"%s" , bufSize , file->getFilename());
 	//int32_t n = file->read ( buf , bufSize , m_offset );
 	file->read ( buf , bufSize , m_offset );

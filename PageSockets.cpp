@@ -65,7 +65,7 @@ bool sendPageSockets ( TcpSocket *s , HttpRequest *r ) {
 
 	/*
 	sprintf ( p , "<table width=100%% bgcolor=#d0d0f0 border=1>"
-		  "<tr><td bgcolor=#c0c0f0 colspan=%"INT32">"
+		  "<tr><td bgcolor=#c0c0f0 colspan=%" INT32 ">"
 		  "<center><font size=+1><b>Wait Times</b></font>"
 		  "</td></tr>\n" , 3 + count );
 	p += gbstrlen ( p );
@@ -78,7 +78,7 @@ bool sendPageSockets ( TcpSocket *s , HttpRequest *r ) {
 	p += gbstrlen ( p );	
 	// print disk columns
 	for ( int32_t i = 0 ; i < count ; i++ ) {
-		sprintf ( p , "<td><b>disk %"INT32" wait</b></td>",i);
+		sprintf ( p , "<td><b>disk %" INT32 " wait</b></td>",i);
 		p += gbstrlen ( p );	
 	}
 	// end the top row
@@ -87,7 +87,7 @@ bool sendPageSockets ( TcpSocket *s , HttpRequest *r ) {
 	// print rows
 	for ( int32_t i = 0 ; i < g_hostdb.getNumMachines() ; i++ ) {
 		// print machine #
-		sprintf ( p , "<tr><td><b>%"INT32"</b></td>",i);
+		sprintf ( p , "<tr><td><b>%" INT32 "</b></td>",i);
 		p += gbstrlen ( p );
 		// then net send
 		float x = (float)g_queryRouter.m_sendWaits[i] / 1000;
@@ -217,11 +217,11 @@ void printTcpTable ( SafeBuf* p, char *title, TcpServer *server ) {
 		int32_t elapsed1 = now - s->m_startTime      ;
 		int32_t elapsed2 = now - s->m_lastActionTime ;
 		p->safePrintf ("<tr bgcolor=#%s>"
-			       "<td>%"INT32"</td>" // i
+			       "<td>%" INT32 "</td>" // i
 			       "<td>%i</td>" // fd
-			       "<td>%"INT32"ms</td>"  // elapsed seconds since start
-			       "<td>%"INT32"ms</td>"  // last action
-			       //"<td>%"INT32"</td>"  // timeout			  
+			       "<td>%" INT32 "ms</td>"  // elapsed seconds since start
+			       "<td>%" INT32 "ms</td>"  // last action
+			       //"<td>%" INT32 "</td>"  // timeout			  
 			       "<td>%s</td>"  // ip
 			       "<td>%hu</td>" // port
 			       "<td>%s</td>"  // state
@@ -246,13 +246,13 @@ void printTcpTable ( SafeBuf* p, char *title, TcpServer *server ) {
 						   500 );
 			p->htmlEncode ( tmp.getBufStart() );
 			p->safePrintf("\">");
-			p->safePrintf("<u>%"INT32"</u></td>",s->m_readOffset);
+			p->safePrintf("<u>%" INT32 "</u></td>",s->m_readOffset);
 		}
 		else
 			p->safePrintf("<td>0</td>");
 
-		p->safePrintf( "<td>%"INT32"</td>" // bytes to read
-			       "<td>%"INT32"</td>" // bytes sent
+		p->safePrintf( "<td>%" INT32 "</td>" // bytes to read
+			       "<td>%" INT32 "</td>" // bytes sent
 			       ,
 			       s->m_totalToRead ,
 			       s->m_sendOffset
@@ -267,7 +267,7 @@ void printTcpTable ( SafeBuf* p, char *title, TcpServer *server ) {
 						   500 );
 			p->htmlEncode ( tmp.getBufStart() );
 			p->safePrintf("\">");
-			p->safePrintf("<u>%"INT32"</u></td>",s->m_totalToSend);
+			p->safePrintf("<u>%" INT32 "</u></td>",s->m_totalToSend);
 		}
 		else
 			p->safePrintf("<td>0</td>");
@@ -349,7 +349,7 @@ void printUdpTable ( SafeBuf *p, char *title, UdpServer *server ,
 	p->safePrintf ( "<table %s>"
 			"<tr class=hdrow><td colspan=19>"
 			"<center>"
-			"<b>%s Summary</b> (%"INT32" transactions)%s"
+			"<b>%s Summary</b> (%" INT32 " transactions)%s"
 			"</td></tr>"
 			"<tr bgcolor=#%s>"
 			"<td><b>niceness</td>"
@@ -363,13 +363,13 @@ void printUdpTable ( SafeBuf *p, char *title, UdpServer *server ,
 	for ( int32_t i = 0; i < 96; i++ ) {
 		if ( msgCount0[i] <= 0 ) continue;
 		p->safePrintf("<tr bgcolor=#%s>"
-			      "<td>0</td><td>0x%"XINT32"</td><td>%"INT32"</td></tr>",
+			      "<td>0</td><td>0x%" XINT32 "</td><td>%" INT32 "</td></tr>",
 			      LIGHT_BLUE,i, msgCount0[i]);
 	}
 	for ( int32_t i = 0; i < 96; i++ ) {
 		if ( msgCount1[i] <= 0 ) continue;
 		p->safePrintf("<tr bgcolor=#%s>"
-			      "<td>1</td><td>0x%"XINT32"</td><td>%"INT32"</td></tr>",
+			      "<td>1</td><td>0x%" XINT32 "</td><td>%" INT32 "</td></tr>",
 			      LIGHT_BLUE,i, msgCount1[i]);
 	}
 	p->safePrintf ( "</table><br>" );
@@ -392,9 +392,9 @@ void printUdpTable ( SafeBuf *p, char *title, UdpServer *server ,
 			"<tr class=hdrow><td colspan=19>"
 			"<center>"
 			//"<font size=+1>"
-			"<b>%s</b> (%"INT32" transactions)"
-			//"(%"INT32" requests waiting to processed)"
-			"(%"INT32" incoming)"
+			"<b>%s</b> (%" INT32 " transactions)"
+			//"(%" INT32 " requests waiting to processed)"
+			"(%" INT32 " incoming)"
 			//"</font>"
 			"</td></tr>"
 			"<tr bgcolor=#%s>"
@@ -440,9 +440,9 @@ void printUdpTable ( SafeBuf *p, char *title, UdpServer *server ,
 		int64_t elapsed1 = (now - s->m_lastReadTime ) ;
 		int64_t elapsed2 = (now - s->m_lastSendTime ) ;
 		char e0[32],e1[32], e2[32];
-		sprintf ( e0 , "%"INT64"ms" , elapsed0 );
-		sprintf ( e1 , "%"INT64"ms" , elapsed1 );
-		sprintf ( e2 , "%"INT64"ms" , elapsed2 );
+		sprintf ( e0 , "%" INT64 "ms" , elapsed0 );
+		sprintf ( e1 , "%" INT64 "ms" , elapsed1 );
+		sprintf ( e2 , "%" INT64 "ms" , elapsed2 );
 		if ( s->m_startTime    == 0LL ) strcpy ( e0 , "--" );
 		if ( s->m_lastReadTime == 0LL ) strcpy ( e1 , "--" );
 		if ( s->m_lastSendTime == 0LL ) strcpy ( e2 , "--" );
@@ -468,9 +468,9 @@ void printUdpTable ( SafeBuf *p, char *title, UdpServer *server ,
 			eport   = h->m_externalHttpPort ;
 			//ehostId = h->m_hostId ;
 			if ( h->m_isProxy )
-				sprintf(tmpHostId,"proxy%"INT32"",h->m_hostId);
+				sprintf(tmpHostId,"proxy%" INT32 "",h->m_hostId);
 			else
-				sprintf(tmpHostId,"%"INT32"",h->m_hostId);
+				sprintf(tmpHostId,"%" INT32 "",h->m_hostId);
 			ehostId = tmpHostId;
 		}
 		// if no corresponding host, it could be a request from an external
@@ -585,7 +585,7 @@ void printUdpTable ( SafeBuf *p, char *title, UdpServer *server ,
 					       "getting site link info for "
 					       "%s "
 					       "in collnum %i.\n"
-					       "sitehash64=%"UINT64" "
+					       "sitehash64=%" UINT64 " "
 					       "waitinginline=%i"
 					       "\""
 					       ,mr->ptr_site
@@ -616,7 +616,7 @@ void printUdpTable ( SafeBuf *p, char *title, UdpServer *server ,
 				"<td>%s</td>"  // age
 				"<td>%s</td>"  // last read
 				"<td>%s</td>"  // last send
-				"<td>%"INT32"</td>",  // timeout
+				"<td>%" INT32 "</td>",  // timeout
 				bg ,
 				e0 ,
 				e1 ,
@@ -624,7 +624,7 @@ void printUdpTable ( SafeBuf *p, char *title, UdpServer *server ,
 				s->m_timeout );
 
 		// now use the ip for dns and hosts
-		p->safePrintf("<td>%s:%"UINT32"</td>",
+		p->safePrintf("<td>%s:%" UINT32 "</td>",
 			      iptoa(s->m_ip),(uint32_t)s->m_port);
 
 		char *cf1 = "";
@@ -652,7 +652,7 @@ void printUdpTable ( SafeBuf *p, char *title, UdpServer *server ,
 			      "</nobr></a> " ,
 			      dbuf , coll , dbuf );
 			p->safePrintf("</td>"
-				      "<td>%s%"INT32"%s</td>",
+				      "<td>%s%" INT32 "%s</td>",
 				      cf1,
 				      (int32_t)s->m_niceness,
 				      cf2);
@@ -664,14 +664,14 @@ void printUdpTable ( SafeBuf *p, char *title, UdpServer *server ,
 			// clickable hostId
 			char *toFrom = "to";
 			if ( ! s->m_callback ) toFrom = "from";
-			//"<td><a href=http://%s:%hu/cgi/15.cgi>%"INT32"</a></td>"
+			//"<td><a href=http://%s:%hu/cgi/15.cgi>%" INT32 "</a></td>"
 			p->safePrintf (	"<td>0x%hhx</td>"  // msgtype
 					"<td%s><nobr>"
 					"%s</nobr></td>"  // desc
 					"<td><nobr>%s <a href=http://%s:%hu/"
 					"admin/sockets?"
 					"c=%s>%s</a></nobr></td>"
-					"<td>%s%"INT32"%s</td>" , // niceness
+					"<td>%s%" INT32 "%s</td>" , // niceness
 					s->m_msgType ,
 					altText,
 					desc,
@@ -697,14 +697,14 @@ void printUdpTable ( SafeBuf *p, char *title, UdpServer *server ,
 			rf2 = "</b>";
 		}
 			
-		p->safePrintf ( "<td>%"UINT32"</td>" // transId
+		p->safePrintf ( "<td>%" UINT32 "</td>" // transId
 				"<td>%i</td>" // called handler
-				"<td>%"INT32"</td>" // dgrams read
-				"<td>%"INT32"</td>" // dgrams to read
-				"<td>%"INT32"</td>" // acks sent
-				"<td>%"INT32"</td>" // dgrams sent
-				"<td>%"INT32"</td>" // dgrams to send
-				"<td>%"INT32"</td>" // acks read
+				"<td>%" INT32 "</td>" // dgrams read
+				"<td>%" INT32 "</td>" // dgrams to read
+				"<td>%" INT32 "</td>" // acks sent
+				"<td>%" INT32 "</td>" // dgrams sent
+				"<td>%" INT32 "</td>" // dgrams to send
+				"<td>%" INT32 "</td>" // acks read
 				"<td>%s%hhu%s</td>" // resend count
 				"</tr>\n" ,
 				(uint32_t)s->m_transId,

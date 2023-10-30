@@ -143,6 +143,48 @@ class TcpSocket {
 
 	// used for debugging, PageResults.cpp sets this to the State0 ptr
 	char *m_tmp;
+
+	void clear() {
+
+	    m_state = {};
+	    m_this = {}; 
+	    m_sd = {};
+	    m_hostname = {};
+	    m_startTime = {};
+	    m_lastActionTime = {};
+	    m_ip = {};
+	    m_port = {};
+	    m_sockState = {};
+	    m_numDestroys = {};
+	    m_tunnelMode = {};
+	    m_sendBuf = {};
+	    m_sendBufSize = {};
+	    m_sendOffset = {};
+	    m_sendBufUsed = {};
+	    m_totalSent = {};
+	    m_totalToSend = {};
+	    m_readBuf = {};
+	    m_readBufSize = {};
+	    m_readOffset = {};
+	    m_totalRead = {};
+	    m_totalToRead = {};
+	    m_waitingOnHandler = {};
+	    m_prefLevel = {};
+	    m_isIncoming = {};
+	    m_flags = {};
+	    m_timeout = {};
+	    m_maxTextDocLen = {};
+	    m_maxOtherDocLen = {};
+	    m_niceness = {};
+	    m_streamingMode = {};
+	    m_writeRegistered = {};
+	    m_shutdownStart = {};
+	    m_ssl = {};
+	    m_udpSlot = {};
+	    SafeBuf m_handyBuf = {};
+	    m_pageNum = {};
+	    m_tmp = {};
+	}
 };
 
 #endif

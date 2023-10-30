@@ -166,7 +166,7 @@ bool AutoBan::growTable() {
 
 	m_tableSize = m_tableSize << 1;
 
-// 	log(LOG_INFO, "Autoban: Resize %"INT32" to %"INT32"", oldTableSize, 
+// 	log(LOG_INFO, "Autoban: Resize %" INT32 " to %" INT32 "", oldTableSize, 
 // 	    m_tableSize);
 
 	m_detectKeys = (int32_t*)mmalloc(m_tableSize * sizeof(int32_t), 
@@ -232,7 +232,7 @@ bool AutoBan::setCodesFromConf() {
 			int32_t len = 0;
 			while(p[len] && !isspace(p[len])) len++;
 			//now p points to a code, with length len.
-			//log(LOG_WARN, "autoban code is %s %"INT32"", p, len);
+			//log(LOG_WARN, "autoban code is %s %" INT32 "", p, len);
 			int32_t h = hash32(p,len);
 			CodeVal cv;
 			int32_t max = len;	if ( max > 30 ) max = 30;
@@ -258,7 +258,7 @@ bool AutoBan::setCodesFromConf() {
 			// ensure no breach
 			if ( cv.m_maxOutstanding < 10 ) 
 				log("gb: client code %s has LOW max "
-				    "outstanding limit of %"INT32"",
+				    "outstanding limit of %" INT32 "",
 				    cv.m_code,cv.m_maxOutstanding);
 			// skip the digits, until we hit \r or \n
 			while ( is_digit ( *p ) ) p++;
@@ -432,7 +432,7 @@ bool AutoBan::hasPerm(int32_t ip,
 			// do not inc if just checking, like for a gif file
 			if ( justCheck ) return true;
 			//explicitly allowed.
-			//log(LOG_WARN,"autoban: %"INT32" allowed.", ip);
+			//log(LOG_WARN,"autoban: %" INT32 " allowed.", ip);
 			m_detectVals[i].m_dayCount++;
 			if(s) s->m_prefLevel++;
 			return true;
@@ -442,7 +442,7 @@ bool AutoBan::hasPerm(int32_t ip,
 			if ( justCheck ) return false;
 			//banned by autoban, or explicitly banned by matt.
 			int32_t explicitBan = m_detectVals[i].m_flags & FROMCONF;
-			//log(LOG_WARN,"autoban: %"INT32" rejected.", ip);
+			//log(LOG_WARN,"autoban: %" INT32 " rejected.", ip);
 			if(!explicitBan &&
 			   // MDW yippy project - no! don't unban bots!
 			   //(m_detectVals[i].m_dayExpires < now || isHuman)) {
@@ -566,7 +566,7 @@ bool AutoBan::hasPerm(int32_t ip,
 		m_detectVals[i].m_timesBanned = 0;
 		++m_numEntries;
 
-		//log(LOG_WARN,"autoban: %"INT32" adding to empty slot.", 
+		//log(LOG_WARN,"autoban: %" INT32 " adding to empty slot.", 
 		//ip);
 		//return true;
 		goto checkSubstr;
@@ -600,7 +600,7 @@ bool AutoBan::hasPerm(int32_t ip,
 					    "value=\"%s\">\n", query);
 		if ( start > 0 )
 			testBuf->safePrintf("<input type=hidden name=\"s\" "
-					    "value=\"%"INT32"\">\n", start);
+					    "value=\"%" INT32 "\">\n", start);
 		int32_t gigabits = r->getLong("gigabits",0);
 		if ( gigabits )
 			testBuf->safePrintf("<input type=hidden name=gigabits "
@@ -861,8 +861,8 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 		      "<center><b>Code Usage "
 		      "(<a href=\"/admin/"
 		      "autoban?c=%s&resetcodes=1\">reset</a> "
-		      "%"INT32" days %"INT32" hours %"INT32" "
-		      "minutes %"INT32" sec ago)"
+		      "%" INT32 " days %" INT32 " hours %" INT32 " "
+		      "minutes %" INT32 " sec ago)"
 		      "</b></center></td></tr>", 
 		      DARK_BLUE,
 		      coll,
@@ -896,23 +896,23 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 		sb.safePrintf("</td>");
 		sb.safePrintf("<td><center>%s</center> </td>",
 			      iptoa(cv->m_ip));
-		sb.safePrintf("<td><center>%"INT64"</center></td>", 
+		sb.safePrintf("<td><center>%" INT64 "</center></td>", 
 			      cv->m_count);
 
-		sb.safePrintf("<td><center>%"INT64"</center></td>", 
+		sb.safePrintf("<td><center>%" INT64 "</center></td>", 
 			      cv->m_bytesRead);
-		sb.safePrintf("<td><center>%"INT64"</center></td>", 
+		sb.safePrintf("<td><center>%" INT64 "</center></td>", 
 			      cv->m_bytesSent);
 
-		sb.safePrintf("<td><center>%"INT32"</center></td>", 
+		sb.safePrintf("<td><center>%" INT32 "</center></td>", 
 			      cv->m_outstanding);
-		sb.safePrintf("<td><center>%"INT32"</center></td>", 
+		sb.safePrintf("<td><center>%" INT32 "</center></td>", 
 			      cv->m_maxEver);
 		if ( cv->m_maxOutstanding != 50 )
-			sb.safePrintf("<td><center><b>%"INT32"</b></center></td>", 
+			sb.safePrintf("<td><center><b>%" INT32 "</b></center></td>", 
 				      cv->m_maxOutstanding);
 		else
-			sb.safePrintf("<td><center>%"INT32"</center></td>", 
+			sb.safePrintf("<td><center>%" INT32 "</center></td>", 
 				      cv->m_maxOutstanding);
 
 		sb.safePrintf("</tr>");
@@ -976,7 +976,7 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 						      "Increase "
 						      "AUTOBAN_TEXT_SIZE in "
 						      "Conf.h. "
-						      "Had %"INT32" need %"INT32"."
+						      "Had %" INT32 " need %" INT32 "."
 						      "</font>", 
 						      (int32_t)AUTOBAN_TEXT_SIZE,
 						      (int32_t)(p - g_conf.m_allowIps + 
@@ -1025,7 +1025,7 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 						      "Increase "
 						      "AUTOBAN_TEXT_SIZE in "
 						      "Conf.h. "
-						      "Had %i need %"INT32"."
+						      "Had %i need %" INT32 "."
 						      "</font>", 
 						      AUTOBAN_TEXT_SIZE,
 						      (int32_t)(p - g_conf.m_banIps +
@@ -1056,7 +1056,7 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 			sb.safePrintf("<font color=red>Not enough stack space "
 				      "to fit codes.  "
 				      "Increase AUTOBAN_TEXT_SIZE in Conf.h. "
-				      "Had %i need %"INT32".</font>", 
+				      "Had %i need %" INT32 ".</font>", 
 				      AUTOBAN_TEXT_SIZE,
 				      validCodesLen);
 			validCodes = NULL;
@@ -1085,7 +1085,7 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 			sb.safePrintf("<font color=red>Not enough stack space "
 				      "to fit bannedIps.  "
 				      "Increase AUTOBAN_TEXT_SIZE in Conf.h. "
-				      "Had %i need %"INT32".</font>", 
+				      "Had %i need %" INT32 ".</font>", 
 				      AUTOBAN_TEXT_SIZE,
 				      banIpsLen);
 			banIpsLen = AUTOBAN_TEXT_SIZE - 1;
@@ -1109,7 +1109,7 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 			sb.safePrintf("<font color=red>Not enough stack space "
 				      "to fit allowIps.  "
 				      "Increase AUTOBAN_TEXT_SIZE in Conf.h. "
-				      "Had %i need %"INT32".</font>", 
+				      "Had %i need %" INT32 ".</font>", 
 				      AUTOBAN_TEXT_SIZE,
 				      allowIpsLen);
 			allowIpsLen = AUTOBAN_TEXT_SIZE - 1;
@@ -1158,7 +1158,7 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 	if(!showLongView) {
 		sb.safePrintf("<b><a href=\"autoban"
 			      "?c=%s"
-			      "&showAllIps=%"INT32""
+			      "&showAllIps=%" INT32 ""
 			      "&int32_tview=1\">Show watched ips table...</a></b>",
 			      coll,
 			      showAllIps);
@@ -1268,19 +1268,19 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 			      "<center>%s</center></td>"
 
 // 			      "<td><center>"
-// 			      "%"INT32" days %"INT32" hrs %"INT32" min ago"
+// 			      "%" INT32 " days %" INT32 " hrs %" INT32 " min ago"
 // 			      "</center></td>"
 
 			      "<td><center><a href=\"/admin/"
-			      "autoban?c=%s&allow=%s&showAllIps=%"INT32"\">" 
+			      "autoban?c=%s&allow=%s&showAllIps=%" INT32 "\">" 
 			      "allow/</a>"
 
 			      "<a href=\"/admin/"
-			      "autoban?c=%s&deny=%s&showAllIps=%"INT32"\">" 
+			      "autoban?c=%s&deny=%s&showAllIps=%" INT32 "\">" 
 			      "deny/</a>"
 
 			      "<a href=\"/admin/"
-			      "autoban?c=%s&clear=%s&showAllIps=%"INT32"\">"
+			      "autoban?c=%s&clear=%s&showAllIps=%" INT32 "\">"
 			      "clear</a></center>"
 			      "</td>",color, 
 			      iptoa(m_detectKeys[i]),
@@ -1395,16 +1395,16 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 		if(m_detectVals[i].m_flags & ALLOW) {
 			color = GREEN;
 			snprintf(minBuf, 128, "--");
-			snprintf(dayBuf, 128, "%"INT32"", dayCount);
+			snprintf(dayBuf, 128, "%" INT32 "", dayCount);
 		}
 		else if(m_detectVals[i].m_flags & DENY) {
 			color = RED;
 			snprintf(minBuf, 128, "--");
-			snprintf(dayBuf, 128, "%"INT32"", dayCount);
+			snprintf(dayBuf, 128, "%" INT32 "", dayCount);
 		} 
 		else {
-			snprintf(minBuf, 128, "%"INT32"", (int32_t)minuteCount);
-			snprintf(dayBuf, 128, "%"INT32"", (int32_t)dayCount);
+			snprintf(minBuf, 128, "%" INT32 "", (int32_t)minuteCount);
+			snprintf(dayBuf, 128, "%" INT32 "", (int32_t)dayCount);
 		}
 
 		uint32_t thisIpGroup = (uint32_t)m_detectKeys[i] & 
@@ -1456,7 +1456,7 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 				      "<td><center>%s</center> </td>"
 				      "<td><center>%s</center></td>" 
 				      "<td><center><font color=red>"
-				      "<b>%"INT32" days %"INT32" hrs %"INT32" min %"INT32" sec</b>"
+				      "<b>%" INT32 " days %" INT32 " hrs %" INT32 " min %" INT32 " sec</b>"
 				      "</font></center></td>"
 				      "<td><center>%i</center></td>",
 				      color, 
@@ -1470,10 +1470,10 @@ bool AutoBan::printTable( TcpSocket *s , HttpRequest *r ) {
 		}
 		sb.safePrintf("<td><center>"
 			      "<a href=\"/admin/"
-			      "autoban?c=%s&allow=%s&showAllIps=%"INT32"\">" 
+			      "autoban?c=%s&allow=%s&showAllIps=%" INT32 "\">" 
 			      "allow/</a>"
 			      "<a href=\"/admin/"
-			      "autoban?c=%s&deny=%s&showAllIps=%"INT32"\">" 
+			      "autoban?c=%s&deny=%s&showAllIps=%" INT32 "\">" 
 			      "deny</a></center>"
 			      "</td>",
 			      coll,
@@ -1532,7 +1532,7 @@ bool AutoBan::restore() {
 		buf += sizeof(DetectVal);
 		if(buf > bufEnd) return false;
 	}
-	log("autoban: read %"INT32" entries",numEntries);
+	log("autoban: read %" INT32 " entries",numEntries);
 	// more to read? return no if not
 	// this was  a hack when catting two autoban-saved.dat files together
 	//if ( buf + 4 < bufEnd && numEntries )

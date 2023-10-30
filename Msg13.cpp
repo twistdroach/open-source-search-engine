@@ -327,8 +327,8 @@ bool Msg13::forwardRequest ( ) {
 	if ( g_conf.m_logDebugSpider )
 		logf ( LOG_DEBUG, 
 		       "spider: sending download request of %s firstIp=%s "
-		       "uh48=%"UINT64" to "
-		       "host %"INT32" (child=%"INT32")", r->ptr_url, iptoa(r->m_firstIp), 
+		       "uh48=%" UINT64 " to "
+		       "host %" INT32 " (child=%" INT32 ")", r->ptr_url, iptoa(r->m_firstIp), 
 		       r->m_urlHash48, hostId,
 		       r->m_skipHammerCheck);
 
@@ -424,7 +424,7 @@ bool Msg13::gotFinalReply ( char *reply, int32_t replySize, int32_t replyAllocSi
 	// int16_tcut
 	Msg13Request *r = m_request;
 
-	//log("msg13: reply=%"XINT32" replysize=%"INT32" g_errno=%s",
+	//log("msg13: reply=%"XINT32" replysize=%" INT32 " g_errno=%s",
 	//    (int32_t)reply,(int32_t)replySize,mstrerror(g_errno));
 
 	if ( g_conf.m_logDebugRobots || g_conf.m_logDebugDownloads )
@@ -471,7 +471,7 @@ bool Msg13::gotFinalReply ( char *reply, int32_t replySize, int32_t replyAllocSi
 	// sanity checks
 	if ( unzippedLen > 10000000 ) {
 		log("spider: downloaded probable corrupt gzipped doc "
-		    "with unzipped len of %"INT32"",(int32_t)unzippedLen);
+		    "with unzipped len of %" INT32 "",(int32_t)unzippedLen);
 		g_errno = ECORRUPTDATA;
 		return true;
 	}
@@ -491,7 +491,7 @@ bool Msg13::gotFinalReply ( char *reply, int32_t replySize, int32_t replyAllocSi
 	if(zipErr != Z_OK || 
 	   uncompressedLen!=(uint32_t)unzippedLen) {
 		log("spider: had error unzipping Msg13 reply. unzipped "
-		    "len should be %"INT32" but is %"INT32". ziperr=%"INT32"",
+		    "len should be %" INT32 " but is %" INT32 ". ziperr=%" INT32 "",
 		    (int32_t)uncompressedLen,
 		    (int32_t)unzippedLen,
 		    (int32_t)zipErr);
@@ -522,7 +522,7 @@ bool Msg13::gotFinalReply ( char *reply, int32_t replySize, int32_t replyAllocSi
 
 	// log it for now
 	if ( g_conf.m_logDebugSpider )
-		log("http: got doc %s %"INT32" to %"INT32"",
+		log("http: got doc %s %" INT32 " to %" INT32 "",
 		    r->ptr_url,(int32_t)replySize,(int32_t)uncompressedLen);
 
 	return true;
@@ -614,7 +614,7 @@ void handleRequest13 ( UdpSlot *slot , int32_t niceness  ) {
 		// log debug?
 		//if ( r->m_isSquidProxiedUrl )
 		if ( g_conf.m_logDebugSpider )
-			log("proxy: found %"INT32" bytes in cache for %s",
+			log("proxy: found %" INT32 " bytes in cache for %s",
 			    recSize,r->ptr_url);
 
 		r->m_foundInCache = true;
@@ -696,7 +696,7 @@ void handleRequest13 ( UdpSlot *slot , int32_t niceness  ) {
 		Host *h = g_hostdb.getBestSpiderCompressionProxy(&key);
 		if ( g_conf.m_logDebugSpider || g_conf.m_logDebugMsg13 )
 			log(LOG_DEBUG,"spider: sending to compression proxy "
-			    "%s:%"UINT32"",iptoa(h->m_ip),(uint32_t)h->m_port);
+			    "%s:%" UINT32 "",iptoa(h->m_ip),(uint32_t)h->m_port);
 		// . otherwise, send the request to the key host
 		// . returns false and sets g_errno on error
 		// . now wait for 2 minutes before timing out
@@ -889,7 +889,7 @@ void gotProxyHostReplyWrapper ( void *state , UdpSlot *slot ) {
 	//int32_t  replyAllocSize = slot->m_readBufMaxSize;
 	// bad reply? ip/port/LBid
 	if ( replySize != sizeof(ProxyReply) ) {
-		log("sproxy: bad 54 reply size of %"INT32" != %"INT32" %s",
+		log("sproxy: bad 54 reply size of %" INT32 " != %" INT32 " %s",
 		    replySize,(int32_t)sizeof(ProxyReply),r->ptr_url);
 		g_udpServer.sendErrorReply(r->m_udpSlot,g_errno);
 		return;
@@ -984,7 +984,7 @@ void downloadTheDocForReals3b ( Msg13Request *r ) {
 		// get time now
 		s_hammerCache.addLongLong(0,r->m_firstIp, nowms);
 		log(LOG_DEBUG,
-		    "spider: adding new time to hammercache for %s %s = %"INT64"",
+		    "spider: adding new time to hammercache for %s %s = %" INT64 "",
 		    iptoa(r->m_firstIp),r->ptr_url,nowms);
 	}
 	else {
@@ -996,7 +996,7 @@ void downloadTheDocForReals3b ( Msg13Request *r ) {
 	// note it
 	if ( g_conf.m_logDebugSpider )
 		log("spider: adding special \"in-progress\" time "
-		    "of %"INT32" for "
+		    "of %" INT32 " for "
 		    "firstIp=%s "
 		    "url=%s "
 		    "to msg13::hammerCache",
@@ -1010,7 +1010,7 @@ void downloadTheDocForReals3b ( Msg13Request *r ) {
 	//if ( g_conf.m_qaBuildMode ) r->m_addToTestCache = true;
 	// note it here
 	if ( g_conf.m_logDebugSpider || g_conf.m_logDebugMsg13 )
-		log("spider: downloading %s (%s) (skiphammercheck=%"INT32")",
+		log("spider: downloading %s (%s) (skiphammercheck=%" INT32 ")",
 		    r->ptr_url,iptoa(r->m_urlIp) ,
 		    (int32_t)r->m_skipHammerCheck);
 
@@ -1066,9 +1066,9 @@ void downloadTheDocForReals3b ( Msg13Request *r ) {
 		char tmpIp[64];
 		sprintf(tmpIp,"%s",iptoa(r->m_urlIp));
 		log(LOG_INFO,
-		    "sproxy: got proxy %s:%"UINT32" "
+		    "sproxy: got proxy %s:%" UINT32 " "
 		    "and agent=\"%s\" to spider "
-		    "%s %s (numBannedProxies=%"INT32")",
+		    "%s %s (numBannedProxies=%" INT32 ")",
 		    iptoa(r->m_proxyIp),
 		    (uint32_t)(uint16_t)r->m_proxyPort,
 		    agent,
@@ -1306,7 +1306,7 @@ void gotHttpReply9 ( void *state , TcpSocket *ts ) {
 		sprintf(tmpIp,"%s",iptoa(r->m_urlIp));
 		log("msg13: detected that proxy %s is banned "
 		    "(banmsg=%s) "
-		    "(tries=%"INT32") by "
+		    "(tries=%" INT32 ") by "
 		    "url %s %s. %s"
 		    , iptoa(r->m_proxyIp) // r->m_banProxyIp
 		    , banMsg
@@ -1370,7 +1370,7 @@ void gotHttpReply9 ( void *state , TcpSocket *ts ) {
 		s_55Out++;
 		// sanity
 		if ( s_55Out > 500 )
-			log("sproxy: s55out > 500 = %"INT32"",s_55Out);
+			log("sproxy: s55out > 500 = %" INT32 "",s_55Out);
 	}
 	// sanity check
 	//if ( ! g_errno ) { char *xx=NULL;*xx=0; }
@@ -1610,7 +1610,7 @@ void gotHttpReply2 ( void *state ,
 	// note it
 	if ( g_conf.m_logDebugSpider && ! r->m_skipHammerCheck )
 		log(LOG_DEBUG,"spider: adding last download time "
-		    "of %"INT64" for firstIp=%s url=%s "
+		    "of %" INT64 " for firstIp=%s url=%s "
 		    "to msg13::hammerCache",
 		    timeToAdd,iptoa(r->m_firstIp),r->ptr_url);
 
@@ -1647,7 +1647,7 @@ void gotHttpReply2 ( void *state ,
 	if ( r->m_useTestCache && 
 	     ( g_conf.m_logDebugSpider || g_conf.m_logDebugMsg13 ) )
 		logf(LOG_DEBUG,"spider: got reply for %s "
-		     "firstIp=%s uh48=%"UINT64"",
+		     "firstIp=%s uh48=%" UINT64 "",
 		     r->ptr_url,iptoa(r->m_firstIp),r->m_urlHash48);
 
 	int32_t niceness = r->m_niceness;
@@ -1700,7 +1700,7 @@ void gotHttpReply2 ( void *state ,
 			char tmpBuf[2048];
 			char *p = tmpBuf;
 			p += sprintf( tmpBuf, 
-				      "HTTP/1.0 %"INT32"\r\n"
+				      "HTTP/1.0 %" INT32 "\r\n"
 				      "Content-Length: 0\r\n" ,
 				      httpStatus );
 			// convert redirect urls back to requester
@@ -2051,7 +2051,7 @@ void gotHttpReply2 ( void *state ,
 					 replySize);
 		if(zipErr != Z_OK) {
 			log("spider: had error zipping Msg13 reply. %s "
-			    "(%"INT32") url=%s",
+			    "(%" INT32 ") url=%s",
 			    zError(zipErr),(int32_t)zipErr,r->ptr_url);
 			mfree (compressedBuf, need, "Msg13ZipError");
 			g_errno = ECORRUPTDATA;
@@ -2284,13 +2284,13 @@ bool getTestDoc ( char *u , TcpSocket *ts , Msg13Request *r ) {
 	//if ( ! td ) td = "test-page-parser";
 	if ( ! td[0] ) { char *xx=NULL;*xx=0; }
 	// make http reply filename
-	sprintf(fn,"%s/%s/doc.%"UINT64".html",g_hostdb.m_dir,td,h);
+	sprintf(fn,"%s/%s/doc.%" UINT64 ".html",g_hostdb.m_dir,td,h);
 	// look it up
 	f.set ( fn );
 	// try to get it
 	if ( ! f.doesExist() ) {
 		//if ( g_conf.m_logDebugSpider )
-			log("test: doc not found in test cache: %s (%"UINT64")",
+			log("test: doc not found in test cache: %s (%" UINT64 ")",
 			    u,h);
 		return false;
 	}
@@ -2310,13 +2310,13 @@ bool getTestDoc ( char *u , TcpSocket *ts , Msg13Request *r ) {
 	// not read enough?
 	if ( rs != fs ) {
 		mfree ( buf,fs,"gtd");
-		return log("test: read returned %"INT32" != %"INT32"",rs,fs);
+		return log("test: read returned %" INT32 " != %" INT32 "",rs,fs);
 	}
 	f.close();
 	// null term it
 	buf[fs] = '\0';
 
-	// was it error=%"UINT32" ?
+	// was it error=%" UINT32 " ?
 	if ( ! strncmp(buf,"errno=",6) ) {
 		ts->m_readBuf     = NULL;
 		ts->m_readBufSize = 0;
@@ -2326,7 +2326,7 @@ bool getTestDoc ( char *u , TcpSocket *ts , Msg13Request *r ) {
 		mfree ( buf , fs+1 , "gtd" );
 		// log it for now
 		if ( g_conf.m_logDebugSpider )
-			log("test: GOT ERROR doc in test cache: %s (%"UINT64") "
+			log("test: GOT ERROR doc in test cache: %s (%" UINT64 ") "
 			    "[%s]",u,h, mstrerror(g_errno));
 		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
 		return true;
@@ -2334,10 +2334,10 @@ bool getTestDoc ( char *u , TcpSocket *ts , Msg13Request *r ) {
 
 	// log it for now
 	//if ( g_conf.m_logDebugSpider )
-		log("test: GOT doc in test cache: %s (qa/doc.%"UINT64".html)",
+		log("test: GOT doc in test cache: %s (qa/doc.%" UINT64 ".html)",
 		    u,h);
 		
-	//fprintf(stderr,"scp gk252:/e/test-spider/doc.%"UINT64".* /home/mwells/gigablast/test-parser/\n",h);
+	//fprintf(stderr,"scp gk252:/e/test-spider/doc.%" UINT64 ".* /home/mwells/gigablast/test-parser/\n",h);
 
 	// set the slot up now
 	//slot->m_readBuf        = buf;
@@ -2358,7 +2358,7 @@ bool getTestSpideredDate ( Url *u , int32_t *origSpideredDate , char *testDir ) 
 	char fn[2000]; 
 	File f;
 	// get the spider date then
-	sprintf(fn,"%s/%s/doc.%"UINT64".spiderdate.txt",
+	sprintf(fn,"%s/%s/doc.%" UINT64 ".spiderdate.txt",
 		g_hostdb.m_dir,testDir,uh64);
 	// look it up
 	f.set ( fn );
@@ -2381,7 +2381,7 @@ bool getTestSpideredDate ( Url *u , int32_t *origSpideredDate , char *testDir ) 
 	// close it
 	f.close();
 	// note it
-	//log("test: read spiderdate of %"UINT32" for %s",*origSpideredDate,
+	//log("test: read spiderdate of %" UINT32 " for %s",*origSpideredDate,
 	//    u->getUrl());
 	// good to go
 	return true;
@@ -2396,14 +2396,14 @@ bool addTestSpideredDate ( Url *u , int32_t spideredTime , char *testDir ) {
 	int64_t uh64 = hash64(u->getUrl(),u->getUrlLen());
 	// make that into a filename
 	char fn[300]; 
-	sprintf(fn,"%s/%s/doc.%"UINT64".spiderdate.txt",
+	sprintf(fn,"%s/%s/doc.%" UINT64 ".spiderdate.txt",
 		g_hostdb.m_dir,testDir,uh64);
 	// look it up
 	File f; f.set ( fn );
 	// if already there, return now
 	if ( f.doesExist() ) return true;
 	// make it into buf
-	char dbuf[200]; sprintf ( dbuf ,"%"INT32"\n",spideredTime);
+	char dbuf[200]; sprintf ( dbuf ,"%" INT32 "\n",spideredTime);
 	// open it
 	f.open ( O_RDWR | O_CREAT );
 	// write it now
@@ -2412,7 +2412,7 @@ bool addTestSpideredDate ( Url *u , int32_t spideredTime , char *testDir ) {
 	f.close();
 	// panic?
 	if ( ws != (int32_t)gbstrlen(dbuf) )
-		return log("test: error writing %"INT32" != %"INT32" to %s",ws,
+		return log("test: error writing %" INT32 " != %" INT32 " to %s",ws,
 			   (int32_t)gbstrlen(dbuf),fn);
 	// close it up
 	//f.close();
@@ -2433,7 +2433,7 @@ bool addTestDoc ( int64_t urlHash64 , char *httpReply , int32_t httpReplySize ,
 	char *td = r->m_testDir;
 	if ( ! td[0] ) { char *xx=NULL;*xx=0; }
 	// make that into a filename
-	sprintf(fn,"%s/%s/doc.%"UINT64".html",g_hostdb.m_dir,td,urlHash64);
+	sprintf(fn,"%s/%s/doc.%" UINT64 ".html",g_hostdb.m_dir,td,urlHash64);
 	// look it up
 	File f; f.set ( fn );
 	// if already there, return now
@@ -2442,12 +2442,12 @@ bool addTestDoc ( int64_t urlHash64 , char *httpReply , int32_t httpReplySize ,
 	f.open ( O_RDWR | O_CREAT );
 	// log it for now
 	//if ( g_conf.m_logDebugSpider )
-	log("test: ADDING doc to test cache: %"UINT64"",urlHash64);
+	log("test: ADDING doc to test cache: %" UINT64 "",urlHash64);
 
 	// write error only?
 	if ( err ) {
 		char ebuf[256];
-		sprintf(ebuf,"errno=%"INT32"\n",err);
+		sprintf(ebuf,"errno=%" INT32 "\n",err);
 		f.write(ebuf,gbstrlen(ebuf),0);
 		f.close();
 		return true;
@@ -2459,7 +2459,7 @@ bool addTestDoc ( int64_t urlHash64 , char *httpReply , int32_t httpReplySize ,
 	f.close();
 	// panic?
 	if ( ws != httpReplySize )
-		return log("test: error writing %"INT32" != %"INT32" to %s",ws,
+		return log("test: error writing %" INT32 " != %" INT32 " to %s",ws,
 			   httpReplySize,fn);
 	// all done, success
 	return true;
@@ -3133,8 +3133,8 @@ bool addToHammerQueue ( Msg13Request *r ) {
 	//r->m_usedCrawlDelay = crawlDelayMS;
 
 	if ( g_conf.m_logDebugSpider )
-		log(LOG_DEBUG,"spider: got timestamp of %"INT64" from "
-		    "hammercache (waited=%"INT64" crawlDelayMS=%"INT32") "
+		log(LOG_DEBUG,"spider: got timestamp of %" INT64 " from "
+		    "hammercache (waited=%" INT64 " crawlDelayMS=%" INT32 ") "
 		    "for %s"
 		    ,last
 		    ,waited
@@ -3158,7 +3158,7 @@ bool addToHammerQueue ( Msg13Request *r ) {
 	if ( queueIt ) {
 		// debug
 		log(LOG_INFO,
-		    "spider: adding %s to crawldelayqueue cd=%"INT32"ms "
+		    "spider: adding %s to crawldelayqueue cd=%" INT32 "ms "
 		    "ip=%s",
 		    r->ptr_url,crawlDelayMS,iptoa(r->m_urlIp));
 		// save this
@@ -3184,7 +3184,7 @@ bool addToHammerQueue ( Msg13Request *r ) {
 	// if we had it in cache check the wait time
 	if ( last > 0 && waited < crawlDelayMS ) {
 		log("spider: hammering firstIp=%s url=%s "
-		    "only waited %"INT64" ms of %"INT32" ms",
+		    "only waited %" INT64 " ms of %" INT32 " ms",
 		    iptoa(r->m_firstIp),r->ptr_url,waited,
 		    crawlDelayMS);
 		// this guy has too many redirects and it fails us...
@@ -3200,7 +3200,7 @@ bool addToHammerQueue ( Msg13Request *r ) {
 	//s_hammerCache.addLongLong(0,r->m_firstIp,nowms);
 	// note it
 	//if ( g_conf.m_logDebugSpider )
-	//	log("spider: adding download end time of %"UINT64" for "
+	//	log("spider: adding download end time of %" UINT64 " for "
 	//	    "firstIp=%s "
 	//	    "url=%s "
 	//	    "to msg13::hammerCache",
@@ -3265,7 +3265,7 @@ void scanHammerQueue ( int fd , void *state ) {
 		}
 		// debug
 		//log("spider: downloading %s from crawldelay queue "
-		//    "waited=%"INT64"ms crawldelay=%"INT32"ms", 
+		//    "waited=%" INT64 "ms crawldelay=%" INT32 "ms", 
 		//    r->ptr_url,waited,r->m_crawlDelayMS);
 
 		// good to go
@@ -3280,7 +3280,7 @@ void scanHammerQueue ( int fd , void *state ) {
 
 		if ( g_conf.m_logDebugSpider )
 			log(LOG_DEBUG,"spider: calling hammer callback for "
-			    "%s (timestamp=%"INT64",waited=%"INT64",crawlDelayMS=%"INT32")",
+			    "%s (timestamp=%" INT64 ",waited=%" INT64 ",crawlDelayMS=%" INT32 ")",
 			    r->ptr_url,
 			    last,
 			    waited,
@@ -3495,7 +3495,7 @@ int64_t computeProxiedCacheKey64 ( Msg13Request *r ) {
 	// incorporate cookie hash
 	h64 = hash64 ( start , s - start , h64 );
 
-	//log("debug: cookiehash=%"INT64"",hash64(start,s-start));
+	//log("debug: cookiehash=%" INT64 "",hash64(start,s-start));
 
 	return h64;
 }
@@ -12085,7 +12085,7 @@ char *getRandUserAgent ( int32_t urlIp , int32_t proxyIp , int32_t proxyPort ) {
 	// just make it random all the time
 	//int32_t n = rand() % numAgents;
 
-	//log("urlip=%"UINT32" proxyip=%"UINT32" proxyport=%"UINT32" n=%"INT32"",
+	//log("urlip=%" UINT32 " proxyip=%" UINT32 " proxyport=%" UINT32 " n=%" INT32 "",
 	//    urlIp,proxyIp,proxyPort,n);
 
 	return s_agentList[n];
@@ -12152,7 +12152,7 @@ bool printHammerQueueTable ( SafeBuf *sb ) {
 	int32_t port = cu.getPort();
 	int32_t defPort = 80;
 	if ( isHttps ) defPort = 443;
-	if ( port != defPort ) sb->safePrintf ( ":%"INT32"",port );
+	if ( port != defPort ) sb->safePrintf ( ":%" INT32 "",port );
 	sb->safePrintf ( "/robots.txt\">"
 			 "%i"
 			 "</a>"

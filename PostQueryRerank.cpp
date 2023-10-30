@@ -88,8 +88,8 @@ bool PostQueryRerank::set1 ( Msg40 *msg40, SearchInput *si ) {
 	if ( ! m_si->m_cr ) return false;
 
 	m_enabled = (m_si->m_docsToScanForReranking > 1);
-	//log( LOG_DEBUG, "query:  m_isEnabled:%"INT32"; "
-	//     "P_docsToScanForReranking:%"INT32" P_pqr_docsToSan:%"INT32"; AWL",
+	//log( LOG_DEBUG, "query:  m_isEnabled:%" INT32 "; "
+	//     "P_docsToScanForReranking:%" INT32 " P_pqr_docsToSan:%" INT32 "; AWL",
 	//     (int32_t)m_enabled, 
 	//     m_si->m_docsToScanForReranking,
 	//     m_si->m_cr->m_pqr_docsToScan );
@@ -102,8 +102,8 @@ bool PostQueryRerank::set1 ( Msg40 *msg40, SearchInput *si ) {
 bool PostQueryRerank::set2 ( int32_t resultsWanted ) {
 	//log(LOG_DEBUG, "query:in PQR::set2() AWL");
 
-	//log( LOG_DEBUG, "query: firstResultNum:%"INT32"; numResults:%"INT32"; "
-	//     "wanted:%"INT32" numMsg20s:%"INT32" AWL", 
+	//log( LOG_DEBUG, "query: firstResultNum:%" INT32 "; numResults:%" INT32 "; "
+	//     "wanted:%" INT32 " numMsg20s:%" INT32 " AWL", 
 	//     m_msg40->getFirstResultNum(), m_msg40->getNumResults(),
 	//     resultsWanted, m_msg40->m_numMsg20s );
 
@@ -113,7 +113,7 @@ bool PostQueryRerank::set2 ( int32_t resultsWanted ) {
 		m_maxResultsToRerank = m_msg40->getNumDocIds();
 		log( LOG_DEBUG, "pqr: request to rerank more results "
 		     "than the number of docids, capping number to rerank "
-		     "at %"INT32"", m_maxResultsToRerank );
+		     "at %" INT32 "", m_maxResultsToRerank );
 	}
 
 	// If we don't have less results from clustering / deduping or
@@ -131,7 +131,7 @@ bool PostQueryRerank::set2 ( int32_t resultsWanted ) {
 	if ( m_msg40->m_numMsg20s < m_maxResultsToRerank )
 		m_maxResultsToRerank = m_msg40->m_numMsg20s;
 
-	//log( LOG_DEBUG, "query: m_maxResultsToRerank:%"INT32" AWL", 
+	//log( LOG_DEBUG, "query: m_maxResultsToRerank:%" INT32 " AWL", 
 	//     m_maxResultsToRerank );
 
 	if ( m_maxResultsToRerank < 2 ) {
@@ -241,8 +241,8 @@ bool PostQueryRerank::preRerank ( ) {
 		char clusterLevel = m_msg40->getClusterLevel( x );
 		if ( clusterLevel != CR_OK ) {
 			//log( LOG_DEBUG, "pqr: skipping result "
-			//     "%"INT32" since cluster level(%"INT32") != "
-			//     "CR_OK(%"INT32") AWL",
+			//     "%" INT32 " since cluster level(%" INT32 ") != "
+			//     "CR_OK(%" INT32 ") AWL",
 			//     x, (int32_t)clusterLevel, (int32_t)CR_OK );
 			continue;
 		}
@@ -332,8 +332,8 @@ bool PostQueryRerank::preRerank ( ) {
 		}
 
 		//log( LOG_DEBUG, "pqr: pre: setting up sort array - "
-		//     "mapping x:%"INT32" to y:%"INT32"; "
-		//     "url:'%s' (%"INT32"); tier:%d; score:%"INT32"; "
+		//     "mapping x:%" INT32 " to y:%" INT32 "; "
+		//     "url:'%s' (%" INT32 "); tier:%d; score:%" INT32 "; "
 		//     "docId:%lld; clusterLevel:%d; AWL",
 		//     x, y, 
 		//     msg20->getUrl(), msg20->getUrlLen(), 
@@ -393,7 +393,7 @@ bool PostQueryRerank::preRerank ( ) {
 	m_maxUrlLen++;
 	m_cvtUrl = (char *)mmalloc( m_maxUrlLen, "pqrcvtUrl" );
 	if ( ! m_cvtUrl ) {
-		log( LOG_INFO, "pqr: Could not allocate %"INT32" bytes "
+		log( LOG_INFO, "pqr: Could not allocate %" INT32 " bytes "
 		     "for m_cvtUrl.",
 		     m_maxUrlLen );
 		g_errno = ENOMEM;
@@ -404,7 +404,7 @@ bool PostQueryRerank::preRerank ( ) {
 	if ( m_numToSort > m_maxResultsToRerank )
 		m_numToSort = m_maxResultsToRerank;
 
-	//log( LOG_DEBUG, "pqr::m_numToSort:%"INT32" AWL", m_numToSort );
+	//log( LOG_DEBUG, "pqr::m_numToSort:%" INT32 " AWL", m_numToSort );
 
 	return true;
 }
@@ -414,7 +414,7 @@ bool PostQueryRerank::preRerank ( ) {
 bool PostQueryRerank::rerank ( ) {
 	//log(LOG_DEBUG,"query:in PQR::rerank() AWL");
 	if(m_si->m_debug||g_conf.m_logDebugPQR )
-		logf( LOG_DEBUG, "pqr: reranking %"INT32" results", 
+		logf( LOG_DEBUG, "pqr: reranking %" INT32 " results", 
 		     m_numToSort );
 
 	/*
@@ -491,7 +491,7 @@ bool PostQueryRerank::rerank ( ) {
 		url = msg20->m_r->ptr_ubuf;//getUrl();
 		if ( ! url ) url = "(none)";
 		if(m_si->m_debug||g_conf.m_logDebugPQR )
-			logf(LOG_DEBUG, "pqr: result #%"INT32":'%s' has initial "
+			logf(LOG_DEBUG, "pqr: result #%" INT32 ":'%s' has initial "
 			     "score of %.02f", 
 			     x, url, (float)startScore );
 
@@ -665,7 +665,7 @@ bool PostQueryRerank::rerank ( ) {
 
 		//	finishloop:
 		if(m_si->m_debug || g_conf.m_logDebugPQR )
-			logf( LOG_DEBUG, "pqr: result #%"INT32"'s final "
+			logf( LOG_DEBUG, "pqr: result #%" INT32 "'s final "
 			     "score is %.02f (-%3.3f%%) ",
 			     x, (float)score,100-100*(float)score/startScore );
 		sortArrItem->m_score = score;
@@ -681,7 +681,7 @@ bool PostQueryRerank::postRerank ( ) {
 
 	// Hopefully never happen...
 	//log( LOG_DEBUG, "query: just before sort: "
-	//     "m_maxResultsToRerank:%"INT32" m_numToSort:%"INT32" AWL", 
+	//     "m_maxResultsToRerank:%" INT32 " m_numToSort:%" INT32 " AWL", 
 	//     m_maxResultsToRerank, m_numToSort);
 	if ( m_numToSort < 0 ) return false;
 
@@ -705,8 +705,8 @@ bool PostQueryRerank::postRerank ( ) {
 		m_msg40->m_msg3a.m_scores        [ x ] = a->m_score;
 		m_msg40->m_msg3a.m_docIds        [ x ] = a->m_docId;
 		m_msg40->m_msg3a.m_clusterLevels [ x ] = a->m_clusterLevel;
-		//log( LOG_DEBUG, "pqr: post: mapped y:%"INT32" "
-		//     "to x:%"INT32" AWL",
+		//log( LOG_DEBUG, "pqr: post: mapped y:%" INT32 " "
+		//     "to x:%" INT32 " AWL",
 		//     y, x );
 	}
 
@@ -718,7 +718,7 @@ bool PostQueryRerank::postRerank ( ) {
 	//if ( ! g_conf.m_profilingEnabled ) return true;
 	//if ( ! g_profiler.endTimer( (int32_t)(this->*(&PostQueryRerank::rerank)), 
 	//			    TOTAL_RERANKING_TIME_STR) )
-	//	log( LOG_WARN,"admin: Couldn't add the fn %"INT32"",
+	//	log( LOG_WARN,"admin: Couldn't add the fn %" INT32 "",
 	//	     (int32_t)(this->*(&PostQueryRerank::rerank)) );
 	return true;
 }
@@ -729,7 +729,7 @@ void PostQueryRerank::rerankFailed ( ) {
   //	if( ! g_profiler
   //	    .endTimer( (int32_t)(this->*(&PostQueryRerank::rerank)), 
   //		       TOTAL_RERANKING_TIME_STR) )
-  //		log(LOG_WARN,"admin: Couldn't add the fn %"INT32"",
+  //		log(LOG_WARN,"admin: Couldn't add the fn %" INT32 "",
   //		    (int32_t)(this->*(&PostQueryRerank::rerank)));
   //}
 }
@@ -742,10 +742,10 @@ rscore_t PostQueryRerank::rerankLanguageAndCountry ( rscore_t score,
 						 uint16_t country ,
 						     Msg20 *msg20 ) { 
 	//log( LOG_DEBUG, "query:in PQR::rerankLanguageAndCountry("
-	//     "score:%"INT32", lang:%"INT32", summLang:%"INT32", country:%"INT32")"
-	//     "[langSortingIsOn:%"INT32"; langUnkWeight:%3.3f; langWeight:%3.3f; "
-	//     "&qlang=%"INT32"; &lang=%"INT32"; "
-	//     "&qcountry=%"INT32"; &gbcountry=%"INT32"; "
+	//     "score:%" INT32 ", lang:%" INT32 ", summLang:%" INT32 ", country:%" INT32 ")"
+	//     "[langSortingIsOn:%" INT32 "; langUnkWeight:%3.3f; langWeight:%3.3f; "
+	//     "&qlang=%" INT32 "; &lang=%" INT32 "; "
+	//     "&qcountry=%" INT32 "; &gbcountry=%" INT32 "; "
 	//     "queryLangs:%lld; pageLangs:%lld] AWL",
 	//     score, (int32_t)lang, (int32_t)summaryLang, (int32_t)country,
 	//     (int32_t)m_si->m_enableLanguageSorting,
@@ -847,8 +847,8 @@ rscore_t PostQueryRerank::rerankLanguageAndCountry ( rscore_t score,
 rscore_t PostQueryRerank::rerankQueryTermsOrGigabitsInUrl( rscore_t score,
 							    Url *pageUrl ) {
 	//log( LOG_DEBUG, "query:in PQR::rerankQueryTermsOrGigabitsInUrl("
-	//     "score:%"INT32", url:'%s', urlLen:%"INT32")"
-	//     "[factor:%3.3f; max:%"INT32"] AWL", 
+	//     "score:%" INT32 ", url:'%s', urlLen:%" INT32 ")"
+	//     "[factor:%3.3f; max:%" INT32 "] AWL", 
 	//     score, pageUrl->getUrl(), pageUrl->getUrlLen(),
 	//     m_si->m_cr->m_pqr_demFactQTTopicsInUrl,
 	//     m_si->m_cr->m_pqr_maxValQTTopicsInUrl );
@@ -870,11 +870,11 @@ rscore_t PostQueryRerank::rerankQueryTermsOrGigabitsInUrl( rscore_t score,
 	// . convert symbols to spaces
 	// . remove extra space
 	//log( LOG_DEBUG, "query: origurl:'%s' AWL", pageUrl->getUrl() );
-	//log( LOG_DEBUG, "query: url: whole:'%s' host:'%s' (%"INT32"); "
-	//     "domain:'%s' (%"INT32"); tld:'%s' (%"INT32"); midDom:'%s' (%"INT32"); "
-	//     "path:'%s' (%"INT32"); fn:'%s'; ext:'%s'; query:'%s' (%"INT32"); "
-	//     "ipStr:'%s' {%"INT32"}; anch:'%s' (%"INT32") "
-	//     "site:'%s' (%"INT32") AWL",
+	//log( LOG_DEBUG, "query: url: whole:'%s' host:'%s' (%" INT32 "); "
+	//     "domain:'%s' (%" INT32 "); tld:'%s' (%" INT32 "); midDom:'%s' (%" INT32 "); "
+	//     "path:'%s' (%" INT32 "); fn:'%s'; ext:'%s'; query:'%s' (%" INT32 "); "
+	//     "ipStr:'%s' {%" INT32 "}; anch:'%s' (%" INT32 ") "
+	//     "site:'%s' (%" INT32 ") AWL",
 	//     pageUrl->getUrl(),
 	//     pageUrl->getHost(), pageUrl->getHostLen(),
 	//     pageUrl->getDomain(), pageUrl->getDomainLen(),
@@ -945,7 +945,7 @@ rscore_t PostQueryRerank::rerankQueryTermsOrGigabitsInUrl( rscore_t score,
 	}
 	*t = '\0';
 	cvtUrlLen = (t-m_cvtUrl);
-	//log( LOG_DEBUG, "query:  m_cvtUrl:'%s' (%"INT32") AWL", 
+	//log( LOG_DEBUG, "query:  m_cvtUrl:'%s' (%" INT32 ") AWL", 
 	//     m_cvtUrl, cvtUrlLen );
 
 	// find number of query terms in url
@@ -972,8 +972,8 @@ rscore_t PostQueryRerank::rerankQueryTermsOrGigabitsInUrl( rscore_t score,
 		}
 	} 
 
-	//log( LOG_DEBUG, "query:  qts:%"INT32", gigabits:%"INT32"; "
-	//     "maxQTInUrl:%"INT32", maxGbInUrl:%"INT32" AWL",
+	//log( LOG_DEBUG, "query:  qts:%" INT32 ", gigabits:%" INT32 "; "
+	//     "maxQTInUrl:%" INT32 ", maxGbInUrl:%" INT32 " AWL",
 	//     numQTInUrl, numGigabitsInUrl,
 	//     maxQTInUrl, maxGigabitsInUrl );
 	return rerankLowerDemotesMore( score, 
@@ -991,8 +991,8 @@ rscore_t PostQueryRerank::rerankQueryTermsOrGigabitsInUrl( rscore_t score,
 rscore_t PostQueryRerank::rerankQuality ( rscore_t score, 
 				      unsigned char quality ) {
 	//log( LOG_DEBUG, "query:in PQR::rerankQuality("
-	//     "score:%"INT32", quality:%d)"
-	//     "[P_factor:%3.3f; P_max:%"INT32"] AWL", 
+	//     "score:%" INT32 ", quality:%d)"
+	//     "[P_factor:%3.3f; P_max:%" INT32 "] AWL", 
 	//     score, (int)quality, 
 	//     m_si->m_cr->m_pqr_demFactQual,
 	//     m_si->m_cr->m_pqr_maxValQual );
@@ -1013,8 +1013,8 @@ rscore_t PostQueryRerank::rerankPathsInUrl ( rscore_t score,
 					 char *url,
 					 int32_t urlLen ) {
 	//log( LOG_DEBUG, "query:in PQR::rerankPathsInUrl("
-	//     "score:%"INT32", url:%s)"
-	//     "[P_factor:%3.3f; P_max:%"INT32"] AWL", 
+	//     "score:%" INT32 ", url:%s)"
+	//     "[P_factor:%3.3f; P_max:%" INT32 "] AWL", 
 	//     score, url, 
 	//     m_si->m_cr->m_pqr_demFactPaths,
 	//     m_si->m_cr->m_pqr_maxValPaths );
@@ -1047,7 +1047,7 @@ rscore_t PostQueryRerank::rerankNoCatId ( rscore_t score,
 				      int32_t numCatIds,
 				      int32_t numIndCatIds ) {
 	//log( LOG_DEBUG, "AWL:in PQR::rerankNoCatId("
-	//     "score:%"INT32", numCatIds:%"INT32", numIndCatIds:%"INT32")"
+	//     "score:%" INT32 ", numCatIds:%" INT32 ", numIndCatIds:%" INT32 ")"
 	//     "[P_factor:%3.3f]",
 	//     score, numCatIds, numIndCatIds,
 	//     m_si->m_cr->m_pqr_demFactNoCatId );
@@ -1066,8 +1066,8 @@ rscore_t PostQueryRerank::rerankNoCatId ( rscore_t score,
 rscore_t PostQueryRerank::rerankSmallestCatIdHasSuperTopics ( rscore_t score,
 							  Msg20 *msg20 ) {
 	//log( LOG_DEBUG, "query:in PQR::rerankSmallestCatIdHasSuperTopics("
-	//    "score:%"INT32")"
-	//    "[P_factor:%3.3f; P_max:%"INT32"] AWL",
+	//    "score:%" INT32 ")"
+	//    "[P_factor:%3.3f; P_max:%" INT32 "] AWL",
 	//    score,
 	//    m_si->m_cr->m_pqr_demFactCatidHasSupers,
 	//    m_si->m_cr->m_pqr_maxValCatidHasSupers );
@@ -1093,7 +1093,7 @@ rscore_t PostQueryRerank::rerankSmallestCatIdHasSuperTopics ( rscore_t score,
 			minCatid = msg20->m_r->ptr_catIds[i];
 		}
 	}
-	//log( LOG_DEBUG, "query:  minCatid:%"INT32" AWL", minCatid );
+	//log( LOG_DEBUG, "query:  minCatid:%" INT32 " AWL", minCatid );
 
 	// count super topics by walking up catids
 	int32_t numSupers = -1;
@@ -1121,8 +1121,8 @@ rscore_t PostQueryRerank::rerankSmallestCatIdHasSuperTopics ( rscore_t score,
 rscore_t PostQueryRerank::rerankPageSize ( rscore_t score,
 				       int32_t docLen ) {
 	//log( LOG_DEBUG, "query:in PQR::rerankPageSize("
-	//     "score:%"INT32", docLen:%"INT32")"
-	//     "[P_factor:%3.3f; P_max:%"INT32"] AWL", 
+	//     "score:%" INT32 ", docLen:%" INT32 ")"
+	//     "[P_factor:%3.3f; P_max:%" INT32 "] AWL", 
 	//     score, docLen, 
 	//     m_si->m_cr->m_pqr_demFactPageSize,
 	//     m_si->m_cr->m_pqr_maxValPageSize );
@@ -1148,7 +1148,7 @@ const int32_t MIN_PLACEPOP = 50000;
 bool PostQueryRerank::getLocation( char *locBuf, int32_t locBufLen,
 				   int32_t *locLen, int32_t *locPop,
 				   char *buf, int32_t bufLen ) {
-	//log( LOG_DEBUG, "query:in getLocation(buf:%c%c%c%c, len:%"INT32", "
+	//log( LOG_DEBUG, "query:in getLocation(buf:%c%c%c%c, len:%" INT32 ", "
 	//     "uc:%d) AWL",
 	//     buf[0], buf[2], buf[4], buf[6], bufLen,
 
@@ -1176,7 +1176,7 @@ bool PostQueryRerank::getLocation( char *locBuf, int32_t locBufLen,
 		int32_t  phraseLen = ww.getPhraseLen();
 		int32_t  numPhraseWords = ww.getNumWords();
 		if ( numPhraseWords == 0 ) continue;
-		//log( LOG_DEBUG, "query:  p:%s (%"INT32") AWL",
+		//log( LOG_DEBUG, "query:  p:%s (%" INT32 ") AWL",
 		//     phrasePtr, phraseLen );
 
 		// see if buf phrase is a place
@@ -1184,7 +1184,7 @@ bool PostQueryRerank::getLocation( char *locBuf, int32_t locBufLen,
 		int32_t placePop = getPlacePop( phrasePtr, phraseLen, 
 					     encodeType );
 		if ( placePop > MIN_PLACEPOP ) {
-			//log( LOG_DEBUG, "query:  p:%s (%"INT32") is "
+			//log( LOG_DEBUG, "query:  p:%s (%" INT32 ") is "
 			//     "loc spec AWL",
 			//     phrasePtr, phraseLen );
 			*locLen = phraseLen;
@@ -1193,7 +1193,7 @@ bool PostQueryRerank::getLocation( char *locBuf, int32_t locBufLen,
 		}
 
 		// check to see if buf phrase's abbreviation is loc spec
-		//log( LOG_DEBUG, "query:  utf8 p:%s (%"INT32") AWL",
+		//log( LOG_DEBUG, "query:  utf8 p:%s (%" INT32 ") AWL",
 		//     phrasePtr, phraseLen );
 		SynonymInfo synInfo;
 		if ( ! g_thesaurus.getSynonymInfo( phrasePtr, 
@@ -1208,7 +1208,7 @@ bool PostQueryRerank::getLocation( char *locBuf, int32_t locBufLen,
 						csISOLatin1 );
 			
 			if ( placePop > MIN_PLACEPOP ) {
-				//log( LOG_DEBUG, "query:   s:%s (%"INT32") is "
+				//log( LOG_DEBUG, "query:   s:%s (%" INT32 ") is "
 				//     "loc spec AWL",
 				//     syn, synLen );
 				*locLen = phraseLen;
@@ -1232,7 +1232,7 @@ bool PostQueryRerank::preRerankNonLocationSpecificQueries ( ) {
 	     m_si->m_pqr_demFactLocDmoz <= 0 ) 
 		return true;
 
-	//log( LOG_DEBUG, "query: q:%s (%"INT32") AWL",
+	//log( LOG_DEBUG, "query: q:%s (%" INT32 ") AWL",
 	//     m_si->m_q->m_orig, 
 	//     m_si->m_q->m_origLen );
 
@@ -1248,8 +1248,8 @@ bool PostQueryRerank::preRerankNonLocationSpecificQueries ( ) {
 	Query *q = m_si->m_q;
 	for ( int32_t i = 0; i < numQWords; i++ ) {
 		QueryWord *qw = &q->m_qwords[i];
-		//log( LOG_DEBUG, "query:  qw:%c%c%c%c (%"INT32") "
-		//     "inQuotes:%d; inQuoted:%d; quoteStrt:%"INT32" "
+		//log( LOG_DEBUG, "query:  qw:%c%c%c%c (%" INT32 ") "
+		//     "inQuotes:%d; inQuoted:%d; quoteStrt:%" INT32 " "
 		//     "op:%d; opcode:%d; isPunct:%d level:%d; "
 		//     "wsign:%d; psign:%d id:%lld "
 		//     "ignore:%d AWL",
@@ -1312,7 +1312,7 @@ bool PostQueryRerank::preRerankNonLocationSpecificQueries ( ) {
 	//     m_querysLoc );
 
 	// check the gigabits for locations
-	//log( LOG_DEBUG, "query: places lookup gigabits numTopics:%"INT32" AWL",
+	//log( LOG_DEBUG, "query: places lookup gigabits numTopics:%" INT32 " AWL",
 	//     m_msg40->getNumTopics() );
 	m_ignoreLocs.set( 28 );
 	// if searching the us, these should not be demoted, so
@@ -1382,7 +1382,7 @@ bool PostQueryRerank::preRerankNonLocationSpecificQueries ( ) {
 				uint64_t h = hash64d( phrasePtr, phraseLen);
 				m_ignoreLocs.addKey( h, true );
 				//log( LOG_DEBUG, "query:  pre gigabit has "
-				//     "location '%s' (%"INT32") [h:%lld] AWL",
+				//     "location '%s' (%" INT32 ") [h:%lld] AWL",
 				//     phrasePtr, phraseLen, h );
 				continue;
 			}
@@ -1458,10 +1458,10 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 	if (m_querysLoc != 0) return score;
 
 	//log( LOG_DEBUG, "query:in PQR::rerankNonLocSpecQueries("
-	//     "score:%"INT32")"
+	//     "score:%" INT32 ")"
 	//     "[P_factorTitle:%3.3f; P_factorSummary:%3.3f; P_factorDmoz:%3.3f; "
-	//     " P_max:%"INT32"; "
-	//     "m_querysLoc:%lld; #m_ignoreLocs:%"INT32"; #summaryLocs:%"INT32"] AWL",
+	//     " P_max:%" INT32 "; "
+	//     "m_querysLoc:%lld; #m_ignoreLocs:%" INT32 "; #summaryLocs:%" INT32 "] AWL",
 	//     score,
 	//     titleFactor, summFactor, dmozFactor,
 	//     maxVal, 
@@ -1474,7 +1474,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 	int32_t   *catids       = msg20->m_r->ptr_catIds;
 	int32_t    catLocMaxPop = 0;
 	uint8_t searchingUS  = (m_si->m_country == 226);
-	//log(LOG_DEBUG, "pqr: checking %"INT32" categories for locs AWL",
+	//log(LOG_DEBUG, "pqr: checking %" INT32 " categories for locs AWL",
 	//    numCatids);
 	for ( unsigned char i = 0; dmozFactor > 0 && i < numCatids; i++ ) {
 		SafeBuf sb;
@@ -1488,7 +1488,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 		if (len > MAX_PQRCAT) len = MAX_PQRCAT;
 		strncpy(cat, sb.getBufStart(), len);
 		cat[len] = '\0';
-		//log(LOG_DEBUG, "pqr:  catid:%"INT32" category:'%s' AWL",
+		//log(LOG_DEBUG, "pqr:  catid:%" INT32 " category:'%s' AWL",
 		//    catid, cat);
 
 		// see if we have a regional category
@@ -1498,7 +1498,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 		while (*p && q-region < 64 && *p != '/') *q++ = *p++;
 		*q = '\0';
 		bool catIsRegional = (0 == strncmp(region, "Regional", 8));
-		//log(LOG_DEBUG, "pqr:  cat has region:%"INT32" AWL",
+		//log(LOG_DEBUG, "pqr:  cat has region:%" INT32 " AWL",
 		//    (int32_t)catIsRegional);
 		// we only care about regional categories
 		if (!catIsRegional) continue;
@@ -1520,7 +1520,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 					    0 == strcasecmp(region, "united states") ||
 					    0 == strcasecmp(region, "usa") ||
 					    0 == strcasecmp(region, "america")));
-			//log(LOG_DEBUG, "pqr: region:%s (isUS:%"INT32") AWL",
+			//log(LOG_DEBUG, "pqr: region:%s (isUS:%" INT32 ") AWL",
 			//    region, (int32_t)regionIsUS);
 
 			// if region is us, skip category demotion
@@ -1541,7 +1541,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 		if (h == m_querysLoc) {
 			//log(LOG_DEBUG, "pqr: cat "
 			//    "has query's loc "
-			//    "[pop:%"INT32"; h:%lld] AWL",
+			//    "[pop:%" INT32 "; h:%lld] AWL",
 			//    placePop, h);
 			return score;
 		}
@@ -1549,7 +1549,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 		// is it in the gigabits?
 		if (m_ignoreLocs.getSlot( h ) != -1) {
 			//log(LOG_DEBUG, "pqr: cat has "
-			//    "gigabit's loc [pop:%"INT32"; h:%"UINT64"] AWL",
+			//    "gigabit's loc [pop:%" INT32 "; h:%" UINT64 "] AWL",
 			//    placePop, h);
 			return score;
 		}
@@ -1557,13 +1557,13 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 		// use only the max pop for all places in category
 		if (placePop > catLocMaxPop) {
 			//log(LOG_DEBUG, "pqr: cat has a non-query, "
-			//    "non-gigabit loc:'%s' %"UINT64" pop:%"INT32" AWL",
+			//    "non-gigabit loc:'%s' %" UINT64 " pop:%" INT32 " AWL",
 			//    region, h, placePop);
 			catLocMaxPop = placePop;
 			continue;
 		}
 	}
-	//log(LOG_DEBUG, "pqr: categories' max population:%"INT32" AWL", 
+	//log(LOG_DEBUG, "pqr: categories' max population:%" INT32 " AWL", 
 	//    catLocMaxPop);
 	if (dmozFactor > 0 && catLocMaxPop > MIN_PLACEPOP)
 		score = rerankHigherDemotesMore(score, 
@@ -1591,7 +1591,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 		if ( h == m_querysLoc ) {
 			//log( LOG_DEBUG, "pqr: summary "
 			//     "has query's loc "
-			//     "[pop:%"INT32"; h:%lld] AWL",
+			//     "[pop:%" INT32 "; h:%lld] AWL",
 			//     placePop, h );
 			return score;
 		}
@@ -1599,7 +1599,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 		// is it in the gigabits?
 		if (m_ignoreLocs.getSlot( h ) != -1 ) {
 			//log( LOG_DEBUG, "pqr: summary has "
-			//     "gigabit's loc [pop:%"INT32"; h:%"UINT64"] AWL",
+			//     "gigabit's loc [pop:%" INT32 "; h:%" UINT64 "] AWL",
 			//     placePop, h );
 			return score;
 		}
@@ -1607,13 +1607,13 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 		// use only the max pop for all places in title
 		if ( placePop > summaryLocMaxPop ) {
 			//log( LOG_DEBUG, "pqr: summary has a non-query, "
-			//     "non-gigabit loc:%"UINT64" pop:%"INT32" AWL",
+			//     "non-gigabit loc:%" UINT64 " pop:%" INT32 " AWL",
 			//     h, placePop );
 			summaryLocMaxPop = placePop;
 			continue;
 		}
 	}
-	//log( LOG_DEBUG, "pqr: summary's max population:%"INT32" AWL", 
+	//log( LOG_DEBUG, "pqr: summary's max population:%" INT32 " AWL", 
 	//     summaryLocMaxPop );
 	if (summFactor > 0 && summaryLocMaxPop > MIN_PLACEPOP)
 		score = rerankHigherDemotesMore(score, 
@@ -1670,7 +1670,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 			// is it the query's location?
 			if ( h == m_querysLoc ) {
 				//log( LOG_DEBUG, "query:  title has "
-				//     "query's loc [pop:%"INT32"; h:%"UINT64"] AWL",
+				//     "query's loc [pop:%" INT32 "; h:%" UINT64 "] AWL",
 				//     placePop, h );
 				return score;
 			}
@@ -1678,7 +1678,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 			// is it in the gigabits?
 			if ( m_ignoreLocs.getSlot( h ) != -1 ) {
 				//log( LOG_DEBUG, "pqr:  title has "
-				//     "gigabit's loc [pop:%"INT32"; h:%"UINT64"] AWL",
+				//     "gigabit's loc [pop:%" INT32 "; h:%" UINT64 "] AWL",
 				//     placePop, h );
 				return score;
 			}
@@ -1686,7 +1686,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 		// use only the max pop for all places in title
 		if ( placePop > titleLocMaxPop ) {
 			//log( LOG_DEBUG, "pqr:  title has a non-query, "
-			//     "non-gigabit loc:'%s' (%"INT32") pop:%"INT32" AWL",
+			//     "non-gigabit loc:'%s' (%" INT32 ") pop:%" INT32 " AWL",
 			//     phrasePtr, phraseLen, placePop );
 			titleLocMaxPop = placePop;
 			continue;
@@ -1694,8 +1694,8 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 		
 		// If we haven't found a place name yet, check for 
 		// abbreviations of a place name
-		//log( LOG_DEBUG, "pqr:  phrase:'%s' (%"INT32") words:%"INT32" "
-		//     "pop:%"INT32" AWL", 
+		//log( LOG_DEBUG, "pqr:  phrase:'%s' (%" INT32 ") words:%" INT32 " "
+		//     "pop:%" INT32 " AWL", 
 		//     phrasePtr, phraseLen, numPhraseWords, 
 		//     placePop );
 		SynonymInfo synInfo;
@@ -1720,7 +1720,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 				if ( h == m_querysLoc ) {
 					//log( LOG_DEBUG, "pqr:  title "
 					//     "has query's loc syn "
-					//     "[pop:%"INT32"; h:%lld] AWL",
+					//     "[pop:%" INT32 "; h:%lld] AWL",
 					//     placePop, h );
 					return score;
 				}
@@ -1729,7 +1729,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 				if ( m_ignoreLocs.getSlot( h ) != -1 ) {
 					//log(LOG_DEBUG, "pqr:  syn title "
 					//    " has gigabits's loc '%s' "
-					//    "[pop:%"INT32"; h:%lld] AWL",
+					//    "[pop:%" INT32 "; h:%lld] AWL",
 					//    syn,
 					//    placePop, h );
 					return score;
@@ -1745,7 +1745,7 @@ rscore_t PostQueryRerank::rerankNonLocationSpecificQueries ( rscore_t score,
 			}
 		}
 	}
-	//log( LOG_DEBUG, "pqr: title's max population:%"INT32" AWL", 
+	//log( LOG_DEBUG, "pqr: title's max population:%" INT32 " AWL", 
 	//     titleLocMaxPop );
 
 	return rerankHigherDemotesMore( score, titleLocMaxPop, maxVal, 
@@ -1765,7 +1765,7 @@ rscore_t PostQueryRerank::rerankContentType ( rscore_t score,
 	float xmlFactor  = m_si->m_cr->m_pqr_demFactXml;
 
  	//log( LOG_DEBUG, "query:in PQR::rerankContentType("
-	 //    "score:%"INT32", content-type:%"INT32")"
+	 //    "score:%" INT32 ", content-type:%" INT32 ")"
 	 //    "[P_factorHtml:%3.3f; P_factorXml:%3.3f] AWL",
 	 //    score, (int32_t)contentType, 
 	 //    htmlFactor, xmlFactor );
@@ -1795,8 +1795,8 @@ bool PostQueryRerank::preRerankOtherPagesFromSameHost( Url *pageUrl ) {
 	if ( pageUrl->getUrlLen() == 0 ) return true;
 
 	//log( LOG_DEBUG, "query:in PQR::preRerankOtherPagesFromSameHost() AWL");
-	//log( LOG_DEBUG, "query: u:'%s' host:'%s' (%"INT32"); "
-	//     "domain:'%s' (%"INT32") AWL",
+	//log( LOG_DEBUG, "query: u:'%s' host:'%s' (%" INT32 "); "
+	//     "domain:'%s' (%" INT32 ") AWL",
 	//     pageUrl->m_url,
 	//     pageUrl->getHost(), pageUrl->getHostLen(),
 	//     pageUrl->getDomain(), pageUrl->getDomainLen() );
@@ -1827,8 +1827,8 @@ bool PostQueryRerank::preRerankOtherPagesFromSameHost( Url *pageUrl ) {
 rscore_t PostQueryRerank::rerankOtherPagesFromSameHost ( rscore_t score,
 							  Url *pageUrl ) {
 	//log( LOG_DEBUG, "query:in PQR::rerankOtherPagesFromSameHost("
-	//     "score:%"INT32", url:'%s', urlLen:%"INT32")"
-	//     "[P_factor:%3.3f; P_max:%"INT32"] AWL",
+	//     "score:%" INT32 ", url:'%s', urlLen:%" INT32 ")"
+	//     "[P_factor:%3.3f; P_max:%" INT32 "] AWL",
 	//     score, pageUrl->getUrl(), pageUrl->getUrlLen(),
 	//     m_si->m_cr->m_pqr_demFactOthFromHost,
 	//     m_si->m_cr->m_pqr_maxValOthFromHost );
@@ -1848,7 +1848,7 @@ rscore_t PostQueryRerank::rerankOtherPagesFromSameHost ( rscore_t score,
 	int32_t slot = m_hostCntTable.getSlot( key );
 	int32_t numFromSameHost = m_hostCntTable.getValueFromSlot( slot );
 	
-	//log( LOG_DEBUG, "query:  numFromSameHost:%"INT32" AWL", numFromSameHost );
+	//log( LOG_DEBUG, "query:  numFromSameHost:%" INT32 " AWL", numFromSameHost );
 
 	return rerankLowerDemotesMore( score, 
 				       numFromSameHost, maxVal, 
@@ -1877,8 +1877,8 @@ bool PostQueryRerank::preRerankCommonTopicsInDmoz( Msg20Reply *mr ) {
 		int32_t key = mr->ptr_catIds[i];//msg20->getDmozCatids()[i];
 		if ( key == 0 ) key = 1;
 		int32_t slot = m_dmozTable.getSlot( key );
-		//log( LOG_DEBUG, "query:  qdmoz pre %"INT32"/%"INT32"; "
-		//     "catId:%"INT32"; slot:%"INT32" AWL", 
+		//log( LOG_DEBUG, "query:  qdmoz pre %" INT32 "/%" INT32 "; "
+		//     "catId:%" INT32 "; slot:%" INT32 " AWL", 
 		//     (int32_t)i+1, (int32_t)msg20->m_numCatids, 
 		//     key, slot );
 		if ( slot == -1 ) {
@@ -1897,8 +1897,8 @@ bool PostQueryRerank::preRerankCommonTopicsInDmoz( Msg20Reply *mr ) {
 			ComTopInDmozRec *rec =
 				m_dmozTable.getValuePointerFromSlot( slot );
 			rec->cnt++;
-			//log( LOG_DEBUG, "query:  qdmoz pre key:%"INT32" "
-			//     "occurrence %"INT32" AWL", 
+			//log( LOG_DEBUG, "query:  qdmoz pre key:%" INT32 " "
+			//     "occurrence %" INT32 " AWL", 
 			//     key, rec->cnt );
 		}
 	}
@@ -1913,13 +1913,13 @@ bool PostQueryRerank::preRerankCommonTopicsInDmoz( Msg20Reply *mr ) {
 rscore_t PostQueryRerank::rerankCommonTopicsInDmoz ( rscore_t score,
 						 Msg20 *msg20 ) {
 	//log( LOG_DEBUG, "query:in PQR::rerankCommonTopicsInDmoz("
-	//     "score:%"INT32")"
-	//     "[P_max:%"INT32" P_decFact:%3.3f] AWL",
+	//     "score:%" INT32 ")"
+	//     "[P_max:%" INT32 " P_decFact:%3.3f] AWL",
 	//     score,
 	//     m_si->m_cr->m_pqr_maxValComTopicInDmoz,
 	//     m_si->m_cr->m_pqr_decFactComTopicInDmoz );
 
-	//log( LOG_DEBUG, "query:  qdmoz cnt:%"INT32" AWL", 
+	//log( LOG_DEBUG, "query:  qdmoz cnt:%" INT32 " AWL", 
 	//     (int32_t)msg20->m_numCatids );
 
 	if ( m_si->m_cr->m_pqr_demFactComTopicInDmoz <= 0 )
@@ -1939,7 +1939,7 @@ rscore_t PostQueryRerank::rerankCommonTopicsInDmoz ( rscore_t score,
 		int32_t slot = m_dmozTable.getSlot( key );
 		ComTopInDmozRec *rec = 
 			m_dmozTable.getValuePointerFromSlot( slot ); 
-		//log( LOG_DEBUG, "query:  slot:%"INT32" key:%"INT32" cnt:%"INT32"; "
+		//log( LOG_DEBUG, "query:  slot:%" INT32 " key:%" INT32 " cnt:%" INT32 "; "
 		//     "demFact:%3.3f AWL",
 		//     slot, key, 
 		//     rec->cnt, rec->demFact );
@@ -1972,8 +1972,8 @@ rscore_t PostQueryRerank::rerankCommonTopicsInDmoz ( rscore_t score,
 		ComTopInDmozRec *rec = 
 			m_dmozTable.getValuePointerFromSlot( slot ); 
 		rec->demFact *= (1.0 - decFactor);
-		//log( LOG_DEBUG, "query:  decay slot:%"INT32" key:%"INT32" "
-		//     "cnt:%"INT32"; decFact:%3.3f; new demFact:%3.3f AWL",
+		//log( LOG_DEBUG, "query:  decay slot:%" INT32 " key:%" INT32 " "
+		//     "cnt:%" INT32 "; decFact:%3.3f; new demFact:%3.3f AWL",
 		//     slot, key, 
 		//     rec->cnt, decFactor, rec->demFact );
 	}
@@ -1990,8 +1990,8 @@ rscore_t PostQueryRerank::rerankCommonTopicsInDmoz ( rscore_t score,
 rscore_t PostQueryRerank::rerankDmozCategoryNamesDontHaveQT ( rscore_t score,
 							  Msg20 *msg20 ) {
 	//log( LOG_DEBUG, "query:in PQR::rerankDmozCategoryNamesDontHaveQT("
-	//     "score:%"INT32")"
-	//     "[P_factor:%3.3f; P_max:%"INT32"] AWL",
+	//     "score:%" INT32 ")"
+	//     "[P_factor:%3.3f; P_max:%" INT32 "] AWL",
 	//     score,
 	//     m_si->m_cr->m_pqr_demFactDmozCatNmNoQT,
 	//     m_si->m_cr->m_pqr_maxValDmozCatNmNoQT );
@@ -2010,7 +2010,7 @@ rscore_t PostQueryRerank::rerankDmozCategoryNamesDontHaveQT ( rscore_t score,
 		char *currTitle = pd;
 		int32_t currTitleLen = gbstrlen(pd);
 		if ( currTitleLen == 0 ) continue;
-		//log( LOG_DEBUG, "query: currTitle:%s (%"INT32") AWL", 
+		//log( LOG_DEBUG, "query: currTitle:%s (%" INT32 ") AWL", 
 		//     currTitle, currTitleLen );
 
 		Words w;
@@ -2056,7 +2056,7 @@ rscore_t PostQueryRerank::rerankDmozCategoryNamesDontHaveQT ( rscore_t score,
 					matchedIds.addKey( rawTermId, 0 );
 					numQTsInDmoz++;
 					//log( LOG_DEBUG, "query: qt-dmozw "
-					//     "match '%s' (%"INT32") AWL",
+					//     "match '%s' (%" INT32 ") AWL",
 					//     qt->m_term, 
 					//     qt->m_termLen );
 					continue;
@@ -2066,7 +2066,7 @@ rscore_t PostQueryRerank::rerankDmozCategoryNamesDontHaveQT ( rscore_t score,
 					matchedIds.addKey( rawTermId, 0 );
 					numQTsInDmoz++;
 					//log( LOG_DEBUG, "query: qt-dmozp "
-					//     "match '%s' (%"INT32") AWL",
+					//     "match '%s' (%" INT32 ") AWL",
 					//     qt->m_term, 
 					//     qt->m_termLen );
 					continue;
@@ -2118,7 +2118,7 @@ rscore_t PostQueryRerank::rerankDmozCategoryNamesDontHaveQT ( rscore_t score,
 next:
 		pd += currTitleLen;
 	}
-	//log( LOG_DEBUG, "query: qts or syns in dmoz cat name:%"INT32" AWL", 
+	//log( LOG_DEBUG, "query: qts or syns in dmoz cat name:%" INT32 " AWL", 
 	//     numQTsInDmoz );
 
 	return rerankLowerDemotesMore( score, 
@@ -2138,8 +2138,8 @@ next:
 rscore_t PostQueryRerank::rerankDmozCategoryNamesDontHaveGigabits ( rscore_t score,
 								Msg20 *msg20 ) {
 	//log( LOG_DEBUG, "query:in PQR::rerankDmozCategoryNamesDontHaveGigabits("
-	//     "score:%"INT32")"
-	//     "[P_factor:%3.3f; P_max:%"INT32"] AWL",
+	//     "score:%" INT32 ")"
+	//     "[P_factor:%3.3f; P_max:%" INT32 "] AWL",
 	//     score,
 	//     m_si->m_cr->m_pqr_demFactDmozCatNmNoGigabits,
 	//     m_si->m_cr->m_pqr_maxValDmozCatNmNoGigabits );
@@ -2152,7 +2152,7 @@ rscore_t PostQueryRerank::rerankDmozCategoryNamesDontHaveGigabits ( rscore_t sco
 	// find number of gigabits in dmoz category name
 	int32_t numGigabitsInDmoz = 0;
 	// go through gigabits each possible phrase in gigabits
-	//log( LOG_DEBUG, "query: numGigabits:%"INT32" AWL", 
+	//log( LOG_DEBUG, "query: numGigabits:%" INT32 " AWL", 
 	//     m_msg40->getNumTopics() );
 	int32_t numTopics = m_msg40->getNumTopics();
 	HashTableT<int64_t, int32_t> matchedIds;
@@ -2186,7 +2186,7 @@ rscore_t PostQueryRerank::rerankDmozCategoryNamesDontHaveGigabits ( rscore_t sco
 			int32_t  phraseLen = ww.getPhraseLen();
 			int32_t  numPhraseWords = ww.getNumWords();
 			if ( numPhraseWords == 0 ) continue;
-			//log( LOG_DEBUG, "query: gb phrase:%s (%"INT32") AWL",
+			//log( LOG_DEBUG, "query: gb phrase:%s (%" INT32 ") AWL",
 			//     phrasePtr, phraseLen );
 			// see if we already matched this phrase
 			uint64_t h = hash64Lower_utf8( phrasePtr, phraseLen );
@@ -2206,7 +2206,7 @@ rscore_t PostQueryRerank::rerankDmozCategoryNamesDontHaveGigabits ( rscore_t sco
 				int32_t currTitleLen = gbstrlen(p);
 				if ( currTitleLen == 0 ) continue;
 								
-				//log( LOG_DEBUG, "query:   dmoz:%s (%"INT32") AWL",
+				//log( LOG_DEBUG, "query:   dmoz:%s (%" INT32 ") AWL",
 				//     currTitle, currTitleLen );
 
 				// check if gigabit is in dmoz category name 
@@ -2220,7 +2220,7 @@ rscore_t PostQueryRerank::rerankDmozCategoryNamesDontHaveGigabits ( rscore_t sco
 			}
 		}
 	}
-	//log( LOG_DEBUG, "query:  numGigabitsInDmoz:%"INT32" AWL", 
+	//log( LOG_DEBUG, "query:  numGigabitsInDmoz:%" INT32 " AWL", 
 	//     numGigabitsInDmoz );
 
 	return rerankLowerDemotesMore( score, 
@@ -2245,8 +2245,8 @@ rscore_t PostQueryRerank::rerankDatedbDate( rscore_t score,
 	maxVal = m_now - maxVal*1000;
 
 	//log( LOG_DEBUG, "query:in PQR::rerankDatedbDate("
-	//     "score:%"INT32", datedbDate:%"INT32")"
-	//     "[P_factor:%3.3f; maxVal:%"INT32"] AWL",
+	//     "score:%" INT32 ", datedbDate:%" INT32 ")"
+	//     "[P_factor:%3.3f; maxVal:%" INT32 "] AWL",
 	//     score, datedbDate,
 	//     factor, maxVal );
 
@@ -2358,11 +2358,11 @@ bool PostQueryRerank::attemptToCluster ( ) {
 				needResort = true;
 				if(m_si->m_debug||g_conf.m_logDebugPQR )
 					logf(LOG_DEBUG, "pqr: re-ranking result "
-					     "%"INT32" (%s) from score %.02f to "
+					     "%" INT32 " (%s) from score %.02f to "
 					     "score %.02f "
 					     "in order to cluster it with "
 					     "result "
-					     "%"INT32" (%s)",
+					     "%" INT32 " (%s)",
 					     i, 
 					     m_m20List[i].m_m20->m_r->ptr_ubuf,
 					     (float)m_m20List[i].m_score, 
@@ -2489,7 +2489,7 @@ static void DoDump(char *loc, Msg20 **m20, int32_t num,
 		url = m20[x]->getUrl();
 		if(!url) url = "None";
 		//log( LOG_DEBUG, "query: DoDump(%d): "
-		//     "tier:%d score:%"INT32" [url:'%s'] msg20:%p\n AWL DEBUG",
+		//     "tier:%d score:%" INT32 " [url:'%s'] msg20:%p\n AWL DEBUG",
 		//     x, tiers[x], scores[x], url, m20[x] );
 	}
 }

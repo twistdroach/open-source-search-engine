@@ -65,7 +65,7 @@ void Log::reset ( ) {
 bool renameCurrentLogFile ( ) {
 	File f;
 	char tmp[16];
-	sprintf(tmp,"log%03"INT32"",g_hostdb.m_hostId);
+	sprintf(tmp,"log%03" INT32 "",g_hostdb.m_hostId);
 	f.set ( g_hostdb.m_dir , tmp );
 	// make new filename like log000-2013_11_04-18:19:32
 	time_t now = getTimeLocal();
@@ -73,7 +73,7 @@ bool renameCurrentLogFile ( ) {
 	char tmp2[64];
 	strftime(tmp2,64,"%Y_%m_%d-%T",tm1);
 	SafeBuf newName;
-	if ( ! newName.safePrintf ( "%slog%03"INT32"-%s",
+	if ( ! newName.safePrintf ( "%slog%03" INT32 "-%s",
 				    g_hostdb.m_dir,
 				    g_hostdb.m_hostId,
 				    tmp2 ) ) {
@@ -278,13 +278,13 @@ bool Log::logR ( int64_t now , int32_t type , const char *msg , bool asterisk ,
 	/*
 	// print timestamp, hostid, type
 	if ( g_hostdb.m_numHosts <= 999 ) 
-		sprintf ( p , "%"UINT64" %03"INT32" %s ",
+		sprintf ( p , "%" UINT64 " %03" INT32 " %s ",
 			  now , g_hostdb.m_hostId , getTypeString(type) );
 	else if ( g_hostdb.m_numHosts <= 9999 ) 
-		sprintf ( p , "%"UINT64" %04"INT32" %s ",
+		sprintf ( p , "%" UINT64 " %04" INT32 " %s ",
 			  now , g_hostdb.m_hostId , getTypeString(type) );
 	else if ( g_hostdb.m_numHosts <= 99999 ) 
-		sprintf ( p , "%"UINT64" %05"INT32" %s ",
+		sprintf ( p , "%" UINT64 " %05" INT32 " %s ",
 			  now , g_hostdb.m_hostId , getTypeString(type) );
 	*/
 
@@ -293,13 +293,13 @@ bool Log::logR ( int64_t now , int32_t type , const char *msg , bool asterisk ,
 
 	if ( m_logTimestamps ) {
 		if ( g_hostdb.m_numHosts <= 999 ) 
-			sprintf ( p , "%"UINT64" %03"INT32" ",
+			sprintf ( p , "%" UINT64 " %03" INT32 " ",
 				  now , g_hostdb.m_hostId );
 		else if ( g_hostdb.m_numHosts <= 9999 ) 
-			sprintf ( p , "%"UINT64" %04"INT32" ",
+			sprintf ( p , "%" UINT64 " %04" INT32 " ",
 				  now , g_hostdb.m_hostId );
 		else if ( g_hostdb.m_numHosts <= 99999 ) 
-			sprintf ( p , "%"UINT64" %05"INT32" ",
+			sprintf ( p , "%" UINT64 " %05" INT32 " ",
 				  now , g_hostdb.m_hostId );
 		p += gbstrlen ( p );
 	}
@@ -316,8 +316,8 @@ bool Log::logR ( int64_t now , int32_t type , const char *msg , bool asterisk ,
 	//while ( p < pend && *x && is_alnum_a(*x) ) { x++; cc--; }
 	// thread id if in "thread"
 	if ( pid != s_pid && s_pid != (pthread_t)-1 ) {
-		//sprintf ( p , "[%"INT32"] " , (int32_t)getpid() );
-		sprintf ( p , "[%"UINT64"] " , (uint64_t)pid );
+		//sprintf ( p , "[%" INT32 "] " , (int32_t)getpid() );
+		sprintf ( p , "[%" UINT64 "] " , (uint64_t)pid );
 		p += gbstrlen ( p );
 	}
 	// then message itself
@@ -476,7 +476,7 @@ bool Log::logLater ( int64_t now, int32_t type, const char *format, va_list ap )
 	const char *p = format;
 	// point to the variable args data
 	char *pap = (char *)ap;
-	// loop looking for %s, %"INT32", etc.
+	// loop looking for %s, %" INT32 ", etc.
  loop:
 	while ( *p && *p != '%' ) p++;
 	// bail if done

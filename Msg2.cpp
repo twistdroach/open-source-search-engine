@@ -173,11 +173,11 @@ bool Msg2::getLists ( ) {
 			ek = (key144_t *)m_qterms[m_i].m_endKey;
 			int64_t docId0 = g_posdb.getDocId(sk);
 			int64_t docId1 = g_posdb.getDocId(ek);
-			log("query: reading termlist #%"INT32" "//from "
-			    //"distributed cache on host #%"INT32". "
-			    "termId=%"INT64". sk=%s ek=%s "
-			    "mr=%"INT32" (docid0=%"INT64" to "
-			    "docid1=%"INT64").",
+			log("query: reading termlist #%" INT32 " "//from "
+			    //"distributed cache on host #%" INT32 ". "
+			    "termId=%" INT64 ". sk=%s ek=%s "
+			    "mr=%" INT32 " (docid0=%" INT64 " to "
+			    "docid1=%" INT64 ").",
 			    m_i,
 			    //hostId, 
 			    g_posdb.getTermId(sk),
@@ -196,7 +196,7 @@ bool Msg2::getLists ( ) {
 		// sanity check
 		// if ( ( minRecSize > ( 500 * 1024 * 1024 ) || 
 		//        minRecSize < 0) ){
-		// 	log( "minRecSize = %"INT32"", minRecSize );
+		// 	log( "minRecSize = %" INT32 "", minRecSize );
 		// 	char *xx=NULL; *xx=0;
 		// }
 
@@ -333,7 +333,7 @@ bool Msg2::getLists ( ) {
 		returnMsg5 ( msg5 );
 		// note it
 		//if ( m_isDebug )
-		//	logf(LOG_DEBUG,"query: got list #%"INT32" size=%"INT32"",
+		//	logf(LOG_DEBUG,"query: got list #%" INT32 " size=%" INT32 "",
 		//	     i,m_lists[i].getListSize() );
 		// count it
 		//m_totalRead += m_lists[i].getListSize();
@@ -512,9 +512,9 @@ void gotListWrapper0 ( void *state ) {
 	THIS->m_numReplies++;
 	if ( THIS->m_isDebug ) {
 		if ( ! list )
-			logf(LOG_DEBUG,"query: got0 NULL list #%"INT32"",  i);
+			logf(LOG_DEBUG,"query: got0 NULL list #%" INT32 "",  i);
 		else
-			logf(LOG_DEBUG,"query: got0 list #%"INT32" size=%"INT32"",
+			logf(LOG_DEBUG,"query: got0 list #%" INT32 " size=%" INT32 "",
 			     i,list->getListSize() );
 	}
 	// try to launch more
@@ -550,9 +550,9 @@ void gotListWrapper ( void *state , RdbList *rdblist, Msg5 *msg5 ) {
 	// note it
 	if ( THIS->m_isDebug ) {
 		if ( ! list )
-			logf(LOG_DEBUG,"query: got NULL list #%"INT32"",  i);
+			logf(LOG_DEBUG,"query: got NULL list #%" INT32 "",  i);
 		else
-			logf(LOG_DEBUG,"query: got list #%"INT32" size=%"INT32"",
+			logf(LOG_DEBUG,"query: got list #%" INT32 " size=%" INT32 "",
 			     i,list->getListSize() );
 	}
 	// keep a count of bytes read from all lists
@@ -578,7 +578,7 @@ bool Msg2::gotList ( RdbList *list ) {
 	//if(m_isDebug) {
 	//	int32_t size = -1;
 	//	if ( list ) size = list->getListSize();
-	//	log("Msg2::got list size=%"INT32" listPtr=%"INT32"", size , (int32_t)list );
+	//	log("Msg2::got list size=%" INT32 " listPtr=%" INT32 "", size , (int32_t)list );
 	//}
 
 	// . return true on error
@@ -595,7 +595,7 @@ bool Msg2::gotList ( RdbList *list ) {
 	// note it
 	if ( m_isDebug ) {
 		for ( int32_t i = 0 ; i < m_numLists ; i++ ) {
-			log("msg2: read termlist #%"INT32" size=%"INT32"",
+			log("msg2: read termlist #%" INT32 " size=%" INT32 "",
 			    i,m_lists[i].m_listSize);
 		}
 	}
@@ -609,8 +609,8 @@ bool Msg2::gotList ( RdbList *list ) {
 		// because we only need like 10k of list to get a decent
 		// reading
 		if ( m_req->m_forSectionStats ) break;
-		log("msg2: read termlist #%"INT32" size=%"INT32" "
-		    "maxSize=%"INT32". losing docIds!",
+		log("msg2: read termlist #%" INT32 " size=%" INT32 " "
+		    "maxSize=%" INT32 ". losing docIds!",
 		    i,m_lists[i].m_listSize,m_minRecSizes[i]);
 	}
 

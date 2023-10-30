@@ -334,7 +334,7 @@ void Msg20::gotReply ( UdpSlot *slot ) {
 	if ( g_errno ) { 
 		m_errno = g_errno; 
 		if ( g_errno != EMISSINGQUERYTERMS )
-			log("query: msg20: got reply for docid %"INT64" : %s",
+			log("query: msg20: got reply for docid %" INT64 " : %s",
 			    m_requestDocId,mstrerror(g_errno));
 		return; 
 	}
@@ -434,7 +434,7 @@ void handleRequest20 ( UdpSlot *slot , int32_t netnice ) {
 	}
 	// if it's not stored locally that's an error
 	if ( req->m_docId >= 0 && ! g_titledb.isLocal ( req->m_docId ) ) {
-		log("query: Got msg20 request for non-local docId %"INT64"",
+		log("query: Got msg20 request for non-local docId %" INT64 "",
 		    req->m_docId);
 	        g_udpServer.sendErrorReply ( slot , ENOTLOCAL ); 
 		return; 
@@ -443,7 +443,7 @@ void handleRequest20 ( UdpSlot *slot , int32_t netnice ) {
 	// sanity
 	if ( req->m_docId == 0 && ! req->ptr_ubuf ) { //char *xx=NULL;*xx=0; }
 		log("query: Got msg20 request for docid of 0 and no url for "
-		    "collnum=%"INT32" query %s",(int32_t)req->m_collnum,req->ptr_qbuf);
+		    "collnum=%" INT32 " query %s",(int32_t)req->m_collnum,req->ptr_qbuf);
 	        g_udpServer.sendErrorReply ( slot , ENOTFOUND );
 		return; 
 	}
@@ -456,7 +456,7 @@ void handleRequest20 ( UdpSlot *slot , int32_t netnice ) {
 	try { xd = new (XmlDoc); }
 	catch ( ... ) { 
 		g_errno = ENOMEM;
-		log("query: msg20 new(%"INT32"): %s", (int32_t)sizeof(XmlDoc),
+		log("query: msg20 new(%" INT32 "): %s", (int32_t)sizeof(XmlDoc),
 		    mstrerror(g_errno));
 		g_udpServer.sendErrorReply ( slot, g_errno ); 
 		return; 
@@ -504,8 +504,8 @@ bool gotReplyWrapperxd ( void *state ) {
 	// only do for niceness 0 otherwise it gets interrupted by quickpoll
 	// and can take a int32_t time.
 	if ( (req->m_isDebug || took > 100) && req->m_niceness == 0 )
-		log("query: Took %"INT64" ms to compute summary for d=%"INT64" u=%s "
-		    "niceness=%"INT32" status=%s",
+		log("query: Took %" INT64 " ms to compute summary for d=%" INT64 " u=%s "
+		    "niceness=%" INT32 " status=%s",
 		    took,
 		    xd->m_docId,xd->m_firstUrl.m_url,
 		    xd->m_niceness ,
@@ -513,8 +513,8 @@ bool gotReplyWrapperxd ( void *state ) {
 	if ( (req->m_isDebug || took2 > 100) &&
 	     xd->m_cpuSummaryStartTime &&
 	     req->m_niceness == 0 )
-		log("query: Took %"INT64" ms of CPU to compute summary for d=%"INT64" "
-		    "u=%s niceness=%"INT32" q=%s",
+		log("query: Took %" INT64 " ms of CPU to compute summary for d=%" INT64 " "
+		    "u=%s niceness=%" INT32 " q=%s",
 		    took2 ,
 		    xd->m_docId,xd->m_firstUrl.m_url,
 		    xd->m_niceness ,
@@ -575,7 +575,7 @@ bool Msg20Reply::sendReply ( XmlDoc *xd ) {
 
 	if ( g_errno ) {
 		// extract titleRec ptr
-		log("query: Had error generating msg20 reply for d=%"INT64": "
+		log("query: Had error generating msg20 reply for d=%" INT64 ": "
 		    "%s",xd->m_docId, mstrerror(g_errno));
 		// don't forget to delete this list
 	haderror:

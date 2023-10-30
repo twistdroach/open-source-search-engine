@@ -56,14 +56,14 @@ static void clusterGetPages ( DiskPageCache *pc,
 							3600*24*265,
 							true );
 		//cacheList.checkList_r ( false, true );
-		//log ( LOG_INFO, "cache: got list [%"INT32", %"INT64"] [%"INT32"]",
+		//log ( LOG_INFO, "cache: got list [%" INT32 ", %" INT64 "] [%" INT32 "]",
 		//		vfd, sp, cacheList.m_listSize );
 		int32_t size = cacheList.m_listSize;
 		if ( size == 0 ) {
 			cacheMiss = true;
 			goto getPagesEnd;
 		}
-		//log ( LOG_INFO, "cache: got list [%"INT32", %"INT32"] [%"INT32"]",
+		//log ( LOG_INFO, "cache: got list [%" INT32 ", %" INT32 "] [%" INT32 "]",
 		//		vfd, sp, size );
 		if ( bufPtr + size >= bufEnd )
 			size = bufEnd - bufPtr;
@@ -158,8 +158,8 @@ static void clusterAddPages ( DiskPageCache *pc,
 		key_t key = dataList.getCurrentKey();
 		int64_t docId = g_clusterdb.getDocId ( key );
 		//if ( docId >= biasEnd ) {
-		//	log ( "clusterdb: DocId after bias end, key.n1=%"XINT32" key.n0=%"XINT64"", key.n1, key.n0 );
-		//	log ( "clusterdb: DocId after bias end, %"XINT64" >= %"XINT64"", docId, biasEnd );
+		//	log ( "clusterdb: DocId after bias end, key.n1=%" XINT32 " key.n0=%" XINT64 "", key.n1, key.n0 );
+		//	log ( "clusterdb: DocId after bias end, %" XINT64 " >= %" XINT64 "", docId, biasEnd );
 		//	return;
 		//}
 		// make the cache key using vfd and page number
@@ -186,9 +186,9 @@ static void clusterAddPages ( DiskPageCache *pc,
 							cacheKey,
 							&cacheList1 );
 		//else
-		//	log ( "clusterdb: DocId before bias start, %"INT64" >= %"INT64"", docId, biasStart );
+		//	log ( "clusterdb: DocId before bias start, %" INT64 " >= %" INT64 "", docId, biasStart );
 		//cacheList1.checkList_r ( false, true );
-		//log ( LOG_INFO, "cache: add list [%"INT32", %"INT64"] [%"INT32"]",
+		//log ( LOG_INFO, "cache: add list [%" INT32 ", %" INT64 "] [%" INT32 "]",
 		//		vfd, sp, cacheList1.m_listSize );
 		// advance
 		bufPtr += filled;
@@ -406,8 +406,8 @@ bool Clusterdb::verify ( char *coll ) {
 	if ( got != count ) {
 		// tally it up
 		g_rebalance.m_numForeignRecs += count - got;
-		log ("db: Out of first %"INT32" records in clusterdb, "
-		     "only %"INT32" belong to our group.",count,got);
+		log ("db: Out of first %" INT32 " records in clusterdb, "
+		     "only %" INT32 " belong to our group.",count,got);
 		// exit if NONE, we probably got the wrong data
 		if ( got == 0 ) log("db: Are you sure you have the "
 					   "right "
@@ -418,7 +418,7 @@ bool Clusterdb::verify ( char *coll ) {
 		return g_conf.m_bypassValidation;
 	}
 	log ( LOG_DEBUG, "db: Clusterdb passed verification successfully for "
-			"%"INT32" recs.", count );
+			"%" INT32 " recs.", count );
 	// DONE
 	g_threads.enableThreads();
 	return true;
@@ -453,7 +453,7 @@ void Clusterdb::getSampleVector ( char *vec ,
 	// log the time
 	int64_t took =gettimeofdayInMilliseconds()-startTime;
 	if ( took > 3 )
-		log(LOG_INFO,"query: Took %"INT64" ms to make indexlist.",took);
+		log(LOG_INFO,"query: Took %" INT64 " ms to make indexlist.",took);
 	// so get it
 	char *p = doc->getSampleVector ( );
 	// and store it. int16_t vectors are padded with 0's.

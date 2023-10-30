@@ -99,14 +99,14 @@ int32_t SpiderRequest::print ( SafeBuf *sbarg ) {
 	SafeBuf tmp;
 	if ( ! sb ) sb = &tmp;
 
-	//sb->safePrintf("k.n1=0x%"XINT64" ",m_key.n1);
-	//sb->safePrintf("k.n0=0x%"XINT64" ",m_key.n0);
+	//sb->safePrintf("k.n1=0x%" XINT64 " ",m_key.n1);
+	//sb->safePrintf("k.n0=0x%" XINT64 " ",m_key.n0);
 	sb->safePrintf("k=%s ",KEYSTR(this,
 				      getKeySizeFromRdbId(RDB_SPIDERDB)));
 
 	// indicate it's a request not a reply
 	sb->safePrintf("REQ ");
-	sb->safePrintf("uh48=%"UINT64" ",getUrlHash48());
+	sb->safePrintf("uh48=%" UINT64 " ",getUrlHash48());
 	// if negtaive bail early now
 	if ( (m_key.n0 & 0x01) == 0x00 ) {
 		sb->safePrintf("[DELETE]");
@@ -114,14 +114,14 @@ int32_t SpiderRequest::print ( SafeBuf *sbarg ) {
 		return sb->length();
 	}
 
-	sb->safePrintf("recsize=%"INT32" ",getRecSize());
-	sb->safePrintf("parentDocId=%"UINT64" ",getParentDocId());
+	sb->safePrintf("recsize=%" INT32 " ",getRecSize());
+	sb->safePrintf("parentDocId=%" UINT64 " ",getParentDocId());
 
 	sb->safePrintf("firstip=%s ",iptoa(m_firstIp) );
-	sb->safePrintf("hostHash32=0x%"XINT32" ",m_hostHash32 );
-	sb->safePrintf("domHash32=0x%"XINT32" ",m_domHash32 );
-	sb->safePrintf("siteHash32=0x%"XINT32" ",m_siteHash32 );
-	sb->safePrintf("siteNumInlinks=%"INT32" ",m_siteNumInlinks );
+	sb->safePrintf("hostHash32=0x%" XINT32 " ",m_hostHash32 );
+	sb->safePrintf("domHash32=0x%" XINT32 " ",m_domHash32 );
+	sb->safePrintf("siteHash32=0x%" XINT32 " ",m_siteHash32 );
+	sb->safePrintf("siteNumInlinks=%" INT32 " ",m_siteNumInlinks );
 
 	// print time format: 7/23/1971 10:45:32
 	struct tm *timeStruct ;
@@ -130,37 +130,37 @@ int32_t SpiderRequest::print ( SafeBuf *sbarg ) {
 	time_t ts = (time_t)m_addedTime;
 	timeStruct = gmtime ( &ts );
 	strftime ( time , 256 , "%b %e %T %Y UTC", timeStruct );
-	sb->safePrintf("addedTime=%s(%"UINT32") ",time,(uint32_t)m_addedTime );
+	sb->safePrintf("addedTime=%s(%" UINT32 ") ",time,(uint32_t)m_addedTime );
 
 	//sb->safePrintf("parentFirstIp=%s ",iptoa(m_parentFirstIp) );
 	sb->safePrintf("pageNumInlinks=%i ",(int)m_pageNumInlinks);
-	sb->safePrintf("parentHostHash32=0x%"XINT32" ",m_parentHostHash32 );
-	sb->safePrintf("parentDomHash32=0x%"XINT32" ",m_parentDomHash32 );
-	sb->safePrintf("parentSiteHash32=0x%"XINT32" ",m_parentSiteHash32 );
+	sb->safePrintf("parentHostHash32=0x%" XINT32 " ",m_parentHostHash32 );
+	sb->safePrintf("parentDomHash32=0x%" XINT32 " ",m_parentDomHash32 );
+	sb->safePrintf("parentSiteHash32=0x%" XINT32 " ",m_parentSiteHash32 );
 
-	sb->safePrintf("hopCount=%"INT32" ",(int32_t)m_hopCount );
+	sb->safePrintf("hopCount=%" INT32 " ",(int32_t)m_hopCount );
 
 	//timeStruct = gmtime ( &m_spiderTime );
 	//time[0] = 0;
 	//if ( m_spiderTime ) strftime (time,256,"%b %e %T %Y UTC",timeStruct);
-	//sb->safePrintf("spiderTime=%s(%"UINT32") ",time,m_spiderTime);
+	//sb->safePrintf("spiderTime=%s(%" UINT32 ") ",time,m_spiderTime);
 
 	//timeStruct = gmtime ( &m_pubDate );
 	//time[0] = 0;
 	//if ( m_pubDate ) strftime (time,256,"%b %e %T %Y UTC",timeStruct);
-	//sb->safePrintf("pubDate=%s(%"UINT32") ",time,m_pubDate );
+	//sb->safePrintf("pubDate=%s(%" UINT32 ") ",time,m_pubDate );
 
-	sb->safePrintf("ufn=%"INT32" ", (int32_t)m_ufn);
+	sb->safePrintf("ufn=%" INT32 " ", (int32_t)m_ufn);
 	// why was this unsigned?
-	sb->safePrintf("priority=%"INT32" ", (int32_t)m_priority);
+	sb->safePrintf("priority=%" INT32 " ", (int32_t)m_priority);
 
-	//sb->safePrintf("errCode=%s(%"UINT32") ",mstrerror(m_errCode),m_errCode );
-	//sb->safePrintf("crawlDelay=%"INT32"ms ",m_crawlDelay );
-	//sb->safePrintf("httpStatus=%"INT32" ",(int32_t)m_httpStatus );
-	//sb->safePrintf("retryNum=%"INT32" ",(int32_t)m_retryNum );
-	//sb->safePrintf("langId=%s(%"INT32") ",
+	//sb->safePrintf("errCode=%s(%" UINT32 ") ",mstrerror(m_errCode),m_errCode );
+	//sb->safePrintf("crawlDelay=%" INT32 "ms ",m_crawlDelay );
+	//sb->safePrintf("httpStatus=%" INT32 " ",(int32_t)m_httpStatus );
+	//sb->safePrintf("retryNum=%" INT32 " ",(int32_t)m_retryNum );
+	//sb->safePrintf("langId=%s(%" INT32 ") ",
 	//	       getLanguageString(m_langId),(int32_t)m_langId );
-	//sb->safePrintf("percentChanged=%"INT32"%% ",(int32_t)m_percentChanged );
+	//sb->safePrintf("percentChanged=%" INT32 "%% ",(int32_t)m_percentChanged );
 
 	if ( m_isNewOutlink ) sb->safePrintf("ISNEWOUTLINK ");
 	if ( m_isAddUrl ) sb->safePrintf("ISADDURL ");
@@ -201,7 +201,7 @@ int32_t SpiderRequest::print ( SafeBuf *sbarg ) {
 
 	//uint32_t gid = g_spiderdb.getGroupId(m_firstIp);
 	int32_t shardNum = g_hostdb.getShardNum(RDB_SPIDERDB,this);
-	sb->safePrintf("shardnum=%"UINT32" ",(uint32_t)shardNum);
+	sb->safePrintf("shardnum=%" UINT32 " ",(uint32_t)shardNum);
 
 	sb->safePrintf("url=%s",m_url);
 
@@ -233,8 +233,8 @@ int32_t SpiderReply::print ( SafeBuf *sbarg ) {
 	// indicate it's a reply
 	sb->safePrintf("REP ");
 
-	sb->safePrintf("uh48=%"UINT64" ",getUrlHash48());
-	sb->safePrintf("parentDocId=%"UINT64" ",getParentDocId());
+	sb->safePrintf("uh48=%" UINT64 " ",getUrlHash48());
+	sb->safePrintf("parentDocId=%" UINT64 " ",getParentDocId());
 
 
 	// if negtaive bail early now
@@ -254,30 +254,30 @@ int32_t SpiderReply::print ( SafeBuf *sbarg ) {
 	timeStruct = gmtime ( &ts );
 	time[0] = 0;
 	if ( m_spideredTime ) strftime (time,256,"%b %e %T %Y UTC",timeStruct);
-	sb->safePrintf("spideredTime=%s(%"UINT32") ",time,
+	sb->safePrintf("spideredTime=%s(%" UINT32 ") ",time,
 		       (uint32_t)m_spideredTime);
 
-	sb->safePrintf("siteNumInlinks=%"INT32" ",m_siteNumInlinks );
+	sb->safePrintf("siteNumInlinks=%" INT32 " ",m_siteNumInlinks );
 
 	time_t ts2 = (time_t)m_pubDate;
 	timeStruct = gmtime ( &ts2 );
 	time[0] = 0;
 	if ( m_pubDate != 0 && m_pubDate != -1 ) 
 		strftime (time,256,"%b %e %T %Y UTC",timeStruct);
-	sb->safePrintf("pubDate=%s(%"INT32") ",time,m_pubDate );
+	sb->safePrintf("pubDate=%s(%" INT32 ") ",time,m_pubDate );
 
-	//sb->safePrintf("newRequests=%"INT32" ",m_newRequests );
-	sb->safePrintf("ch32=%"UINT32" ",(uint32_t)m_contentHash32);
+	//sb->safePrintf("newRequests=%" INT32 " ",m_newRequests );
+	sb->safePrintf("ch32=%" UINT32 " ",(uint32_t)m_contentHash32);
 
-	sb->safePrintf("crawldelayms=%"INT32"ms ",m_crawlDelayMS );
-	sb->safePrintf("httpStatus=%"INT32" ",(int32_t)m_httpStatus );
-	sb->safePrintf("langId=%s(%"INT32") ",
+	sb->safePrintf("crawldelayms=%" INT32 "ms ",m_crawlDelayMS );
+	sb->safePrintf("httpStatus=%" INT32 " ",(int32_t)m_httpStatus );
+	sb->safePrintf("langId=%s(%" INT32 ") ",
 		       getLanguageString(m_langId),(int32_t)m_langId );
 
 	if ( m_errCount )
-		sb->safePrintf("errCount=%"INT32" ",(int32_t)m_errCount);
+		sb->safePrintf("errCount=%" INT32 " ",(int32_t)m_errCount);
 
-	sb->safePrintf("errCode=%s(%"UINT32") ",mstrerror(m_errCode),
+	sb->safePrintf("errCode=%s(%" UINT32 ") ",mstrerror(m_errCode),
 		       (uint32_t)m_errCode );
 
 	//if ( m_isSpam ) sb->safePrintf("ISSPAM ");
@@ -311,12 +311,12 @@ int32_t SpiderRequest::printToTable ( SafeBuf *sb , char *status ,
 	if ( xd ) {
 		int64_t now = gettimeofdayInMilliseconds();
 		int64_t elapsed = now - xd->m_startTime;
-		sb->safePrintf(" <td>%"INT32"</td>\n",row);
-		sb->safePrintf(" <td>%"INT64"ms</td>\n",elapsed);
+		sb->safePrintf(" <td>%" INT32 "</td>\n",row);
+		sb->safePrintf(" <td>%" INT64 "ms</td>\n",elapsed);
 		collnum_t collnum = xd->m_collnum;
 		CollectionRec *cr = g_collectiondb.getRec(collnum);
 		char *cs = ""; if ( cr ) cs = cr->m_coll;
-		// sb->safePrintf(" <td><a href=/crawlbot?c=%s>%"INT32"</a></td>\n",
+		// sb->safePrintf(" <td><a href=/crawlbot?c=%s>%" INT32 "</a></td>\n",
 		// 	       cs,(int32_t)collnum);
 		//sb->safePrintf(" <td><a href=/crawlbot?c=%s>%s</a></td>\n",
 		//	       cs,cs);
@@ -329,21 +329,21 @@ int32_t SpiderRequest::printToTable ( SafeBuf *sb , char *status ,
 	sb->safePrintf("</nobr></a></td>\n");
 	sb->safePrintf(" <td><nobr>%s</nobr></td>\n",status );
 
-	sb->safePrintf(" <td>%"INT32"</td>\n",(int32_t)m_priority);
-	sb->safePrintf(" <td>%"INT32"</td>\n",(int32_t)m_ufn);
+	sb->safePrintf(" <td>%" INT32 "</td>\n",(int32_t)m_priority);
+	sb->safePrintf(" <td>%" INT32 "</td>\n",(int32_t)m_ufn);
 
 	sb->safePrintf(" <td>%s</td>\n",iptoa(m_firstIp) );
-	sb->safePrintf(" <td>%"INT32"</td>\n",(int32_t)m_errCount );
+	sb->safePrintf(" <td>%" INT32 "</td>\n",(int32_t)m_errCount );
 
-	sb->safePrintf(" <td>%"UINT64"</td>\n",getUrlHash48());
+	sb->safePrintf(" <td>%" UINT64 "</td>\n",getUrlHash48());
 
-	//sb->safePrintf(" <td>0x%"XINT32"</td>\n",m_hostHash32 );
-	//sb->safePrintf(" <td>0x%"XINT32"</td>\n",m_domHash32 );
-	//sb->safePrintf(" <td>0x%"XINT32"</td>\n",m_siteHash32 );
+	//sb->safePrintf(" <td>0x%" XINT32 "</td>\n",m_hostHash32 );
+	//sb->safePrintf(" <td>0x%" XINT32 "</td>\n",m_domHash32 );
+	//sb->safePrintf(" <td>0x%" XINT32 "</td>\n",m_siteHash32 );
 
-	sb->safePrintf(" <td>%"INT32"</td>\n",m_siteNumInlinks );
-	//sb->safePrintf(" <td>%"INT32"</td>\n",m_pageNumInlinks );
-	sb->safePrintf(" <td>%"INT32"</td>\n",(int32_t)m_hopCount );
+	sb->safePrintf(" <td>%" INT32 "</td>\n",m_siteNumInlinks );
+	//sb->safePrintf(" <td>%" INT32 "</td>\n",m_pageNumInlinks );
+	sb->safePrintf(" <td>%" INT32 "</td>\n",(int32_t)m_hopCount );
 
 	// print time format: 7/23/1971 10:45:32
 	struct tm *timeStruct ;
@@ -352,28 +352,28 @@ int32_t SpiderRequest::printToTable ( SafeBuf *sb , char *status ,
 	time_t ts3 = (time_t)m_addedTime;
 	timeStruct = gmtime ( &ts3 );
 	strftime ( time , 256 , "%b %e %T %Y UTC", timeStruct );
-	sb->safePrintf(" <td><nobr>%s(%"UINT32")</nobr></td>\n",time,
+	sb->safePrintf(" <td><nobr>%s(%" UINT32 ")</nobr></td>\n",time,
 		       (uint32_t)m_addedTime);
 
 	//timeStruct = gmtime ( &m_pubDate );
 	//time[0] = 0;
 	//if ( m_pubDate ) strftime (time,256,"%b %e %T %Y UTC",timeStruct);
-	//sb->safePrintf(" <td>%s(%"UINT32")</td>\n",time,m_pubDate );
+	//sb->safePrintf(" <td>%s(%" UINT32 ")</td>\n",time,m_pubDate );
 
-	//sb->safePrintf(" <td>%s(%"UINT32")</td>\n",mstrerror(m_errCode),m_errCode);
-	//sb->safePrintf(" <td>%"INT32"ms</td>\n",m_crawlDelay );
+	//sb->safePrintf(" <td>%s(%" UINT32 ")</td>\n",mstrerror(m_errCode),m_errCode);
+	//sb->safePrintf(" <td>%" INT32 "ms</td>\n",m_crawlDelay );
 	sb->safePrintf(" <td>%i</td>\n",(int)m_pageNumInlinks);
-	sb->safePrintf(" <td>%"UINT64"</td>\n",getParentDocId() );
+	sb->safePrintf(" <td>%" UINT64 "</td>\n",getParentDocId() );
 
-	//sb->safePrintf(" <td>0x%"XINT32"</td>\n",m_parentHostHash32);
-	//sb->safePrintf(" <td>0x%"XINT32"</td>\n",m_parentDomHash32 );
-	//sb->safePrintf(" <td>0x%"XINT32"</td>\n",m_parentSiteHash32 );
+	//sb->safePrintf(" <td>0x%" XINT32 "</td>\n",m_parentHostHash32);
+	//sb->safePrintf(" <td>0x%" XINT32 "</td>\n",m_parentDomHash32 );
+	//sb->safePrintf(" <td>0x%" XINT32 "</td>\n",m_parentSiteHash32 );
 
-	//sb->safePrintf(" <td>%"INT32"</td>\n",(int32_t)m_httpStatus );
-	//sb->safePrintf(" <td>%"INT32"</td>\n",(int32_t)m_retryNum );
-	//sb->safePrintf(" <td>%s(%"INT32")</td>\n",
+	//sb->safePrintf(" <td>%" INT32 "</td>\n",(int32_t)m_httpStatus );
+	//sb->safePrintf(" <td>%" INT32 "</td>\n",(int32_t)m_retryNum );
+	//sb->safePrintf(" <td>%s(%" INT32 ")</td>\n",
 	//	       getLanguageString(m_langId),(int32_t)m_langId );
-	//sb->safePrintf(" <td>%"INT32"%%</td>\n",(int32_t)m_percentChanged );
+	//sb->safePrintf(" <td>%" INT32 "%%</td>\n",(int32_t)m_percentChanged );
 
 	sb->safePrintf(" <td><nobr>");
 
@@ -456,8 +456,8 @@ int32_t SpiderRequest::printToTableSimple ( SafeBuf *sb , char *status ,
 	if ( xd ) {
 		int64_t now = gettimeofdayInMilliseconds();
 		int64_t elapsed = now - xd->m_startTime;
-		sb->safePrintf(" <td>%"INT32"</td>\n",row);
-		sb->safePrintf(" <td>%"INT64"ms</td>\n",elapsed);
+		sb->safePrintf(" <td>%" INT32 "</td>\n",row);
+		sb->safePrintf(" <td>%" INT64 "ms</td>\n",elapsed);
 		// print collection
 		CollectionRec *cr = g_collectiondb.getRec ( xd->m_collnum );
 		char *coll = "";
@@ -473,15 +473,15 @@ int32_t SpiderRequest::printToTableSimple ( SafeBuf *sb , char *status ,
 	sb->safePrintf(" <td>%s</td>\n",iptoa(m_firstIp));
 
 	if ( xd->m_crawlDelayValid && xd->m_crawlDelay >= 0 )
-		sb->safePrintf(" <td>%"INT32" ms</td>\n",xd->m_crawlDelay);
+		sb->safePrintf(" <td>%" INT32 " ms</td>\n",xd->m_crawlDelay);
 	else
 		sb->safePrintf(" <td>--</td>\n");
 
-	sb->safePrintf(" <td>%"INT32"</td>\n",(int32_t)m_priority);
+	sb->safePrintf(" <td>%" INT32 "</td>\n",(int32_t)m_priority);
 
-	sb->safePrintf(" <td>%"INT32"</td>\n",(int32_t)m_errCount );
+	sb->safePrintf(" <td>%" INT32 "</td>\n",(int32_t)m_errCount );
 
-	sb->safePrintf(" <td>%"INT32"</td>\n",(int32_t)m_hopCount );
+	sb->safePrintf(" <td>%" INT32 "</td>\n",(int32_t)m_hopCount );
 
 	// print time format: 7/23/1971 10:45:32
 	struct tm *timeStruct ;
@@ -490,7 +490,7 @@ int32_t SpiderRequest::printToTableSimple ( SafeBuf *sb , char *status ,
 	time_t ts4 = (time_t)m_addedTime;
 	timeStruct = gmtime ( &ts4 );
 	strftime ( time , 256 , "%b %e %T %Y UTC", timeStruct );
-	sb->safePrintf(" <td><nobr>%s(%"UINT32")</nobr></td>\n",time,
+	sb->safePrintf(" <td><nobr>%s(%" UINT32 ")</nobr></td>\n",time,
 		       (uint32_t)m_addedTime);
 
 	/*
@@ -779,8 +779,8 @@ bool Spiderdb::verify ( char *coll ) {
 	if ( got != count ) {
 		// tally it up
 		g_rebalance.m_numForeignRecs += count - got;
-		log ("db: Out of first %"INT32" records in spiderdb, "
-		     "only %"INT32" belong to our shard.",count,got);
+		log ("db: Out of first %" INT32 " records in spiderdb, "
+		     "only %" INT32 " belong to our shard.",count,got);
 		// exit if NONE, we probably got the wrong data
 		if ( got == 0 ) log("db: Are you sure you have the "
 					   "right "
@@ -790,7 +790,7 @@ bool Spiderdb::verify ( char *coll ) {
 		g_threads.enableThreads();
 		return g_conf.m_bypassValidation;
 	}
-	log (LOG_DEBUG,"db: Spiderdb passed verification successfully for %"INT32" "
+	log (LOG_DEBUG,"db: Spiderdb passed verification successfully for %" INT32 " "
 	      "recs.", count );
 	// DONE
 	g_threads.enableThreads();
@@ -976,10 +976,10 @@ void SpiderCache::save ( bool useThread ) {
 		if ( tree->m_isSaving ) continue;
 		char *filename = "waitingtree";
 		char dir[1024];
-		sprintf(dir,"%scoll.%s.%"INT32"",g_hostdb.m_dir,
+		sprintf(dir,"%scoll.%s.%" INT32 "",g_hostdb.m_dir,
 			sc->m_coll,(int32_t)sc->m_collnum);
 		// log it for now
-		log("spider: saving waiting tree for cn=%"INT32"",(int32_t)i);
+		log("spider: saving waiting tree for cn=%" INT32 "",(int32_t)i);
 		// returns false if it blocked, callback will be called
 		tree->fastSave ( dir, // g_hostdb.m_dir ,
 				 filename ,
@@ -1065,38 +1065,38 @@ bool tryToDeleteSpiderColl ( SpiderColl *sc , char *msg ) {
 	if ( ! sc->m_deleteMyself ) return false;
 	// otherwise always return true
 	if ( sc->m_msg5b.m_waitingForList ) {
-		log("spider: deleting sc=0x%"PTRFMT" for collnum=%"INT32" "
+		log("spider: deleting sc=0x%" PTRFMT " for collnum=%" INT32 " "
 		    "waiting1",
 		    (PTRTYPE)sc,(int32_t)sc->m_collnum);
 		return true;
 	}
 	// if ( sc->m_msg1.m_mcast.m_inUse ) {
-	// 	log("spider: deleting sc=0x%"PTRFMT" for collnum=%"INT32" "
+	// 	log("spider: deleting sc=0x%" PTRFMT " for collnum=%" INT32 " "
 	// 	    "waiting2",
 	// 	    (PTRTYPE)sc,(int32_t)sc->m_collnum);
 	// 	return true;
 	// }
 	if ( sc->m_isLoading ) {
-		log("spider: deleting sc=0x%"PTRFMT" for collnum=%"INT32" "
+		log("spider: deleting sc=0x%" PTRFMT " for collnum=%" INT32 " "
 		    "waiting3",
 		    (PTRTYPE)sc,(int32_t)sc->m_collnum);
 		return true;
 	}
 	// this means msg5 is out
 	if ( sc->m_msg5.m_waitingForList ) {
-		log("spider: deleting sc=0x%"PTRFMT" for collnum=%"INT32" "
+		log("spider: deleting sc=0x%" PTRFMT " for collnum=%" INT32 " "
 		    "waiting4",
 		    (PTRTYPE)sc,(int32_t)sc->m_collnum);
 		return true;
 	}
 	// if ( sc->m_gettingList1 ) {
-	// 	log("spider: deleting sc=0x%"PTRFMT" for collnum=%"INT32" 
+	// 	log("spider: deleting sc=0x%" PTRFMT " for collnum=%" INT32 " 
 	//"waiting5",
 	// 	    (int32_t)sc,(int32_t)sc->m_collnum);
 	// 	return true;
 	// }
 	// if ( sc->m_gettingList2 ) {
-	// 	log("spider: deleting sc=0x%"PTRFMT" for collnum=%"INT32" 
+	// 	log("spider: deleting sc=0x%" PTRFMT " for collnum=%" INT32 " 
 	//"waiting6",
 	// 	    (int32_t)sc,(int32_t)sc->m_collnum);
 	// 	return true;
@@ -1104,7 +1104,7 @@ bool tryToDeleteSpiderColl ( SpiderColl *sc , char *msg ) {
 	// there's still a core of someone trying to write to something
 	// in "sc" so we have to try to fix that. somewhere in xmldoc.cpp
 	// or spider.cpp. everyone should get sc from cr every time i'd think
-	log("spider: deleting sc=0x%"PTRFMT" for collnum=%"INT32" (msg=%s)",
+	log("spider: deleting sc=0x%" PTRFMT " for collnum=%" INT32 " (msg=%s)",
 	    (PTRTYPE)sc,(int32_t)sc->m_collnum,msg);
 	// . make sure nobody has it
 	// . cr might be NULL because Collectiondb.cpp::deleteRec2() might
@@ -1140,7 +1140,7 @@ SpiderColl *SpiderCache::getSpiderColl ( collnum_t collnum ) {
 	// make it
 	try { sc = new(SpiderColl); }
 	catch ( ... ) {
-		log("spider: failed to make SpiderColl for collnum=%"INT32"",
+		log("spider: failed to make SpiderColl for collnum=%" INT32 "",
 		    (int32_t)collnum);
 		return NULL;
 	}
@@ -1150,7 +1150,7 @@ SpiderColl *SpiderCache::getSpiderColl ( collnum_t collnum ) {
 	//m_spiderColls [ collnum ] = sc;
 	cr->m_spiderColl = sc;
 	// note it
-	logf(LOG_DEBUG,"spider: made spidercoll=%"PTRFMT" for cr=%"PTRFMT"",
+	logf(LOG_DEBUG,"spider: made spidercoll=%" PTRFMT " for cr=%" PTRFMT "",
 	    (PTRTYPE)sc,(PTRTYPE)cr);
 	// update this
 	//if ( m_numSpiderColls < collnum + 1 )
@@ -1205,12 +1205,12 @@ SpiderColl *SpiderCache::getSpiderColl ( collnum_t collnum ) {
 void SpiderColl::setCollectionRec ( CollectionRec *cr ) {
 	m_cr = cr;
 	// this was useful for debugging a null m_cr bug
-	//log("sc: sc 0x%"PTRFMT" setting cr to 0x%"PTRFMT""
+	//log("sc: sc 0x%" PTRFMT " setting cr to 0x%" PTRFMT ""
 	//,(int32_t)this,(int32_t)cr);
 }
 
 CollectionRec *SpiderColl::getCollectionRec ( ) {
-	//log("sc: sc 0x%"PTRFMT" getting cr of 0x%"PTRFMT""
+	//log("sc: sc 0x%" PTRFMT " getting cr of 0x%" PTRFMT ""
 	//,(int32_t)this,(int32_t)m_cr);
 	return m_cr;
 }
@@ -1267,7 +1267,7 @@ bool SpiderColl::load ( ) {
 	char *coll = g_collectiondb.getColl(m_collnum);
 	// sanity check
 	if ( ! coll || coll[0]=='\0' ) {
-		log("spider: bad collnum of %"INT32"",(int32_t)m_collnum);
+		log("spider: bad collnum of %" INT32 "",(int32_t)m_collnum);
 		g_errno = ENOCOLLREC;
 		return false;
 		//char *xx=NULL;*xx=0; }
@@ -1328,7 +1328,7 @@ bool SpiderColl::load ( ) {
 
 	// make dir
 	char dir[500];
-	sprintf(dir,"%scoll.%s.%"INT32"",g_hostdb.m_dir,coll,(int32_t)m_collnum);
+	sprintf(dir,"%scoll.%s.%" INT32 "",g_hostdb.m_dir,coll,(int32_t)m_collnum);
 	// load up all the tables
 	if ( ! m_cdTable .load(dir,"crawldelay.dat"  ) ) err = g_errno;
 	if ( ! m_sniTable.load(dir,"siteinlinks.dat" ) ) err = g_errno;
@@ -1559,7 +1559,7 @@ void nukeDoledb ( collnum_t collnum ) {
 	//mfree ( we , sizeof(WaitEntry) , "waitet" );
 
 	// note it
-	log("spider: finished nuking doledb for coll (%"INT32")",
+	log("spider: finished nuking doledb for coll (%" INT32 ")",
 	    (int32_t)collnum);
 }
 
@@ -1672,14 +1672,14 @@ bool SpiderColl::makeWaitingTree ( ) {
 		// note it
 		if ( g_conf.m_logDebugSpider )
 			logf(LOG_DEBUG,"spider: added time=1 ip=%s to waiting "
-			    "tree (node#=%"INT32")", iptoa(firstIp),wn);
+			    "tree (node#=%" INT32 ")", iptoa(firstIp),wn);
 		// a tmp var
 		int64_t fakeone = 1LL;
 		// add to table now since its in the tree
 		if ( ! m_waitingTable.addKey ( &firstIp , &fakeone ) ) {
 			log("spider: makeWaitTree2: %s",mstrerror(g_errno));
 			m_waitingTree.deleteNode3 ( wn , true );
-			//log("sper: 6 del node %"INT32" for %s",wn,iptoa(firstIp));
+			//log("sper: 6 del node %" INT32 " for %s",wn,iptoa(firstIp));
 			return false;
 		}
 	}
@@ -1920,8 +1920,8 @@ bool SpiderColl::addSpiderReply ( SpiderReply *srep ) {
 	time_t nowGlobal = getTimeGlobal();
 
 	if ( g_conf.m_logDebugSpider )
-		logf(LOG_DEBUG,"spider: removing lock uh48=%"INT64" "
-		     "lockKey=%"UINT64"",  
+		logf(LOG_DEBUG,"spider: removing lock uh48=%" INT64 " "
+		     "lockKey=%" UINT64 "",  
 		     srep->getUrlHash48(),
 		     lockKey );
 
@@ -1955,7 +1955,7 @@ bool SpiderColl::addSpiderReply ( SpiderReply *srep ) {
 	// when "rebuilding" (Rebuild.cpp) this msg gets triggered too much...
 	// so only show it when in debug mode.
 	if ( !lock && g_conf.m_logDebugSpider)//ht->isInTable(&lockKey)) 
-		logf(LOG_DEBUG,"spider: rdb: lockKey=%"UINT64" "
+		logf(LOG_DEBUG,"spider: rdb: lockKey=%" UINT64 " "
 		     "was not in lock table",lockKey);
 
 	// now just remove it since we only spider our own urls
@@ -2042,9 +2042,9 @@ bool SpiderColl::addSpiderReply ( SpiderReply *srep ) {
 						  srep->m_downloadEndTime );
 	// log this for now
 	if ( g_conf.m_logDebugSpider )
-		log("spider: adding spider reply, download end time %"INT64" for "
-		    "ip=%s(%"UINT32") uh48=%"UINT64" indexcode=\"%s\" coll=%"INT32" "
-		    "k.n1=%"UINT64" k.n0=%"UINT64"",
+		log("spider: adding spider reply, download end time %" INT64 " for "
+		    "ip=%s(%" UINT32 ") uh48=%" UINT64 " indexcode=\"%s\" coll=%" INT32 " "
+		    "k.n1=%" UINT64 " k.n0=%" UINT64 "",
 		    //"to SpiderColl::m_lastDownloadCache",
 		    srep->m_downloadEndTime,
 		    iptoa(srep->m_firstIp),
@@ -2111,7 +2111,7 @@ void SpiderColl::removeFromDoledbTable ( int32_t firstIp ) {
 	// now we log it too
 	if ( g_conf.m_logDebugSpider )
 		log(LOG_DEBUG,"spider: removed ip=%s from doleiptable "
-		    "(newcount=%"INT32")", iptoa(firstIp),*score);
+		    "(newcount=%" INT32 ")", iptoa(firstIp),*score);
 
 
 	// remove if zero
@@ -2127,7 +2127,7 @@ void SpiderColl::removeFromDoledbTable ( int32_t firstIp ) {
 	// all done?
 	if ( g_conf.m_logDebugSpider ) {
 		// log that too!
-		logf(LOG_DEBUG,"spider: discounting firstip=%s to %"INT32"",
+		logf(LOG_DEBUG,"spider: discounting firstip=%s to %" INT32 "",
 		     iptoa(firstIp),*score);
 	}
 }
@@ -2170,7 +2170,7 @@ bool SpiderColl::isInDupCache ( SpiderRequest *sreq , bool addToCache ) {
 	if ( m_dupCache.getLong ( 0,dupKey64,86400,true ) != -1 ) {
 	dedup:
 		if ( g_conf.m_logDebugSpider )
-			log("spider: skipping dup request url=%s uh48=%"UINT64"",
+			log("spider: skipping dup request url=%s uh48=%" UINT64 "",
 			    sreq->m_url,sreq->getUrlHash48());
 		return true;
 	}
@@ -2211,7 +2211,7 @@ bool SpiderColl::addSpiderRequest ( SpiderRequest *sreq ,
 	if ( sreq->m_dataSize <= 0 ) {
 		//if ( g_conf.m_logDebugSpider )
 		log("spider: add spider request is dataless for "
-		    "uh48=%"UINT64"",sreq->getUrlHash48());
+		    "uh48=%" UINT64 "",sreq->getUrlHash48());
 		//char *xx=NULL;*xx=0;
 		return true;
 	}
@@ -2222,7 +2222,7 @@ bool SpiderColl::addSpiderRequest ( SpiderRequest *sreq ,
 	//   it to the dupcache here...
 	if ( isInDupCache ( sreq , true ) ) {
 		if ( g_conf.m_logDebugSpider )
-			log("spider: skipping dup request url=%s uh48=%"UINT64"",
+			log("spider: skipping dup request url=%s uh48=%" UINT64 "",
 			    sreq->m_url,sreq->getUrlHash48());
 		return true;
 	}
@@ -2242,7 +2242,7 @@ bool SpiderColl::addSpiderRequest ( SpiderRequest *sreq ,
 	// watch out for corruption
 	if ( sreq->m_firstIp ==  0 || sreq->m_firstIp == -1 || ulen <= 0 ) {
 		log("spider: Corrupt spider req with url length of "
-		    "%"INT32" <= 0 u=%s. dataSize=%"INT32" firstip=%"INT32" uh48=%"UINT64". Skipping.",
+		    "%" INT32 " <= 0 u=%s. dataSize=%" INT32 " firstip=%" INT32 " uh48=%" UINT64 ". Skipping.",
 		    ulen,sreq->m_url,
 		    sreq->m_dataSize,sreq->m_firstIp,sreq->getUrlHash48());
 		return true;
@@ -2313,7 +2313,7 @@ bool SpiderColl::addSpiderRequest ( SpiderRequest *sreq ,
 	// spiders disabled for this row in url filters?
 	if ( ufn >= 0 && m_cr->m_maxSpidersPerRule[ufn] == 0 ) {
 		if ( g_conf.m_logDebugSpider )
-			log("spider: request spidersoff ufn=%"INT32" url=%s",ufn,
+			log("spider: request spidersoff ufn=%" INT32 " url=%s",ufn,
 			    sreq->m_url);
 		return true;
 	}
@@ -2330,7 +2330,7 @@ bool SpiderColl::addSpiderRequest ( SpiderRequest *sreq ,
 	//if ( priority == SPIDER_PRIORITY_FILTERED ) {
 	if ( m_cr->m_forceDelete[ufn] ) {
 		if ( g_conf.m_logDebugSpider )
-			log("spider: request %s is filtered ufn=%"INT32"",
+			log("spider: request %s is filtered ufn=%" INT32 "",
 			    sreq->m_url,ufn);
 		return true;
 	}
@@ -2338,7 +2338,7 @@ bool SpiderColl::addSpiderRequest ( SpiderRequest *sreq ,
 	//if ( priority == SPIDER_PRIORITY_BANNED   ) {
 	if ( m_cr->m_forceDelete[ufn] ) {
 		if ( g_conf.m_logDebugSpider )
-			log("spider: request %s is banned ufn=%"INT32"",
+			log("spider: request %s is banned ufn=%" INT32 "",
 			    sreq->m_url,ufn);
 		return true;
 	}
@@ -2366,7 +2366,7 @@ bool SpiderColl::addSpiderRequest ( SpiderRequest *sreq ,
 
 	// sanity check
 	//int64_t ttt=getEarliestSpiderTimeFromWaitingTree(sreq->m_firstIp);
-	//logf (LOG_DEBUG,"spider: earliestime=%"INT64" for firstip=%s",
+	//logf (LOG_DEBUG,"spider: earliestime=%" INT64 " for firstip=%s",
 	//      ttt,iptoa(sreq->m_firstIp));
 	      
 	//if ( ttt != (int64_t)spiderTimeMS ) { char *xx=NULL;*xx=0; }
@@ -2388,16 +2388,16 @@ bool SpiderColl::addSpiderRequest ( SpiderRequest *sreq ,
 	// log it
 	logf(LOG_DEBUG,
 	     "spider: %s request to waiting tree %s "
-	     "uh48=%"UINT64" "
+	     "uh48=%" UINT64 " "
 	     "firstIp=%s "
-	     "pageNumInlinks=%"UINT32" "
-	     "parentdocid=%"UINT64" "
-	     "isinjecting=%"INT32" "
-	     "ispagereindex=%"INT32" "
-	     "ufn=%"INT32" "
-	     "priority=%"INT32" "
-	     "addedtime=%"UINT32" "
-	     //"spidertime=%"UINT64"",
+	     "pageNumInlinks=%" UINT32 " "
+	     "parentdocid=%" UINT64 " "
+	     "isinjecting=%" INT32 " "
+	     "ispagereindex=%" INT32 " "
+	     "ufn=%" INT32 " "
+	     "priority=%" INT32 " "
+	     "addedtime=%" UINT32 " "
+	     //"spidertime=%" UINT64 "",
 	     ,
 	     msg,
 	     sreq->m_url,
@@ -2427,7 +2427,7 @@ bool SpiderColl::printWaitingTree ( ) {
 		// then ip
 		int32_t firstIp = wk->n0 & 0xffffffff;
 		// show it
-		log("dump: time=%"INT64" firstip=%s",spiderTimeMS,iptoa(firstIp));
+		log("dump: time=%" INT64 " firstip=%s",spiderTimeMS,iptoa(firstIp));
 	}
 	return true;
 }
@@ -2446,15 +2446,15 @@ bool SpiderLoop::printLockTable ( ) {
 		int64_t lockKey = *(int64_t *)ht->getKeyFromSlot(i);
 		// show it
 		log("dump: lock. "
-		    "lockkey=%"INT64" "
-		    "spiderout=%"INT32" "
-		    "confirmed=%"INT32" "
+		    "lockkey=%" INT64 " "
+		    "spiderout=%" INT32 " "
+		    "confirmed=%" INT32 " "
 		    "firstip=%s "
-		    "expires=%"INT32" "
-		    "hostid=%"INT32" "
-		    "timestamp=%"INT32" "
-		    "sequence=%"INT32" "
-		    "collnum=%"INT32" "
+		    "expires=%" INT32 " "
+		    "hostid=%" INT32 " "
+		    "timestamp=%" INT32 " "
+		    "sequence=%" INT32 " "
+		    "collnum=%" INT32 " "
 		    ,lockKey
 		    ,(int32_t)(lock->m_spiderOutstanding)
 		    ,(int32_t)(lock->m_confirmed)
@@ -2610,13 +2610,13 @@ bool SpiderColl::addToWaitingTree ( uint64_t spiderTimeMS , int32_t firstIp ,
 		// log the replacement
 		if ( g_conf.m_logDebugSpider )
 			log("spider: replacing waitingtree key "
-			    "oldtime=%"UINT32" newtime=%"UINT32" firstip=%s",
+			    "oldtime=%" UINT32 " newtime=%" UINT32 " firstip=%s",
 			    (uint32_t)(sms/1000LL),
 			    (uint32_t)(spiderTimeMS/1000LL),
 			    iptoa(firstIp));
 		// remove from tree so we can add it below
 		m_waitingTree.deleteNode3 ( tn , false );
-		//log("spider: 4 del node %"INT32" for %s",tn,iptoa(firstIp));
+		//log("spider: 4 del node %" INT32 " for %s",tn,iptoa(firstIp));
 	}
 	else {
 		char *s="";
@@ -2627,7 +2627,7 @@ bool SpiderColl::addToWaitingTree ( uint64_t spiderTimeMS , int32_t firstIp ,
 		// log the replacement
 		if ( g_conf.m_logDebugSpcache )
 			log("spider: adding new key to waitingtree "
-			    "newtime=%"UINT32"%s firstip=%s",
+			    "newtime=%" UINT32 "%s firstip=%s",
 			    (uint32_t)(spiderTimeMS/1000LL),s,
 			    iptoa(firstIp));
 	}
@@ -2636,7 +2636,7 @@ bool SpiderColl::addToWaitingTree ( uint64_t spiderTimeMS , int32_t firstIp ,
 	key_t wk = makeWaitingTreeKey ( spiderTimeMS, firstIp );
 	// what is this?
 	if ( firstIp == 0 || firstIp == -1 ) {
-		log("spider: got ip of %s. cn=%"INT32" "
+		log("spider: got ip of %s. cn=%" INT32 " "
 		    "wtf? failed to add to "
 		    "waiting tree, but return true anyway.",
 		    iptoa(firstIp) ,
@@ -2658,8 +2658,8 @@ bool SpiderColl::addToWaitingTree ( uint64_t spiderTimeMS , int32_t firstIp ,
 		if ( more < 10 ) more = 10;
 		if ( more > 100000 ) more = 100000;
 		int32_t newNum = max + more;
-		log("spider: growing waiting tree to from %"INT32" to %"INT32" nodes "
-		    "for collnum %"INT32"",
+		log("spider: growing waiting tree to from %" INT32 " to %" INT32 " nodes "
+		    "for collnum %" INT32 "",
 		    max , newNum , (int32_t)m_collnum );
 		if ( ! m_waitingTree.growTree ( newNum , MAX_NICENESS ) )
 			return log("spider: failed to grow waiting tree to "
@@ -2682,15 +2682,15 @@ bool SpiderColl::addToWaitingTree ( uint64_t spiderTimeMS , int32_t firstIp ,
 
 	// note it
 	if ( g_conf.m_logDebugSpider )
-		logf(LOG_DEBUG,"spider: added time=%"INT64" ip=%s to waiting tree "
-		    "scan=%"INT32" node=%"INT32"",
+		logf(LOG_DEBUG,"spider: added time=%" INT64 " ip=%s to waiting tree "
+		    "scan=%" INT32 " node=%" INT32 "",
 		    spiderTimeMS , iptoa(firstIp),(int32_t)callForScan,wn);
 
 	// add to table now since its in the tree
 	if ( ! m_waitingTable.addKey ( &firstIp , &spiderTimeMS ) ) {
 		// remove from tree then
 		m_waitingTree.deleteNode3 ( wn , false );
-		//log("spider: 5 del node %"INT32" for %s",wn,iptoa(firstIp));
+		//log("spider: 5 del node %" INT32 " for %s",wn,iptoa(firstIp));
 		return false;
 	}
 	// . kick off a scan, i don't care if this blocks or not!
@@ -2764,11 +2764,11 @@ int32_t SpiderColl::getNextIpFromWaitingTree ( ) {
 		// and because the trees/tables for spidercache are saving
 		// in Process.cpp's g_spiderCache::save() call
 		m_waitingTree.deleteNode3 ( node , true );
-		//log("spdr: 8 del node node %"INT32" for %s",node,iptoa(firstIp));
+		//log("spdr: 8 del node node %" INT32 " for %s",node,iptoa(firstIp));
 		// note it
 		if ( g_conf.m_logDebugSpider )
 			log(LOG_DEBUG,"spider: removed1 ip=%s from waiting "
-			    "tree. nn=%"INT32"",
+			    "tree. nn=%" INT32 "",
 			    iptoa(firstIp),m_waitingTree.m_numUsedNodes);
 
 		// log it
@@ -2796,7 +2796,7 @@ int32_t SpiderColl::getNextIpFromWaitingTree ( ) {
 	// sanity
 	if ( firstIp == 0 || firstIp == -1 ) { 
 		//char *xx=NULL;*xx=0; }
-		log("spider: removing corrupt spiderreq firstip of %"INT32
+		log("spider: removing corrupt spiderreq firstip of %" INT32
 		    " from waiting tree collnum=%i",
 		    firstIp,(int)m_collnum);
 		goto removeFromTree;
@@ -2906,7 +2906,7 @@ void SpiderColl::populateWaitingTreeFromSpiderdb ( bool reentry ) {
 		// . do not include cache, those results are old and will mess
 		//   us up
 		log(LOG_DEBUG,"spider: populateWaitingTree: "
-		    "calling msg5: startKey=0x%"XINT64",0x%"XINT64" "
+		    "calling msg5: startKey=0x%" XINT64 ",0x%" XINT64 " "
 		    "firstip=%s",
 		    m_nextKey2.n1,m_nextKey2.n0,
 		    iptoa(g_spiderdb.getFirstIp(&m_nextKey2)));
@@ -2936,7 +2936,7 @@ void SpiderColl::populateWaitingTreeFromSpiderdb ( bool reentry ) {
 
 	// show list stats
 	if ( g_conf.m_logDebugSpider )
-		log("spider: populateWaitingTree: got list of size %"INT32"",
+		log("spider: populateWaitingTree: got list of size %" INT32 "",
 		    m_list2.m_listSize);
 
 	// unflag it
@@ -3044,14 +3044,14 @@ void SpiderColl::populateWaitingTreeFromSpiderdb ( bool reentry ) {
 
 	// announce every 10MB
 	if ( m_numBytesScanned - m_lastPrintCount > 10000000 ) {
-		log("spider: %"UINT64" spiderdb bytes scanned for waiting tree "
-		    "re-population for cn=%"INT32"",m_numBytesScanned,
+		log("spider: %" UINT64 " spiderdb bytes scanned for waiting tree "
+		    "re-population for cn=%" INT32 "",m_numBytesScanned,
 		    (int32_t)m_collnum);
 		m_lastPrintCount = m_numBytesScanned;
 	}
 
 	// debug info
-	log(LOG_DEBUG,"spider: Read2 %"INT32" spiderdb bytes.",list->getListSize());
+	log(LOG_DEBUG,"spider: Read2 %" INT32 " spiderdb bytes.",list->getListSize());
 	// reset any errno cuz we're just a cache
 	g_errno = 0;
 
@@ -3064,7 +3064,7 @@ void SpiderColl::populateWaitingTreeFromSpiderdb ( bool reentry ) {
 		if ( lastKey < m_nextKey2 ) {
 			log("spider: got corruption 9. spiderdb "
 			    "keys out of order for "
-			    "collnum=%"INT32, (int32_t)m_collnum);
+			    "collnum=%" INT32 , (int32_t)m_collnum);
 			g_corruptCount++;
 			// this should result in an empty list read for
 			// our next scan of spiderdb. unfortunately we could
@@ -3095,13 +3095,13 @@ void SpiderColl::populateWaitingTreeFromSpiderdb ( bool reentry ) {
 		m_lastScanTime = getTimeLocal();
 		// log it
 		// if ( m_numAdded )
-		// 	log("spider: added %"INT32" recs to waiting tree from "
-		// 	    "scan of %"INT64" bytes coll=%s",
+		// 	log("spider: added %" INT32 " recs to waiting tree from "
+		// 	    "scan of %" INT64 " bytes coll=%s",
 		// 	    m_numAdded,m_numBytesScanned,
 		// 	    m_cr->m_coll);
 		// note it
-		log("spider: rebuild complete for %s. Added %"INT32" "
-		    "recs to waiting tree, scanned %"INT64" bytes of spiderdb.",
+		log("spider: rebuild complete for %s. Added %" INT32 " "
+		    "recs to waiting tree, scanned %" INT64 " bytes of spiderdb.",
 		    m_coll,m_numAdded,m_numBytesScanned);
 		// reset the count for next scan
 		m_numAdded = 0 ;
@@ -3183,7 +3183,7 @@ void SpiderColl::populateDoledbFromWaitingTree ( ) { // bool reentry ) {
 	//return;
 	//if ( g_conf.m_logDebugSpider )
 	//	log("spider: in populatedoledbfromwaitingtree "
-	//	    "numUsedNodes=%"INT32"",
+	//	    "numUsedNodes=%" INT32 "",
 	// 	    m_waitingTree.m_numUsedNodes);
 
 	// set this flag so we are not re-entered
@@ -3251,7 +3251,7 @@ void SpiderColl::populateDoledbFromWaitingTree ( ) { // bool reentry ) {
 	// debug output
 	if ( g_conf.m_logDebugSpider )
 		log(LOG_DEBUG,"spider: evalIpLoop: waitingtree nextip=%s "
-		    "numUsedNodes=%"INT32"",iptoa(ip),m_waitingTree.m_numUsedNodes);
+		    "numUsedNodes=%" INT32 "",iptoa(ip),m_waitingTree.m_numUsedNodes);
 
 	/*
 	// assume using tree
@@ -3415,7 +3415,7 @@ static void doledWrapper ( void *state ) {
 	// msg4 has a delay of 500ms in it. but even then, msg1 can take
 	// 6ms or more just because of load issues.
 	if ( diff > 10 ) 
-		log("spider: adding to doledb took %"INT64"ms",diff);
+		log("spider: adding to doledb took %" INT64 "ms",diff);
 
 	// we are done!! that was the final step...
 	THIS->m_isPopulating = false;
@@ -3639,9 +3639,9 @@ bool SpiderColl::evalIpLoop ( ) {
 	if ( inCache ) { // && doleBufSize > 0 ) {
 		int32_t crc = hash32 ( doleBuf + 4 , doleBufSize - 4 );
 		if ( g_conf.m_logDebugSpider ) // || m_collnum == 18752 )
-			log("spider: GOT %"INT32" bytes of SpiderRequests "
-			    "from winnerlistcache for ip %s ptr=0x%"PTRFMT
-			    " crc=%"UINT32
+			log("spider: GOT %" INT32 " bytes of SpiderRequests "
+			    "from winnerlistcache for ip %s ptr=0x%" PTRFMT
+			    " crc=%" UINT32
 			    ,doleBufSize,
 			    iptoa(m_scanningIp),
 			    (PTRTYPE)doleBuf,
@@ -3712,8 +3712,8 @@ bool SpiderColl::evalIpLoop ( ) {
 
 	// if we started reading, then assume we got a fresh list here
 	if ( g_conf.m_logDebugSpider )
-		log("spider: back from msg5 spiderdb read2 of %"INT32" bytes "
-		    "(cn=%"INT32")",m_list.m_listSize,(int32_t)m_collnum);
+		log("spider: back from msg5 spiderdb read2 of %" INT32 " bytes "
+		    "(cn=%" INT32 ")",m_list.m_listSize,(int32_t)m_collnum);
 
 
 	// . set the winning request for all lists we read so far
@@ -3732,7 +3732,7 @@ bool SpiderColl::evalIpLoop ( ) {
 		if ( lastKey < m_nextKey ) {
 			log("spider: got corruption. spiderdb "
 			    "keys out of order for "
-			    "collnum=%"INT32" for evaluation of "
+			    "collnum=%" INT32 " for evaluation of "
 			    "firstip=%s so terminating evaluation of that "
 			    "firstip." ,
 			    (int32_t)m_collnum,
@@ -3809,7 +3809,7 @@ bool SpiderColl::readListFromSpiderdb ( ) {
 
 	CollectionRec *cr = g_collectiondb.getRec ( m_collnum );
 	if ( ! cr ) {
-		log("spider: lost collnum %"INT32"",(int32_t)m_collnum);
+		log("spider: lost collnum %" INT32 "",(int32_t)m_collnum);
 		g_errno = ENOCOLLREC;
 		return true;
 	}
@@ -3833,7 +3833,7 @@ bool SpiderColl::readListFromSpiderdb ( ) {
 	// the ip if it equals m_scanningIp?
 	if ( wn < 0 ) { 
 		log("spider: waiting tree key removed while reading list "
-		    "for %s (%"INT32")",
+		    "for %s (%" INT32 ")",
 		    cr->m_coll,(int32_t)m_collnum);
 		return true;
 	}
@@ -3884,7 +3884,7 @@ bool SpiderColl::readListFromSpiderdb ( ) {
 			       ,KEYSTR(&m_nextKey,sizeof(key128_t)));
 		tmp.safePrintf("firstip=%s "
 			       ,iptoa(m_scanningIp));
-		tmp.safePrintf("(cn=%"INT32")",(int32_t)m_collnum);
+		tmp.safePrintf("(cn=%" INT32 ")",(int32_t)m_collnum);
 		log(LOG_DEBUG,"%s",tmp.getBufStart());
 	}
 	// log this better
@@ -3921,7 +3921,7 @@ bool SpiderColl::readListFromSpiderdb ( ) {
 		return false ;
 	// note its return
 	if ( g_conf.m_logDebugSpider )
-		log("spider: back from msg5 spiderdb read of %"INT32" bytes",
+		log("spider: back from msg5 spiderdb read of %" INT32 " bytes",
 		    m_list.m_listSize);
 	// no longer getting list
 	m_gettingList1 = false;
@@ -4051,7 +4051,7 @@ bool SpiderColl::scanListForWinners ( ) {
 
 	// show list stats
 	if ( g_conf.m_logDebugSpider )
-		log("spider: readListFromSpiderdb: got list of size %"INT32" "
+		log("spider: readListFromSpiderdb: got list of size %" INT32 " "
 		    "for firstip=%s",
 		    m_list.m_listSize,iptoa(m_scanningIp));
 
@@ -4120,10 +4120,10 @@ bool SpiderColl::scanListForWinners ( ) {
 					log("spider: got corrupt time "
 					    "spiderReply in "
 					    "scan "
-					    "uh48=%"INT64" "
-					    "httpstatus=%"INT32" "
-					    "datasize=%"INT32" "
-					    "(cn=%"INT32")",
+					    "uh48=%" INT64 " "
+					    "httpstatus=%" INT32 " "
+					    "datasize=%" INT32 " "
+					    "(cn=%" INT32 ")",
 					    tmp->getUrlHash48(),
 					    (int32_t)tmp->m_httpStatus,
 					    tmp->m_dataSize,
@@ -4143,10 +4143,10 @@ bool SpiderColl::scanListForWinners ( ) {
 					log("spider: got corrupt 3 "
 					    "spiderReply in "
 					    "scan "
-					    "uh48=%"INT64" "
-					    "httpstatus=%"INT32" "
-					    "datasize=%"INT32" "
-					    "(cn=%"INT32")",
+					    "uh48=%" INT64 " "
+					    "httpstatus=%" INT32 " "
+					    "datasize=%" INT32 " "
+					    "(cn=%" INT32 ")",
 					    tmp->getUrlHash48(),
 					    (int32_t)tmp->m_httpStatus,
 					    tmp->m_dataSize,
@@ -4174,8 +4174,8 @@ bool SpiderColl::scanListForWinners ( ) {
 			// bad langid?
 			if ( ! getLanguageAbbr (tmp->m_langId) ) {
 				log("spider: got corrupt 4 spiderReply in "
-				    "scan uh48=%"INT64" "
-				    "langid=%"INT32" (cn=%"INT32")",
+				    "scan uh48=%" INT64 " "
+				    "langid=%" INT32 " (cn=%" INT32 ")",
 				    tmp->getUrlHash48(),
 				    (int32_t)tmp->m_langId,
 				    (int32_t)m_collnum);
@@ -4419,7 +4419,7 @@ bool SpiderColl::scanListForWinners ( ) {
 			int32_t sh32 = sreq->m_siteHash32;
 			valPtr = (int32_t *)m_localTable.getValue(&sh32);
 			log("spider: sitequota: "
-			    "got %"INT32" indexed docs for site from "
+			    "got %" INT32 " indexed docs for site from "
 			    "firstip of %s from url %s",
 			    *valPtr,iptoa(fip),sreq->m_url);
 			continue;
@@ -4477,7 +4477,7 @@ bool SpiderColl::scanListForWinners ( ) {
 		     ! is_digit(sreq->m_url[0]) ) { 
 			if ( m_cr->m_spiderCorruptCount == 0 )
 				log("spider: got corrupt 1 spiderRequest in "
-				    "scan because url is %s (cn=%"INT32")"
+				    "scan because url is %s (cn=%" INT32 ")"
 				    ,sreq->m_url,(int32_t)m_collnum);
 			m_cr->m_spiderCorruptCount++;
 			continue;
@@ -4486,7 +4486,7 @@ bool SpiderColl::scanListForWinners ( ) {
 		     sreq->m_dataSize < 0 ) {
 			if ( m_cr->m_spiderCorruptCount == 0 )
 				log("spider: got corrupt 11 spiderRequest in "
-				    "scan because size=%i u=%s (cn=%"INT32")"
+				    "scan because size=%i u=%s (cn=%" INT32 ")"
 				    ,(int)sreq->m_dataSize
 				    ,sreq->m_url,(int32_t)m_collnum);
 			m_cr->m_spiderCorruptCount++;
@@ -4498,8 +4498,8 @@ bool SpiderColl::scanListForWinners ( ) {
 			if ( m_cr->m_spiderCorruptCount == 0 || s_first ) {
 				s_first = false;
 				log("spider: got corrupt 6 spiderRequest in "
-				    "scan because added time is %"INT32" "
-				    "(delta=%"INT32" "
+				    "scan because added time is %" INT32 " "
+				    "(delta=%" INT32 " "
 				    "which is well into the future. url=%s "
 				    "(cn=%i)"
 				    ,(int32_t)sreq->m_addedTime
@@ -4570,11 +4570,11 @@ bool SpiderColl::scanListForWinners ( ) {
 		if ( priority >= MAX_SPIDER_PRIORITIES) {char *xx=NULL;*xx=0;}
 
 		if ( g_conf.m_logDebugSpider )
-			log("spider: got ufn=%"INT32" for %s (%"INT64"",
+			log("spider: got ufn=%" INT32 " for %s (%" INT64 "",
 			    ufn,sreq->m_url,sreq->getUrlHash48());
 
 		if ( g_conf.m_logDebugSpider && srep )
-			log("spider: lastspidered=%"UINT32"",
+			log("spider: lastspidered=%" UINT32 "",
 			    srep->m_spideredTime);
 
 		
@@ -4605,14 +4605,14 @@ bool SpiderColl::scanListForWinners ( ) {
 		// sanity
 		if ( (int64_t)spiderTimeMS < 0 ) { 
 			log("spider: got corrupt 2 spiderRequest in "
-			    "scan (cn=%"INT32")",
+			    "scan (cn=%" INT32 ")",
 			    (int32_t)m_collnum);
 			continue;
 		}
 		// more corruption detection
 		if ( sreq->m_hopCount < -1 ) {
 			log("spider: got corrupt 5 spiderRequest in "
-			    "scan (cn=%"INT32")",
+			    "scan (cn=%" INT32 ")",
 			    (int32_t)m_collnum);
 			continue;
 		}
@@ -4622,7 +4622,7 @@ bool SpiderColl::scanListForWinners ( ) {
 		int64_t delta2 = spiderTimeMS - nowGlobalMS;
 		if ( delta2 > 86400LL*1000LL*100LL ) {
 			log("spider: got corrupt 7 spiderRequest in "
-			    "scan (cn=%"INT32") (delta=%"INT64") url=%s",
+			    "scan (cn=%" INT32 ") (delta=%" INT64 ") url=%s",
 			    (int32_t)m_collnum,
 			    delta2,
 			    sreq->m_url);
@@ -4719,8 +4719,8 @@ bool SpiderColl::scanListForWinners ( ) {
 
 		// debug. show candidates due to be spidered now.
 		//if(g_conf.m_logDebugSpider ) //&& spiderTimeMS< nowGlobalMS )
-		//	log("spider: considering ip=%s sreq spiderTimeMS=%"INT64" "
-		//	    "pri=%"INT32" uh48=%"INT64"",
+		//	log("spider: considering ip=%s sreq spiderTimeMS=%" INT64 " "
+		//	    "pri=%" INT32 " uh48=%" INT64 "",
 		//	    iptoa(sreq->m_firstIp),
 		//	    spiderTimeMS,
 		//	    priority,
@@ -4760,8 +4760,8 @@ bool SpiderColl::scanListForWinners ( ) {
 		int64_t key = makeLockTableKey ( sreq );
 
 		if ( g_conf.m_logDebugSpider )
-			log("spider: checking uh48=%"INT64" lockkey=%"INT64" "
-			    "used=%"INT32"",
+			log("spider: checking uh48=%" INT64 " lockkey=%" INT64 " "
+			    "used=%" INT32 "",
 			    uh48,key,
 			    g_spiderLoop.m_lockTable.getNumUsedSlots());
 
@@ -4775,7 +4775,7 @@ bool SpiderColl::scanListForWinners ( ) {
 			//ci->m_hasUrlsReadyToSpider = true;
 			// debug note
 			if ( g_conf.m_logDebugSpider )
-				log("spider: skipping url lockkey=%"INT64" in "
+				log("spider: skipping url lockkey=%" INT64 " in "
 				    "lock table sreq.url=%s",key,
 				    sreq->m_url);
 			continue;
@@ -4936,10 +4936,10 @@ bool SpiderColl::scanListForWinners ( ) {
 					      spiderTimeMS , uh48 );
 		//int32_t nn =;
 		m_winnerTree.addNode(0,(char *)&k,NULL,8);
-		//log("adding node #%"INT32" firstip=%s uh48=%"UINT64" "
-		//    "ufntree.k.n1=0x%"XINT64" "
-		//    "spiderdb.k.n1=0x%"XINT64" "
-		//    "spiderdb.k.n0=0x%"XINT64" "
+		//log("adding node #%" INT32 " firstip=%s uh48=%" UINT64 " "
+		//    "ufntree.k.n1=0x%" XINT64 " "
+		//    "spiderdb.k.n1=0x%" XINT64 " "
+		//    "spiderdb.k.n0=0x%" XINT64 " "
 		//    ,
 		//    nn,iptoa(firstIp),uh48,k.n1,
 		//    *(int64_t *)rec,
@@ -5025,7 +5025,7 @@ bool SpiderColl::scanListForWinners ( ) {
 		// // why we should be getting dups in winnertree because they
 		// // have the same uh48 and that is the key in the tree.
 		// if ( dedup.isInTable ( &winUh48 ) ) {
-		// 	log("spider: got dup uh48=%"UINT64" dammit", winUh48);
+		// 	log("spider: got dup uh48=%" UINT64 " dammit", winUh48);
 		// 	char *xx=NULL;*xx=0;
 		// 	continue;
 		// }
@@ -5135,10 +5135,10 @@ bool SpiderColl::scanListForWinners ( ) {
 		// note it
 		if ( g_conf.m_logDebugSpider ) {
 			log("spider: found winning request IN THIS LIST ip=%s "
-			    "spiderTimeMS=%"INT64" "
-			    "ufn=%"INT32" "
-			    "hadreply=%"INT32" "
-			    "pri=%"INT32" uh48=%"INT64" url=%s",
+			    "spiderTimeMS=%" INT64 " "
+			    "ufn=%" INT32 " "
+			    "hadreply=%" INT32 " "
+			    "pri=%" INT32 " uh48=%" INT64 " url=%s",
 			    iptoa(m_bestRequest->m_firstIp),
 			    m_bestSpiderTimeMS,
 			    (int32_t)m_bestRequest->m_ufn,
@@ -5152,7 +5152,7 @@ bool SpiderColl::scanListForWinners ( ) {
 	}
 	else if ( g_conf.m_logDebugSpider ) {
 		log("spider: did not find winning request for %s but "
-		    "bestReqValid=%"INT32"",
+		    "bestReqValid=%" INT32 "",
 		    iptoa(m_scanningIp),(int32_t)m_bestRequestValid);
 	}
 	*/
@@ -5179,10 +5179,10 @@ bool SpiderColl::scanListForWinners ( ) {
 
 	// debug info
 	if ( g_conf.m_logDebugSpider )
-		log("spider: Checked list of %"INT32" spiderdb "
-		    "bytes (%"INT32" recs) "
+		log("spider: Checked list of %" INT32 " spiderdb "
+		    "bytes (%" INT32 " recs) "
 		    "for winners "
-		    "for firstip=%s. winnerTreeUsedNodes=%"INT32" #newreqs=%"
+		    "for firstip=%s. winnerTreeUsedNodes=%" INT32 " #newreqs=%"
 		    INT64
 		    ,list->getListSize(),recCount,iptoa(m_scanningIp),
 		    m_winnerTree.getNumUsedNodes(),
@@ -5220,7 +5220,7 @@ bool SpiderColl::scanListForWinners ( ) {
 		return true;
 	m_lastOverflowFirstIp = firstIp;
 	if ( overflow && g_conf.m_logDebugSpider )
-		log("spider: firstip %s overflowing with %"INT32" new reqs",
+		log("spider: firstip %s overflowing with %" INT32 " new reqs",
 		    iptoa(firstIp),(int32_t)m_totalNewSpiderRequests);
 	for ( oi = 0 ; ; oi++ ) {
 		// sanity
@@ -5304,8 +5304,8 @@ bool SpiderColl::addWinnersIntoDoledb ( ) {
 	  MDW: let's print out recs we add to doledb
 	//if ( g_conf.m_logDebugSpider && m_bestRequestValid ) {
 	if ( g_conf.m_logDebugSpider && m_bestRequestValid ) {
-		log("spider: got best ip=%s sreq spiderTimeMS=%"INT64" "
-		    "pri=%"INT32" uh48=%"INT64"",
+		log("spider: got best ip=%s sreq spiderTimeMS=%" INT64 " "
+		    "pri=%" INT32 " uh48=%" INT64 "",
 		    iptoa(m_bestRequest->m_firstIp),
 		    m_bestSpiderTimeMS,
 		    (int32_t)m_bestRequest->m_priority,
@@ -5346,8 +5346,8 @@ bool SpiderColl::addWinnersIntoDoledb ( ) {
 		timestamp64 |= m_waitingTreeKey.n0 >> 32;
 		int32_t firstIp = m_waitingTreeKey.n0 &= 0xffffffff;
 		if ( g_conf.m_logDebugSpider )
-			log(LOG_DEBUG,"spider: removed2 time=%"INT64" ip=%s from "
-			    "waiting tree. nn=%"INT32".",
+			log(LOG_DEBUG,"spider: removed2 time=%" INT64 " ip=%s from "
+			    "waiting tree. nn=%" INT32 ".",
 			    timestamp64, iptoa(firstIp),
 			    m_waitingTree.m_numUsedNodes);
 
@@ -5438,7 +5438,7 @@ bool SpiderColl::addWinnersIntoDoledb ( ) {
 		// why we should be getting dups in winnertree because they
 		// have the same uh48 and that is the key in the tree.
 		if ( dedup.isInTable ( &winUh48 ) ) {
-			log("spider: got dup uh48=%"UINT64" dammit", winUh48);
+			log("spider: got dup uh48=%" UINT64 " dammit", winUh48);
 			continue;
 		}
 		// count it
@@ -5462,7 +5462,7 @@ bool SpiderColl::addWinnersIntoDoledb ( ) {
 		}
 	}
 
-	// log("spider: added %"INT32" doledb recs to cache for cn=%i "
+	// log("spider: added %" INT32 " doledb recs to cache for cn=%i "
 	//     "dolebufsize=%i",
 	//     added,
 	//     (int)m_collnum,
@@ -5525,7 +5525,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 	int32_t wn = m_waitingTree.getNode(0,(char *)&m_waitingTreeKey);
 	if ( wn < 0 ) { 
 		log("spider: waiting tree key removed while reading list for "
-		    "%s (%"INT32")",m_coll,(int32_t)m_collnum);
+		    "%s (%" INT32 ")",m_coll,(int32_t)m_collnum);
 		// play it safe and add it back for now...
 		// when i try to break here in gdb it never happens because
 		// of timing issues. heisenbug...
@@ -5552,7 +5552,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 	if ( outNow >= m_bestMaxSpidersPerIp ) {
 		// note it
 		if ( g_conf.m_logDebugSpider )
-			log("spider: already got %"INT32" from this ip out. ip=%s",
+			log("spider: already got %" INT32 " from this ip out. ip=%s",
 			    m_bestMaxSpidersPerIp,
 			    iptoa(m_scanningIp)
 			    );
@@ -5562,7 +5562,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 		if ( wn >= 0 ) {
 			m_waitingTree.deleteNode (wn,false );
 			// note that
-			//log("spdr: 1 del node %"INT32" for %s",wn,iptoa(firstIp));
+			//log("spdr: 1 del node %" INT32 " for %s",wn,iptoa(firstIp));
 		}
 		// keep the table in sync now with the time
 		m_waitingTable.removeKey( &m_bestRequest->m_firstIp );
@@ -5614,7 +5614,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 		//if ( wn < 0 ) { char *xx=NULL;*xx=0; }
 		if ( wn >= 0 ) {
 			m_waitingTree.deleteNode3 (wn,false );
-			//log("spdr: 2 del node %"INT32" for %s",wn,iptoa(firstIp));
+			//log("spdr: 2 del node %" INT32 " for %s",wn,iptoa(firstIp));
 		}
 
 		// invalidate
@@ -5624,8 +5624,8 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 		// log the replacement
 		if ( g_conf.m_logDebugSpider )
 			log("spider: scan replacing waitingtree key "
-			    "oldtime=%"UINT32" newtime=%"UINT32" firstip=%s",
-			    // bestpri=%"INT32" "
+			    "oldtime=%" UINT32 " newtime=%" UINT32 " firstip=%s",
+			    // bestpri=%" INT32 " "
 			    //"besturl=%s",
 			    (uint32_t)(oldSpiderTimeMS/1000LL),
 			    (uint32_t)(m_minFutureTimeMS/1000LL),
@@ -5637,8 +5637,8 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 		int32_t dn = m_waitingTree.addKey ( &wk2 );
 		// note it
 		if ( g_conf.m_logDebugSpider )
-			logf(LOG_DEBUG,"spider: RE-added time=%"INT64" ip=%s to "
-			    "waiting tree node %"INT32"",
+			logf(LOG_DEBUG,"spider: RE-added time=%" INT64 " ip=%s to "
+			    "waiting tree node %" INT32 "",
 			    m_minFutureTimeMS , iptoa(firstIp),dn);
 
 		// keep the table in sync now with the time
@@ -5670,7 +5670,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 	
 
 	if ( g_conf.m_logDebugSpider )
-		log("spider: got winner pdocid=%"INT64" url=%s",
+		log("spider: got winner pdocid=%" INT64 " url=%s",
 		    m_bestRequest->m_probDocId,
 		    m_bestRequest->m_url);
 
@@ -5812,9 +5812,9 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 		if ( newJump < 4 ) { char *xx=NULL;*xx=0;}
 		if ( g_conf.m_logDebugSpider ) // || m_collnum == 18752 )
 			log("spider: rdbcache: updating "
-			    "%"INT32" bytes of SpiderRequests "
-			    "to winnerlistcache for ip %s oldjump=%"INT32
-			    " newJump=%"INT32" ptr=0x%"PTRFMT,
+			    "%" INT32 " bytes of SpiderRequests "
+			    "to winnerlistcache for ip %s oldjump=%" INT32
+			    " newJump=%" INT32 " ptr=0x%" PTRFMT ,
 			    doleBuf->length(),iptoa(firstIp),oldJump,
 			    newJump,
 			    (PTRTYPE)x);
@@ -5877,7 +5877,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 	// tree then node will be < 0!
 	//if ( node < 0 ) { char *xx=NULL;*xx=0; }
 	if ( node >= 0 ) {
-		//log("deleting node #%"INT32" firstip=%s uh48=%"UINT64"",
+		//log("deleting node #%" INT32 " firstip=%s uh48=%" UINT64 "",
 		//    node,iptoa(firstIp),uh48);
 		s_ufnTree.deleteNode ( node , true );
 	}
@@ -5902,7 +5902,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 	g_doledb.m_rdb.addList ( m_collnum , &tmpList , MAX_NICENESS );
 
 	if ( g_conf.m_logDebugSpider )
-		log("spider: adding doledb tree node size=%"INT32"",
+		log("spider: adding doledb tree node size=%" INT32 "",
 		    doledbRecSize);
 
 
@@ -5935,8 +5935,8 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 		spiderTimeMS <<= 32;
 		spiderTimeMS |= (m_waitingTreeKey.n0 >> 32);
 		logf(LOG_DEBUG,"spider: removing doled waitingtree key"
-		     " spidertime=%"UINT64" firstIp=%s "
-		     //"pri=%"INT32" "
+		     " spidertime=%" UINT64 " firstIp=%s "
+		     //"pri=%" INT32 " "
 		     //"url=%s"
 		     ,spiderTimeMS,
 		     iptoa(storedFirstIp)
@@ -6052,7 +6052,7 @@ uint64_t SpiderColl::getSpiderTimeMS ( SpiderRequest *sreq,
 		if ( ! s_printed ) {
 			s_printed = true;
 			log("spider: min spider wait is 15 seconds, "
-			    "not %"UINT64" (ufn=%"INT32")",waitInSecs,ufn);
+			    "not %" UINT64 " (ufn=%" INT32 ")",waitInSecs,ufn);
 		}
 		waitInSecs = 15;//900; this was 15 minutes
 	}
@@ -6092,8 +6092,8 @@ bool SpiderColl::addToDoleTable ( SpiderRequest *sreq ) {
 		if ( score ) ss = *score + 1;
 		// if for some reason this collides with another key
 		// already in doledb then our counts are off
-		log("spider: added to doletbl uh48=%"UINT64" parentdocid=%"UINT64" "
-		    "ipdolecount=%"INT32" ufn=%"INT32" priority=%"INT32" firstip=%s",
+		log("spider: added to doletbl uh48=%" UINT64 " parentdocid=%" UINT64 " "
+		    "ipdolecount=%" INT32 " ufn=%" INT32 " priority=%" INT32 " firstip=%s",
 		    uh48,pdocid,ss,(int32_t)sreq->m_ufn,(int32_t)sreq->m_priority,
 		    iptoa(sreq->m_firstIp));
 	}
@@ -6106,14 +6106,14 @@ bool SpiderColl::addToDoleTable ( SpiderRequest *sreq ) {
 		// only one per ip!
 		// not any more! we allow MAX_WINNER_NODES per ip!
 		if ( *score > MAX_WINNER_NODES )
-			log("spider: crap. had %"INT32" recs in doledb for %s "
+			log("spider: crap. had %" INT32 " recs in doledb for %s "
 			    "from %s."
 			    "how did this happen?",
 			    (int32_t)*score,m_coll,iptoa(sreq->m_firstIp));
 		// now we log it too
 		if ( g_conf.m_logDebugSpider )
 			log(LOG_DEBUG,"spider: added ip=%s to doleiptable "
-			    "(score=%"INT32")",
+			    "(score=%" INT32 ")",
 			    iptoa(sreq->m_firstIp),*score);
 	}
 	else {
@@ -6401,7 +6401,7 @@ void doneSleepingWrapperSL ( int fd , void *state ) {
 		// match most likely
 		if ( tr != nextActive ) {
 			// this shouldn't happen much so log it
-			log("spider: collnum %"INT32" got deleted. "
+			log("spider: collnum %" INT32 " got deleted. "
 			    "rebuilding active list",
 			    (int32_t)nextActiveCollnum);
 			// rebuild the active list now
@@ -6439,7 +6439,7 @@ void doneSleepingWrapperSL ( int fd , void *state ) {
 			sc->m_waitingTreeNeedsRebuild = true;
 			log(LOG_INFO,
 			    "spider: hit spider queue "
-			    "rebuild timeout for %s (%"INT32")",
+			    "rebuild timeout for %s (%" INT32 ")",
 			    crp->m_coll,(int32_t)crp->m_collnum);
 			// flush the ufn table
 			//clearUfnTable();
@@ -6529,7 +6529,7 @@ void doneSendingNotification ( void *state ) {
 
 	// so we do not send for this status again, mark it as sent for
 	// but we reset sentCrawlDoneAlert to 0 on round increment below
-	//log("spider: setting sentCrawlDoneAlert status to %"INT32"",
+	//log("spider: setting sentCrawlDoneAlert status to %" INT32 "",
 	//    (int32_t)cr->m_spiderStatus);
 
 	// mark it as sent. anytime a new url is spidered will mark this
@@ -6614,10 +6614,10 @@ void doneSendingNotification ( void *state ) {
 	// sync with us using the parm sync code, msg3e, every 13.5 seconds.
 	//cr->m_spiderRoundStartTime += respiderFreq;
 	char roundTime[128];
-	sprintf(roundTime,"%"UINT32"", (uint32_t)(getTimeGlobal() + seconds));
+	sprintf(roundTime,"%" UINT32 "", (uint32_t)(getTimeGlobal() + seconds));
 	// roundNum++ round++
 	char roundStr[128];
-	sprintf(roundStr,"%"INT32"", cr->m_spiderRoundNum + 1);
+	sprintf(roundStr,"%" INT32 "", cr->m_spiderRoundNum + 1);
 
 	// waiting tree will usually be empty for this coll since no
 	// spider requests had a valid spider priority, so let's rebuild!
@@ -6642,7 +6642,7 @@ void doneSendingNotification ( void *state ) {
 	g_parms.broadcastParmList ( &parmList , NULL , NULL );
 
 	// log it
-	log("spider: new round #%"INT32" starttime = %"UINT32" for %s"
+	log("spider: new round #%" INT32 " starttime = %" UINT32 " for %s"
 	    , cr->m_spiderRoundNum
 	    , (uint32_t)cr->m_spiderRoundStartTime
 	    , cr->m_coll
@@ -6664,9 +6664,9 @@ bool sendNotificationForCollRec ( CollectionRec *cr )  {
 	if ( ! cr->m_spiderStatus ) { char *xx=NULL; *xx=0; }
 
 	log(LOG_INFO,
-	    "spider: sending notification for crawl status %"INT32" in "
+	    "spider: sending notification for crawl status %" INT32 " in "
 	    "coll %s. "
-	    //"current sent state is %"INT32""
+	    //"current sent state is %" INT32 ""
 	    ,(int32_t)cr->m_spiderStatus
 	    ,cr->m_coll
 	    //cr->m_spiderStatusMsg,
@@ -6762,7 +6762,7 @@ void SpiderLoop::spiderDoledUrls ( ) {
 
 	//if ( g_conf.m_logDebugSpider )
 	//	log("spider: trying to get a doledb rec to spider. "
-	//	    "currentnumout=%"INT32"",m_numSpidersOut);
+	//	    "currentnumout=%" INT32 "",m_numSpidersOut);
 
 	m_lastCallTime = gettimeofdayInMillisecondsLocal();
 
@@ -6803,7 +6803,7 @@ void SpiderLoop::spiderDoledUrls ( ) {
 	CollectionRec *cr = NULL;
 	uint32_t nowGlobal = 0;
 	// debug
-	//log("spider: m_cri=%"INT32"",(int32_t)m_cri);
+	//log("spider: m_cri=%" INT32 "",(int32_t)m_cri);
 	// . get the next collection to spider
 	// . just alternate them
 	//for ( ; count > 0 ; m_cri++ , count-- ) {
@@ -7056,7 +7056,7 @@ void SpiderLoop::spiderDoledUrls ( ) {
 
 		// debug log
 		//if ( g_conf.m_logDebugSpider )
-		//	log("spider: has %"INT32" spiders out",m_sc->m_spidersOut);
+		//	log("spider: has %" INT32 " spiders out",m_sc->m_spidersOut);
 		// obey max spiders per collection too
 		if ( m_sc->m_spidersOut >= maxSpiders )
 			goto subloop;
@@ -7307,8 +7307,8 @@ void SpiderLoop::spiderDoledUrls ( ) {
 		// return if it blocked
 		return ;
 	// debug
-	//log(LOG_DEBUG,"spider: read list of %"INT32" bytes from spiderdb for "
-	//    "pri=%"INT32"+",m_list.m_listSize,(int32_t)m_sc->m_pri);
+	//log(LOG_DEBUG,"spider: read list of %" INT32 " bytes from spiderdb for "
+	//    "pri=%" INT32 "+",m_list.m_listSize,(int32_t)m_sc->m_pri);
 	// breathe
 	QUICKPOLL ( MAX_NICENESS );
 
@@ -7417,8 +7417,8 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 		int64_t took = now - m_doleStart;
 		if ( took > 2 )
 			logf(LOG_DEBUG,"spider: GOT list from doledb in "
-			     "%"INT64"ms "
-			     "size=%"INT32" bytes",
+			     "%" INT64 "ms "
+			     "size=%" INT32 " bytes",
 			     took,m_list.getListSize());
 	}
 
@@ -7462,13 +7462,13 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 	
 		// if no spiders...
 		//if ( g_conf.m_logDebugSpider ) {
-		//	log("spider: empty doledblist collnum=%"INT32" "
-		//	    "inwaitingtree=%"INT32"",
+		//	log("spider: empty doledblist collnum=%" INT32 " "
+		//	    "inwaitingtree=%" INT32 "",
 		//	    (int32_t)cr->m_collnum,
 		//	    m_sc->m_waitingTree.m_numUsedNodes);
 		//}
 		//if ( g_conf.m_logDebugSpider )
-		//	log("spider: resetting doledb priority pri=%"INT32"",
+		//	log("spider: resetting doledb priority pri=%" INT32 "",
 		//	    m_sc->m_pri);
 		// trigger a reset
 		//m_sc->m_pri = -1;
@@ -7500,7 +7500,7 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 		int32_t stm = g_doledb.getSpiderTime(&m_sc->m_nextDoledbKey);
 		int64_t uh48 = g_doledb.getUrlHash48(&m_sc->m_nextDoledbKey);
 		logf(LOG_DEBUG,"spider: loading list from doledb startkey=%s"
-		     " pri=%"INT32" time=%"UINT32" uh48=%"UINT64"",
+		     " pri=%" INT32 " time=%" UINT32 " uh48=%" UINT64 "",
 		     KEYSTR(&m_sc->m_nextDoledbKey,12),
 		     pri,
 		     stm,
@@ -7581,8 +7581,8 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 
 	if ( g_conf.m_logDebugSpider ) {
 		int32_t pri4 = g_doledb.getPriority ( &m_sc->m_nextDoledbKey );
-		log("spider: setting pri2=%"INT32" queue doledb nextkey to "
-		    "%s (pri=%"INT32")",
+		log("spider: setting pri2=%" INT32 " queue doledb nextkey to "
+		    "%s (pri=%" INT32 ")",
 		    m_sc->m_pri2,KEYSTR(&m_sc->m_nextDoledbKey,12),pri4);
 		//if ( pri4 != m_sc->m_pri2 ) { char *xx=NULL;*xx=0; }
 	}
@@ -7744,7 +7744,7 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 	}
 
 	if ( g_conf.m_logDebugSpider )
-		log("spider: %"INT32" spiders out for %s for %s",
+		log("spider: %" INT32 " spiders out for %s for %s",
 		    ipOut,iptoa(sreq->m_firstIp),
 		    sreq->m_url);
 
@@ -7768,7 +7768,7 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 		if ( nowGlobal - s_lastTime >= 2 ) {
 			// why is it not getting unlocked!?!?!
 			log("spider: spider request locked but still in "
-			    "doledb. uh48=%"INT64" firstip=%s %s",
+			    "doledb. uh48=%" INT64 " firstip=%s %s",
 			    sreq->getUrlHash48(), 
 			    iptoa(sreq->m_firstIp),sreq->m_url );
 			s_lastTime = nowGlobal;
@@ -7904,7 +7904,7 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 
 	// if we thought we were done, note it if something comes back up
 	if ( ! ci->m_hasUrlsReadyToSpider ) 
-		log("spider: got a reviving url for coll %s (%"INT32") to crawl %s",
+		log("spider: got a reviving url for coll %s (%" INT32 ") to crawl %s",
 		    cr->m_coll,(int32_t)cr->m_collnum,sreq->m_url);
 
 	// if changing status, resend our local crawl info to all hosts?
@@ -8087,7 +8087,7 @@ bool SpiderLoop::spiderUrl9 ( SpiderRequest *sreq ,
 		// don't spam the log, bug let people know about it
 		if ( now - s_lastTime > 10 ) {
 			log("spider: Need 25MB of free mem to launch spider, "
-			    "only have %"INT64". Failed to launch %"INT32" times so "
+			    "only have %" INT64 ". Failed to launch %" INT32 " times so "
 			    "far.", g_conf.m_maxMem - g_mem.m_used , s_missed );
 			s_lastTime = now;
 		}
@@ -8155,7 +8155,7 @@ bool SpiderLoop::spiderUrl9 ( SpiderRequest *sreq ,
 		// log it
 		if ( g_conf.m_logDebugSpider )
 			logf(LOG_DEBUG,"spider: we are already spidering %s "
-			     "lockkey=%"UINT64"",sreq->m_url,lockKeyUh48);
+			     "lockkey=%" UINT64 "",sreq->m_url,lockKeyUh48);
 		// all done, no lock granted...
 		return true;
 	}
@@ -8185,7 +8185,7 @@ bool SpiderLoop::spiderUrl9 ( SpiderRequest *sreq ,
 	// the lockTable check above because we do not control our own
 	// lock now necessarily. it often is in another group's lockTable.
 	//if ( g_spiderLoop.m_lockTable.isInTable(&lockKey) ) {
-	//	log("spider: already have lock for lockKey=%"UINT64"",lockKey);
+	//	log("spider: already have lock for lockKey=%" UINT64 "",lockKey);
 	//	// proceed
 	//	return spiderUrl2();
 	//}
@@ -8199,7 +8199,7 @@ bool SpiderLoop::spiderUrl9 ( SpiderRequest *sreq ,
 							true);
 
 	if ( g_conf.m_logDebugSpider )
-		log("spider: deleting doledb tree node %"INT32,node);
+		log("spider: deleting doledb tree node %" INT32 ,node);
 
 	// if url filters rebuilt then doledb gets reset and i've seen us hit
 	// this node == -1 condition here... so maybe ignore it... just log
@@ -8255,7 +8255,7 @@ bool SpiderLoop::spiderUrl9 ( SpiderRequest *sreq ,
 	tmp.m_confirmed = 1;
 	tmp.m_collnum = m_collnum;
 	if ( g_conf.m_logDebugSpider )
-		log("spider: adding lock uh48=%"INT64" lockkey=%"INT64"",
+		log("spider: adding lock uh48=%" INT64 " lockkey=%" INT64 "",
 		    m_sreq->getUrlHash48(),lockKeyUh48);
 	if ( ! ht->addKey ( &lockKeyUh48 , &tmp ) )
 		return true;
@@ -8315,7 +8315,7 @@ bool SpiderLoop::spiderUrl2 ( ) {
 
 	// come back later if we're full
 	if ( i >= MAX_SPIDERS ) {
-		log(LOG_DEBUG,"build: Already have %"INT32" outstanding spiders.",
+		log(LOG_DEBUG,"build: Already have %" INT32 " outstanding spiders.",
 		    (int32_t)MAX_SPIDERS);
 		char *xx = NULL; *xx = 0;
 	}
@@ -8329,7 +8329,7 @@ bool SpiderLoop::spiderUrl2 ( ) {
 	// bail on failure, sleep and try again
 	catch ( ... ) { 
 		g_errno = ENOMEM;
-		log("build: Could not allocate %"INT32" bytes to spider "
+		log("build: Could not allocate %" INT32 " bytes to spider "
 		    "the url %s. Will retry later.",
 		    (int32_t)sizeof(XmlDoc),  m_sreq->m_url );
 		return true;
@@ -8367,13 +8367,13 @@ bool SpiderLoop::spiderUrl2 ( ) {
 	//	// for now core on this
 	//	if ( ! sreq2 ) {  char *xx=NULL;*xx=0; }
 	//	// log it
-	//	logf(LOG_DEBUG,"spider: spidering uh48=%"UINT64" pdocid=%"UINT64"",
+	//	logf(LOG_DEBUG,"spider: spidering uh48=%" UINT64 " pdocid=%" UINT64 "",
 	//	     uh48,pdocid);
 	//}
 
 	if ( g_conf.m_logDebugSpider )
-		logf(LOG_DEBUG,"spider: spidering firstip9=%s(%"UINT32") "
-		     "uh48=%"UINT64" prntdocid=%"UINT64" k.n1=%"UINT64" k.n0=%"UINT64"",
+		logf(LOG_DEBUG,"spider: spidering firstip9=%s(%" UINT32 ") "
+		     "uh48=%" UINT64 " prntdocid=%" UINT64 " k.n1=%" UINT64 " k.n0=%" UINT64 "",
 		     iptoa(m_sreq->m_firstIp),
 		     (uint32_t)m_sreq->m_firstIp,
 		     m_sreq->getUrlHash48(),
@@ -8450,14 +8450,14 @@ bool SpiderLoop::spiderUrl2 ( ) {
 	m_sc->m_outstandingSpiders[(unsigned char)m_sreq->m_priority]++;
 
 	if ( g_conf.m_logDebugSpider )
-		log(LOG_DEBUG,"spider: sc_out=%"INT32" waiting=%"INT32" url=%s",
+		log(LOG_DEBUG,"spider: sc_out=%" INT32 " waiting=%" INT32 " url=%s",
 		    m_sc->m_spidersOut,
 		    m_sc->m_waitingTree.m_numUsedNodes,
 		    m_sreq->m_url);
 
 
 	// debug log
-	//log("XXX: incremented count to %"INT32" for %s",
+	//log("XXX: incremented count to %" INT32 " for %s",
 	//    m_sc->m_spidersOut,m_sreq->m_url);
 	//if ( m_sc->m_spidersOut != m_numSpidersOut ) { char *xx=NULL;*xx=0; }
 
@@ -8553,7 +8553,7 @@ bool SpiderLoop::indexedDoc ( XmlDoc *xd ) {
 	if ( sc ) sc->m_outstandingSpiders[(unsigned char)sreq->m_priority]--;
 
 	// debug log
-	//log("XXX: decremented count to %"INT32" for %s",
+	//log("XXX: decremented count to %" INT32 " for %s",
 	//    sc->m_spidersOut,sreq->m_url);
 	//if ( sc->m_spidersOut != m_numSpidersOut ) { char *xx=NULL;*xx=0; }
 
@@ -8580,20 +8580,20 @@ bool SpiderLoop::indexedDoc ( XmlDoc *xd ) {
 		// get the first url
 		Url *u = xd->getFirstUrl();
 		// . get its hash
-		// . should be same hash we use to store doc.%"UINT64".html in
+		// . should be same hash we use to store doc.%" UINT64 ".html in
 		//   XmlDoc.cpp/Msg13.cpp stuff (getTestDoc())
 		int64_t h = hash64 ( u->getUrl() , u->getUrlLen() );
 		char *testDir = g_test.getTestDir();
 		// make filename to dump out to
 		char fn[1024]; 
-		sprintf(fn,"%s/%s/parse.%"UINT64".%"UINT32".html",
+		sprintf(fn,"%s/%s/parse.%" UINT64 ".%" UINT32 ".html",
 			g_hostdb.m_dir,testDir,h,g_test.m_runId);
 		// . dump it out to a file
 		// . WATCH OUT. g_errno is set on internal errors, like OOM
 		//   or whatever, so don't save in those cases...???????
 		sb.dumpToFile ( fn );
 		// just dump the <div class=shotdisplay> tags into this file
-		sprintf(fn,"%s/%s/parse-int16_tdisplay.%"UINT64".%"UINT32".html",
+		sprintf(fn,"%s/%s/parse-int16_tdisplay.%" UINT64 ".%" UINT32 ".html",
 			g_hostdb.m_dir,testDir,h,g_test.m_runId);
 		// output to a special file
 		SafeBuf tmp;
@@ -8618,12 +8618,12 @@ bool SpiderLoop::indexedDoc ( XmlDoc *xd ) {
 		//if ( xd->m_validateMisses > 0 || xd->m_validateFlagged ) {
 		// make the critical file filename
 		char cf[1024];
-		sprintf (cf,"%s/%s/critical.%"UINT64".%"UINT32".txt",
+		sprintf (cf,"%s/%s/critical.%" UINT64 ".%" UINT32 ".txt",
 			 g_hostdb.m_dir,testDir,h,g_test.m_runId);
 		// save to that
 		ttt.dumpToFile ( cf );
 		//char cmd[256];
-		//sprintf(cmd,"touch %s/test/critical.%"UINT64".%"UINT32".txt",
+		//sprintf(cmd,"touch %s/test/critical.%" UINT64 ".%" UINT32 ".txt",
 		//	g_hostdb.m_dir,h,g_test.m_runId);
 		//system(cmd);
 
@@ -8657,10 +8657,10 @@ bool SpiderLoop::indexedDoc ( XmlDoc *xd ) {
 		// log("spider: ------ *** LOCAL ERROR ***  ------");
 		// log("spider: ------ *** LOCAL ERROR ***  ------");
 		// log("spider: ------ *** LOCAL ERROR ***  ------");
-		log("spider: spidering %s has error: %s. uh48=%"INT64". "
+		log("spider: spidering %s has error: %s. uh48=%" INT64 ". "
 		    //"Respidering "
-		    //"in %"INT32" seconds. MAX_LOCK_AGE when lock expires. "
-		    "cn=%"INT32"",
+		    //"in %" INT32 " seconds. MAX_LOCK_AGE when lock expires. "
+		    "cn=%" INT32 "",
 		    xd->m_firstUrl.m_url,
 		    mstrerror(g_errno),
 		    xd->getFirstUrlHash48(),
@@ -8836,13 +8836,13 @@ bool Msg12::getLocks ( int64_t uh48, // probDocId ,
 	if ( lockTime >= 0 ) {
 		if ( g_conf.m_logDebugSpider )
 			logf(LOG_DEBUG,"spider: cached missed lock for %s "
-			     "lockkey=%"UINT64"", m_url,m_lockKeyUh48);
+			     "lockkey=%" UINT64 "", m_url,m_lockKeyUh48);
 		return true;
 	}
 
 	if ( g_conf.m_logDebugSpider )
 		logf(LOG_DEBUG,"spider: sending lock request for %s "
-		     "lockkey=%"UINT64"",  m_url,m_lockKeyUh48);
+		     "lockkey=%" UINT64 "",  m_url,m_lockKeyUh48);
 
 	// now the locking group is based on the probable docid
 	//m_lockGroupId = g_hostdb.getGroupIdFromDocId(m_lockKey);
@@ -8884,8 +8884,8 @@ bool Msg12::getLocks ( int64_t uh48, // probDocId ,
 		// note it
 		if ( g_conf.m_logDebugSpider )
 			logf(LOG_DEBUG,"spider: sent lock "
-			     "request #%"INT32" for lockkey=%"UINT64" %s to "
-			     "hid=%"INT32"",m_numRequests,m_lockKeyUh48,
+			     "request #%" INT32 " for lockkey=%" UINT64 " %s to "
+			     "hid=%" INT32 "",m_numRequests,m_lockKeyUh48,
 			     m_url,h->m_hostId);
 		// send request to him
 		if ( ! us->sendRequest ( request      ,
@@ -8910,7 +8910,7 @@ bool Msg12::getLocks ( int64_t uh48, // probDocId ,
 	// m_hasLock should be false... all lock hosts seem dead... wait
 	if ( g_conf.m_logDebugSpider )
 		logf(LOG_DEBUG,"spider: all lock hosts seem dead for %s "
-		     "lockkey=%"UINT64"", m_url,m_lockKeyUh48);
+		     "lockkey=%" UINT64 "", m_url,m_lockKeyUh48);
 	return true;
 }
 
@@ -9001,7 +9001,7 @@ bool Msg12::gotLockReply ( UdpSlot *slot ) {
 		// note it
 		if ( g_conf.m_logDebugSpider )
 		      logf(LOG_DEBUG,"spider: done removing all locks "
-			   "(replies=%"INT32") for %s",
+			   "(replies=%" INT32 ") for %s",
 			   m_numReplies,m_url);//m_sreq->m_url);
 		// we are done
 		m_gettingLocks = false;
@@ -9012,7 +9012,7 @@ bool Msg12::gotLockReply ( UdpSlot *slot ) {
 		// note it
 		if ( g_conf.m_logDebugSpider )
 		      logf(LOG_DEBUG,"spider: done confirming all locks "
-			   "for %s uh48=%"INT64"",m_url,m_origUh48);//m_sreq->m_url);
+			   "for %s uh48=%" INT64 "",m_url,m_origUh48);//m_sreq->m_url);
 		// we are done
 		m_gettingLocks = false;
 		// . keep processing
@@ -9027,7 +9027,7 @@ bool Msg12::gotLockReply ( UdpSlot *slot ) {
 	if ( m_grants == m_numReplies ) {
 		// note it
 		if ( g_conf.m_logDebugSpider )
-		      logf(LOG_DEBUG,"spider: got lock for docid=lockkey=%"UINT64"",
+		      logf(LOG_DEBUG,"spider: got lock for docid=lockkey=%" UINT64 "",
 			   m_lockKeyUh48);
 		// flag this
 		m_hasLock = true;
@@ -9060,8 +9060,8 @@ bool Msg12::gotLockReply ( UdpSlot *slot ) {
 	}
 	// note it
 	if ( g_conf.m_logDebugSpider )
-		logf(LOG_DEBUG,"spider: missed lock for %s lockkey=%"UINT64" "
-		     "(grants=%"INT32")",   m_url,m_lockKeyUh48,m_grants);
+		logf(LOG_DEBUG,"spider: missed lock for %s lockkey=%" UINT64 " "
+		     "(grants=%" INT32 ")",   m_url,m_lockKeyUh48,m_grants);
 
 	// . if it was locked by another then add to our lock cache so we do
 	//   not try to lock it again
@@ -9089,7 +9089,7 @@ bool Msg12::gotLockReply ( UdpSlot *slot ) {
 	// note that
 	if ( g_conf.m_logDebugSpider )
 		logf(LOG_DEBUG,"spider: sending request to all in shard to "
-		     "remove lock uh48=%"UINT64". grants=%"INT32"",
+		     "remove lock uh48=%" UINT64 ". grants=%" INT32 "",
 		     m_lockKeyUh48,(int32_t)m_grants);
 	// remove all locks we tried to get, BUT only if from our hostid!
 	// no no! that doesn't quite work right... we might be the ones
@@ -9111,7 +9111,7 @@ bool Msg12::removeAllLocks ( ) {
 	// skip if injecting
 	//if ( m_sreq->m_isInjecting ) return true;
 	if ( g_conf.m_logDebugSpider )
-		logf(LOG_DEBUG,"spider: removing all locks for %s %"UINT64"",
+		logf(LOG_DEBUG,"spider: removing all locks for %s %" UINT64 "",
 		     m_url,m_lockKeyUh48);
 	// we are now removing 
 	m_removing = true;
@@ -9219,7 +9219,7 @@ bool Msg12::confirmLockAcquisition ( ) {
 	m_numReplies  = 0;
 	// note it
 	if ( g_conf.m_logDebugSpider )
-		log("spider: confirming lock for uh48=%"UINT64" firstip=%s",
+		log("spider: confirming lock for uh48=%" UINT64 " firstip=%s",
 		    m_lockKeyUh48,iptoa(m_firstIp));
 	// loop over hosts in that shard
 	for ( int32_t i = 0 ; i < hpg ; i++ ) {
@@ -9386,7 +9386,7 @@ void handleRequest12 ( UdpSlot *udpSlot , int32_t niceness ) {
 
 	// sanity check
 	if ( reqSize != sizeof(LockRequest) ) {
-		log("spider: bad msg12 request size of %"INT32"",reqSize);
+		log("spider: bad msg12 request size of %" INT32 "",reqSize);
 		us->sendErrorReply ( udpSlot , EBADREQUEST );
 		return;
 	}
@@ -9415,7 +9415,7 @@ void handleRequest12 ( UdpSlot *udpSlot , int32_t niceness ) {
 	if ( lr->m_lockKeyUh48 &0xffff000000000000LL ) { char *xx=NULL;*xx=0; }
 	// note it
 	if ( g_conf.m_logDebugSpider )
-		log("spider: got msg12 request uh48=%"INT64" remove=%"INT32"",
+		log("spider: got msg12 request uh48=%" INT64 " remove=%" INT32 "",
 		    lr->m_lockKeyUh48, (int32_t)lr->m_removeLock);
 	// get time
 	int32_t nowGlobal = getTimeGlobal();
@@ -9445,7 +9445,7 @@ void handleRequest12 ( UdpSlot *udpSlot , int32_t niceness ) {
 	     lock->m_lockSequence == lr->m_lockSequence ) {
 		// note it for now
 		if ( g_conf.m_logDebugSpider )
-			log("spider: removing lock for lockkey=%"UINT64" hid=%"INT32"",
+			log("spider: removing lock for lockkey=%" UINT64 " hid=%" INT32 "",
 			    lr->m_lockKeyUh48,hostId);
 		// unlock it
 		ht->removeSlot ( slot );
@@ -9469,8 +9469,8 @@ void handleRequest12 ( UdpSlot *udpSlot , int32_t niceness ) {
 	// if lock > 1 hour old then remove it automatically!!
 	if ( lock && nowGlobal - lock->m_timestamp > MAX_LOCK_AGE ) {
 		// note it for now
-		log("spider: removing lock after %"INT32" seconds "
-		    "for lockKey=%"UINT64" hid=%"INT32"",
+		log("spider: removing lock after %" INT32 " seconds "
+		    "for lockKey=%" UINT64 " hid=%" INT32 "",
 		    (nowGlobal - lock->m_timestamp),
 		    lr->m_lockKeyUh48,hostId);
 		// unlock it
@@ -9482,7 +9482,7 @@ void handleRequest12 ( UdpSlot *udpSlot , int32_t niceness ) {
 	if ( lock ) {
 		// note it for now
 		if ( g_conf.m_logDebugSpider )
-			log("spider: refusing lock for lockkey=%"UINT64" hid=%"INT32"",
+			log("spider: refusing lock for lockkey=%" UINT64 " hid=%" INT32 "",
 			    lr->m_lockKeyUh48,hostId);
 		reply[0] = 0;
 		us->sendReply_ass ( reply , 1 , reply , 1 , udpSlot );
@@ -9520,7 +9520,7 @@ void handleRequest12 ( UdpSlot *udpSlot , int32_t niceness ) {
 	}
 	// note it for now
 	if ( g_conf.m_logDebugSpider )
-		log("spider: granting lock for lockKey=%"UINT64" hid=%"INT32"",
+		log("spider: granting lock for lockKey=%" UINT64 " hid=%" INT32 "",
 		    lr->m_lockKeyUh48,hostId);
 	// grant the lock
 	reply[0] = 1;
@@ -9568,7 +9568,7 @@ void removeExpiredLocks ( int32_t hostId ) {
 		if ( collnum >= g_collectiondb.m_numRecs ||
 		     ! g_collectiondb.m_recs[collnum] ) {
 			log("spider: removing lock from missing collnum "
-			    "%"INT32"",(int32_t)collnum);
+			    "%" INT32 "",(int32_t)collnum);
 			goto nuke;
 		}
 		// skip if not yet expired
@@ -9576,9 +9576,9 @@ void removeExpiredLocks ( int32_t hostId ) {
 		if ( lock->m_expires >= nowGlobal ) continue;
 		// note it for now
 		if ( g_conf.m_logDebugSpider )
-			log("spider: removing lock after waiting. elapsed=%"INT32"."
-			    " lockKey=%"UINT64" hid=%"INT32" expires=%"UINT32" "
-			    "nowGlobal=%"UINT32"",
+			log("spider: removing lock after waiting. elapsed=%" INT32 "."
+			    " lockKey=%" UINT64 " hid=%" INT32 " expires=%" UINT32 " "
+			    "nowGlobal=%" UINT32 "",
 			    (nowGlobal - lock->m_timestamp),
 			    lockKey,hostId,
 			    (uint32_t)lock->m_expires,
@@ -9797,7 +9797,7 @@ bool sendPage ( State11 *st ) {
 	SafeBuf *sbTable = &st->m_safeBuf;
 
 	// generate a query string to pass to host bar
-	char qs[64]; sprintf ( qs , "&n=%"INT32"", st->m_numRecs );
+	char qs[64]; sprintf ( qs , "&n=%" INT32 "", st->m_numRecs );
 
 	// store the page in here!
 	SafeBuf sb;
@@ -9853,8 +9853,8 @@ bool sendPage ( State11 *st ) {
 			"<tr><td colspan=50>"
 			//"<center>"
 			"<b>Currently Spidering on This Host</b>"
-			" (%"INT32" spiders)"
-			//" (%"INT32" locks)"
+			" (%" INT32 " spiders)"
+			//" (%" INT32 " locks)"
 			//"</center>"
 			"</td></tr>\n"
 			, TABLE_STYLE
@@ -10088,14 +10088,14 @@ bool sendPage ( State11 *st ) {
 		       "</td></tr>"
 
 		       "<tr class=poo><td><b>Total Spiders</n>"
-		       "</td><td>%"INT64"</td><td>%"INT64"</td><td>%"INT64"</td>\n"
-		       "</td><td>%"INT32"</td><td>%"INT32"</td><td>%"INT32"</td></tr>\n"
+		       "</td><td>%" INT64 "</td><td>%" INT64 "</td><td>%" INT64 "</td>\n"
+		       "</td><td>%" INT32 "</td><td>%" INT32 "</td><td>%" INT32 "</td></tr>\n"
 		       //"<tr class=poo><td><b>Successful Spiders</n>"
-		       //"</td><td>%"INT64"</td><td>%"INT64"</td><td>%"INT64"</td>\n"
-		       //"</td><td>%"INT32"</td><td>%"INT32"</td><td>%"INT32"</td></tr>\n"
+		       //"</td><td>%" INT64 "</td><td>%" INT64 "</td><td>%" INT64 "</td>\n"
+		       //"</td><td>%" INT32 "</td><td>%" INT32 "</td><td>%" INT32 "</td></tr>\n"
 		       //"<tr class=poo><td><b>Failed Spiders</n>"
-		       //"</td><td>%"INT64"</td><td>%"INT64"</td><td>%"INT64"</td>\n"
-		       //"</td><td>%"INT32"</td><td>%"INT32"</td><td>%"INT32"</td></tr>\n"
+		       //"</td><td>%" INT64 "</td><td>%" INT64 "</td><td>%" INT64 "</td>\n"
+		       //"</td><td>%" INT32 "</td><td>%" INT32 "</td><td>%" INT32 "</td></tr>\n"
 		       "<tr class=poo><td><b>Success Rate</b>"
 		       "</td><td>%.02f%%</td><td>%.02f%%</td>"
 		       "</td><td>%.02f%%</td><td>%.02f%%</td>"
@@ -10159,12 +10159,12 @@ bool sendPage ( State11 *st ) {
 			       "%s"
 			       "</a>"
 			       "</b></td>"
-			       "<td>%"INT64"</td>"
-			       "<td>%"INT64"</td>"
-			       "<td>%"INT64"</td>"
-			       "<td>%"INT32"</td>"
-			       "<td>%"INT32"</td>"
-			       "<td>%"INT32"</td>"
+			       "<td>%" INT64 "</td>"
+			       "<td>%" INT64 "</td>"
+			       "<td>%" INT64 "</td>"
+			       "<td>%" INT32 "</td>"
+			       "<td>%" INT32 "</td>"
+			       "<td>%" INT32 "</td>"
 			       "</tr>\n" ,
 			       mstrerror(i),
 			       g_stats.m_allErrorsNew[i] +
@@ -10315,7 +10315,7 @@ bool sendPage ( State11 *st ) {
 			"<b>URLs Ready to Spider for collection "
 			"<font color=red><b>%s</b>"
 			"</font>"
-			" (%"INT32" ips in doleiptable)"
+			" (%" INT32 " ips in doleiptable)"
 			,
 			TABLE_STYLE,
 			st->m_coll ,
@@ -10327,7 +10327,7 @@ bool sendPage ( State11 *st ) {
 	char time[256];
 	timeStruct = gmtime ( &nowUTC );
 	strftime ( time , 256 , "%b %e %T %Y UTC", timeStruct );
-	sb.safePrintf("</b>" //  (current time = %s = %"UINT32") "
+	sb.safePrintf("</b>" //  (current time = %s = %" UINT32 ") "
 		      "</td></tr>\n" 
 		      //,time,nowUTC
 		      );
@@ -10360,8 +10360,8 @@ bool sendPage ( State11 *st ) {
 			st->m_coll );
 	// print time format: 7/23/1971 10:45:32
 	int64_t timems = gettimeofdayInMillisecondsGlobal();
-	sb.safePrintf("</b> (current time = %"UINT64")(totalcount=%"INT32")"
-		      "(waittablecount=%"INT32")",
+	sb.safePrintf("</b> (current time = %" UINT64 ")(totalcount=%" INT32 ")"
+		      "(waittablecount=%" INT32 ")",
 		      timems,
 		      sc->m_waitingTree.getNumUsedNodes(),
 		      sc->m_waitingTable.getNumUsedSlots());
@@ -10409,7 +10409,7 @@ bool sendPage ( State11 *st ) {
 		// 		"SpiderRequest?</font></b>)";
 		// get the rest of the data
 		sb.safePrintf("<tr bgcolor=#%s>"
-			      "<td>%"INT64"%s</td>"
+			      "<td>%" INT64 "%s</td>"
 			      "<td>%s</td>"
 			      "</tr>\n",
 			      LIGHT_BLUE,
@@ -12650,7 +12650,7 @@ int32_t getUrlFilterNum2 ( SpiderRequest *sreq       ,
 			if ( ! valPtr ) a=0;//continue;//{char *xx=NULL;*xx=0;}
 			// int16_tcut
 			else a = *valPtr;
-			//log("siteadds=%"INT32" for %s",a,sreq->m_url);
+			//log("siteadds=%" INT32 " for %s",a,sreq->m_url);
 			// what is the provided value in the url filter rule?
 			int32_t b = atoi(s);
 			// compare
@@ -12730,7 +12730,7 @@ int32_t getUrlFilterNum2 ( SpiderRequest *sreq       ,
 			if ( ! valPtr ) a = 0;//{ char *xx=NULL;*xx=0; }
 			else a = *valPtr;
 			// int16_tcut
-			//log("sitepgs=%"INT32" for %s",a,sreq->m_url);
+			//log("sitepgs=%" INT32 " for %s",a,sreq->m_url);
 			// what is the provided value in the url filter rule?
 			int32_t b = atoi(s);
 			// compare
@@ -13818,7 +13818,7 @@ void updateAllCrawlInfosSleepWrapper ( int fd , void *state ) {
 
 	// debug test
 	//int32_t mr = g_collectiondb.m_recs[0]->m_maxCrawlRounds;
-	//log("mcr: %"INT32"",mr);
+	//log("mcr: %" INT32 "",mr);
 
 	// i don't know why we have locks in the lock table that are not
 	// getting removed... so log when we remove an expired locks and see.
@@ -13857,7 +13857,7 @@ void updateAllCrawlInfosSleepWrapper ( int fd , void *state ) {
 		// re-spidering stuff even though we've really hit maxToCrawl
 		//if ( g_hostdb.isDead(i) ) {
 		//	if ( g_conf.m_logDebugSpider )
-		//		log("spider: skipping dead host #%"INT32" "
+		//		log("spider: skipping dead host #%" INT32 " "
 		//		    "when getting "
 		//		    "crawl info",i);
 		//	continue;
@@ -13901,7 +13901,7 @@ void updateAllCrawlInfosSleepWrapper ( int fd , void *state ) {
 // . all hosts should get it at *about* the same time
 void spiderRoundIncremented ( CollectionRec *cr ) {
 
-	log("spider: incrementing spider round for coll %s to %"INT32" (%"UINT32")",
+	log("spider: incrementing spider round for coll %s to %" INT32 " (%" UINT32 ")",
 	    cr->m_coll,cr->m_spiderRoundNum,
 	    (uint32_t)cr->m_spiderRoundStartTime);
 
@@ -13946,7 +13946,7 @@ void gotCrawlInfoReply ( void *state , UdpSlot *slot ) {
 	// reply is error? then use the last known good reply we had from him
 	// assuming udp reply timed out. empty buf just means no update now!
 	if ( ! slot->m_readBuf && g_errno ) {
-		log("spider: got crawlinfo reply error from host %"INT32": %s. "
+		log("spider: got crawlinfo reply error from host %" INT32 ": %s. "
 		    "spidering will be paused.",
 		    h->m_hostId,mstrerror(g_errno));
 		// just clear it
@@ -14017,7 +14017,7 @@ void gotCrawlInfoReply ( void *state , UdpSlot *slot ) {
 
 		CollectionRec *cr = g_collectiondb.getRec ( collnum );
 		if ( ! cr ) {
-			log("spider: updatecrawlinfo collnum %"INT32" "
+			log("spider: updatecrawlinfo collnum %" INT32 " "
 			    "not found",(int32_t)collnum);
 			continue;
 		}
@@ -14039,7 +14039,7 @@ void gotCrawlInfoReply ( void *state , UdpSlot *slot ) {
 			gbmemcpy ( &cia[h->m_hostId] , ptr , sizeof(CrawlInfo));
 		
 		// debug
-		// log("spd: got ci from host %"INT32" downloads=%"INT64", replies=%"INT32"",
+		// log("spd: got ci from host %" INT32 " downloads=%" INT64 ", replies=%" INT32 "",
 		//     h->m_hostId,
 		//     ptr->m_pageDownloadSuccessesThisRound,
 		//     s_replies
@@ -14117,8 +14117,8 @@ void gotCrawlInfoReply ( void *state , UdpSlot *slot ) {
 				// crazy stat?
 				if ( *ss > 1000000000LL ||
 				     *ss < -1000000000LL ) {
-					log("spider: crazy stats %"INT64" "
-					    "from host #%"INT32" coll=%s. "
+					log("spider: crazy stats %" INT64 " "
+					    "from host #%" INT32 " coll=%s. "
 					    "ignoring.",
 					    *ss,k,cr->m_coll);
 					crazy = true;
@@ -14173,11 +14173,11 @@ void gotCrawlInfoReply ( void *state , UdpSlot *slot ) {
 			// revival?
 			if ( ! cr->m_globalCrawlInfo.m_hasUrlsReadyToSpider )
 				log("spider: reviving crawl %s "
-				    "from host %"INT32"", cr->m_coll,k);
+				    "from host %" INT32 "", cr->m_coll,k);
 		} // end loop over hosts
 
 
-		// log("spider: %"INT64" (%"INT64") total downloads for c=%s",
+		// log("spider: %" INT64 " (%" INT64 ") total downloads for c=%s",
 		//     gi->m_pageDownloadSuccessesThisRound,
 		//     gi->m_pageDownloadSuccesses,
 		//     cr->m_coll);
@@ -14185,7 +14185,7 @@ void gotCrawlInfoReply ( void *state , UdpSlot *slot ) {
 		// revival?
 		//if ( cr->m_tmpCrawlInfo.m_hasUrlsReadyToSpider &&
 		//     ! cr->m_globalCrawlInfo.m_hasUrlsReadyToSpider ) {
-		//	log("spider: reviving crawl %s (%"INT32")",cr->m_coll,
+		//	log("spider: reviving crawl %s (%" INT32 ")",cr->m_coll,
 		//	    cr->m_tmpCrawlInfo.m_hasUrlsReadyToSpider);
 		//}
 
@@ -14194,8 +14194,8 @@ void gotCrawlInfoReply ( void *state , UdpSlot *slot ) {
 		     // and it no longer does now...
 		     ! cr->m_globalCrawlInfo.m_hasUrlsReadyToSpider ) {
 			log(LOG_INFO,
-			    "spider: all %"INT32" hosts report "
-			    "%s (%"INT32") has no "
+			    "spider: all %" INT32 " hosts report "
+			    "%s (%" INT32 ") has no "
 			    "more urls ready to spider",
 			    s_replies,cr->m_coll,(int32_t)cr->m_collnum);
 			// set crawl end time
@@ -14473,7 +14473,7 @@ void handleRequestc1 ( UdpSlot *slot , int32_t niceness ) {
 				if ( printIt )
 				log("spider: not ending crawl because "
 				    "waiting tree key is ready for scan "
-				    "%"INT64" ms from now for coll=%s",
+				    "%" INT64 " ms from now for coll=%s",
 				    nextTimeMS - nowMS,cr->m_coll );
 				goto doNotEnd;
 			}
@@ -14525,7 +14525,7 @@ void handleRequestc1 ( UdpSlot *slot , int32_t niceness ) {
 		if ( ! sendIt ) continue;
 
 		// note it
-		// log("spider: sending ci for coll %s to host %"INT32"",
+		// log("spider: sending ci for coll %s to host %" INT32 "",
 		//     cr->m_coll,hostId);
 		
 		// save it
@@ -14633,7 +14633,7 @@ bool getSpiderStatusMsg ( CollectionRec *cx , SafeBuf *msg , int32_t *status ) {
 		*status = SP_ROUNDDONE;
 		return msg->safePrintf("Jobs has reached maxToCrawl limit. "
 				       "Next crawl round to start "
-				       "in %"INT32" seconds.",
+				       "in %" INT32 " seconds.",
 				       (int32_t)(cx->m_spiderRoundStartTime-
 						 now));
 	}
@@ -14644,7 +14644,7 @@ bool getSpiderStatusMsg ( CollectionRec *cx , SafeBuf *msg , int32_t *status ) {
 		*status = SP_ROUNDDONE;
 		return msg->safePrintf("Jobs has reached maxToProcess limit. "
 				       "Next crawl round to start "
-				       "in %"INT32" seconds.",
+				       "in %" INT32 " seconds.",
 				       (int32_t)(cx->m_spiderRoundStartTime-
 						 now));
 	}
@@ -14683,7 +14683,7 @@ bool getSpiderStatusMsg ( CollectionRec *cx , SafeBuf *msg , int32_t *status ) {
 	     now < cx->m_spiderRoundStartTime ) {
 		*status = SP_ROUNDDONE;
 		return msg->safePrintf("Next crawl round to start "
-				       "in %"INT32" seconds.",
+				       "in %" INT32 " seconds.",
 				       (int32_t)(cx->m_spiderRoundStartTime-
 						 now) );
 	}

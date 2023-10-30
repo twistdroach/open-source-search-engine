@@ -132,7 +132,7 @@ bool Title::setTitle ( XmlDoc   *xd            ,
 			float price = atof2(op,oplen);
 			// print without decimal point if ends in .00
 			if ( (float)(int32_t)price == price )
-				jsonTitle.safePrintf(", &nbsp; $%"INT32"",
+				jsonTitle.safePrintf(", &nbsp; $%" INT32 "",
 						     (int32_t)price);
 			else
 				jsonTitle.safePrintf(", &nbsp; $%.02f",price);
@@ -179,7 +179,7 @@ bool Title::setTitle ( XmlDoc   *xd            ,
 				  cr );
 
 	int64_t took = gettimeofdayInMilliseconds() - startTime;
-	if ( took > 5 ) log("query: Title set took %"INT64" ms for %s", took,
+	if ( took > 5 ) log("query: Title set took %" INT64 " ms for %s", took,
 			    xd->getFirstUrl()->getUrl());
 
 	return status;
@@ -1344,7 +1344,7 @@ bool Title::setTitle4 ( XmlDoc   *xd            ,
 			//float boost = ((1.0 + fp)*(1.0 + fp));
 			// custom boosting!
 			if ( fp > 0.0 && g_conf.m_logDebugTitle )
-				logf(LOG_DEBUG,"title: i=%"INT32" j=%"INT32" fp=%.02f "
+				logf(LOG_DEBUG,"title: i=%" INT32 " j=%" INT32 " fp=%.02f "
 				     "b=%.02f", i,j,fp,boost);
 			// apply it
 			scores[i] *= boost;
@@ -1579,9 +1579,9 @@ bool Title::setTitle4 ( XmlDoc   *xd            ,
 		// get the title
 		pbuf->safePrintf(
 				 "<tr>"
-				 "<td>#%"INT32"</td>"
+				 "<td>#%" INT32 "</td>"
 				 "<td><nobr>%s</nobr></td>"
-				 "<td>%"INT32"</td>" 
+				 "<td>%" INT32 "</td>" 
 				 "<td>%0.2f</td>" // baseScore
 				 "<td>%0.2f</td>"
 				 "<td>%0.2f</td>"
@@ -1697,7 +1697,7 @@ float Title::getSimilarity ( Words  *w1 , int32_t i0 , int32_t i1 ,
 		// accumulate
 		sum += score;
 		// debug
-		//logf(LOG_DEBUG,"adding wid=%"INT32" score=%.02f sum=%.02f",
+		//logf(LOG_DEBUG,"adding wid=%" INT32 " score=%.02f sum=%.02f",
 		//     (int32_t)wid,score,sum);
 		// accumulate for scoring phrases too! (adjacent words)
 		//psum += val;
@@ -1723,7 +1723,7 @@ float Title::getSimilarity ( Words  *w1 , int32_t i0 , int32_t i1 ,
 		int64_t pid = hash64 ( wid , lastWid );
 		// debug
 		//logf(LOG_DEBUG,
-		//     "adding pid=%"INT32" score=%.02f sum=%.02f",
+		//     "adding pid=%" INT32 " score=%.02f sum=%.02f",
 		//	     (int32_t)pid,phrScore,sum);
 		// now add that
 		if ( ! table.addKey ( (int32_t)pid , (int32_t)phrScore , NULL ) )
@@ -1768,8 +1768,8 @@ float Title::getSimilarity ( Words  *w1 , int32_t i0 , int32_t i1 ,
 		// use percent contained functionality now
 		//if ( slot >= 0 ) found += score;
 		// debug
-		//logf(LOG_DEBUG,"checking wid=%"INT32" score=%.02f sum=%.02f "
-		//   "found=%.02f slot=%"INT32"",   (int32_t)wid,score,sum,found,slot);
+		//logf(LOG_DEBUG,"checking wid=%" INT32 " score=%.02f sum=%.02f "
+		//   "found=%.02f slot=%" INT32 "",   (int32_t)wid,score,sum,found,slot);
 		// now the phrase
 		if ( lastWid == -1LL ) {lastWid=wid;lastScore=score;continue;}
 		// . what was his val?
@@ -1793,8 +1793,8 @@ float Title::getSimilarity ( Words  *w1 , int32_t i0 , int32_t i1 ,
 		lastScore = score;
 		// debug
 		//logf(LOG_DEBUG,
-		//     "checking pid=%"INT32" score=%.02f sum=%.02f found=%.02f "
-		//     "slot=%"INT32"",
+		//     "checking pid=%" INT32 " score=%.02f sum=%.02f found=%.02f "
+		//     "slot=%" INT32 "",
 		//     (int32_t)pid,phrScore,sum,found,slot);
 	}
 
@@ -1853,7 +1853,7 @@ bool Title::copyTitle ( Words *w , Pos *pos ,
 	// return false if could not alloc mem to hold the title
 	if ( ! m_title ) {
 		m_titleBytes = 0;
-		log("query: Could not alloc %"INT32" bytes for title.",need);
+		log("query: Could not alloc %" INT32 " bytes for title.",need);
 		return false;
 	}
 	// save for freeing later

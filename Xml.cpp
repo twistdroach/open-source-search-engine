@@ -255,7 +255,7 @@ bool Xml::set ( char  *s             ,
 	// debug msg time
 	if ( g_conf.m_logTimingBuild )
 		logf(LOG_TIMING,
-		    "build: xml: set: 4a. %"UINT64"",gettimeofdayInMilliseconds());
+		    "build: xml: set: 4a. %" UINT64 "",gettimeofdayInMilliseconds());
 	// sanity check
 	if ( !s || slen <= 0) return true;
 	if ( s[slen] != '\0' ) {
@@ -319,7 +319,7 @@ bool Xml::set ( char  *s             ,
 	// debug msg time
 	if ( g_conf.m_logTimingBuild )
 		logf(LOG_TIMING,
-		    "build: xml: set: 4b. %"UINT64"",gettimeofdayInMilliseconds());
+		    "build: xml: set: 4b. %" UINT64 "",gettimeofdayInMilliseconds());
 
 	// . truncate it to avoid spammers
 	// . now i limit to 30k nodes because of those damned xls docs!
@@ -330,8 +330,8 @@ bool Xml::set ( char  *s             ,
 	if (num100k <= 0) num100k = 1;
 	int32_t bigMax = 35*1024 * num100k;
 	if (m_maxNumNodes > bigMax){
-		log(LOG_WARN, "build: xml: doclen %"INT32", "
-		    "too many nodes: counted %"INT32", max %"INT32" "
+		log(LOG_WARN, "build: xml: doclen %" INT32 ", "
+		    "too many nodes: counted %" INT32 ", max %" INT32 " "
 		    "...truncating", slen, m_maxNumNodes, bigMax);
 		m_maxNumNodes = bigMax;
 	}
@@ -342,7 +342,7 @@ bool Xml::set ( char  *s             ,
 	m_nodes = (XmlNode *) mmalloc (sizeof(XmlNode) * m_maxNumNodes,"Xml1");
 	if ( ! m_nodes ) { 
 		reset(); 
-		return log("build: Could not allocate %"INT32" "
+		return log("build: Could not allocate %" INT32 " "
 			   "bytes need to parse document.",
 			   (int32_t)sizeof(XmlNode)*m_maxNumNodes);
 	}
@@ -350,7 +350,7 @@ bool Xml::set ( char  *s             ,
 	// debug msg time
 	if ( g_conf.m_logTimingBuild )
 		logf(LOG_TIMING,
-		    "build: xml: set: 4c. %"UINT64"",gettimeofdayInMilliseconds());
+		    "build: xml: set: 4c. %" UINT64 "",gettimeofdayInMilliseconds());
 
 	XmlNode *parent = NULL;
 	XmlNode *parentStackStart[256];
@@ -645,7 +645,7 @@ bool Xml::set ( char  *s             ,
 	// debug msg time
 	if ( g_conf.m_logTimingBuild )
 		logf(LOG_TIMING,
-		    "build: xml: set: 4d. %"UINT64"",gettimeofdayInMilliseconds());
+		    "build: xml: set: 4d. %" UINT64 "",gettimeofdayInMilliseconds());
 
 	return true;
 }

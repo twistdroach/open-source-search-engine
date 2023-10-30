@@ -130,7 +130,7 @@ bool sendPageDirectory ( TcpSocket *s , HttpRequest *r ) {
 						requestBufLen+1,
 						"PageDirectory" );
 		if (!reBuf) {
-			log("directory: Could not reallocate %"INT32" bytes for"
+			log("directory: Could not reallocate %" INT32 " bytes for"
 			    //" m_readBuf", r->m_bufLen+1);
 			    " m_readBuf", requestBufLen+1);
 			return g_httpServer.sendErrorReply(s,500,

@@ -130,7 +130,7 @@ void RequestTable::cancelRequest ( int64_t requestHash , void *state2 ) {
 		char *xx = NULL; *xx = 0;
 	}
 	log( LOG_INFO, "reqtable: cancelled "
-	     "request hash=%"INT64" state2=%"PTRFMT"", 
+	     "request hash=%" INT64 " state2=%" PTRFMT "", 
 	     requestHash, (PTRTYPE) state2 );
 	return;
 }

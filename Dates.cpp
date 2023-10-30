@@ -3300,7 +3300,7 @@ bool Dates::setPart1 ( //char       *u        ,
 		elapsed = 0;
 	// is true.
 	if ( elapsed < 0 ) { 
-		log("date: CRAZY! elasped=%"INT32"<0",elapsed);
+		log("date: CRAZY! elasped=%" INT32 "<0",elapsed);
 		elapsed = 0;
 		//char *xx=NULL;*xx=0; }
 	}
@@ -9110,7 +9110,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 					pd->printText(&dbuf,m_words,false);
 					dbuf.safePrintf(" dp=");
 					dp->printText(&dbuf,m_words,false);
-					log("%s (dcount=%"INT32")",
+					log("%s (dcount=%" INT32 ")",
 					    dbuf.getBufStart(),dcount);
 					dcount++;
 					*/
@@ -10359,7 +10359,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 	/////////////////////
 	if ( m_od && (time_t)m_od->m_pubDate != m_pubDate ) {
 		log("build: pub date change since last spider u=%s from "
-		    "%"UINT32" to %"UINT32""
+		    "%" UINT32 " to %" UINT32 ""
 		    ,u
 		    ,m_od->m_pubDate
 		    ,(uint32_t)m_pubDate);
@@ -12549,7 +12549,7 @@ int32_t Dates::isCompatible2 ( Section *s1 , Section *s2 , bool useXors ) {
 	int64_t took = start - gettimeofdayInMilliseconds();
 
 	// for log
-	if ( took > 2 ) log("dates: CHECK subfield took %"INT64" ms",took);
+	if ( took > 2 ) log("dates: CHECK subfield took %" INT64 " ms",took);
 
 	// do the same subsection scan for last2
 	//for( int32_t i = last2->m_sortedIndex;i<m_sections->m_numSections;i++) {
@@ -15195,9 +15195,9 @@ bool Dates::printDates ( SafeBuf *sbArg ) {
 		sb->safePrintf("<table width=100%% border=1 cellpadding=4>"
 			       "<tr><td colspan=20><b>"
 			       "Dates</b>"
-			       " (format=%s) (firstgood=%"INT32" lastgood=%"INT32")"
-			       " 25hrRespider=%"INT32""
-			       "(sitehash=0x%"XINT32")%s"
+			       " (format=%s) (firstgood=%" INT32 " lastgood=%" INT32 ")"
+			       " 25hrRespider=%" INT32 ""
+			       "(sitehash=0x%" XINT32 ")%s"
 			       "</td></tr>\n"
 			       "<tr><td>#</td>"
 			       "<td>startWord</td>"
@@ -15220,9 +15220,9 @@ bool Dates::printDates ( SafeBuf *sbArg ) {
 	else
 		sb->safePrintf(
 			       "Publication Date Candidates "
-			       " (format=%s) (firstgood=%"INT32" lastgood=%"INT32")"
-			       " 25hrRespider=%"INT32""
-			       "(sitehash=0x%"XINT32")%s"
+			       " (format=%s) (firstgood=%" INT32 " lastgood=%" INT32 ")"
+			       " 25hrRespider=%" INT32 ""
+			       "(sitehash=0x%" XINT32 ")%s"
 			       "\n"
 			       "# | "
 			       "startWord | "
@@ -15584,9 +15584,9 @@ static bool printTOD ( SafeBuf *sb , time_t ttt ) {
 	if ( hour == 0 ) hour = 12;
 
 	if ( min != 0 ) 
-		return sb->safePrintf("%"INT32":%02"INT32"%s",hour,min,ap);
+		return sb->safePrintf("%" INT32 ":%02" INT32 "%s",hour,min,ap);
 	
-	return sb->safePrintf("%"INT32"%s",hour,ap) ;
+	return sb->safePrintf("%" INT32 "%s",hour,ap) ;
 }
 
 static bool printMonthDay ( SafeBuf *sb , int32_t month , int32_t dayNum ) {
@@ -15597,7 +15597,7 @@ static bool printMonthDay ( SafeBuf *sb , int32_t month , int32_t dayNum ) {
 	if ( md == 2 || md == 22             ) suffix = "nd";
 	if ( md == 3 || md == 23             ) suffix = "rd";
 	// February 12th, etc.
-	if ( ! sb->safePrintf(" %s %"INT32"%s ",
+	if ( ! sb->safePrintf(" %s %" INT32 "%s ",
 			      s_mnames[month],
 			      dayNum,
 			      suffix))
@@ -15766,7 +15766,7 @@ bool Date::printTextNorm2 ( SafeBuf *sb , Words *words , bool inHtml ,
 		char tz = ev->m_address->getTimeZone(&useDST);
 		// sanity
 		if ( tz >= 25 ) { 
-			log("date: got bad timezone of %"INT32". resetting to -6.",
+			log("date: got bad timezone of %" INT32 ". resetting to -6.",
 			    (int32_t)tz);
 			useDST = true;
 			tz = -6;
@@ -15785,7 +15785,7 @@ bool Date::printTextNorm2 ( SafeBuf *sb , Words *words , bool inHtml ,
 		if ( md == 2 || md == 22             ) suffix = "nd";
 		if ( md == 3 || md == 23             ) suffix = "rd";
 		// February 12th
-		sb->safePrintf("%s %s %"INT32"%s %"INT32" ",
+		sb->safePrintf("%s %s %" INT32 "%s %" INT32 " ",
 			       s_dnames[ts->tm_wday],
 			       s_mnames[ts->tm_mon],
 			       (int32_t)ts->tm_mday,
@@ -16385,11 +16385,11 @@ bool printDateElement ( Date *dp , SafeBuf *sb , Words *words ,
 			suffix = "nd";
 		if ( dn == 3 || dn == 23 )
 			suffix = "rd";
-		if ( ! sb->safePrintf("%"INT32"%s",dn,suffix) ) return false;
+		if ( ! sb->safePrintf("%" INT32 "%s",dn,suffix) ) return false;
 	}
 	// year
 	else if ( dp->m_type == DT_YEAR ) {
-		if ( ! sb->safePrintf("%"INT32"",dp->m_year ) ) return false;
+		if ( ! sb->safePrintf("%" INT32 "",dp->m_year ) ) return false;
 	}
 	else if ( dp->m_type == DT_EVERY_DAY ) {
 		if ( ! sb->safePrintf("daily" ) ) return false;
@@ -16429,7 +16429,7 @@ bool printDateElement ( Date *dp , SafeBuf *sb , Words *words ,
 	}
 
 	// print groupnumright before then
-	//if(! sb->safePrintf("<sub>%"INT32"</sub>",dp->m_groupNum) ) return false;
+	//if(! sb->safePrintf("<sub>%" INT32 "</sub>",dp->m_groupNum) ) return false;
 
 	return true;
 }
@@ -16463,15 +16463,15 @@ void Date::print ( SafeBuf *sbArg ,
 	if ( sbArg ) 
 		sb->safePrintf("<tr>\n"
 			       // tell diff to ignore
-			       "<!--ignore--><td>%s%s#%"INT32"%s%s</td>\n" 
-			       "<td>%"INT32"</td>"
-			       "<td>%"INT32"</td>"    ,
+			       "<!--ignore--><td>%s%s#%" INT32 "%s%s</td>\n" 
+			       "<td>%" INT32 "</td>"
+			       "<td>%" INT32 "</td>"    ,
 			       f1,b1,num,b2,f2,
 			       m_a,m_b );
 	else
-		sb->safePrintf("%s#%"INT32"%s | " 
-			       "%"INT32" | "
-			       "%"INT32" | "    ,
+		sb->safePrintf("%s#%" INT32 "%s | " 
+			       "%" INT32 " | "
+			       "%" INT32 " | "    ,
 			       b1,num,b2,
 			       m_a,m_b );
 		
@@ -16490,7 +16490,7 @@ void Date::print ( SafeBuf *sbArg ,
 
 	// end in assumed year
 	//if ( m_flags & DF_ASSUMED_YEAR )
-	//	sb->safePrintf(" ** %"INT32"",m_year);
+	//	sb->safePrintf(" ** %" INT32 "",m_year);
 
 
 	if ( sbArg ) sb->safePrintf("</nobr></td>");
@@ -16512,7 +16512,7 @@ void Date::print ( SafeBuf *sbArg ,
 
 	// some other junk
 	if ( sbArg ) {
-		sb->safePrintf("<td><nobr>%s%"INT32"%s</nobr></td>"      // score
+		sb->safePrintf("<td><nobr>%s%" INT32 "%s</nobr></td>"      // score
 			       "<td><nobr>%s</nobr></td>" // timestamp
 			       "<td>%s</td>",
 			       b1,-1 * m_penalty,b2,
@@ -16520,7 +16520,7 @@ void Date::print ( SafeBuf *sbArg ,
 			       "---");//tzStr);
 	}
 	else
-		sb->safePrintf("%s%"INT32"%s | "      // score
+		sb->safePrintf("%s%" INT32 "%s | "      // score
 			       "%s | " // timestamp
 			       // timezone
 			       "%s"
@@ -16530,13 +16530,13 @@ void Date::print ( SafeBuf *sbArg ,
 			       "---");//tzStr);
 
 	// sentence id
-	//sb->safePrintf("<td>%"INT32"</td>",m_sentenceId);
+	//sb->safePrintf("<td>%" INT32 "</td>",m_sentenceId);
 
 	// datehash64
-	sb->safePrintf("<td>%"UINT64"</td>",m_dateHash64);
+	sb->safePrintf("<td>%" UINT64 "</td>",m_dateHash64);
 	// . tag hash
 	// . turkTagHash is for date elements really
-	sb->safePrintf("<td>%"UINT32"</td>",m_dateTypeAndTagHash32);//m_turkTagHash);
+	sb->safePrintf("<td>%" UINT32 "</td>",m_dateTypeAndTagHash32);//m_turkTagHash);
 	
 	// flag row
 	sb->safePrintf("<td><nobr>");
@@ -16544,21 +16544,21 @@ void Date::print ( SafeBuf *sbArg ,
 	// print each flag
 
 	if ( m_headerCount )
-		sb->safePrintf("(hdrcnt=%"INT32") ",m_headerCount);
+		sb->safePrintf("(hdrcnt=%" INT32 ") ",m_headerCount);
 	if ( m_tmph )
-		sb->safePrintf("(deduphash=0x%"XINT32") ",m_tmph);
+		sb->safePrintf("(deduphash=0x%" XINT32 ") ",m_tmph);
 	if ( m_maxYearGuess )
-		sb->safePrintf("(maxyearguess=%"INT32") ",m_maxYearGuess);
+		sb->safePrintf("(maxyearguess=%" INT32 ") ",m_maxYearGuess);
 	if ( m_dowBasedYear )
-		sb->safePrintf("(dowbasedyear=%"INT32") ",m_dowBasedYear);
+		sb->safePrintf("(dowbasedyear=%" INT32 ") ",m_dowBasedYear);
 
 	if ( m_flags & DF_DUP ) {
 		int32_t dupNum = dates->getDateNum(m_dupOf);
-		sb->safePrintf("dupof%"INT32" ",dupNum);
+		sb->safePrintf("dupof%" INT32 " ",dupNum);
 	}
 	if ( m_flags & DF_SUB_DATE ) {
 		int32_t dnum = dates->getDateNum(m_subdateOf);
-		sb->safePrintf("subdateof%"INT32" ",dnum);
+		sb->safePrintf("subdateof%" INT32 " ",dnum);
 	}
 
 	if ( m_flags & DF_EVENT_CANDIDATE )
@@ -16703,10 +16703,10 @@ void Date::print ( SafeBuf *sbArg ,
 	if ( m_flags & DF_EXACT_TOD )
 		sb->safePrintf("exacttod ");
 	if ( m_tableCell ) {
-	       sb->safePrintf("tablesec=0x%"PTRFMT" ",
+	       sb->safePrintf("tablesec=0x%" PTRFMT " ",
 			      (PTRTYPE)m_tableCell->m_tableSec);
-		sb->safePrintf("row=%"INT32" ",m_tableCell->m_rowNum);
-		sb->safePrintf("col=%"INT32" ",m_tableCell->m_colNum);
+		sb->safePrintf("row=%" INT32 " ",m_tableCell->m_rowNum);
+		sb->safePrintf("col=%" INT32 " ",m_tableCell->m_colNum);
 	}
 
 	if ( m_flags & DF_LEFT_BOOKEND )
@@ -16865,30 +16865,30 @@ void Date::print ( SafeBuf *sbArg ,
 		sb->safePrintf("canonical ");
 
 	if ( m_dayNum >= 0 )
-		sb->safePrintf("daynum=%"INT32" ",(int32_t)m_dayNum);
+		sb->safePrintf("daynum=%" INT32 " ",(int32_t)m_dayNum);
 	if ( m_minDayNum < 32 )
-		sb->safePrintf("mindaynum=%"INT32" ",(int32_t)m_minDayNum);
+		sb->safePrintf("mindaynum=%" INT32 " ",(int32_t)m_minDayNum);
 	if ( m_maxDayNum > 0 )
-		sb->safePrintf("maxdaynum=%"INT32" ",(int32_t)m_maxDayNum);
+		sb->safePrintf("maxdaynum=%" INT32 " ",(int32_t)m_maxDayNum);
 	if ( m_month >= 0 )
-		sb->safePrintf("month=%"INT32" ",(int32_t)m_month);
+		sb->safePrintf("month=%" INT32 " ",(int32_t)m_month);
 	if ( m_tod >= 0 )
-		sb->safePrintf("tod=%"INT32" ",(int32_t)m_tod);
+		sb->safePrintf("tod=%" INT32 " ",(int32_t)m_tod);
 	if ( m_minTod < 30*3600 )
-		sb->safePrintf("mintod=%"INT32" ",(int32_t)m_minTod);
+		sb->safePrintf("mintod=%" INT32 " ",(int32_t)m_minTod);
 	if ( m_maxTod > 0 )
-		sb->safePrintf("maxtod=%"INT32" ",(int32_t)m_maxTod);
+		sb->safePrintf("maxtod=%" INT32 " ",(int32_t)m_maxTod);
 	if ( m_dowBits )
-		sb->safePrintf("dowbits=0x%"XINT32"[%"INT32"] ",
+		sb->safePrintf("dowbits=0x%" XINT32 "[%" INT32 "] ",
 			       (uint32_t)((unsigned char)m_dowBits),
 			       getNumBitsOn8(m_dowBits));
 	if ( m_minYear != 2050 )
-		sb->safePrintf("minyear=%"INT32" ",(int32_t)m_minYear);
+		sb->safePrintf("minyear=%" INT32 " ",(int32_t)m_minYear);
 	if ( m_maxYear != 1900 )
-		sb->safePrintf("maxyear=%"INT32" ",(int32_t)m_maxYear);
+		sb->safePrintf("maxyear=%" INT32 " ",(int32_t)m_maxYear);
 	
 
-	sb->safePrintf("datehash=0x%"XINT64" ",m_dateHash64);
+	sb->safePrintf("datehash=0x%" XINT64 " ",m_dateHash64);
 
 
 	// make this
@@ -16898,21 +16898,21 @@ void Date::print ( SafeBuf *sbArg ,
 
 	if ( sbArg )
 		sb->safePrintf("</nobr></td>"
-			       //"<td>%"INT32"</td>"      // wordNum
-			       "<td>0x%08"XINT32"</td>"  // tagHash
-			       "<td>%"UINT32"</td>"      // occNum
-			       "<td>0x%08"XINT32"</td>"  // clockhash
-			       "<td>%"UINT64"</td>" // termid
+			       //"<td>%" INT32 "</td>"      // wordNum
+			       "<td>0x%08" XINT32 "</td>"  // tagHash
+			       "<td>%" UINT32 "</td>"      // occNum
+			       "<td>0x%08" XINT32 "</td>"  // clockhash
+			       "<td>%" UINT64 "</td>" // termid
 			       "</tr>\n"           ,
 			       m_tagHash    ,
 			       m_occNum     ,
 			       m_clockHash  ,
 			       termId       );
 	else
-		sb->safePrintf("0x%08"XINT32" | "  // tagHash
-			       "%"UINT32" | "      // occNum
-			       "0x%08"XINT32" | "  // clockhash
-			       "%"UINT64"" // termid
+		sb->safePrintf("0x%08" XINT32 " | "  // tagHash
+			       "%" UINT32 " | "      // occNum
+			       "0x%08" XINT32 " | "  // clockhash
+			       "%" UINT64 "" // termid
 			       "\n"           ,
 			       m_tagHash    ,
 			       m_occNum     ,
@@ -23399,7 +23399,7 @@ int32_t Dates::addIntervalsB ( Date       *di     ,
 	char ds[40];
 	for ( int32_t k = 0 ; k < depth ; k++ ) ds[k]='-';
 	ds[depth]='\0';
-	logf(LOG_DEBUG,"dates: %s adding intervals for date type %s num=%"INT32"",
+	logf(LOG_DEBUG,"dates: %s adding intervals for date type %s num=%" INT32 "",
 	     ds,ps,di->m_num);
 #endif
 
@@ -24455,7 +24455,7 @@ bool Dates::addInterval ( int32_t a , int32_t b , Interval *int3 , int32_t *ni3 
 	char ds[40];
 	for ( int32_t k = 0 ; k < depth ; k++ ) ds[k]='-';
 	ds[depth]='\0';
-	logf(LOG_DEBUG,"dates: %s [%"INT32",%"INT32")",ds,a,b);
+	logf(LOG_DEBUG,"dates: %s [%" INT32 ",%" INT32 ")",ds,a,b);
 #endif
 
 	return true;
@@ -24546,7 +24546,7 @@ int32_t Dates::intersect2 ( Interval *int1 ,
 			// . map data ptr pts to our ptr
 			if ( ! map1.addKey ( &d , &ii ) ) return -1;
 			// debug log for now
-			//logf(LOG_DEBUG,"map add d=%"INT32"",d);
+			//logf(LOG_DEBUG,"map add d=%" INT32 "",d);
 		}
 	}
 

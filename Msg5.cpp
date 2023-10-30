@@ -150,7 +150,7 @@ bool Msg5::getList ( char     rdbId         ,
 		char *xx = NULL; *xx = 0; 
 	}
 	if ( collnum < 0 ) {
-		log("msg5: called with bad collnum=%"INT32"",(int32_t)collnum);
+		log("msg5: called with bad collnum=%" INT32 "",(int32_t)collnum);
 		g_errno = ENOCOLLREC;
 		return true;
 	}
@@ -201,7 +201,7 @@ bool Msg5::getList ( char     rdbId         ,
 	QUICKPOLL(niceness);
 
 	// debug msg
-	//log("doing msg5 niceness=%"INT32"",niceness);
+	//log("doing msg5 niceness=%" INT32 "",niceness);
 	//if ( niceness == 1 ) 
 	//	log("hey!");
 	// timing debug
@@ -274,10 +274,10 @@ bool Msg5::getList ( char     rdbId         ,
 		if ( ! cr ) { log("disk: Msg5 no coll rec."); return true; }
 		//m_indexdbTruncationLimit = cr->m_indexdbTruncationLimit;
 		// debug
-		//log("trunc limit = %"INT32"",m_indexdbTruncationLimit);
+		//log("trunc limit = %" INT32 "",m_indexdbTruncationLimit);
 		// Parms.cpp should never let this happen...
 		if ( m_indexdbTruncationLimit < MIN_TRUNC ) {
-			log("disk: trunc limit = %"INT32"",
+			log("disk: trunc limit = %" INT32 "",
 			    m_indexdbTruncationLimit);
 			char *xx = NULL; *xx = 0; 
 		}
@@ -313,7 +313,7 @@ bool Msg5::getList ( char     rdbId         ,
 						 m_ks           );
 	}
 	*/
-	//log("ck.n1=%"UINT32" ck.n0=%"UINT64"",m_cacheKey.n1,m_cacheKey.n0);
+	//log("ck.n1=%" UINT32 " ck.n0=%" UINT64 "",m_cacheKey.n1,m_cacheKey.n0);
 	//exit(-1);
 
 	// . make sure we set base above so Msg0.cpp:268 doesn't freak out
@@ -370,8 +370,8 @@ bool Msg5::getList ( char     rdbId         ,
 		if ( added && rdbId == RDB_POSDB && m_addToCache ) {
 			int64_t cks;
 			cks = getTermListCacheKey(m_startKey,m_endKey);
-			log("msg5: waiting for      rdbid=%"INT32" wkey=%"XINT64" "
-			    "startkey=%s ckey=%"XINT64"",
+			log("msg5: waiting for      rdbid=%" INT32 " wkey=%" XINT64 " "
+			    "startkey=%s ckey=%" XINT64 "",
 			    (int32_t)rdbId,m_waitingKey,KEYSTR(m_startKey,m_ks),
 			    cks);
 		}
@@ -387,8 +387,8 @@ bool Msg5::getList ( char     rdbId         ,
 	//   it should all be cached!!!!
 	if ( rdbId == RDB_POSDB && m_addToCache ) {
 		int64_t cks = getTermListCacheKey(m_startKey,m_endKey);
-		log("msg5: hitting disk for rdbid=%"INT32" wkey=%"XINT64" "
-		    "startkey=%s ckey=%"XINT64"",
+		log("msg5: hitting disk for rdbid=%" INT32 " wkey=%" XINT64 " "
+		    "startkey=%s ckey=%" XINT64 "",
 		    (int32_t)rdbId,m_waitingKey,KEYSTR(m_startKey,m_ks),cks);
 	}
 	*/
@@ -451,10 +451,10 @@ bool Msg5::getList ( char     rdbId         ,
 	/*
 	if ( m_maxCacheAge != 0 ) {
 		log(LOG_DEBUG,"net: Checking cache for list. "
-		    //"startKey.n1=%"UINT32" %"UINT64". cacheKey.n1=%"UINT32" %"UINT64".",
+		    //"startKey.n1=%" UINT32 " %" UINT64 ". cacheKey.n1=%" UINT32 " %" UINT64 ".",
 		    //m_startKey.n1,m_startKey.n0,
 		    //m_cacheKey.n1,m_cacheKey.n0);
-		    "startKey.n1=%"XINT64" %"XINT64". cacheKey.n1=%"XINT64" %"XINT64".",
+		    "startKey.n1=%" XINT64 " %" XINT64 ". cacheKey.n1=%" XINT64 " %" XINT64 ".",
 		    KEY1(m_startKey,m_ks),KEY0(m_startKey),
 		    KEY1(m_cacheKey,m_ks),KEY0(m_cacheKey));
 		// is this list in the cache?
@@ -479,7 +479,7 @@ bool Msg5::getList ( char     rdbId         ,
 	*/
 
 	// timing debug
-	//log("Msg5:getting list startKey.n1=%"UINT32"",m_startKey.n1);
+	//log("Msg5:getting list startKey.n1=%" UINT32 "",m_startKey.n1);
 	// start the read loop - hopefully, will only loop once
 	if ( readList ( ) ) return true;
 
@@ -632,8 +632,8 @@ bool Msg5::readList ( ) {
 			int64_t took = now - start ;
 			if ( took > 9 )
 				logf(LOG_INFO,"net: Got list from %s "
-				     "in %"UINT64" ms. size=%"INT32" db=%s "
-				     "niceness=%"INT32".",
+				     "in %" UINT64 " ms. size=%" INT32 " db=%s "
+				     "niceness=%" INT32 ".",
 				     structName, took,m_treeList.getListSize(),
 				     base->m_dbname,m_niceness);
 		}
@@ -742,7 +742,7 @@ bool Msg5::readList ( ) {
 
 	QUICKPOLL((m_niceness));
 	// debug msg
-	//log("msg5 calling msg3 for %"INT32" bytes (msg5=%"UINT32")",
+	//log("msg5 calling msg3 for %" INT32 " bytes (msg5=%" UINT32 ")",
 	//    m_newMinRecSizes,(int32_t)this);
 
 	// . it's pointless to fetch data from disk passed treeList's endKey
@@ -814,7 +814,7 @@ bool Msg5::needsRecall ( ) {
 	RdbBase *base = getRdbBase ( m_rdbId , m_collnum );
 	// if collection was deleted from under us, base will be NULL
 	if ( ! base && ! g_errno ) {
-		log("msg5: base lost for rdbid=%"INT32" collnum %"INT32"",
+		log("msg5: base lost for rdbid=%" INT32 " collnum %" INT32 "",
 		    (int32_t)m_rdbId,(int32_t)m_collnum);
 		g_errno = ENOCOLLREC;
 		return false;
@@ -836,7 +836,7 @@ bool Msg5::needsRecall ( ) {
 	// seems to be ok, let's open it up to fix this bug where we try
 	// to read too many bytes a small titledb and it does an infinite loop
 	if ( m_readAbsolutelyNothing ) {
-		log("rdb: read absolutely nothing more for dbname=%s on cn=%"INT32"",
+		log("rdb: read absolutely nothing more for dbname=%s on cn=%" INT32 "",
 		    base->m_dbname,(int32_t)m_collnum);
 		goto done;
 	}
@@ -857,9 +857,9 @@ bool Msg5::needsRecall ( ) {
 	/*
 	if ( m_round >= 1 && m_totalSize == m_lastTotalSize ) {
 		log("msg5: increasing minrecsizes did nothing. assuming done. "
-		    "db=%s (newsize=%"INT32" origsize=%"INT32" total "
-		    "got %"INT32" totalListSizes=%"INT32" sk=%s) "
-		    "cn=%"INT32" this=0x%"XINT32" round=%"INT32".", 
+		    "db=%s (newsize=%" INT32 " origsize=%" INT32 " total "
+		    "got %" INT32 " totalListSizes=%" INT32 " sk=%s) "
+		    "cn=%" INT32 " this=0x%" XINT32 " round=%" INT32 ".", 
 		    base->m_dbname , 
 		    m_newMinRecSizes,
 		    m_minRecSizes, 
@@ -876,7 +876,7 @@ bool Msg5::needsRecall ( ) {
 	/*
 	// sanity check
 	if ( m_indexdbTruncationLimit < MIN_TRUNC ) {
-		log("disk: trunc limit2 = %"INT32"", m_indexdbTruncationLimit);
+		log("disk: trunc limit2 = %" INT32 "", m_indexdbTruncationLimit);
 		char *xx = NULL; *xx = 0; 
 	}
 	// if we are limited by truncation then we are done
@@ -902,9 +902,9 @@ bool Msg5::needsRecall ( ) {
 	// so common for doledb because of key annihilations
 	if ( m_rdbId == RDB_DOLEDB && m_round < 10 ) logIt = false;
 	if ( logIt )
-		log("db: Reading %"INT32" again from %s (need %"INT32" total "
-		     "got %"INT32" totalListSizes=%"INT32" sk=%s) "
-		     "cn=%"INT32" this=0x%"PTRFMT" round=%"INT32".", 
+		log("db: Reading %" INT32 " again from %s (need %" INT32 " total "
+		     "got %" INT32 " totalListSizes=%" INT32 " sk=%s) "
+		     "cn=%" INT32 " this=0x%" PTRFMT " round=%" INT32 ".", 
 		     m_newMinRecSizes , base->m_dbname , m_minRecSizes, 
 		     m_list->m_listSize,
 		     m_totalSize,
@@ -1004,7 +1004,7 @@ bool Msg5::gotList ( ) {
 	//m_waitingForList = false;
 
 	// debug msg
-	//log("msg5 got lists from msg3 (msg5=%"UINT32")",(int32_t)this);
+	//log("msg5 got lists from msg3 (msg5=%" UINT32 ")",(int32_t)this);
 	// return if g_errno is set
 	if ( g_errno && g_errno != ECORRUPTDATA ) return true;
 
@@ -1118,7 +1118,7 @@ bool Msg5::gotList2 ( ) {
 
 	// sanity check.
 	if ( m_msg3.getNumLists() > MAX_RDB_FILES ) 
-		log(LOG_LOGIC,"db: Msg3 had more than %"INT32" lists.",
+		log(LOG_LOGIC,"db: Msg3 had more than %" INT32 " lists.",
 		    (int32_t)MAX_RDB_FILES);
 
 	// . get smallest endKey from all the lists
@@ -1154,8 +1154,8 @@ bool Msg5::gotList2 ( ) {
 	if ( m_rdbId == RDB_TITLEDB && m_isRealMerge && ! g_errno ) {
 		int64_t time2 = gettimeofdayInMilliseconds();
 		int64_t diff  =  time2 - m_time1 ;
-		log(LOG_DEBUG,"db: Read tfndblist in %"INT64" ms "
-		    "(size=%"INT32").",diff,m_tfndbList.m_listSize);
+		log(LOG_DEBUG,"db: Read tfndblist in %" INT64 " ms "
+		    "(size=%" INT32 ").",diff,m_tfndbList.m_listSize);
 		// cut it down to m_msg3.m_endKey because that's what we used 
 		// to constrain this tfndb list read
 		//if ( m_msg3.m_constrainKey < m_minEndKey ) {
@@ -1186,8 +1186,8 @@ bool Msg5::gotList2 ( ) {
 			//if ( docid > 0 && nkey < m_minEndKey ) {
 			if ( docid > 0 && KEYCMP(nkey,m_minEndKey,m_ks)<0 ) {
 				log(LOG_DEBUG,"db: Tfndb had min key: "
-				    //"0x%"XINT64"",nkey.n0);
-				    "0x%"XINT64"",KEY0(nkey));
+				    //"0x%" XINT64 "",nkey.n0);
+				    "0x%" XINT64 "",KEY0(nkey));
 				//m_minEndKey = nkey;
 				KEYSET(m_minEndKey,nkey,m_ks);
 			}
@@ -1246,7 +1246,7 @@ bool Msg5::gotList2 ( ) {
 
 	// bitch
 	if ( n >= MAX_RDB_FILES ) 
-		log(LOG_LOGIC,"net: msg5: Too many lists (%"INT32" | %"INT32").",
+		log(LOG_LOGIC,"net: msg5: Too many lists (%" INT32 " | %" INT32 ").",
 			   m_msg3.getNumLists() , n);
 
 	// store # of lists here for use by the call to merge_r()
@@ -1363,7 +1363,7 @@ bool Msg5::gotList2 ( ) {
 		//   we only have 1 non-empty list ptr, either from the tree
 		//   or from the file
 		//if ( ! m_list->isEmpty() ) 
-		//	log("Msg5::gotList: why is it not empty? size=%"INT32"",
+		//	log("Msg5::gotList: why is it not empty? size=%" INT32 "",
 		//	    m_list->getListSize() );
 		// just copy ptrs from this list into m_list
 		m_list->set ( m_listPtrs[0]->getList          () ,
@@ -1515,7 +1515,7 @@ void threadDoneWrapper ( void *state , ThreadEntry *t ) {
 	// we MAY be in a thread now
 	Msg5 *THIS = (Msg5 *)state;
 	// debug msg
-	//log("msg3 back from merge thread (msg5=%"UINT32")",THIS->m_state);
+	//log("msg3 back from merge thread (msg5=%" UINT32 ")",THIS->m_state);
 	// . add m_list to our cache if we should
 	// . this returns false if blocked, true otherwise
 	// . sets g_errno on error
@@ -1564,8 +1564,8 @@ void Msg5::repairLists_r ( ) {
 		     m_rdbId == RDB_POSDB &&
 		     m_listPtrs[i]->m_listSize > m_minRecSizes + 12 )
 			// just log it for now, maybe force core later
-			log(LOG_DEBUG,"db: Index list size is %"INT32" but "
-			    "minRecSizes is %"INT32".",
+			log(LOG_DEBUG,"db: Index list size is %" INT32 " but "
+			    "minRecSizes is %" INT32 ".",
 			    m_listPtrs[i]->m_listSize ,
 			    m_minRecSizes );
 		// this took like 50ms (-O3) on lenny on a 4meg list
@@ -1589,14 +1589,14 @@ void Msg5::repairLists_r ( ) {
 		if ( i < nn && base ) {
 			int32_t fn = m_msg3.m_fileNums[i];
 			BigFile *bf = base->getFile ( fn );
-			log("db: Corrupt filename is %s in collnum %"INT32"."
+			log("db: Corrupt filename is %s in collnum %" INT32 "."
 			    ,bf->getFilename()
 			    ,(int32_t)m_collnum);
 			//key_t sk = m_listPtrs[i]->getStartKey();
 			//key_t ek = m_listPtrs[i]->getEndKey  ();
 			//log("db: "
-			//    "startKey.n1=%"XINT32" n0=%"XINT64" "
-			//    "endKey.n1=%"XINT32" n0=%"XINT64"",
+			//    "startKey.n1=%" XINT32 " n0=%" XINT64 " "
+			//    "endKey.n1=%" XINT32 " n0=%" XINT64 "",
 			//    sk.n1,sk.n0,ek.n1,ek.n0);
 			char *sk = m_listPtrs[i]->getStartKey();
 			char *ek = m_listPtrs[i]->getEndKey  ();
@@ -1829,7 +1829,7 @@ bool Msg5::doneMerging ( ) {
 	//   our first merge
 	if ( m_hadCorruption ) {
 		// log it here, cuz logging in thread doesn't work too well
-		log("net: Encountered a corrupt list in rdb=%s collnum=%"INT32"",
+		log("net: Encountered a corrupt list in rdb=%s collnum=%" INT32 "",
 		    base->m_dbname,(int32_t)m_collnum);
 		// remove error condition, we removed the bad data in thread
 		
@@ -1843,9 +1843,9 @@ bool Msg5::doneMerging ( ) {
 			char msgbuf[1024];
 			Host *h = g_hostdb.getHost ( 0 );
 			snprintf(msgbuf, 1024,
-				 "%"INT32" corrupt lists. "
+				 "%" INT32 " corrupt lists. "
 				 "cluster=%s "
-				 "host=%"INT32"",
+				 "host=%" INT32 "",
 				 g_numCorrupt,
 				 iptoa(h->m_ip),
 				 g_hostdb.m_hostId);
@@ -1874,7 +1874,7 @@ bool Msg5::doneMerging ( ) {
 	}
 
 	if ( m_isRealMerge )
-		log(LOG_DEBUG,"db: merged list is %"INT32" bytes long.",
+		log(LOG_DEBUG,"db: merged list is %" INT32 " bytes long.",
 		    m_list->m_listSize);
 
 	// log it
@@ -1886,10 +1886,10 @@ bool Msg5::doneMerging ( ) {
 	if ( g_conf.m_logTimingNet ) {
 		if ( took > 5 )
 			log(LOG_INFO,
-			    "net: Took %"UINT64" ms to do merge. %"INT32" lists merged "
-			     "into one list of %"INT32" bytes.",
+			    "net: Took %" UINT64 " ms to do merge. %" INT32 " lists merged "
+			     "into one list of %" INT32 " bytes.",
 			     took , m_numListPtrs , m_list->getListSize() );
-		//log("Msg5:: of that %"UINT64" ms was in checkList_r()s",
+		//log("Msg5:: of that %" UINT64 " ms was in checkList_r()s",
 		//     m_checkTime );
 	}
 
@@ -2147,16 +2147,16 @@ bool Msg5::gotRemoteList ( ) {
 		//   it will take to patch the bad data
 		//key_t sk = m_list->getStartKey();
 		//key_t ek = m_list->getEndKey  ();
-		//log("net: Received good list from twin. Requested %"INT32" bytes "
-		//    "and got %"INT32". "
-		//    "startKey.n1=%"XINT32" n0=%"XINT64" "
-		//    "endKey.n1=%"XINT32" n0=%"XINT64"",
+		//log("net: Received good list from twin. Requested %" INT32 " bytes "
+		//    "and got %" INT32 ". "
+		//    "startKey.n1=%" XINT32 " n0=%" XINT64 " "
+		//    "endKey.n1=%" XINT32 " n0=%" XINT64 "",
 		//    m_minRecSizes , m_list->getListSize() ,
 		//    sk.n1,sk.n0,ek.n1,ek.n0);
 		char *sk = m_list->getStartKey();
 		char *ek = m_list->getEndKey  ();
-		log("net: Received good list from twin. Requested %"INT32" bytes "
-		    "and got %"INT32". "
+		log("net: Received good list from twin. Requested %" INT32 " bytes "
+		    "and got %" INT32 ". "
 		    "startKey=%s endKey=%s",
 		    m_minRecSizes , m_list->getListSize() ,
 		    KEYSTR(sk,m_ks),KEYSTR(ek,m_ks));
@@ -2171,20 +2171,20 @@ bool Msg5::gotRemoteList ( ) {
 		//k = m_list->getStartKey();
 		char *k = m_list->getStartKey();
 		log(LOG_DEBUG,
-		    //"net: Received list skey.n1=%08"XINT32" skey.n0=%016"XINT64"." ,
+		    //"net: Received list skey.n1=%08" XINT32 " skey.n0=%016" XINT64 "." ,
 		    //  k.n1 , k.n0 );
 		    "net: Received list skey=%s." ,
 		      KEYSTR(k,m_ks) );
 		k = m_list->getEndKey();
 		log(LOG_DEBUG,
-		    //"net: Received list ekey.n1=%08"XINT32" ekey.n0=%016"XINT64"." ,
+		    //"net: Received list ekey.n1=%08" XINT32 " ekey.n0=%016" XINT64 "." ,
 		    //  k.n1 , k.n0 );
 		    "net: Received list ekey=%s",
 		      KEYSTR(k,m_ks) );
 		if ( ! m_list->isEmpty() ) {
 			k = m_list->getLastKey();
-			//log(LOG_DEBUG,"net: Received list Lkey.n1=%08"XINT32" "
-			//      "Lkey.n0=%016"XINT64"" , k.n1 , k.n0 );
+			//log(LOG_DEBUG,"net: Received list Lkey.n1=%08" XINT32 " "
+			//      "Lkey.n0=%016" XINT64 "" , k.n1 , k.n0 );
 			log(LOG_DEBUG,"net: Received list Lkey=%s",
 			    KEYSTR(k,m_ks) );
 		}

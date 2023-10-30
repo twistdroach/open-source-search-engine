@@ -148,7 +148,7 @@ void Url::set ( char *t , int32_t tlen , bool addWWW , bool stripSessionId ,
 	if ( ! t || tlen == 0 ) return ;
 	// we may add a "www." a trailing backslash and \0, ...
 	if ( tlen > MAX_URL_LEN - 10 ) {
-		log( LOG_LIMIT,"db: Encountered url of length %"INT32". "
+		log( LOG_LIMIT,"db: Encountered url of length %" INT32 ". "
 		     "Truncating to %i" , tlen , MAX_URL_LEN - 10 );
 		tlen = MAX_URL_LEN - 10;
 	}
@@ -182,7 +182,7 @@ void Url::set ( char *t , int32_t tlen , bool addWWW , bool stripSessionId ,
 		// xn--<punycoded label>.xn--<punycoded label>.../
 		char tmp = t[tlen];
 		if(t[tlen]) t[tlen] = 0;
-		log(LOG_DEBUG, "build: attempting to decode unicode url %s pos at %"INT32, t, nonAsciiPos);
+		log(LOG_DEBUG, "build: attempting to decode unicode url %s pos at %" INT32, t, nonAsciiPos);
 		if(tmp) t[tlen] = tmp;
 		char encoded [ MAX_URL_LEN ];
 		size_t encodedLen = MAX_URL_LEN;
@@ -962,7 +962,7 @@ void Url::print() {
 
 	printf("query: %s\n",m_query);
 
-	printf("port: %"INT32"\n", m_port );
+	printf("port: %" INT32 "\n", m_port );
 
 	printf("domain: ");
 	print_string(m_domain, m_dlen );

@@ -155,7 +155,7 @@ bool Msg3a::getDocIds ( Msg39Request *r          ,
 
 	// warning. coll size includes \0
 	if ( ! m_r->m_collnum < 0 ) // ptr_coll || m_r->size_coll-1 <= 0 ) 
-		log(LOG_LOGIC,"net: bad collection. msg3a. %"INT32"",
+		log(LOG_LOGIC,"net: bad collection. msg3a. %" INT32 "",
 		    (int32_t)m_r->m_collnum);
 
 	//m_indexdbSplit = g_hostdb.m_indexSplits;
@@ -211,7 +211,7 @@ bool Msg3a::getDocIds ( Msg39Request *r          ,
 		// show the query terms
 		printTerms ( );
 		m_startTime = gettimeofdayInMilliseconds();
-		logf(LOG_DEBUG,"query: msg3a: [%"PTRFMT"] getting termFreqs.", 
+		logf(LOG_DEBUG,"query: msg3a: [%" PTRFMT "] getting termFreqs.", 
 		     (PTRTYPE)this);
 	}
 
@@ -306,7 +306,7 @@ bool Msg3a::gotCacheReply ( ) {
 		p = tmp;
 		p += sprintf(p,
 			     "seopipe: hit cache "
-			     "docids=%"INT32" "
+			     "docids=%" INT32 " "
 			     "query=\"%s\" ",
 			     m_numDocIds,
 			     m_r->ptr_query );
@@ -315,7 +315,7 @@ bool Msg3a::gotCacheReply ( ) {
 		//	//float score = m_msg3a->getScores()[i];
 		//	int64_t d = m_docIds[i];
 		//	//int32_t sh32 = m_msg3a->getSiteHash32(i);
-		//	p += sprintf(p,"d%"INT32"=%"INT64" ",i,d);
+		//	p += sprintf(p,"d%" INT32 "=%" INT64 " ",i,d);
 		//}
 		log("%s",tmp);
 		// all done!
@@ -340,8 +340,8 @@ bool Msg3a::gotCacheReply ( ) {
 			*tpc = 0;
 			// this term freq is estimated from the rdbmap and
 			// does not hit disk...
-			logf(LOG_DEBUG,"query: term #%"INT32" \"%s\" "
-			     "termid=%"INT64" termFreq=%"INT64" termFreqWeight=%.03f",
+			logf(LOG_DEBUG,"query: term #%" INT32 " \"%s\" "
+			     "termid=%" INT64 " termFreq=%" INT64 " termFreqWeight=%.03f",
 			     i,
 			     qt->m_term, 
 			     qt->m_termId,
@@ -508,8 +508,8 @@ bool Msg3a::gotCacheReply ( ) {
 		}
 		// debug log
 		if ( m_debug )
-			logf(LOG_DEBUG,"query: Msg3a[%"PTRFMT"]: forwarding request "
-			     "of query=%s to shard %"UINT32".", 
+			logf(LOG_DEBUG,"query: Msg3a[%" PTRFMT "]: forwarding request "
+			     "of query=%s to shard %" UINT32 ".", 
 			     (PTRTYPE)this, m_q->getQuery(), shardNum);
 		// send to this guy
 		Multicast *m = &m_mcast[i];
@@ -596,12 +596,12 @@ void gotReplyWrapper3a ( void *state , void *state2 ) {
 	Msg3a *THIS = (Msg3a *)state;
 	// timestamp log
 	if ( THIS->m_debug )
-		logf(LOG_DEBUG,"query: msg3a: [%"PTRFMT"] got reply #%"INT32" in %"INT64" ms."
+		logf(LOG_DEBUG,"query: msg3a: [%" PTRFMT "] got reply #%" INT32 " in %" INT64 " ms."
 		     " err=%s", (PTRTYPE)THIS, THIS->m_numReplies ,
 		     gettimeofdayInMilliseconds() -  THIS->m_startTime ,
 		     mstrerror(g_errno) );
 	else if ( g_errno )
-		logf(LOG_DEBUG,"msg3a: error reply. [%"PTRFMT"] got reply #%"INT32" "
+		logf(LOG_DEBUG,"msg3a: error reply. [%" PTRFMT "] got reply #%" INT32 " "
 		     " err=%s", (PTRTYPE)THIS, THIS->m_numReplies ,
 		     mstrerror(g_errno) );
 
@@ -716,7 +716,7 @@ bool Msg3a::gotAllShardReplies ( ) {
 			m_skippedShards++;
 			if(g_hostdb.getHost(i)->m_queryEnabled) {
 				log(LOG_LOGIC,"query: msg3a: Bad reply (size=%i) from "
-					"host #%"INT32". Dead? Timeout? OOM?"
+					"host #%" INT32 ". Dead? Timeout? OOM?"
 					,(int)replySize
 					,i);
             }
@@ -736,7 +736,7 @@ bool Msg3a::gotAllShardReplies ( ) {
 		// 	g_errno = EBADREPLYSIZE;
 		// 	m_errno = EBADREPLYSIZE;
 		// 	log(LOG_LOGIC,"query: msg3a: Bad reply size "
-		// 	    "of %"INT32".",
+		// 	    "of %" INT32 ".",
 		// 	    replySize);
 		// 	// all reply buffers should be freed on reset()
 		// 	return true;
@@ -755,7 +755,7 @@ bool Msg3a::gotAllShardReplies ( ) {
 		if ( mr->m_nqt != m_q->getNumTerms() ) {
 			g_errno = EBADREPLY;
 			m_errno = EBADREPLY;
-			log("query: msg3a: Shard reply qterms=%"INT32" != %"INT32".",
+			log("query: msg3a: Shard reply qterms=%" INT32 " != %" INT32 ".",
 			    (int32_t)mr->m_nqt,(int32_t)m_q->getNumTerms() );
 			return true;
 		}
@@ -810,9 +810,9 @@ bool Msg3a::gotAllShardReplies ( ) {
 		for ( int32_t j = 0; j < mr->m_numDocIds ; j++ ) {
 			// print out score_t
 			logf( LOG_DEBUG,
-			     "query: msg3a: [%"PTRFMT"] %03"INT32") "
-			     "shard=%"INT32" docId=%012"UINT64" "
-			      "domHash=0x%02"XINT32" "
+			     "query: msg3a: [%" PTRFMT "] %03" INT32 ") "
+			     "shard=%" INT32 " docId=%012" UINT64 " "
+			      "domHash=0x%02" XINT32 " "
 			     "score=%f"                     ,
 			     (PTRTYPE)this                      ,
 			     j                                        , 
@@ -882,7 +882,7 @@ bool Msg3a::gotAllShardReplies ( ) {
 	//    ,KEYSTR(&m_ckey,12)
 	//    ,m_r->ptr_query
 	//    );
-	//log("msg1: sending niceness=%"INT32"",(int32_t)m_r->m_niceness);
+	//log("msg1: sending niceness=%" INT32 "",(int32_t)m_r->m_niceness);
 	// this will often block, but who cares!? it just sends a request off
 	if ( ! m_msg1.addList ( &m_seoCacheList ,
 				RDB_SERPDB,//RDB_CACHEDB,
@@ -1117,7 +1117,7 @@ bool Msg3a::mergeLists ( ) {
 			       m_r->m_niceness,"fhtqt")) 
 			return true;
 		// debug note
-		// log("results: alloc fhtqt of %"PTRFMT" for st0=%"PTRFMT,
+		// log("results: alloc fhtqt of %" PTRFMT " for st0=%"PTRFMT,
 		//     (PTRTYPE)ht->m_buf,(PTRTYPE)m_q->m_st0Ptr);
 		// sanity
 		if ( ! ht->m_isWritable ) {
@@ -1157,7 +1157,7 @@ bool Msg3a::mergeLists ( ) {
 		// sanity
 		if ( ! qt ) {
 			log("msg3a: query: could not find query term with "
-			    "termid %"UINT64" for facet",termId);
+			    "termid %" UINT64 " for facet",termId);
 			break;
 		}
 
@@ -1180,7 +1180,7 @@ bool Msg3a::mergeLists ( ) {
 			FacetEntry *fe = (FacetEntry *)p;
 			p += sizeof(FacetEntry);
 			// debug
-			//log("msg3a: got facethash %"INT32") %"UINT32"",k,p[k]);
+			//log("msg3a: got facethash %" INT32 ") %" UINT32 "",k,p[k]);
 			// accumulate scores from all shards
 			//if ( ! qt->m_facetHashTable.addScore(&facetValue,
 			//				     facetCount) )
@@ -1409,7 +1409,7 @@ bool Msg3a::mergeLists ( ) {
 			if ( m_r->m_getDocIdScoringInfo )
 				log("msg3a: CRAP! got empty score "
 				    "info for "
-				    "d=%"INT64"",
+				    "d=%" INT64 "",
 				    m_docIds[m_numDocIds]);
 			//char *xx=NULL; *xx=0;  261561804684
 			// qry = www.yahoo
@@ -1470,8 +1470,8 @@ bool Msg3a::mergeLists ( ) {
 
 	if ( m_debug ) {
 		// show how long it took
-		logf( LOG_DEBUG,"query: msg3a: [%"PTRFMT"] merged %"INT32" docs from %"INT32" "
-		      "shards in %"UINT64" ms. "
+		logf( LOG_DEBUG,"query: msg3a: [%" PTRFMT "] merged %" INT32 " docs from %" INT32 " "
+		      "shards in %" UINT64 " ms. "
 		      ,
 		      (PTRTYPE)this, 
 		       m_numDocIds, (int32_t)m_numHosts,
@@ -1484,9 +1484,9 @@ bool Msg3a::mergeLists ( ) {
 				sh=g_clusterdb.getSiteHash26((char *)
 							   &m_clusterRecs[i]);
 			// print out score_t
-			logf(LOG_DEBUG,"query: msg3a: [%"PTRFMT"] "
-			    "%03"INT32") merged docId=%012"UINT64" "
-			    "score=%f hosthash=0x%"XINT32"",
+			logf(LOG_DEBUG,"query: msg3a: [%" PTRFMT "] "
+			    "%03" INT32 ") merged docId=%012" UINT64 " "
+			    "score=%f hosthash=0x%" XINT32 "",
 			    (PTRTYPE)this, 
 			     i,
 			     m_docIds    [i] ,
@@ -1566,8 +1566,8 @@ void Msg3a::printTerms ( ) {
 		int64_t tid  = m_q->m_qterms[i].m_termId;
 		char *s    = m_q->m_qterms[i].m_term;
 		if ( ! s ) {
-			logf(LOG_DEBUG,"query: term #%"INT32" "
-			     "\"<notstored>\" (%"UINT64")",
+			logf(LOG_DEBUG,"query: term #%" INT32 " "
+			     "\"<notstored>\" (%" UINT64 ")",
 			     i,tid);
 		}
 		else {
@@ -1575,10 +1575,10 @@ void Msg3a::printTerms ( ) {
 			char c = s[slen];
 			s[slen] = '\0';
 			//utf16ToUtf8(bb, 256, s , slen );
-			//sprintf(buf," termId#%"INT32"=%"INT64"",i,tid);
+			//sprintf(buf," termId#%" INT32 "=%" INT64 "",i,tid);
 			// this term freq is estimated from the rdbmap and
 			// does not hit disk...
-			logf(LOG_DEBUG,"query: term #%"INT32" \"%s\" (%"UINT64")",
+			logf(LOG_DEBUG,"query: term #%" INT32 " \"%s\" (%" UINT64 ")",
 			     i,s,tid);
 			s[slen] = c;
 		}
@@ -1595,7 +1595,7 @@ void setTermFreqWeights ( collnum_t collnum , // char *coll,
 	if ( base ) numDocsInColl = base->getNumGlobalRecs();
 	// issue? set it to 1000 if so
 	if ( numDocsInColl < 0 ) {
-		log("query: Got num docs in coll of %"INT64" < 0",numDocsInColl);
+		log("query: Got num docs in coll of %" INT64 " < 0",numDocsInColl);
 		// avoid divide by zero below
 		numDocsInColl = 1;
 	}

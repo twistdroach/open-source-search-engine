@@ -136,8 +136,8 @@ bool Cachedb::verify ( char *coll ) {
 		if ( shardNum == getMyShardNum() ) got++;
 	}
 	if ( got != count ) {
-		log ("db: Out of first %"INT32" records in %s , "
-		     "only %"INT32" belong to our group.",count,m_name,got);
+		log ("db: Out of first %" INT32 " records in %s , "
+		     "only %" INT32 " belong to our group.",count,m_name,got);
 
 		/*
 		// repeat with log
@@ -167,7 +167,7 @@ bool Cachedb::verify ( char *coll ) {
 		return g_conf.m_bypassValidation;
 	}
 	log ( LOG_DEBUG, "db: %s passed verification successfully for "
-	      "%"INT32" recs.", m_name,count );
+	      "%" INT32 " recs.", m_name,count );
 	// DONE
 	g_threads.enableThreads();
 	return true;

@@ -292,9 +292,9 @@ bool UdpSlot::sendSetup ( char      *msg         ,
 	// can't be too big
 	if ( msgSize / m_maxDgramSize + 1 >= MAX_DGRAMS ) {
 		int32_t maxMsgSize = m_maxDgramSize * MAX_DGRAMS;
-		log(LOG_LOGIC,"udp: Msg size of %"INT32" bytes is too big "
-		    "to send. Max dgram size = %"INT32". Max dgrams = "
-		    "%"INT32". Max msg size = %"INT32" msgtype=0x%hhx. Please "
+		log(LOG_LOGIC,"udp: Msg size of %" INT32 " bytes is too big "
+		    "to send. Max dgram size = %" INT32 ". Max dgrams = "
+		    "%" INT32 ". Max msg size = %" INT32 " msgtype=0x%hhx. Please "
 		    "increase the #define MAX_DGRAMS in UdpSlot.h and "
 		    "recompile to fix this.",
 		    (int32_t)msgSize,(int32_t)m_maxDgramSize,
@@ -372,8 +372,8 @@ void UdpSlot::prepareForResend ( int64_t now , bool resendAll ) {
 	// debug msg
 	//if ( g_conf.m_logDebugUdp ) 
 	//	log(LOG_DEBUG,"udp: resending slot "
-	//	    "all=%"INT32" "
-	//	    "tid=%"INT32" "
+	//	    "all=%" INT32 " "
+	//	    "tid=%" INT32 " "
 	//	    "dst=%s:%hu." ,
 	//	    (int32_t)resendAll ,
 	//	    (int32_t)m_transId ,
@@ -431,8 +431,8 @@ void UdpSlot::prepareForResend ( int64_t now , bool resendAll ) {
 			// log it if changing
 			if ( g_conf.m_logDebugUdp )
 				logf(LOG_DEBUG,
-				     "udp: switching to eth1 for host #%"INT32" "
-				    "tid=%"INT32"", m_host->m_hostId,m_transId);
+				     "udp: switching to eth1 for host #%" INT32 " "
+				    "tid=%" INT32 "", m_host->m_hostId,m_transId);
 		}
 		// . otherwise, we were using the eth1 (shotgun) ip
 		// . do not switch though if the ping is really bad for eth0
@@ -447,13 +447,13 @@ void UdpSlot::prepareForResend ( int64_t now , bool resendAll ) {
 			// log it
 			if ( g_conf.m_logDebugUdp )
 				logf(LOG_DEBUG,
-				     "udp: switching to eth0 for host #%"INT32" "
-				     "tid=%"INT32"",m_host->m_hostId,m_transId);
+				     "udp: switching to eth0 for host #%" INT32 " "
+				     "tid=%" INT32 "",m_host->m_hostId,m_transId);
 		}
 		// . just some debug notes
 		// . this happens when host cores and both eth0 and eth1 r dead
-		//logf(LOG_DEBUG,"udp: not switching. preferEth=%"INT32" "
-		//     "pingSHotgun=%"INT32" ping=%"INT32"",(int32_t)m_host->m_preferEth,
+		//logf(LOG_DEBUG,"udp: not switching. preferEth=%" INT32 " "
+		//     "pingSHotgun=%" INT32 " ping=%" INT32 "",(int32_t)m_host->m_preferEth,
 		//     m_host->m_pingShotgun,m_host->m_ping);
 	}
 
@@ -464,12 +464,12 @@ void UdpSlot::prepareForResend ( int64_t now , bool resendAll ) {
 	if ( g_conf.m_logDebugUdp || 
 	     (g_conf.m_logDebugDns && !m_proto->useAcks()) ) 
 		logf(LOG_DEBUG,"udp: resending slot "
-		    "all=%"INT32" "
-		    "tid=%"INT32" "
+		    "all=%" INT32 " "
+		    "tid=%" INT32 " "
 		    "dst=%s:%hu "
-		     "count=%"INT32" "
-		     "host=0x%"PTRFMT" "
-		    "cleared=%"INT32"" ,
+		     "count=%" INT32 " "
+		     "host=0x%" PTRFMT " "
+		    "cleared=%" INT32 "" ,
 		    (int32_t)resendAll ,
 		    (int32_t)m_transId ,
 		     iptoa(m_ip),//+9,
@@ -506,7 +506,7 @@ void UdpSlot::prepareForResend ( int64_t now , bool resendAll ) {
 	// 		elapsed += step;
 	// 	}
 	// debug msg
-	//log("(resend) tripTime = %"INT32"", m_resendTime );
+	//log("(resend) tripTime = %" INT32 "", m_resendTime );
 	// . we haven't gotten a read in m_resendTime milliseconds!
 	// . stamp host's times to show the affect of the slowdown
 	// . "timedOut" being true means host will only be stamped if it makes
@@ -634,7 +634,7 @@ int32_t UdpSlot::sendDatagramOrAck ( int sock, bool allowResends, int64_t now ){
 	// then m_nextToSend must have been too high
 	if ( m_nextToSend >= m_dgramsToSend ) {
 		log(LOG_LOGIC,
-		    "udp: senddatagramorack: m_nextToSend=%"INT32" >= %"INT32". "
+		    "udp: senddatagramorack: m_nextToSend=%" INT32 " >= %" INT32 ". "
 		    "Fixing it. Do not panic.", 
 		    m_nextToSend , m_dgramsToSend );
 		fixSlot();
@@ -661,7 +661,7 @@ int32_t UdpSlot::sendDatagramOrAck ( int sock, bool allowResends, int64_t now ){
 	int32_t headerSize = m_proto->getHeaderSize(0);
 	// bitch if too big
 	if ( headerSize > 32 ) {
-		log(LOG_LOGIC,"udp: senddatagramorack: header size of %"INT32" "
+		log(LOG_LOGIC,"udp: senddatagramorack: header size of %" INT32 " "
 		    "is bigger than 32.",headerSize); return -1; }
 	// . now from here on we only use headerSize so we can strip the header
 	// . so if the protocol wants the headers, leave them in...
@@ -783,7 +783,7 @@ int32_t UdpSlot::sendDatagramOrAck ( int sock, bool allowResends, int64_t now ){
 	// debug msg
 	//log("sendto");
 	// debug msg
-	//log("sending dgram of size=%"INT32" (max=%"INT32")",dgramSize,m_maxDgramSize);
+	//log("sending dgram of size=%" INT32 " (max=%" INT32 ")",dgramSize,m_maxDgramSize);
 	// . this socket should be non-blocking (i.e. return immediately)
 	// . this should set g_errno on error!
 	int bytesSent = sendto ( sock      , 
@@ -818,7 +818,7 @@ int32_t UdpSlot::sendDatagramOrAck ( int sock, bool allowResends, int64_t now ){
 			if ( t - s_lastTime > 3 ||
 			     s_lastTime - t > 3   ) { // clock skew?
 				s_lastTime = getTime();
-				log("udp: got ENOBUFS kernel bug %"INT32" times.",
+				log("udp: got ENOBUFS kernel bug %" INT32 " times.",
 				    ++s_count);
 			}
 			//g_errno = 0; 
@@ -837,7 +837,7 @@ int32_t UdpSlot::sendDatagramOrAck ( int sock, bool allowResends, int64_t now ){
 	// this should not happen
 	if ( bytesSent != dgramSize ) {
 		g_errno = EBADENGINEER;
-		log("udp: sendto only sent %i bytes, not %"INT32". Undersend.",
+		log("udp: sendto only sent %i bytes, not %" INT32 ". Undersend.",
 		    bytesSent,dgramSize);
 		return -1;
 	}
@@ -881,24 +881,24 @@ int32_t UdpSlot::sendDatagramOrAck ( int sock, bool allowResends, int64_t now ){
 		int32_t kk = 0; if ( m_callback ) kk = 1;
 		log(LOG_DEBUG,
 		    "udp: sent dgram "
-		    "dgram=%"INT32" "
-		    "dgrams=%"INT32" "
+		    "dgram=%" INT32 " "
+		    "dgrams=%" INT32 " "
 		    "msg=0x%hx "
-		    "tid=%"INT32" "
+		    "tid=%" INT32 " "
 		    "dst=%s:%hu "
-		    "eth=%"INT32" "
-		    "init=%"INT32" "
-		    "age=%"INT32" "
-		    "dsent=%"INT32" "
-		    "aread=%"INT32" "
-		    "len=%"INT32" "
-		    "msgSz=%"INT32" "
-		    "cnt=%"INT32" "
-		    "wait=%"INT32" "
-		    "error=%"INT32" "
-		    "k.n1=%"UINT32" n0=%"UINT64" "
-		    "maxdgramsz=%"INT32" "
-		    "hid=%"INT32"",
+		    "eth=%" INT32 " "
+		    "init=%" INT32 " "
+		    "age=%" INT32 " "
+		    "dsent=%" INT32 " "
+		    "aread=%" INT32 " "
+		    "len=%" INT32 " "
+		    "msgSz=%" INT32 " "
+		    "cnt=%" INT32 " "
+		    "wait=%" INT32 " "
+		    "error=%" INT32 " "
+		    "k.n1=%" UINT32 " n0=%" UINT64 " "
+		    "maxdgramsz=%" INT32 " "
+		    "hid=%" INT32 "",
 		    (int32_t)dgramNum, 
 		    (int32_t)m_dgramsToSend,
 		    (int16_t)m_msgType,
@@ -939,12 +939,12 @@ void UdpSlot::fixSlot ( ) {
 	// log it
 	log(LOG_LOGIC,
 	    "udp: before fixSlot(): "
-	    "m_readBitsOn=%"INT32" "
-	    "m_readAckBitsOn=%"INT32" "
-	    "m_sentBitsOn=%"INT32" "
-	    "m_sentAckBitsOn=%"INT32" "
-	    "m_firstUnlitSentAckBit=%"INT32" "
-	    "m_nextToSend=%"INT32" " ,
+	    "m_readBitsOn=%" INT32 " "
+	    "m_readAckBitsOn=%" INT32 " "
+	    "m_sentBitsOn=%" INT32 " "
+	    "m_sentAckBitsOn=%" INT32 " "
+	    "m_firstUnlitSentAckBit=%" INT32 " "
+	    "m_nextToSend=%" INT32 " " ,
 	    m_readBitsOn,
 	    m_readAckBitsOn,
 	    m_sentBitsOn,
@@ -973,12 +973,12 @@ void UdpSlot::fixSlot ( ) {
 
 	log(LOG_LOGIC,
 	    "udp: after fixSlot(): "
-	    "m_readBitsOn=%"INT32" "
-	    "m_readAckBitsOn=%"INT32" "
-	    "m_sentBitsOn=%"INT32" "
-	    "m_sentAckBitsOn=%"INT32" "
-	    "m_firstUnlitSentAckBit=%"INT32" "
-	    "m_nextToSend=%"INT32" " ,
+	    "m_readBitsOn=%" INT32 " "
+	    "m_readAckBitsOn=%" INT32 " "
+	    "m_sentBitsOn=%" INT32 " "
+	    "m_sentAckBitsOn=%" INT32 " "
+	    "m_firstUnlitSentAckBit=%" INT32 " "
+	    "m_nextToSend=%" INT32 " " ,
 	    m_readBitsOn,
 	    m_readAckBitsOn,
 	    m_sentBitsOn,
@@ -1006,7 +1006,7 @@ int32_t UdpSlot::sendAck ( int sock , int64_t now ,
 	// protection from garbled dgrams
 	if ( dgramNum >= MAX_DGRAMS ) {
 		log(LOG_LOGIC,
-		    "udp: Sending ack for dgram #%"INT32" > max dgram of %"INT32".",
+		    "udp: Sending ack for dgram #%" INT32 " > max dgram of %" INT32 ".",
 		    dgramNum,(int32_t)MAX_DGRAMS); return 1; }
 	// remember if forced or not
 	//int32_t forced = dgramNum;
@@ -1040,8 +1040,8 @@ int32_t UdpSlot::sendAck ( int sock , int64_t now ,
 		// if we had no match, that's an error!
 		if ( dgramNum >= m_dgramsToRead ) {
 			log(LOG_LOGIC,
-			    "udp: Sending ack for dgram #%"INT32" which is passed "
-			    "the number of dgrams we have to read, %"INT32". "
+			    "udp: Sending ack for dgram #%" INT32 " which is passed "
+			    "the number of dgrams we have to read, %" INT32 ". "
 			    "Fixing. Do not panic.",
 			    dgramNum , m_dgramsToRead );
 			fixSlot();
@@ -1120,7 +1120,7 @@ int32_t UdpSlot::sendAck ( int sock , int64_t now ,
 	// this should not happen
 	if ( bytesSent != dgramSize ) {
 		g_errno = EBADENGINEER;
-		log("udp: sendto only sent %i bytes, not %"INT32". Undersend.",
+		log("udp: sendto only sent %i bytes, not %" INT32 ". Undersend.",
 		    bytesSent,dgramSize);
 		//sleep(50000);
 		return -1;
@@ -1148,9 +1148,9 @@ int32_t UdpSlot::sendAck ( int sock , int64_t now ,
 	if ( dgramNum < m_firstUnlitSentAckBit ) {
 		g_errno = EBADENGINEER;
 		log(LOG_LOGIC,
-		    "udp: Sending ack for dgram #%"INT32" which should have "
+		    "udp: Sending ack for dgram #%" INT32 " which should have "
 		    "already been sent. Next ack to send should be for dgram "
-		    "# %"INT32". Fixing. Do not panic.",
+		    "# %" INT32 ". Fixing. Do not panic.",
 		    dgramNum , m_firstUnlitSentAckBit );
 		//char *xx = NULL; *xx = 0;
 		fixSlot();
@@ -1172,16 +1172,16 @@ int32_t UdpSlot::sendAck ( int sock , int64_t now ,
 			hid = m_host->m_hostId;
 		logf(LOG_DEBUG,
 		    "udp: sent ACK   "
-		    "dgram=%"INT32" "
+		    "dgram=%" INT32 " "
 		    "msg=0x%hx "
-		    "tid=%"INT32" "
+		    "tid=%" INT32 " "
 		    "src=%s:%hu "
-		    "init=%"INT32" "
-		    "age=%"INT32" " 
-		    "cancel=%"INT32" "
-		    "dread=%"INT32" "
-		    "asent=%"INT32" "
-		     "hid=%"INT32"",
+		    "init=%" INT32 " "
+		    "age=%" INT32 " " 
+		    "cancel=%" INT32 " "
+		    "dread=%" INT32 " "
+		    "asent=%" INT32 " "
+		     "hid=%" INT32 "",
 		    (int32_t)dgramNum, 
 		    (int16_t)m_msgType , 
 		    (int32_t)m_transId, 
@@ -1217,7 +1217,7 @@ bool UdpSlot::readDatagramOrAck ( int        sock    ,
 	// protection from garbled dgrams
 	if ( dgramNum >= MAX_DGRAMS ) {
 		log(LOG_LOGIC,
-		    "udp: Reading for dgram #%"INT32" > max dgram of %"INT32".",
+		    "udp: Reading for dgram #%" INT32 " > max dgram of %" INT32 ".",
 		    dgramNum,(int32_t)MAX_DGRAMS);
 		return true;
 	}
@@ -1226,10 +1226,10 @@ bool UdpSlot::readDatagramOrAck ( int        sock    ,
 		//if ( g_conf.m_logDebugUdp ) 
 		//logf(LOG_INFO,//LOG_DEBUG,
 		log(LOG_DEBUG,
-		     "udp: Read cancel ack hdrlen=%"INT32" tid=%"INT32" "
-		     "src=%s:%hu msgType=0x%hhx weInitiated=%"PTRFMT" "
-		    "sent=%"INT32" "
-		    "sendbufalloc=%"PTRFMT" sendbufsize=%"UINT32"",
+		     "udp: Read cancel ack hdrlen=%" INT32 " tid=%" INT32 " "
+		     "src=%s:%hu msgType=0x%hhx weInitiated=%" PTRFMT " "
+		    "sent=%" INT32 " "
+		    "sendbufalloc=%" PTRFMT " sendbufsize=%" UINT32 "",
 		     peekSize , m_proto->getTransId ( peek,peekSize ),
 		     iptoa(m_ip),m_port,
 		     m_proto->getMsgType(peek,peekSize),
@@ -1303,18 +1303,18 @@ bool UdpSlot::readDatagramOrAck ( int        sock    ,
 		int32_t kk = 0; if ( m_callback ) kk = 1;
 		log(LOG_DEBUG,
 		    "udp: Read dgram "
-		    "dgram=%"INT32" "
+		    "dgram=%" INT32 " "
 		    "msg=0x%hx "
-		    "tid=%"INT32" "
+		    "tid=%" INT32 " "
 		    "src=%s:%hu "
-		    "init=%"INT32" "
-		    "age=%"INT32" "
-		    "dread=%"INT32" "
-		    "asent=%"INT32" "
-		    //"len=%"INT32" "
-		    "msgSz=%"INT32" "
-		    "error=%"INT32" "
-		    "hid=%"INT32"",
+		    "init=%" INT32 " "
+		    "age=%" INT32 " "
+		    "dread=%" INT32 " "
+		    "asent=%" INT32 " "
+		    //"len=%" INT32 " "
+		    "msgSz=%" INT32 " "
+		    "error=%" INT32 " "
+		    "hid=%" INT32 "",
 		    (int32_t)dgramNum,
 		    (int16_t)m_proto->getMsgType(peek,peekSize),
 		    (int32_t)m_proto->getTransId(peek,peekSize),
@@ -1364,7 +1364,7 @@ bool UdpSlot::readDatagramOrAck ( int        sock    ,
 		m_readAckBitsOn = m_dgramsToSend;
 		if ( g_conf.m_logDebugUdp ) 
 			log(LOG_DEBUG,"udp: Cramming ACKs "
-			    "tid=%"INT32" "
+			    "tid=%" INT32 " "
 			    "dst=%s:%hu" ,
 			    (int32_t)m_transId ,
 			    iptoa(m_ip),
@@ -1478,11 +1478,11 @@ bool UdpSlot::readDatagramOrAck ( int        sock    ,
  retry:
 	if ( ! m_readBuf ) {
 		if ( ! makeReadBuf ( msgSize , m_dgramsToRead ) )
-			return log("udp: Failed to allocate %"INT32" bytes to read "
+			return log("udp: Failed to allocate %" INT32 " bytes to read "
 				   "request or reply for udp socket.",msgSize);
 		// track down the mem leak.
 		// someone is not freeing their read buf!!
-		//logf(LOG_DEBUG,"udpslot alloc %"INT32" at 0x%"XINT32" msgType=%hhx",
+		//logf(LOG_DEBUG,"udpslot alloc %" INT32 " at 0x%" XINT32 " msgType=%hhx",
 		//     msgSize,m_readBuf,m_msgType);
 	}
 	
@@ -1496,8 +1496,8 @@ bool UdpSlot::readDatagramOrAck ( int        sock    ,
 	// return false if we have no room for the entire reply
 	if ( msgSize > m_readBufMaxSize ) {
 		g_errno = EBUFTOOSMALL;
-		return log("udp: Msg size of %"INT32" bytes is too big for the "
-			   "buffer size, %"INT32", we allocated. msgType=0x%hhx.",
+		return log("udp: Msg size of %" INT32 " bytes is too big for the "
+			   "buffer size, %" INT32 ", we allocated. msgType=0x%hhx.",
 			   msgSize, m_readBufMaxSize , m_msgType );
 	}
 
@@ -1527,7 +1527,7 @@ bool UdpSlot::readDatagramOrAck ( int        sock    ,
 			if ( tt > s_lastTime + 5 ) {
 				s_lastTime = tt;
 				log("dns: dropping corrupt msgc reply dgram. "
-				    "count=%"INT32".",g_corruptPackets);
+				    "count=%" INT32 ".",g_corruptPackets);
 				return true;
 			}
 			return true;
@@ -1557,9 +1557,9 @@ bool UdpSlot::readDatagramOrAck ( int        sock    ,
 			s_badCount++;
 			// only log it once every 1024 times it happens
 			//if ( ((s_badCount++) & 1023 ) == 0 )
-			log("udp: got %"INT32" bad dgram headers. "
-			    "dgramNum=%"INT32" offset=%"INT32" "
-			    "readBufMaxSize=%"INT32". IS hosts.conf OUT OF SYNC???",
+			log("udp: got %" INT32 " bad dgram headers. "
+			    "dgramNum=%" INT32 " offset=%" INT32 " "
+			    "readBufMaxSize=%" INT32 ". IS hosts.conf OUT OF SYNC???",
 			    s_badCount,(int32_t)dgramNum,(int32_t)offset,
 			    (int32_t)m_readBufMaxSize);
 			// this actually helps us to identify when hosts.conf
@@ -1669,7 +1669,7 @@ void UdpSlot::readAck ( int sock , int32_t dgramNum , int64_t now ) {
 	// protection from garbled dgrams
 	if ( dgramNum >= MAX_DGRAMS ) {
 		log(LOG_LOGIC,
-		    "udp: Reading ack for dgram #%"INT32" > max dgram of %"INT32".",
+		    "udp: Reading ack for dgram #%" INT32 " > max dgram of %" INT32 ".",
 		    dgramNum,(int32_t)MAX_DGRAMS); 
                 return ; }
 	// . get time now
@@ -1755,7 +1755,7 @@ void UdpSlot::readAck ( int sock , int32_t dgramNum , int64_t now ) {
 		// trip time
 		//int32_t   tripTime = now - start;
 		// debug msg
-		//log("tripTime = %"INT32"", tripTime );
+		//log("tripTime = %" INT32 "", tripTime );
 		// . update host time
 		// . we should also stamp the host each time we re-send, too
 		// . this is now handled by g_hostdb::pingHost()
@@ -1770,15 +1770,15 @@ void UdpSlot::readAck ( int sock , int32_t dgramNum , int64_t now ) {
 			hid = m_host->m_hostId;
 		log(LOG_DEBUG,
 		    "udp: Read ACK   "
-		    "dgram=%"INT32" "
+		    "dgram=%" INT32 " "
 		    "msg=0x%hx "
-		    "tid=%"INT32" "
+		    "tid=%" INT32 " "
 		    "src=%s:%hu "
-		    "init=%"INT32" "
-		    "age=%"INT32" "
-		    "dsent=%"INT32" "
-		    "aread=%"INT32" "
-		    "hid=%"INT32"",
+		    "init=%" INT32 " "
+		    "age=%" INT32 " "
+		    "dsent=%" INT32 " "
+		    "aread=%" INT32 " "
+		    "hid=%" INT32 "",
 		    (int32_t)dgramNum, 
 		    (int16_t)m_msgType , 
 		    (int32_t)m_transId, 
@@ -1806,8 +1806,8 @@ bool UdpSlot::makeReadBuf ( int32_t msgSize , int32_t numDgrams ) {
 	// ensure msg not too big
 	if ( msgSize > m_proto->getMaxMsgSize() ) {
 		g_errno = EMSGTOOBIG;
-		return log(LOG_LOGIC,"udp: makereadbuf: msg size of %"INT32" is "
-			   "too big. Max is %"INT32".",msgSize,
+		return log(LOG_LOGIC,"udp: makereadbuf: msg size of %" INT32 " is "
+			   "too big. Max is %" INT32 ".",msgSize,
 			   (int32_t)m_proto->getMaxMsgSize());
 	}
 	// if msgSize is -1 then it is under 1 dgram, but assume the worst
@@ -1823,7 +1823,7 @@ bool UdpSlot::makeReadBuf ( int32_t msgSize , int32_t numDgrams ) {
 		if ( msgSize > TMPBUFSIZE ) {
 			g_errno = EBUFTOOSMALL;
 			return log(LOG_LOGIC,"udp: makereadbuf: buffer size "
-				   "of %"INT32" is too big for async udp socket.",
+				   "of %" INT32 " is too big for async udp socket.",
 				   msgSize);
 		}
 		m_readBuf        = m_tmpBuf;
@@ -1858,7 +1858,7 @@ bool UdpSlot::makeReadBuf ( int32_t msgSize , int32_t numDgrams ) {
 	m_readBuf = (char *) mmalloc ( msgSize , bb ); // "UdpSlot") ;
 	if ( ! m_readBuf ) {
 		m_readBufSize = 0;
-		return log("udp: Failed to allocate %"INT32" bytes to "
+		return log("udp: Failed to allocate %" INT32 " bytes to "
 			   "read request or reply on udp socket.",
 			   msgSize);
 	}
@@ -1950,7 +1950,7 @@ int32_t UdpSlot::getScore ( int64_t now ) {
 	// . if we've resent before, wait enough time to send again!
 	// . m_resendCount resets when we read an ack (in readAck())
 	//if ( m_resendCount > 0 && now - m_lastReadTime < m_resendTime ) {
-	//log("now=%"INT64"-lastRead=%"INT64" <%"INT32"" , now,m_lastReadTime,m_resendTime);
+	//log("now=%"INT64"-lastRead=%"INT64" <%" INT32 "" , now,m_lastReadTime,m_resendTime);
 	//	return -1;
 	//}
 	// let's give smaller msgs more pts to reduce latency
@@ -1971,9 +1971,9 @@ int32_t UdpSlot::getScore ( int64_t now ) {
 void UdpSlot::printState() {
 	//int64_t now = gettimeofdayInMilliseconds();
 	log(LOG_TIMING, 
-	    "admin: UdpSlot - type:Msg%2"XINT32" nice:%"INT32" "
-	    "queued:%"INT32" "
-	    "handlerCalled:%"INT32"", 
+	    "admin: UdpSlot - type:Msg%2" XINT32 " nice:%" INT32 " "
+	    "queued:%" INT32 " "
+	    "handlerCalled:%" INT32 "", 
 	    (int32_t)m_msgType, 
 	    m_niceness, 
 	    (int32_t)m_isQueued, 

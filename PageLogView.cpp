@@ -56,7 +56,7 @@ bool sendPageLogView    ( TcpSocket *s , HttpRequest *r ) {
 	int32_t sampleSize  =  r->getLong("ss", 2048);
 	if(refreshRate > 0) 
 		p->safePrintf("<META HTTP-EQUIV=\"refresh\" "
-			      "content=\"%"INT32"\"\\>", 
+			      "content=\"%" INT32 "\"\\>", 
 			      refreshRate);
 
 	// 	char *ss = p->getBuf();
@@ -86,13 +86,13 @@ bool sendPageLogView    ( TcpSocket *s , HttpRequest *r ) {
 	
 	p->safePrintf("<tr bgcolor=%s>"
 		      "<td>Refresh Rate:</td><td><input type=\"text\""
-		      " name=\"rr\" value=\"%"INT32"\" size=\"4\"></td></tr>", 
+		      " name=\"rr\" value=\"%" INT32 "\" size=\"4\"></td></tr>", 
 		      LIGHT_BLUE,
 		      refreshRate);
 
 	p->safePrintf("<tr bgcolor=%s>"
 		      "<td>Sample Size:</td><td><input type=\"text\""
-		      " name=\"ss\" value=\"%"INT32"\" size=\"4\">",
+		      " name=\"ss\" value=\"%" INT32 "\" size=\"4\">",
 		      LIGHT_BLUE,
 		      sampleSize);
 
@@ -108,7 +108,7 @@ bool sendPageLogView    ( TcpSocket *s , HttpRequest *r ) {
 	int32_t numOn = 0;
 	for (int32_t i = 0 ; i < nh ; i++ ) {
 		char hostbuf[128];
-		sprintf(hostbuf, "h%"INT32"",i);
+		sprintf(hostbuf, "h%" INT32 "",i);
 		numOn += r->getLong(hostbuf, 0);
 	}
 	int32_t dfault = 0;
@@ -147,7 +147,7 @@ bool sendPageLogView    ( TcpSocket *s , HttpRequest *r ) {
 	st->m_numFilts = 0;
 	for(int32_t i = 7; i >= 0; i--) {
 		char tmpbuf[128];
-		sprintf(tmpbuf, "f%"INT32"", i);
+		sprintf(tmpbuf, "f%" INT32 "", i);
 		st->m_filters[i] =  r->getLong(tmpbuf, 0);
 		if(st->m_filters[i]) {
 			checked = "checked";
@@ -155,12 +155,12 @@ bool sendPageLogView    ( TcpSocket *s , HttpRequest *r ) {
 		}
 		else checked = "";
 
-		p->safePrintf("<input type=\"checkbox\" name=\"f%"INT32"\""
-			      " value=\"1\" %s id=\"f%"INT32"\">", i, checked, i);
+		p->safePrintf("<input type=\"checkbox\" name=\"f%" INT32 "\""
+			      " value=\"1\" %s id=\"f%" INT32 "\">", i, checked, i);
 		if(i < 3) {
 			char filtbuf[128];
 			int32_t len;
-			sprintf(filtbuf, "fs%"INT32"", i);
+			sprintf(filtbuf, "fs%" INT32 "", i);
 			st->m_filterStr[i] = r->getString(filtbuf, &len, "");
 			if(len != 0) {
 				gbmemcpy(st->m_lastPtr, st->m_filterStr[i], len);
@@ -175,7 +175,7 @@ bool sendPageLogView    ( TcpSocket *s , HttpRequest *r ) {
 			}
 
 			p->safePrintf("<input type=\"text\""
-				      " name=\"fs%"INT32"\" "
+				      " name=\"fs%" INT32 "\" "
 				      "value=\"%s\" size=\"8\">", 
 				      i, st->m_filterStr[i]); 
 		}
@@ -198,16 +198,16 @@ bool sendPageLogView    ( TcpSocket *s , HttpRequest *r ) {
 		if ( g_hostdb.isDead ( i ) ) continue;
 		// get the ith host (hostId)
 		char hostbuf[128];
-		sprintf(hostbuf, "h%"INT32"",i);
+		sprintf(hostbuf, "h%" INT32 "",i);
 		int32_t thisHost = r->getLong(hostbuf, dfault);
 		if(!thisHost) {
 			p->safePrintf("<input type=checkbox name=%s"
-				      " value=1 id=\"%s\">%"INT32"", 
+				      " value=1 id=\"%s\">%" INT32 "", 
 				      hostbuf,hostbuf, i);
 			continue;
 		}
 		p->safePrintf("<input type=\"checkbox\" name=\"%s\""
-			      " value=\"1\" id=\"%s\" checked>%"INT32"", 
+			      " value=\"1\" id=\"%s\" checked>%" INT32 "", 
 			      hostbuf, hostbuf,i);
 		if(!Msg1f::getLog(i, 
 				  sampleSize, 
@@ -219,7 +219,7 @@ bool sendPageLogView    ( TcpSocket *s , HttpRequest *r ) {
 	}
 	p->safePrintf("<input type=\"button\""
 		      " value=\"toggle\" "
-		      "onclick=\"checkAll(this, 'h', %"INT32");\">",nh);
+		      "onclick=\"checkAll(this, 'h', %" INT32 ");\">",nh);
 	
 	p->safePrintf("</td></tr>\n");
 	

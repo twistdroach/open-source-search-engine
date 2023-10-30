@@ -462,6 +462,41 @@ class Address {
 	//char m_requestBuf [ 64 ];
 
 	//void reset() { memset ( &m_name , 0 , sizeof(Address) ); }
+	void clear() {
+
+	    m_cityId32 = {};
+	    m_name1 = {};
+	    m_name2 = {};
+	    m_suite = {};
+	    m_street = {};
+	    m_city = {};
+	    m_zip = {};
+	    m_adm1 = {};
+	    m_section = {};
+	    m_alias = {};
+	    m_placedbNames = {};
+	    m_placedbNamesEnd = {};
+	    m_bestPlacedbName = {};
+	    m_latitude = {};
+	    m_longitude = {};
+	    m_latLonScore = {};
+	    m_latLonDist = {};
+	    m_importedLatitude = {};
+	    m_importedLongitude = {};
+	    m_importedVotes = {};
+	    m_geocoderLat = {};
+	    m_geocoderLon = {};
+	    m_flags = {};
+	    m_replyFlags = {};
+	    m_flags3 = {};
+	    m_placedbKey = {};
+	    m_domHash32 = {};
+	    m_ip = {};
+	    m_hash = {};
+	    m_score2 = {};
+	    m_reqBufNum = {};
+	    m_addrNum = {};
+	}
 };
 
 #define MAX_ADDR_REQUESTS_OUT 50

@@ -548,7 +548,7 @@ bool getTestIp ( char *url , int32_t *retIp , bool *found , int32_t niceness ,
 		s_testBuf = NULL;
 		//char *testDir = g_test.getTestDir();
 		// filename
-		char fn[100]; 
+		char fn[266];
 		sprintf(fn,"%s/%s/ips.txt",g_hostdb.m_dir,testDir);
 		// set it
 		File f; f.set ( fn );
@@ -568,7 +568,7 @@ bool getTestIp ( char *url , int32_t *retIp , bool *found , int32_t niceness ,
 		// error?
 		if ( ! s_testBuf ) {
 			// note it
-			log("test: failed to alloc %"INT32" bytes for ip buf",need);
+			log("test: failed to alloc %" INT32 " bytes for ip buf",need);
 			// error out
 			return false;
 		}
@@ -583,7 +583,7 @@ bool getTestIp ( char *url , int32_t *retIp , bool *found , int32_t niceness ,
 			// check it
 			if ( rs != fsize ) {
 				// note it
-				log("test: failed to read %"INT32" bytes of "
+				log("test: failed to read %" INT32 " bytes of "
 				    "./%s/ips.txt file",fsize,testDir);
 				// close it
 				f.close();
@@ -724,7 +724,7 @@ bool saveTestBuf ( char *testDir ) {
 	// ensure ./qa/ subdir exsts. in qa.cpp
 	makeQADir();
 	// filename
-	char fn[100]; sprintf(fn,"%s/%s/ips.txt",g_hostdb.m_dir, testDir);
+	char fn[266]; sprintf(fn,"%s/%s/ips.txt",g_hostdb.m_dir, testDir);
 	// set it
 	File f; f.set ( fn );
 	// open it
@@ -737,7 +737,7 @@ bool saveTestBuf ( char *testDir ) {
 	f.close();
 	// bitch?
 	if ( ws != size ) 
-		return log("test: failed to write %"INT32" bytes to %s",size,fn);
+		return log("test: failed to write %" INT32 " bytes to %s",size,fn);
 	// note it
 	log("test: saved ips.txt");
 	// ok

@@ -82,7 +82,7 @@ int32_t Categories::loadCategories ( char *filename ) {
 		       sizeof(CategoryHash)*m_numCats;
 	m_buffer = (char*)mmalloc(m_bufferSize, "Categories");
 	if (!m_buffer) {
-		log("cat: Could not allocate %"INT32" bytes for Category Buffer",
+		log("cat: Could not allocate %" INT32 " bytes for Category Buffer",
 		    m_bufferSize);
 		close(inStream);
 		g_errno = ENOMEM;
@@ -110,7 +110,7 @@ int32_t Categories::loadCategories ( char *filename ) {
 	int32_t readSize = m_nameBufferSize + (m_numCats * 30);
 	char *tempBuffer = (char*)mmalloc(readSize, "Categories");
 	if ( !tempBuffer ) {
-		log("cat: Could not allocate %"INT32" bytes for File Temp Buffer",
+		log("cat: Could not allocate %" INT32 " bytes for File Temp Buffer",
 		    readSize);
 		close(inStream);
 		g_errno = ENOMEM;
@@ -220,13 +220,13 @@ int32_t Categories::loadCategories ( char *filename ) {
 	uint32_t last = 0xffffffff;
 	for ( int32_t i = 0 ; i < m_numCats ; i++ ) {
 		if ( m_catHash[i].m_hash == last ) 
-			log("dmoz: hash collision on %"UINT32"",last);
+			log("dmoz: hash collision on %" UINT32 "",last);
 		last = m_catHash[i].m_hash;
 	}
 
 	// time it
 	int64_t took = gettimeofdayInMilliseconds();
-	if ( took - start > 100 ) log(LOG_INIT,"admin: Took %"INT64" ms to "
+	if ( took - start > 100 ) log(LOG_INIT,"admin: Took %" INT64 " ms to "
 				      "sort cat hashes.",took-start);
 	// close the file
 	close(inStream);
@@ -346,7 +346,7 @@ int32_t Categories::getIndexFromPath ( char *str, int32_t strLen ) {
 	// debug
 	//char c = str[strLen];
 	//str[strLen] = '\0';
-	//log("dmoz: looking up hash %"UINT32" for %s",hash,str);
+	//log("dmoz: looking up hash %" UINT32 " for %s",hash,str);
 	//str[strLen] = c;
 	// binary search
 	while (low <= high) {
@@ -488,21 +488,21 @@ void Categories::printCats ( int32_t start, int32_t end ) {
 	for (int32_t i = start; i < end; i++) {
 		char str[512];
 		char *s = str;
-		s += sprintf(s, "Cat %"INT32":\n", i);
-		s += sprintf(s, "  CatID: %"INT32"\n", m_cats[i].m_catid);
+		s += sprintf(s, "Cat %" INT32 ":\n", i);
+		s += sprintf(s, "  CatID: %" INT32 "\n", m_cats[i].m_catid);
 		s += sprintf(s, "  Name:  ");
 		for (int32_t n = m_cats[i].m_nameOffset;
 			  n < m_cats[i].m_nameOffset + m_cats[i].m_nameLen;
 			  n++)
 			s += sprintf(s, "%c", m_nameBuffer[n]);
 		s += sprintf(s, "\n");
-		s += sprintf(s, "  Name Offset:      %"INT32"\n",
+		s += sprintf(s, "  Name Offset:      %" INT32 "\n",
 				m_cats[i].m_nameOffset);
-		s += sprintf(s, "  Structure Offset: %"INT32"\n",
+		s += sprintf(s, "  Structure Offset: %" INT32 "\n",
 				m_cats[i].m_structureOffset);
-		s += sprintf(s, "  Content Offset:   %"INT32"\n",
+		s += sprintf(s, "  Content Offset:   %" INT32 "\n",
 				m_cats[i].m_contentOffset);
-		s += sprintf(s, "  Parent:           %"INT32"\n",
+		s += sprintf(s, "  Parent:           %" INT32 "\n",
 				m_cats[i].m_parentid);
 		s += sprintf(s, "\n");
 		log ( LOG_INFO, "%s", str );
@@ -893,7 +893,7 @@ bool Categories::printUrlsInTopic ( SafeBuf *sb, int32_t catid ) {
 	// . seek to the offset
 	n = lseek ( m_rdfStream, fileOffset, SEEK_SET );
 	if ( n != fileOffset ) {
-		log("cat: Error seeking to Content Offset %"INT32"", fileOffset);
+		log("cat: Error seeking to Content Offset %" INT32 "", fileOffset);
 		goto errEnd;
 	}
 	// . read in a chunk
@@ -908,7 +908,7 @@ bool Categories::printUrlsInTopic ( SafeBuf *sb, int32_t catid ) {
 		p += n;
 		readSize -= n;
 	}
-	//log(LOG_WARN,"build: reading %"INT32" bytes out of %"INT32"",n,m_rdfBufferSize);
+	//log(LOG_WARN,"build: reading %" INT32 " bytes out of %" INT32 "",n,m_rdfBufferSize);
 	QUICKPOLL(niceness);
 
 	if(n < 0 && errno == EAGAIN) goto readLoop;
@@ -1093,7 +1093,7 @@ bool Categories::getTitleAndSummary ( char  *urlOrig,
 	n = lseek ( m_rdfStream, fileOffset, SEEK_SET );
 	//if (!m_rdfStream.good()) {
 	if ( n != fileOffset ) {
-		log("cat: Error seeking to Content Offset %"INT32"", fileOffset);
+		log("cat: Error seeking to Content Offset %" INT32 "", fileOffset);
 		goto errEnd;
 	}
 	// . read in a chunk
@@ -1110,7 +1110,7 @@ bool Categories::getTitleAndSummary ( char  *urlOrig,
 		p += n;
 		readSize -= n;
 	}
-	//log(LOG_WARN,"build: reading %"INT32" bytes out of %"INT32"",n,m_rdfBufferSize);
+	//log(LOG_WARN,"build: reading %" INT32 " bytes out of %" INT32 "",n,m_rdfBufferSize);
 	QUICKPOLL(niceness);
 
 	if(n < 0 && errno == EAGAIN) goto readLoop;
@@ -1286,7 +1286,7 @@ int32_t Categories::generateSubCats ( int32_t catid,
 	n = lseek ( m_rdfStream, fileOffset, SEEK_SET );
 	//if (!m_rdfStream.good()) {
 	if ( n != fileOffset ) {
-		log("cat: Error seeking to Structure Offset %"INT32"", fileOffset);
+		log("cat: Error seeking to Structure Offset %" INT32 "", fileOffset);
 		goto errEnd;
 	}
 	// . read in a chunk
@@ -1512,10 +1512,10 @@ int32_t Categories::createDirSearchRequest ( char *requestBuf,
 	char *rrr = r->m_reqBuf.getBufStart();
 	if ( rrr && rrr[0] == 'Z' ) cmd = "ZET";
 	// request
-	//p += sprintf(p, "%s /search?dir=%"INT32"&dr=0&sc=0&sdir=%"INT32"&sdirt=0&c=",
+	//p += sprintf(p, "%s /search?dir=%" INT32 "&dr=0&sc=0&sdir=%" INT32 "&sdirt=0&c=",
 	//		cmd, catid, catid);
 	p += sprintf(p, 
-		     "%s /search?q=gbcatid%%3A%"INT32"&dir=%"INT32"&dr=0&sc=0&c="
+		     "%s /search?q=gbcatid%%3A%" INT32 "&dir=%" INT32 "&dr=0&sc=0&c="
 		     , cmd
 		     , catid
 		     , catid);
@@ -1582,7 +1582,7 @@ bool Categories::loadLangTables(void) {
 		lineno++;
 
 		if(lineno % 1000000 == 0)
-			log(LOG_INFO, "cat: Parsing line %"INT32"\n", lineno);
+			log(LOG_INFO, "cat: Parsing line %" INT32 "\n", lineno);
 
 		if(!strncmp(line, "</ExternalPage>", 14)) {
 			h = 0L; // end tag, clear hash
@@ -1610,7 +1610,7 @@ bool Categories::loadLangTables(void) {
 		}
 	}
 
-	log(LOG_INFO, "cat: Added %"INT32" total entries.\n", entries);
+	log(LOG_INFO, "cat: Added %" INT32 " total entries.\n", entries);
 
 	fclose(content);
 
@@ -1663,7 +1663,7 @@ bool Categories::initLangTables(void) {
 			loadLangTables();
 			stop = gettimeofdayInMicroseconds();
 			log(LOG_INFO,
-					"cat: Parsing content took %"INT64" microseconds\n", stop - start);
+					"cat: Parsing content took %" INT64 " microseconds\n", stop - start);
 			break;
 		}
 	}

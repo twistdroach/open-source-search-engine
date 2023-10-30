@@ -228,7 +228,7 @@ void Msg22::gotReply ( ) {
 			    r->m_url,mstrerror(g_errno));
 		else
 			log("db: Had error getting title record for docId of "
-			    "%"INT64": %s.",r->m_docId,mstrerror(g_errno));
+			    "%" INT64 ": %s.",r->m_docId,mstrerror(g_errno));
 		// free reply buf right away
 		m_mcast.reset();
 		m_callback ( m_state );
@@ -272,8 +272,8 @@ void Msg22::gotReply ( ) {
 		m_errno = ENOTFOUND;
 		// debug msg
 		//if ( m_availDocId != m_probableDocId && m_url )
-		//	log(LOG_DEBUG,"build: Avail docid %"INT64" != probable "
-		//	     "of %"INT64" for %s.", 
+		//	log(LOG_DEBUG,"build: Avail docid %" INT64 " != probable "
+		//	     "of %" INT64 " for %s.", 
 		//	     m_availDocId, m_probableDocId , m_urlPtr );
 		// this is having problems in Msg23::gotTitleRec()
 		m_callback ( m_state );
@@ -344,7 +344,7 @@ void handleRequest22 ( UdpSlot *slot , int32_t netnice ) {
 	// sanity check
 	int32_t  requestSize = slot->m_readBufSize;
 	if ( requestSize < r->getMinSize() ) {
-		log("db: Got bad request size of %"INT32" bytes for title record. "
+		log("db: Got bad request size of %" INT32 " bytes for title record. "
 		    "Need at least 28.",  requestSize );
 		us->sendErrorReply ( slot , EBADREQUESTSIZE );
 		return;
@@ -353,7 +353,7 @@ void handleRequest22 ( UdpSlot *slot , int32_t netnice ) {
 	// get base, returns NULL and sets g_errno to ENOCOLLREC on error
 	RdbBase *tbase; 
 	if ( ! (tbase=getRdbBase(RDB_TITLEDB,r->m_collnum) ) ) {
-		log("db: Could not get title rec in collection # %"INT32" "
+		log("db: Could not get title rec in collection # %" INT32 " "
 		    "because rdbbase is null.",
 		    (int32_t)r->m_collnum);
 		g_errno = EBADENGINEER;
@@ -385,7 +385,7 @@ void handleRequest22 ( UdpSlot *slot , int32_t netnice ) {
        try { st = new (State22); }
        catch ( ... ) {
 	       g_errno = ENOMEM;
-	       log("query: Msg22: new(%"INT32"): %s", (int32_t)sizeof(State22),
+	       log("query: Msg22: new(%" INT32 "): %s", (int32_t)sizeof(State22),
 		   mstrerror(g_errno));
 	       us->sendErrorReply ( slot , g_errno );
 	       return;
@@ -441,7 +441,7 @@ void handleRequest22 ( UdpSlot *slot , int32_t netnice ) {
 	       // bogus url?
 	       if ( ! dom ) {
 		       log("msg22: got bad url in request: %s from "
-			   "hostid %"INT32" for msg22 call ",
+			   "hostid %" INT32 " for msg22 call ",
 			   r->m_url,slot->m_host->m_hostId);
 		       g_errno = EBADURL;
 		       us->sendErrorReply ( slot , g_errno ); 
@@ -611,8 +611,8 @@ void gotUrlListWrapper ( void *state , RdbList *list , Msg5 *msg5 ) {
 	if ( g_errno ) { 
 		log("db: Had error getting info from tfndb: %s.",
 		    mstrerror(g_errno));
-		log("db: uk1.n1=%"INT32" n0=%"INT64" uk2.n1=%"INT32" n0=%"INT64" "
-		    "d1=%"INT64" d2=%"INT64".",
+		log("db: uk1.n1=%" INT32 " n0=%" INT64 " uk2.n1=%" INT32 " n0=%" INT64 " "
+		    "d1=%" INT64 " d2=%" INT64 ".",
 		    ((key_t *)st->m_msg5.m_startKey)->n1 ,
 		    ((key_t *)st->m_msg5.m_startKey)->n0 ,
 		    ((key_t *)st->m_msg5.m_endKey)->n1   ,
@@ -717,7 +717,7 @@ void gotUrlListWrapper ( void *state , RdbList *list , Msg5 *msg5 ) {
 	//   00f3b2ff63af66c9 docId=261670033643 e=0x6c tfn=217 clean=0 half=0 
 	// . Msg16 will only use the avail docid if the titleRec is not found
 	if ( r->m_url[0] && pd != ad ) {
-		//log(LOG_INFO,"build: Docid %"INT64" collided. %s Changing "
+		//log(LOG_INFO,"build: Docid %" INT64 " collided. %s Changing "
 		//
 		// http://www.airliegardens.org/events.asp?dt=2&date=8/5/2011
 		//
@@ -726,8 +726,8 @@ void gotUrlListWrapper ( void *state , RdbList *list , Msg5 *msg5 ) {
 		// http://www.bbonline.com/i/chicago.html
 		//
 		// collision alert!
-		log("spider: Docid %"INT64" collided. %s Changing "
-		    "to %"INT64".", r->m_docId , r->m_url , ad );
+		log("spider: Docid %" INT64 " collided. %s Changing "
+		    "to %" INT64 ".", r->m_docId , r->m_url , ad );
 		// debug this for now
 		//char *xx=NULL;*xx=0; 
 	}
@@ -784,7 +784,7 @@ void gotUrlListWrapper ( void *state , RdbList *list , Msg5 *msg5 ) {
 	// if tfn refers to a missing titledb file...
 	if ( startFileNum < 0 ) {
 		if ( r->m_url[0] ) log("db: titledb missing url %s",r->m_url);
-		else        log("db: titledb missing docid %"INT64"", r->m_docId);
+		else        log("db: titledb missing docid %" INT64 "", r->m_docId);
 		us->sendErrorReply ( st->m_slot,ENOTFOUND );
 		mdelete ( st , sizeof(State22) , "Msg22" );
 		delete ( st ); 
@@ -978,7 +978,7 @@ void gotTitleList ( void *state , RdbList *list , Msg5 *msg5 ) {
 	st->m_availDocId = ad;
 	// note it
 	if ( ad == 0LL && (r->m_getAvailDocIdOnly || r->m_url[0]) ) 
-		log("msg22: avail docid is 0 for pd=%"INT64"!",pd);
+		log("msg22: avail docid is 0 for pd=%" INT64 "!",pd);
 
 	// . ok, return an available docid
 	if ( r->m_url[0] || r->m_justCheckTfndb || r->m_getAvailDocIdOnly ) {
@@ -995,7 +995,7 @@ void gotTitleList ( void *state , RdbList *list , Msg5 *msg5 ) {
 	}
 
 	// not found! and it was a docid based request...
-	log("msg22: could not find title rec for docid %"UINT64" collnum=%"INT32"",
+	log("msg22: could not find title rec for docid %" UINT64 " collnum=%" INT32 "",
 	    r->m_docId,(int32_t)r->m_collnum);
 	g_errno = ENOTFOUND;
 	goto hadError;

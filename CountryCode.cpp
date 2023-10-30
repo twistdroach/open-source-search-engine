@@ -1253,7 +1253,7 @@ int CountryCode::createHashTable(void) {
 		g_categories->printPathFromId(&sb, catid, true);
 		if(!sb.getBufStart()) continue;
 		if(!(numcats % 1000))
-			log( "init: %"INT32"/%"INT32" Generated %"UINT64" so far...\n",
+			log( "init: %" INT32 "/%" INT32 " Generated %" UINT64 " so far...\n",
 					numcats,
 					idx,
 					entries);
@@ -1265,15 +1265,15 @@ int CountryCode::createHashTable(void) {
 			char *xx = NULL; *xx = 0;
 		}
 		if(!ht.addKey(catid, ccr.lval)) {
-			log( "init: Could not add %"INT32" (%"INT32")\n", catid, ccr.lval);
+			log( "init: Could not add %" INT32 " (%" INT32 ")\n", catid, ccr.lval);
 			continue;
 		}
 		entries++;
 	}
 
 	ht.save(g_hostdb.m_dir, "catcountry.dat");
-	log( "Added %"UINT64" country entries from DMOZ to %s/catcountry.dat.\n", entries,g_hostdb.m_dir);
-	log( "Slots %"INT32", Used Slots %"INT32".\n", ht.getNumSlots(), ht.getNumSlotsUsed());
+	log( "Added %" UINT64 " country entries from DMOZ to %s/catcountry.dat.\n", entries,g_hostdb.m_dir);
+	log( "Slots %" INT32 ", Used Slots %" INT32 ".\n", ht.getNumSlots(), ht.getNumSlotsUsed());
 
 	freeRegexTable();
 	return(1);
@@ -1366,7 +1366,7 @@ void CountryCode::debugDumpNumbers(void) {
 		ccr.lval = 0L;
 		ccr.lval = s_catToCountry.getValueFromSlot(slot);
 		if(ccr.lval)
-			log( "Slot %"INT32" has lang %d, country %d (%"INT32")\n",
+			log( "Slot %" INT32 " has lang %d, country %d (%" INT32 ")\n",
 					slot, ccr.sval.lang, ccr.sval.country, ccr.lval);
 	}
 }

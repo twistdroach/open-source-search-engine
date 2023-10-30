@@ -336,7 +336,7 @@ bool RdbMerge::getNextList ( ) {
 		if ( ! map->chopHead ( MAX_PART_SIZE ) ) {
 			// we had an error!
 			log("db: Failed to remove data from map for "
-			    "%s.part%"INT32".",
+			    "%s.part%" INT32 ".",
 			    file->getFilename(),part);
 			return true;
 		}
@@ -347,7 +347,7 @@ bool RdbMerge::getNextList ( ) {
 		if ( ! file->chopHead ( part - 1 , chopWrapper , this ) ) 
 			m_numThreads++;
 		if ( ! g_errno ) continue;
-		log("db: Failed to unlink file %s.part%"INT32".",
+		log("db: Failed to unlink file %s.part%" INT32 ".",
 		    file->getFilename(),part);
 		return true;
 	}

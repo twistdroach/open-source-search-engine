@@ -35,9 +35,9 @@ int32_t Tag::print ( ) {
 
 bool Tag::printToBuf ( SafeBuf *sb ) {
 
-	sb->safePrintf("k.hsthash=%016"XINT64" "
-		       "k.duphash=%08"XINT32" "
-		       "k.sitehash=%08"XINT32" ",
+	sb->safePrintf("k.hsthash=%016" XINT64 " "
+		       "k.duphash=%08" XINT32 " "
+		       "k.sitehash=%08" XINT32 " ",
 		       m_key.n1,
 		       (int32_t)(m_key.n0>>32),
 		       (int32_t)(m_key.n0&0xffffffff));
@@ -46,21 +46,21 @@ bool Tag::printToBuf ( SafeBuf *sb ) {
 			 getTagStrFromType(m_type),
 			 getUser() );
 	// data size
-	//sb->safePrintf( "%"INT32",", (int32_t)getTagDataSize());
+	//sb->safePrintf( "%" INT32 ",", (int32_t)getTagDataSize());
 	// print the date when this tag was added
 	time_t ts = m_timestamp;
 	struct tm *timeStruct = localtime ( &ts );
 	char tmp[100];
 	strftime(tmp,100,"%b-%d-%Y-%H:%M:%S,",timeStruct);
-	sb->safePrintf("%s(%"UINT32"),",tmp,m_timestamp);
+	sb->safePrintf("%s(%" UINT32 "),",tmp,m_timestamp);
 	// print the time as a int32_t, seconds since epoch
-	//sb->safePrintf("%"UINT32",",m_timestamp);
+	//sb->safePrintf("%" UINT32 ",",m_timestamp);
 	// print the ip added from
 	sb->safePrintf("%s,",iptoa(m_ip));
 	// print the tag id
-	//sb->safePrintf("%"UINT32",\"",(int32_t)m_tagId);
+	//sb->safePrintf("%" UINT32 ",\"",(int32_t)m_tagId);
 	// key.n1 is hash of the subdomain i think
-	//sb->safePrintf("%"UINT32",\"",m_key.n1);
+	//sb->safePrintf("%" UINT32 ",\"",m_key.n1);
 	sb->safePrintf("\"");
 	if ( ! printDataToBuf ( sb ) ) return false;
 	// final quote
@@ -284,7 +284,7 @@ int32_t Tag::setFromBuf ( char *p , char *pend ) {
 
 	// get the tag identifier
 	//m_tagId = atol(p);
-	//sscanf ( p , "%"UINT32",",&m_tagId);
+	//sscanf ( p , "%" UINT32 ",",&m_tagId);
 	//int64_t big = atoll(p);
 	//m_tagId = (int32_t)big;
 	// skip until comma again
@@ -437,7 +437,7 @@ bool Tag::printDataToBuf ( SafeBuf *sb ) {
 	}
 	// print as decimal if just 1 byte
 	if ( m_dataSize == 1 ) {
-		sb->safePrintf("%"INT32"",(int32_t)m_data[0]);
+		sb->safePrintf("%" INT32 "",(int32_t)m_data[0]);
 		return true;
 	}
 	// the "score"
@@ -464,16 +464,16 @@ bool Tag::printToBufAsAddRequest ( SafeBuf *sb ) {
 	// itself. we should take this in lieu of the "u=" url parm
 	// which is made to generate the key anyhow.
 	//sb->safePrintf("tagkey0=%s",KEYSTR(&m_key,16));
-	sb->safePrintf("&tagn0keyb0=%"INT64"",m_key.n0);
-	sb->safePrintf("&tagn1keyb0=%"INT64"",m_key.n1);
+	sb->safePrintf("&tagn0keyb0=%" INT64 "",m_key.n0);
+	sb->safePrintf("&tagn1keyb0=%" INT64 "",m_key.n1);
 	// print the user that added this tag
 	sb->safePrintf ( "&username=%s" , getUser() );
 	// the tag type, like "sitenuminlinks" or "rootlang"
 	sb->safePrintf("&tagtype0=%s",str);
 	// print the date when this tag was added
-	//sb->safePrintf ("&%s.time=%"INT32"", str, m_timestamp );
+	//sb->safePrintf ("&%s.time=%" INT32 "", str, m_timestamp );
 	// print the tag id
-	//sb->safePrintf("&%s.id=%"UINT32"",str,(int32_t)m_tagId);
+	//sb->safePrintf("&%s.id=%" UINT32 "",str,(int32_t)m_tagId);
 	// the "score"
 	sb->safePrintf("&tagdata0=");//,str);
 	// print the m_data
@@ -492,12 +492,12 @@ bool Tag::printToBufAsXml ( SafeBuf *sb ) {
 	sb->safePrintf ("\t\t<tag>\n\t\t\t<name>%s</name>\n\t\t\t<user>%s",
 			str,getUser());
 	// print the date when this tag was added
-	sb->safePrintf("</user>\n\t\t\t<timestamp>%"INT32"</timestamp>\n",
+	sb->safePrintf("</user>\n\t\t\t<timestamp>%" INT32 "</timestamp>\n",
 		       m_timestamp);
 	// print the ip added from
 	sb->safePrintf("\t\t\t<ip>%s</ip>\n",iptoa(m_ip));
 	// print the tag id
-	//sb->safePrintf("\t\t\t<id>%"UINT32"</id>\n",(int32_t)m_tagId);
+	//sb->safePrintf("\t\t\t<id>%" UINT32 "</id>\n",(int32_t)m_tagId);
 	// the "score"
 	sb->safePrintf("\t\t\t<score>");
 	// print the m_data
@@ -516,7 +516,7 @@ bool Tag::printToBufAsXml2 ( SafeBuf *sb ) {
 			// who added the tag:
 			"\t\t\t<addedBy><![CDATA[%s]]></addedBy>\n"
 			// when tag was added:
-			"\t\t\t<addedTimestamp>%"UINT32"</addedTimestamp>\n"
+			"\t\t\t<addedTimestamp>%" UINT32 "</addedTimestamp>\n"
 			// ip added from
 			"\t\t\t<addedFromIP><![CDATA[%s]]></addedFromIP>\n"
 			// name of the tag:
@@ -549,10 +549,10 @@ bool Tag::printToBufAsHtml ( SafeBuf *sb , char *prefix ) {
 	struct tm *timeStruct = localtime ( &ts );
 	char tmp[100];
 	strftime(tmp,100,"%b-%d-%Y-%H:%M:%S",timeStruct);
-	sb->safePrintf("%s(%"UINT32")",tmp,m_timestamp);
+	sb->safePrintf("%s(%" UINT32 ")",tmp,m_timestamp);
 	// print the ip added from
 	sb->safePrintf(" ip=%s",iptoa(m_ip));
-	//sb->safePrintf(" id=%"UINT32"",(int32_t)m_tagId);
+	//sb->safePrintf(" id=%" UINT32 "",(int32_t)m_tagId);
 	sb->safePrintf("</td></tr>\n");
 	return true;
 }
@@ -784,7 +784,7 @@ bool TagRec::addTag ( char        *tagTypeStr,
 	// the Tag::m_dataSize is only 2 bytes... NOT ANYMORE, MDW
 	if ( dataSize < 0 ) { // >= 65536 ) {
 		g_errno = EBADENGINEER;
-		return log("tagdb: tag dataSize of %"INT32" is >= 65536. "
+		return log("tagdb: tag dataSize of %" INT32 " is >= 65536. "
 			   "Bad value.",  dataSize);
 	}
 	// sanity check -- no binary chars allowed, must all be strings!
@@ -883,7 +883,7 @@ bool TagRec::addTag ( Tag *TAG ) {
 		char *site = getString("site","unknown");
 		g_errno = EBUFTOOSMALL; 
 		log("tagdb: no room to add tag to buf. tagtype=%s "
-		    "tagsize=%"INT32" site=%s",  
+		    "tagsize=%" INT32 " site=%s",  
 		    getTagStrFromType ( TAG->m_type ) , need , site );
 		//char *xx=NULL;*xx=0;
 		return false;
@@ -1060,9 +1060,9 @@ int32_t TagRec::getNumTags ( ) {
 	return numTags;
 }
 
-// . &tagtype%"INT32"=<tagtype>
-// . &tagdata%"INT32"=<data>
-// . &deltag%"INT32"=1 (to delete it)
+// . &tagtype%" INT32 "=<tagtype>
+// . &tagdata%" INT32 "=<data>
+// . &deltag%" INT32 "=1 (to delete it)
 // . set &user=mwells, etc. in cookie of HttpReqest, "r" for user
 // . "this" TagRec's user, ip and timestamp will be carried over to "newtr"
 // . returns false and sets g_errno on error
@@ -1125,41 +1125,41 @@ bool TagRec::setFromHttpRequest ( HttpRequest *r, TcpSocket *s ) {
 	for ( int32_t i = 0 ; ; i++ ) {
 
 		char buf[32];
-		sprintf ( buf , "tagtype%"INT32"",i );
+		sprintf ( buf , "tagtype%" INT32 "",i );
 		char *tagTypeStr = r->getString(buf,NULL,NULL);
 		// if not there we are done
 		if ( ! tagTypeStr ) break;
 
 		// should we delete it?
-		sprintf ( buf , "deltag%"INT32"",i);
+		sprintf ( buf , "deltag%" INT32 "",i);
 		char *deltag = r->getString(buf,NULL,NULL);
 		//if ( deltag && deltag[0] ) continue;
 
-		sprintf ( buf , "taguser%"INT32"",i);
+		sprintf ( buf , "taguser%" INT32 "",i);
 		char *tagUser = r->getString( buf,NULL,"admin");//user);
 		//if ( tagUser && tagUser[0]==0 ) tagUser = user;
 
-		sprintf ( buf , "tagtime%"INT32"",i);
+		sprintf ( buf , "tagtime%" INT32 "",i);
 		int32_t  tagTime = r->getLong(buf,now);
 
-		sprintf ( buf , "tagip%"INT32"",i);
+		sprintf ( buf , "tagip%" INT32 "",i);
 		int32_t  tagIp   = r->getLong(buf,ip);
 
 		// get the value of this tag
-		sprintf ( buf , "tagdata%"INT32"" , i );
+		sprintf ( buf , "tagdata%" INT32 "" , i );
 		char *dataPtr = r->getString ( buf , NULL );
 
 		// get the tag original key
 		key128_t key;
-		sprintf ( buf , "tagn1key%"INT32"" , i );
+		sprintf ( buf , "tagn1key%" INT32 "" , i );
 		key.n1 = r->getLongLong ( buf, 0 );
-		sprintf ( buf , "tagn0key%"INT32"" , i );
+		sprintf ( buf , "tagn0key%" INT32 "" , i );
 		key.n0 = r->getLongLong ( buf, 0LL );
 
 		// for supporting dumping/adding of tagdb using wget
-		sprintf ( buf , "tagn1key%"INT32"b" , i );
+		sprintf ( buf , "tagn1key%" INT32 "b" , i );
 		int64_t v1 = r->getLongLong ( buf, key.n1 );
-		sprintf ( buf , "tagn0key%"INT32"b" , i );
+		sprintf ( buf , "tagn0key%" INT32 "b" , i );
 		int64_t v0 = r->getLongLong ( buf, key.n0 );
 		bool hackKey = ( v1 || v0 );
 		key.n1 = v1;
@@ -1294,7 +1294,7 @@ int32_t TagRec::print ( ) {
 
 bool TagRec::printToBuf (  SafeBuf *sb ) {
 	Tag *tag = getFirstTag();
-	//sb->safePrintf("k.n1=0x%08"XINT32" k.n0=0x%016"XINT64" version=%"INT32"",
+	//sb->safePrintf("k.n1=0x%08" XINT32 " k.n0=0x%016" XINT64 " version=%" INT32 "",
 	//	       m_key.n1,m_key.n0,(int32_t)m_version);
 	for ( ; tag ; tag = getNextTag ( tag ) ) {
 		if ( tag->m_type == TT_DUP ) continue; 
@@ -1318,7 +1318,7 @@ int32_t TagRec::setFromBuf ( char *p , char *pend ) {
 	//m_key.setToMin();
 	// read in the key
 	//key_t k;
-	//sscanf(p,"k.n1=0x%08"XINT32" k.n0=0x%016"XINT64" ",&k.n1,&k.n0);
+	//sscanf(p,"k.n1=0x%08" XINT32 " k.n0=0x%016" XINT64 " ",&k.n1,&k.n0);
 
 	// now do it the fast way and compare the results!
 	//p += 7 ;
@@ -1979,7 +1979,7 @@ bool Tagdb::verify ( char *coll ) {
 	if ( got != count ) {
 		// tally it up
 		g_rebalance.m_numForeignRecs += count - got;
-		log ("tagdb: Out of first %"INT32" records in %s, only %"INT32" belong "
+		log ("tagdb: Out of first %" INT32 " records in %s, only %" INT32 " belong "
 		     "to our group.",count,rdbName,got);
 		// exit if NONE, we probably got the wrong data
 		if ( got == 0 ) log("tagdb: Are you sure you have the "
@@ -1990,7 +1990,7 @@ bool Tagdb::verify ( char *coll ) {
 		g_threads.enableThreads();
 		return g_conf.m_bypassValidation;
 	}
-	log ( LOG_DEBUG, "db: %s passed verification successfully for %"INT32" "
+	log ( LOG_DEBUG, "db: %s passed verification successfully for %" INT32 " "
 	      "recs.",rdbName, count );
 
 	// turn threads back on
@@ -2303,7 +2303,7 @@ bool Tagdb::convert ( char *coll ) {
 
 			// panic
 			if ( tagType >= ST_LAST_TAG ) {
-				log("db: got bad tagtype %"INT32" for sitedb rec.",
+				log("db: got bad tagtype %" INT32 " for sitedb rec.",
 				    (int32_t)tagType);
 				continue;
 			}
@@ -3261,7 +3261,7 @@ void TagRec::gotAllReplies ( ) {
 		
 	// time it
 	int64_t took = gettimeofdayInMilliseconds() - startTime;
-	if(took>10) log(LOG_INFO, "admin: gotreply for msg8a took %"INT64"",took);
+	if(took>10) log(LOG_INFO, "admin: gotreply for msg8a took %" INT64 "",took);
 }
 */
 /*
@@ -3548,7 +3548,7 @@ bool Msg9a::addTags ( char    *dumpFile               ,
 		int32_t size = gr.getSize();
 		// error?
 		if ( size <= 0 ) {count++; continue;}
-		//logf(LOG_DEBUG,"tagdb: tag %"INT32" size=%"INT32"",count++,size);
+		//logf(LOG_DEBUG,"tagdb: tag %" INT32 " size=%" INT32 "",count++,size);
 		// hash it for debug
 		//ht.addKey ( count , size );
 		count++;
@@ -3597,7 +3597,7 @@ bool Msg9a::addTags ( char    *dumpFile               ,
 		int32_t bytesScanned = gr->setFromBuf ( p , eol );
 		// error?
 		if ( bytesScanned <= 0 ) {
-			log("tagdb: skipping tag rec #%"INT32".",count++);
+			log("tagdb: skipping tag rec #%" INT32 ".",count++);
 			t -= (4+1+collLen+1+1);
 			continue;
 		}
@@ -3605,7 +3605,7 @@ bool Msg9a::addTags ( char    *dumpFile               ,
 		int32_t size = gr->getSize();
 		// error?
 		if ( size <= 0 ) { 
-			log("tagdb: skipping tag rec #%"INT32".",count++);
+			log("tagdb: skipping tag rec #%" INT32 ".",count++);
 			t -= (4+1+collLen+1+1);
 			continue;
 		}
@@ -3615,7 +3615,7 @@ bool Msg9a::addTags ( char    *dumpFile               ,
 		//int32_t shouldbe = ht.getValueFromSlot ( slot );
 		//if ( size != shouldbe ) { char *xx=NULL;*xx=0; }
 		count++;
-		//logf(LOG_DEBUG,"tagdb: tag %"INT32" size=%"INT32"",count++,size);
+		//logf(LOG_DEBUG,"tagdb: tag %" INT32 " size=%" INT32 "",count++,size);
 		// increment storage ptr
 		t += size;
 		// store the size of the WHOLE REQUEST, does not
@@ -3804,7 +3804,7 @@ void handleRequest9a ( UdpSlot *slot , int32_t niceness ) {
 		// log this for now?
 		if ( g_conf.m_logDebugSpider )
 			logf(LOG_DEBUG,"tagdb: TAGDB handleRequest9a "
-			     "waiting for lock st=0x%"XINT32" key.n0=%"UINT64"",(int32_t)st,
+			     "waiting for lock st=0x%" XINT32 " key.n0=%" UINT64 "",(int32_t)st,
 			     st->m_tagRec->m_key.n0);
 		State9a *p ;
 		p = *(State9a **)s_lockTable2.getValueFromSlot(slotNum);
@@ -3891,7 +3891,7 @@ void handleRequest9a ( UdpSlot *slot , int32_t niceness ) {
 				    true           ))// do err correction?
 		return;
 	// log that for debug
-	//log("tagdb: msg5 call did not block. st=%"UINT32"",(int32_t)st);
+	//log("tagdb: msg5 call did not block. st=%" UINT32 "",(int32_t)st);
 	// sanity check - why not block if it had corruption?
 	if ( st->m_msg5.m_msg3.m_hadCorruption ) { char *xx=NULL;*xx=0; }
 	// it did not block...
@@ -3904,7 +3904,7 @@ void gotList ( void *state , RdbList *xxx , Msg5 *yyy ) {
 	// return right away if error getting the rec
 	if ( g_errno ) { sendReply9a ( st ); return; }
 	// note it
-	//log("tagdb: in gotlist st=%"UINT32"",(int32_t)st);
+	//log("tagdb: in gotlist st=%" UINT32 "",(int32_t)st);
 	// this is the TagRec rdb record
 	char *rec     = st->m_list.getList    ();
 	int32_t  recSize = st->m_list.getListSize();
@@ -3933,7 +3933,7 @@ void gotList ( void *state , RdbList *xxx , Msg5 *yyy ) {
 	st = st->m_next;
 	// debug for now
 	if ( st && g_conf.m_logDebugSpider ) 
-		logf(LOG_DEBUG,"tagdb: calling lock for st=0x%"XINT32"",(int32_t)st);
+		logf(LOG_DEBUG,"tagdb: calling lock for st=0x%" XINT32 "",(int32_t)st);
 	// if there was one, do it
 	if ( st ) goto loop;
 	// reset to original parent
@@ -4107,7 +4107,7 @@ bool sendPageTagdb ( TcpSocket *s , HttpRequest *req ) {
 	try { st = new (State12); }
 	catch ( ... ) {
 		g_errno = ENOMEM;
-		log("PageTagdb: new(%"INT32"): %s", 
+		log("PageTagdb: new(%" INT32 "): %s", 
 		    (int32_t)sizeof(State12),mstrerror(g_errno));
 		return g_httpServer.sendErrorReply(s,500,mstrerror(g_errno));}
 	mnew ( st , sizeof(State12) , "PageTagdb" );
@@ -4184,7 +4184,7 @@ bool sendPageTagdb ( TcpSocket *s , HttpRequest *req ) {
 		char *buf    = (char *) mmalloc ( bufLen , "PageTagdb");
 		if ( ! buf ) {
 			log("admin: File of sites is too big to add to tagdb."
-			    " Allocation of %"INT32" bytes failed.",bufLen);
+			    " Allocation of %" INT32 " bytes failed.",bufLen);
 			mdelete ( st , sizeof(State12) , "PageTagdb" );
 			delete (st);
 			return g_httpServer.sendErrorReply(s,500,
@@ -4713,7 +4713,7 @@ bool sendReply2 ( void *state ) {
 		//sb.safePrintf("<tr bgcolor=#%s><td>",DARK_BLUE);
 		sb.safePrintf("<td>");
 		if ( ctag && canEdit ) // && tag->m_type != ST_SITE ) 
-			sb.safePrintf("<input name=deltag%"INT32" "
+			sb.safePrintf("<input name=deltag%" INT32 " "
 				      "type=checkbox>",count);
 		else     
 			sb.safePrintf("&nbsp;");
@@ -4725,7 +4725,7 @@ bool sendReply2 ( void *state ) {
 		//   the site tag value, to see what subdomain is matched
 		//if ( ctag && ctag->m_type == ST_SITE ) continue;
 		// print drop down
-		if ( ! ctag ) sb.safePrintf("<select name=tagtype%"INT32">",count);
+		if ( ! ctag ) sb.safePrintf("<select name=tagtype%" INT32 ">",count);
 		// how many tags do we have?
 		int32_t n = (int32_t)sizeof(s_tagDesc)/(int32_t)sizeof(TagDesc);
 		// the options
@@ -4749,7 +4749,7 @@ bool sendReply2 ( void *state ) {
 		if ( ! ctag ) sb.safePrintf("</select>");
 		else {
 			char *tagName = getTagStrFromType ( ctag->m_type );
-			sb.safePrintf("<input type=hidden name=tagtype%"INT32" "
+			sb.safePrintf("<input type=hidden name=tagtype%" INT32 " "
 				      "value=\"%s\">%s",
 				      count,tagName,tagName);
 		}
@@ -4757,7 +4757,7 @@ bool sendReply2 ( void *state ) {
 		// the score field for the drop down list, whatever tag id
 		// was selected will have this score
 		if ( canEdit )
-			sb.safePrintf("<input type=text name=tagdata%"INT32" "
+			sb.safePrintf("<input type=text name=tagdata%" INT32 " "
 				      "size=50 value=\"",count);
 		// show the value
 		if ( ctag ) ctag->printDataToBuf ( &sb );
@@ -4777,7 +4777,7 @@ bool sendReply2 ( void *state ) {
 			continue;
 		}
 		// data size
-		sb.safePrintf("<td>%"INT32"</td>",(int32_t)ctag->getTagDataSize());
+		sb.safePrintf("<td>%" INT32 "</td>",(int32_t)ctag->getTagDataSize());
 		// username, timestamp only for non-empty tags
 		char *username = ctag->getUser();
 		int32_t timestamp = ctag->m_timestamp;
@@ -4791,29 +4791,29 @@ bool sendReply2 ( void *state ) {
 		struct tm *timeStruct = localtime ( &ts );
 		if ( timestamp ) 
 			strftime(tmp,64,"%b-%d-%Y-%H:%M:%S",timeStruct);
-		sb.safePrintf("<td><input type=hidden name=taguser%"INT32" "
+		sb.safePrintf("<td><input type=hidden name=taguser%" INT32 " "
 			      "value=%s>%s</td>",
 			      count,username,username);
-		sb.safePrintf("<td><input type=hidden name=tagtime%"INT32" "
-			      "value=%"INT32">%s</td>",
+		sb.safePrintf("<td><input type=hidden name=tagtime%" INT32 " "
+			      "value=%" INT32 ">%s</td>",
 			      count,timestamp,tmp);
 
-		sb.safePrintf("<td><input type=hidden name=tagip%"INT32" "
-			      "value=%"INT32">%s",
+		sb.safePrintf("<td><input type=hidden name=tagip%" INT32 " "
+			      "value=%" INT32 ">%s",
 			      count,ip,ips);
 
-		sb.safePrintf("<input type=hidden name=tagn1key%"INT32" "
-			      "value=%"UINT64">",
+		sb.safePrintf("<input type=hidden name=tagn1key%" INT32 " "
+			      "value=%" UINT64 ">",
 			      count,ctag->m_key.n1);
-		sb.safePrintf("<input type=hidden name=tagn0key%"INT32" "
-			      "value=%"UINT64">",
+		sb.safePrintf("<input type=hidden name=tagn0key%" INT32 " "
+			      "value=%" UINT64 ">",
 			      count,ctag->m_key.n0);
 
 		sb.safePrintf("</td>");
 
-		sb.safePrintf("<td>0x%"XINT32"</td>", (int32_t)(ctag->m_key.n0>>32) );
+		sb.safePrintf("<td>0x%" XINT32 "</td>", (int32_t)(ctag->m_key.n0>>32) );
 
-		sb.safePrintf("<td>0x%"XINT32"</td>", 
+		sb.safePrintf("<td>0x%" XINT32 "</td>", 
 			      // order 1 in since we always do that because
 			      // we forgot to shift up one for the delbit
 			      // above in Tag::set() when it sets m_key.n0
@@ -4874,14 +4874,14 @@ bool isTagTypeUnique ( int32_t tt ) {
 	// look up in hash table
 	TagDesc **tdp = (TagDesc **)s_ht.getValue ( &tt );
 	if ( ! tdp ) {
-		log("tagdb: tag desc is NULL for tag type %"INT32" assuming "
+		log("tagdb: tag desc is NULL for tag type %" INT32 " assuming "
 		    "not indexable",tt);
 		return false;
 	}
 	// do not core for now
 	TagDesc *td = *tdp;
 	if ( ! td ) {
-		log("tagdb: got unknown tag type %"INT32" assuming "
+		log("tagdb: got unknown tag type %" INT32 " assuming "
 		    "unique",tt);
 		return true;
 	}
@@ -4901,13 +4901,13 @@ bool isTagTypeIndexable ( int32_t tt ) {
 	TagDesc **tdp = (TagDesc **)s_ht.getValue ( &tt );
 	// do not core for now
 	if ( ! tdp ) {
-		log("tagdb: got unknown tag type %"INT32" assuming "
+		log("tagdb: got unknown tag type %" INT32 " assuming "
 		    "not indexable",tt);
 		return false;
 	}
 	TagDesc *td = *tdp;
 	if ( ! td ) {
-		log("tagdb: tag desc is NULL for tag type %"INT32" assuming "
+		log("tagdb: tag desc is NULL for tag type %" INT32 " assuming "
 		    "not indexable",tt);
 		return false;
 	}
@@ -4949,7 +4949,7 @@ int32_t Tag::getDedupHash ( ) {
 	char *endHashing = m_buf + m_bufSize;
 
 	// if we are an event tag then PageEvents.cpp added us in the form of
-	// user%"UINT64"tag%sval%"INT32" ... so ignore value (FACEBOOKDB)
+	// user%" UINT64 "tag%sval%" INT32 " ... so ignore value (FACEBOOKDB)
 	//if ( m_type == s_eventTag ) {
 	//	endHashing--;
 	//	for (;endHashing-1>m_buf&&is_digit(endHashing[-1]);
@@ -5025,7 +5025,7 @@ bool Tagdb::loadMinSiteInlinksBuffer ( ) {
 	msi = getMinSiteInlinks ( hostHash32 );
 	if ( msi < 3 ) 	{
 		log("tagdb: bad siteinlinks. www.hindu.com not found "
-		    "(%"INT32").",
+		    "(%" INT32 ").",
 		    hostHash32);
 		//return false;
 	}
@@ -5082,7 +5082,7 @@ bool Tagdb::loadMinSiteInlinksBuffer2 ( ) {
 	for ( ; p < pend ; p = newp ) {
 		
 		if ( ++count % 1000000 == 0 )
-			log("gb: parsing line # %"INT32,count);
+			log("gb: parsing line # %" INT32 ,count);
 
 		// advance to next line
 		newp = p;

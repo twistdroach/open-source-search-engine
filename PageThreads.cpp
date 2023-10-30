@@ -17,7 +17,7 @@ bool sendPageThreads ( TcpSocket *s , HttpRequest *r ) {
 	
 	int64_t now = gettimeofdayInMilliseconds();
 
-	//p.safePrintf("the sizes are %"INT32" %"INT32"", g_conf.m_medReadSize ,g_conf.m_smaReadSize );
+	//p.safePrintf("the sizes are %" INT32 " %" INT32 "", g_conf.m_medReadSize ,g_conf.m_smaReadSize );
 
 	ThreadQueue* disk;
 	
@@ -41,12 +41,12 @@ bool sendPageThreads ( TcpSocket *s , HttpRequest *r ) {
 			       //"<center>"
 				//"<font size=+1>"
 				"<b>Thread Type: %s"
-				// "  (low: %"INT32""
-				// "  med: %"INT32""
-				// "  high: %"INT32""
-				" (launched: %"INT32" "
-			       "returned: %"INT32" "
-			       "total: %"INT32" maxpossibleout: %i)</td></tr>",
+				// "  (low: %" INT32 ""
+				// "  med: %" INT32 ""
+				// "  high: %" INT32 ""
+				" (launched: %" INT32 " "
+			       "returned: %" INT32 " "
+			       "total: %" INT32 " maxpossibleout: %i)</td></tr>",
 			       TABLE_STYLE,
 				q->getThreadType(), 
 				// loActive, mdActive, 
@@ -89,18 +89,18 @@ bool sendPageThreads ( TcpSocket *s , HttpRequest *r ) {
 			
 			if(t->m_isDone) {
 				p.safePrintf("<td><font color='red'><b>done</b></font></td>");
-				p.safePrintf("<td>%"INT32"</td>", t->m_niceness);
-				p.safePrintf("<td>%"INT64"ms</td>", t->m_launchedTime - t->m_queuedTime); //queued
-				p.safePrintf("<td>%"INT64"ms</td>", t->m_exitTime - t->m_launchedTime); //run time
-				p.safePrintf("<td>%"INT64"ms</td>", now - t->m_exitTime); //cleanup
-				p.safePrintf("<td>%"INT64"ms</td>", now - t->m_queuedTime); //total
+				p.safePrintf("<td>%" INT32 "</td>", t->m_niceness);
+				p.safePrintf("<td>%" INT64 "ms</td>", t->m_launchedTime - t->m_queuedTime); //queued
+				p.safePrintf("<td>%" INT64 "ms</td>", t->m_exitTime - t->m_launchedTime); //run time
+				p.safePrintf("<td>%" INT64 "ms</td>", now - t->m_exitTime); //cleanup
+				p.safePrintf("<td>%" INT64 "ms</td>", now - t->m_queuedTime); //total
 				p.safePrintf("<td>%s</td>",  g_profiler.getFnName((PTRTYPE)t->m_callback));
 				p.safePrintf("<td>%s</td>",  g_profiler.getFnName((PTRTYPE)t->m_startRoutine));
 				if(diskThread && fs) {
 					int64_t took = (t->m_exitTime - t->m_launchedTime);
 					char *sign = "";
 					if(took <= 0) {sign=">";took = 1;}
-					p.safePrintf("<td>%"INT32"/%"INT32""
+					p.safePrintf("<td>%" INT32 "/%" INT32 ""
 						     "</td>", 
 						     t->m_bytesToGo, 
 						     t->m_bytesToGo);
@@ -122,17 +122,17 @@ bool sendPageThreads ( TcpSocket *s , HttpRequest *r ) {
 			}
 			else if(t->m_isLaunched) {
 				p.safePrintf("<td><font color='red'><b>running</b></font></td>");
-				p.safePrintf("<td>%"INT32"</td>", t->m_niceness);
-				p.safePrintf("<td>%"INT64"</td>", t->m_launchedTime - t->m_queuedTime);
+				p.safePrintf("<td>%" INT32 "</td>", t->m_niceness);
+				p.safePrintf("<td>%" INT64 "</td>", t->m_launchedTime - t->m_queuedTime);
 				p.safePrintf("<td>--</td>");
 				p.safePrintf("<td>--</td>");
-				p.safePrintf("<td>%"INT64"</td>", now - t->m_queuedTime);
+				p.safePrintf("<td>%" INT64 "</td>", now - t->m_queuedTime);
 				p.safePrintf("<td>%s</td>",  g_profiler.getFnName((PTRTYPE)t->m_callback));
 				p.safePrintf("<td>%s</td>",  g_profiler.getFnName((PTRTYPE)t->m_startRoutine));
 				if(diskThread && fs ) {
 					int64_t took = (now - t->m_launchedTime);
 					if(took <= 0) took = 1;
-					p.safePrintf("<td>%c%c%c/%"INT32"</td>", '?','?','?',t->m_bytesToGo);
+					p.safePrintf("<td>%c%c%c/%" INT32 "</td>", '?','?','?',t->m_bytesToGo);
 					p.safePrintf("<td>%.2f MB/s</td>", 0.0);//(float)fs->m_bytesDone/took);
 					p.safePrintf("<td>%s</td>",t->m_doWrite? "Write":"Read");
 				}
@@ -144,15 +144,15 @@ bool sendPageThreads ( TcpSocket *s , HttpRequest *r ) {
 			}
 			else {
 				p.safePrintf("<td><font color='red'><b>queued</b></font></td>");
-				p.safePrintf("<td>%"INT32"</td>", t->m_niceness);
+				p.safePrintf("<td>%" INT32 "</td>", t->m_niceness);
 				p.safePrintf("<td>--</td>");
 				p.safePrintf("<td>--</td>");
 				p.safePrintf("<td>--</td>");
-				p.safePrintf("<td>%"INT64"</td>", now - t->m_queuedTime);
+				p.safePrintf("<td>%" INT64 "</td>", now - t->m_queuedTime);
 				p.safePrintf("<td>%s</td>",  g_profiler.getFnName((PTRTYPE)t->m_callback));
 				p.safePrintf("<td>%s</td>",  g_profiler.getFnName((PTRTYPE)t->m_startRoutine));
 				if(diskThread && fs) {
-					p.safePrintf("<td>0/%"INT32"</td>", t->m_bytesToGo);
+					p.safePrintf("<td>0/%" INT32 "</td>", t->m_bytesToGo);
 					p.safePrintf("<td>--</td>");
 					p.safePrintf("<td>%s</td>",t->m_doWrite? "Write":"Read");
 				}
@@ -196,13 +196,13 @@ bool sendPageThreads ( TcpSocket *s , HttpRequest *r ) {
 		       // 			       "<td>Size</td>"
 		       // 			       "</tr>"
 		       "<tr bgcolor=#%s>"
-		       "<td>Small</td> <td>%"INT32"</td><td>%"INT32"</td><td>%"INT32"</td>"
+		       "<td>Small</td> <td>%" INT32 "</td><td>%" INT32 "</td><td>%" INT32 "</td>"
 		       "</tr>"
 		       "<tr bgcolor=#%s>"
-		       "<td>Medium</td> <td>%"INT32"</td><td>%"INT32"</td><td>%"INT32"</td>"
+		       "<td>Medium</td> <td>%" INT32 "</td><td>%" INT32 "</td><td>%" INT32 "</td>"
 		       "</tr>"
 		       "<tr bgcolor=#%s>"
-		       "<td>Large</td> <td>%"INT32"</td><td>%"INT32"</td><td>%"INT32"</td>"
+		       "<td>Large</td> <td>%" INT32 "</td><td>%" INT32 "</td><td>%" INT32 "</td>"
 		       "</tr>"
 		       "</table><br><br>",
 		       LIGHT_BLUE,
@@ -225,7 +225,7 @@ bool sendPageThreads ( TcpSocket *s , HttpRequest *r ) {
 
 	p.safePrintf ("<table %s>",TABLE_STYLE);
 	p.safePrintf ("<tr class=hdrow>"
-		      "<td><b>Active Write Threads</b></td><td>%"INT32"</td>"
+		      "<td><b>Active Write Threads</b></td><td>%" INT32 "</td>"
 		      "</tr></table>",
 		      activeWrites);
 	*/

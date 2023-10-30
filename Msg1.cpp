@@ -377,7 +377,7 @@ bool Msg1::sendSomeOfList ( ) {
 		// make the groupId local, our group
 		//groupId = g_hostdb.m_groupId;
 		// bitch about this to log it
-		log("net: Data does not belong in shard %"UINT32", but adding "
+		log("net: Data does not belong in shard %" UINT32 ", but adding "
 		    "to %s anyway. Probable data corruption.",
 		    (uint32_t)shardNum,getDbnameFromId(m_rdbId));
 	}
@@ -588,7 +588,7 @@ skip:
  	QUICKPOLL(m_niceness);
 	// g_errno should be set
 	log("net: Had error when sending request to add data to %s in shard "
-	    "#%"UINT32": %s.", getDbnameFromId(m_rdbId),shardNum,mstrerror(g_errno));
+	    "#%" UINT32 ": %s.", getDbnameFromId(m_rdbId),shardNum,mstrerror(g_errno));
 	return true;	
 }
 
