@@ -15,11 +15,18 @@ extern int g_inMemcpy;
 // it interrupts the code with a signal and then calls backtrace() which
 // itself calls memcpy(). so if it interrupted the code in an memcpy()
 // it causes a segfault because memcpy() is not async safe.
+#ifdef __APPLE__
+#define gbmemcpy(xx,yy,zz) {memmove(xx,yy,zz); }
+#else
 #define gbmemcpy(xx,yy,zz) {bcopy(yy,xx,zz); }
+#endif
 
 // i guess use bcopy for this now too!
+#ifdef __APPLE__
+#define memcpy_ass(xx,yy,zz) {memmove(xx,yy,zz); }
+#else
 #define memcpy_ass(xx,yy,zz) {bcopy(yy,xx,zz); }
-
+#endif
 
 
 #include <inttypes.h>

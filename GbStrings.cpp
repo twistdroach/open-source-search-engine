@@ -1,6 +1,6 @@
 #include "gb-include.h"
 
-#include "Strings.h"
+#include "GbStrings.h"
 
 char *getString ( int32_t i ) {
 

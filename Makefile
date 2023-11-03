@@ -7,6 +7,8 @@ ARCH=$(uname_m)
 VERSION=20
 
 CC=g++
+#CC=/opt/homebrew/bin/g++-13
+#CC=clang++
 
 # remove dlstubs.o for CYGWIN
 OBJS =  UdpSlot.o Rebalance.o \
@@ -66,8 +68,10 @@ OBJS =  UdpSlot.o Rebalance.o \
 	Users.o Images.o Wiki.o Wiktionary.o Scraper.o \
 	Dates.o Sections.o SiteGetter.o Syncdb.o qa.o \
 	Placedb.o Address.o Test.o GeoIP.o GeoIPCity.o Synonyms.o \
-	Cachedb.o Monitordb.o dlstubs.o PageCrawlBot.o Json.o PageBasic.o \
+	Cachedb.o Monitordb.o PageCrawlBot.o Json.o PageBasic.o \
 	Punycode.o Version.o
+
+#	Cachedb.o Monitordb.o dlstubs.o PageCrawlBot.o Json.o PageBasic.o \
 
 CHECKFORMATSTRING = -D_CHECK_FORMAT_STRING_
 
@@ -129,12 +133,13 @@ else
 # Use -Wpadded flag to indicate padded structures.
 #
 ## FIXME: update standards to "-std=c++11", see #164.
-CPPFLAGS = -g -Wall -pipe -fno-stack-protector -Wno-write-strings -Wstrict-aliasing=0 -Wno-uninitialized -DPTHREADS -Wno-unused-but-set-variable $(STATIC)
+CPPFLAGS = -g -Wall -pipe -fno-stack-protector -Wno-write-strings -Wstrict-aliasing=0 -Wno-uninitialized -DPTHREADS -Wno-unused-but-set-variable $(STATIC) -I/opt/homebrew/include -std=c++11
 #LIBS= -L. ./libssl.a ./libcrypto.a ./libiconv.a ./libm.a ./libstdc++.a -lpthread
 # apt-get install libssl-dev (to provide libssl and libcrypto)
 # to build static libiconv.a do a './configure --enable$(STATIC)' then 'make'
 # in the iconv directory
-LIBS=  -lm -lpthread -lssl -lcrypto -lz
+#LIBS= -ld_classic -L/opt/homebrew/lib -lm -lpthread -lssl -lcrypto -lz -liconv
+LIBS= -L/opt/homebrew/lib -lm -lpthread -lssl -lcrypto -lz
 
 endif
 

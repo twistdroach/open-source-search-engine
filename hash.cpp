@@ -44,8 +44,11 @@ bool hashinit () {
 	}
 	//fprintf(stdout,"};\n");
 	//fflush ( stdout );
-
+#ifndef __APPLE__  
 	if ( g_hashtab[0][0] != 6720717044602784129LL ) return false;
+#else
+	if ( g_hashtab[0][0] != 2099838307594427546LL ) return false;
+#endif
 
 	s_initialized = true;
 	return true;

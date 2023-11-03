@@ -3019,7 +3019,7 @@ int startUp ( void *state ) {
 	// . no! just use 1 to tell Loop to call g_threads.cleanUp()
 	// . TODO: pass in a ptr to cleanUpWrapper() instead of "t"
 	// . sival_int is only 4 bytes on a 64 bit arch...
-	sigval_t svt; 
+	sigval svt;
 	svt.sival_int = 1;//(int64_t)t ; //(int)(t->m_state); // fd;
 
 
@@ -3351,9 +3351,12 @@ void ThreadQueue::killAllThreads ( ) {
 		ThreadEntry *e = &m_entries[i];
 		if ( ! e->m_isOccupied ) continue;
 		if ( ! e->m_isLaunched ) continue;
-		log("threads: killling thread id %i",(int)e->m_joinTid);
+    /* TODO find a better way to track threads.  pthread_t is not guaranteed to be an integer.  */
+		log("threads: killling thread id");
+		//log("threads: killling thread id %i",(int)e->m_joinTid);
 		pthread_kill ( e->m_joinTid , SIGKILL );
-		log("threads: joining with thread id %i",(int)e->m_joinTid);
+		log("threads: joining with thread");
+		//log("threads: joining with thread id %i",(int)e->m_joinTid);
 		pthread_join ( e->m_joinTid , NULL );
 	}
 }

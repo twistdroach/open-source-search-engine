@@ -367,13 +367,15 @@ bool Process::checkFiles ( char *dir ) {
 	*/
 
 	// we should redbox this! or at least be on the optimizations page
+#ifndef __APPLE__
 	if ( m_swapEnabled == 0 ) {
 		char *buf = psb.getBufStart();
-		if ( strstr ( buf,"dev" ) )
+		if (  strstr ( buf,"dev" ) )
 			//return log("gb: can not start live gb with swap "
 			//"enabled.");
 			m_swapEnabled = 1;
 	}
+#endif
 
 	// . make sure elvtune is being set right
 	// . must be in /etc/rcS.d/S99local

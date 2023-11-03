@@ -2185,7 +2185,7 @@ StopWords.o: StopWords.cpp gb-include.h types.h fctypes.h Unicode.h \
  matches2.h Words.h Bits.h Pos.h Matches.h Domains.h CountryCode.h \
  Tagdb.h Msg0.h Events.h Sections.h Dates.h Msg37.h Msg36.h Posdb.h
 Strings.o: Strings.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Strings.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h GbStrings.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h

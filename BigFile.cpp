@@ -1421,7 +1421,7 @@ bool readwrite_r ( FileState *fstate , ThreadEntry *t ) {
 	// . only allow syncing if file is non-blocking, because blocking
 	//   writes are used for when we call RdbTree::fastSave_r() and it
 	//   takes forever to dump Spiderdb if we sync each little write
-#ifndef __APPLE_
+#ifndef __APPLE__
 	if ( g_conf.m_flushWrites   && 
 	     doWrite                && 
 	     (fstate->m_flags & O_NONBLOCK) && 

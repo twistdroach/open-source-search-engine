@@ -152,7 +152,9 @@ bool      atob        ( const char *s, int32_t len ) ;
 char *strncasestr ( char *haystack , char *needle , int32_t haystackSize ) ;
 char *strncasestr ( char *haystack , char *needle , 
 		    int32_t haystackSize, int32_t needleSize ) ;
+#ifndef __APPLE__
 char *strnstr ( char *haystack , char *needle , int32_t haystackSize ) ;
+#endif
 
 // independent of case
 char *gb_strcasestr ( char *haystack , char *needle );

@@ -1797,6 +1797,7 @@ uint64_t getHighestLitBitValueLL ( uint64_t bits ) {
 	return highest;
 }
 
+#ifndef htonll
 // TODO: speed up
 int64_t htonll ( uint64_t a ) {
 	int64_t b;
@@ -1807,11 +1808,14 @@ int64_t htonll ( uint64_t a ) {
 	((unsigned int *)&b)[1] = int0;
 	return b;
 }
+#endif
 
+#ifndef ntohll
 // just swap 'em back
 int64_t ntohll ( uint64_t a ) { 
 	return htonll ( a );
 }
+#endif
 
 key_t htonkey ( key_t key ) {
 	key_t newKey;

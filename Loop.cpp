@@ -950,11 +950,11 @@ bool Loop::init ( ) {
 	// if ( sigaction ( SIGSYS , &sa, 0 ) < 0 ) g_errno = errno;
 	// if ( g_errno ) log("loop: sigaction SIGBUS: %s.", mstrerror(errno));
 
-
+#ifndef __APPLE__
 	// if the UPS is about to go off it sends a SIGPWR
 	sa.sa_sigaction = sigpwrHandler;
 	if ( sigaction ( SIGPWR, &sa, 0 ) < 0 ) g_errno = errno;
-
+#endif
 
 	//now set up our alarm for quickpoll
 	m_quickInterrupt.it_value.tv_sec = 0;

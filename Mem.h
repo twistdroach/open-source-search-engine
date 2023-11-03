@@ -25,8 +25,12 @@ extern bool g_inMemFunction;
 
 class SafeBuf;
 // some memory manipulation functions inlined below
+#ifndef htonll
 int64_t htonll ( uint64_t a );
+#endif
+#ifndef ntohll
 int64_t ntohll ( uint64_t a );
+#endif
 key_t ntohkey ( key_t key ) ;
 key_t htonkey ( key_t key ) ;
 
