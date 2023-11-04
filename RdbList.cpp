@@ -1,6 +1,6 @@
 #include "gb-include.h"
 
-#include "Errno.h"    // for EDATANOTOWNED
+#include "GbErrno.h"    // for EDATANOTOWNED
 #include "RdbList.h"
 #include "Mem.h"      // for g_mem.malloc()
 //#include "Tfndb.h"       // groupid filtering in merge

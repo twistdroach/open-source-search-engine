@@ -1,7 +1,7 @@
 #include "gb-include.h"
 
 #include "Msg35.h"
-#include "Errno.h"
+#include "GbErrno.h"
 #include "UdpServer.h"
 #include "Hostdb.h"
 

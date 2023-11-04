@@ -2,7 +2,7 @@
 
 #include "BigFile.h"
 #include "Threads.h"
-#include "Errno.h"
+#include "GbErrno.h"
 #include "Loop.h"
 #include <sys/time.h>
 #include <sys/resource.h>

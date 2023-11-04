@@ -14,7 +14,7 @@
 // * http://diffbot.com/dev/docs/  (Crawlbot API tab, and others)
 // * http://diffbot.com/dev/crawl/
 
-#include "Errno.h"
+#include "GbErrno.h"
 #include "PageCrawlBot.h"
 #include "TcpServer.h"
 #include "HttpRequest.h"

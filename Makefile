@@ -40,7 +40,7 @@ OBJS =  UdpSlot.o Rebalance.o \
 	Indexdb.o Posdb.o Clusterdb.o IndexList.o Revdb.o \
 	HttpServer.o HttpRequest.o \
 	HttpMime.o Hostdb.o \
-	Highlight.o File.o Errno.o Entities.o \
+	Highlight.o File.o GbErrno.o Entities.o \
 	Dns.o Dir.o Conf.o Bits.o \
 	Stats.o BigFile.o Msg17.o \
 	Speller.o \

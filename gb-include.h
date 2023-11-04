@@ -41,12 +41,12 @@ extern int g_inMemcpy;
 //#define INT64  "lli"
 
 #if __WORDSIZE == 64
-#define XINT64 "lx"
-#define UINT64 "lu"
-#define INT64  "ld"
+#define XINT64 "llx"
+#define UINT64 "llu"
+#define INT64  "lld"
 #define PTRTYPE  uint64_t
 #define SPTRTYPE int64_t
-#define PTRFMT  "lx"
+#define PTRFMT  "llu"
 #endif
 
 #if __WORDSIZE == 32
@@ -72,7 +72,7 @@ extern int g_inMemcpy;
 #include "fctypes.h"	// commonly included in include files
 #include "hash.h"	// commonly included in include files
 
-#include "Errno.h"	// commonly included in include files
+#include "GbErrno.h"	// commonly included in include files
 #include "Log.h"	// commonly included in include files
 
 // cygwin fix

@@ -2,7 +2,7 @@
 
 #include "TopTree.h"
 #include "Mem.h"
-#include "Errno.h"
+#include "GbErrno.h"
 #include "Titledb.h" // DOCID_MASK
 #include "Msg40.h" // MAXDOCIDSTOCOMPUTE
 

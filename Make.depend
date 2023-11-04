@@ -1,9 +1,9 @@
 Abbreviations.o: Abbreviations.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  StopWords.h HashTableX.h SafeBuf.h iana_charset.h Threads.h
 Accessdb.o: Accessdb.cpp Accessdb.h Rdb.h RdbBase.h Conf.h Xml.h \
  XmlNode.h gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h \
  File.h Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h \
  RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h \
@@ -21,7 +21,7 @@ Accessdb.o: Accessdb.cpp Accessdb.h Rdb.h RdbBase.h Conf.h Xml.h \
  PageCrawlBot.h Parms.h
 Address.o: Address.cpp Proxy.h UdpServer.h Mem.h Conf.h Xml.h XmlNode.h \
  gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h Stats.h \
  AutoBan.h TcpServer.h MsgC.h Dns.h DnsProtocol.h RdbCache.h RdbList.h \
@@ -39,7 +39,7 @@ Address.o: Address.cpp Proxy.h UdpServer.h Mem.h Conf.h Xml.h XmlNode.h \
  Spider.h Json.h Placedb.h sort.h Process.h PageInject.h Users.h GeoIP.h \
  GeoIPCity.h
 addtest.o: addtest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h RdbList.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h RdbList.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h IndexTable.h Query.h Indexdb.h Rdb.h RdbBase.h \
@@ -47,7 +47,7 @@ addtest.o: addtest.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h Titledb.h DiskPageCache.h \
  IndexList.h IndexReadInfo.h
 Ads.o: Ads.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Ads.h Url.h ip.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Ads.h Url.h ip.h \
  SafeBuf.h iana_charset.h HttpServer.h TcpServer.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h Hostdb.h HttpRequest.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h MsgC.h UdpServer.h \
@@ -56,11 +56,11 @@ Ads.o: Ads.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h Msg5.h Msg3.h RdbMerge.h Dir.h \
  HttpMime.h Pages.h PageCrawlBot.h Titledb.h DiskPageCache.h
 AdultBit.o: AdultBit.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h AdultBit.h Xml.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h AdultBit.h Xml.h \
  XmlNode.h Lang.h Iso8859.h iana_charset.h HashTableX.h SafeBuf.h
 animate.o: animate.cpp
 AutoBan.o: AutoBan.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h AutoBan.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h AutoBan.h \
  TcpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h MsgC.h UdpServer.h UdpSlot.h \
@@ -71,7 +71,7 @@ AutoBan.o: AutoBan.cpp gb-include.h types.h fctypes.h Unicode.h \
  HttpMime.h PageCrawlBot.h sort.h Users.h Tagdb.h Msg0.h Indexdb.h \
  Titledb.h DiskPageCache.h
 BigFile.o: BigFile.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h BigFile.h File.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h BigFile.h File.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h ip.h \
  Hostdb.h HttpRequest.h SafeBuf.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Loop.h Dir.h Threads.h Stats.h UdpProtocol.h \
@@ -89,7 +89,7 @@ BigFile.o: BigFile.cpp gb-include.h types.h fctypes.h Unicode.h \
  Spider.h HttpMime.h Json.h Users.h Pages.h HttpServer.h TcpServer.h \
  PageCrawlBot.h Parms.h
 Bits.o: Bits.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Bits.h Words.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Bits.h Words.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -98,7 +98,7 @@ Bits.o: Bits.cpp gb-include.h types.h fctypes.h Unicode.h \
  Abbreviations.h Sections.h Msg0.h UdpServer.h UdpSlot.h UdpProtocol.h \
  Multicast.h Threads.h Indexdb.h IndexList.h Dates.h
 blaster2.o: blaster2.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Mem.h Conf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Mem.h Conf.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Dns.h UdpServer.h UdpSlot.h UdpProtocol.h \
@@ -107,7 +107,7 @@ blaster2.o: blaster2.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h Msg5.h Msg3.h RdbMerge.h Dir.h \
  HttpMime.h
 Blaster.o: Blaster.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Blaster.h Conf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Blaster.h Conf.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Mem.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Dns.h UdpServer.h UdpSlot.h UdpProtocol.h \
@@ -121,14 +121,14 @@ Blaster.o: Blaster.cpp gb-include.h types.h fctypes.h Unicode.h \
  HashTable.h Catdb.h
 Cachedb.o: Cachedb.cpp Cachedb.h Rdb.h RdbBase.h Conf.h Xml.h XmlNode.h \
  gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h \
  File.h Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h \
  RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h \
  Msg5.h Msg3.h RdbMerge.h Dir.h Threads.h
 camsort.o: camsort.cpp
 Catdb.o: Catdb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Catdb.h Conf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Catdb.h Conf.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Mem.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Rdb.h RdbBase.h RdbScan.h BigFile.h RdbMap.h \
@@ -137,7 +137,7 @@ Catdb.o: Catdb.cpp gb-include.h types.h fctypes.h Unicode.h \
  UdpServer.h UdpSlot.h UdpProtocol.h Multicast.h Threads.h Indexdb.h \
  Titledb.h DiskPageCache.h
 Categories.o: Categories.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Categories.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Categories.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h HashTable.h Catdb.h Rdb.h \
@@ -149,7 +149,7 @@ Categories.o: Categories.cpp gb-include.h types.h fctypes.h Unicode.h \
  Matches.h HashTableT.h Domains.h CountryCode.h Tagdb.h Events.h \
  Sections.h IndexList.h Dates.h Msg22.h CatRec.h
 CatRec.o: CatRec.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h CatRec.h Conf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h CatRec.h Conf.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Mem.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h RdbList.h Tagdb.h Rdb.h RdbBase.h RdbScan.h \
@@ -159,7 +159,7 @@ CatRec.o: CatRec.cpp gb-include.h types.h fctypes.h Unicode.h \
  Categories.h HashTable.h Catdb.h
 check_unicode.o: check_unicode.cpp
 Clusterdb.o: Clusterdb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Clusterdb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Clusterdb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -167,7 +167,7 @@ Clusterdb.o: Clusterdb.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg3.h RdbMerge.h Dir.h Titledb.h DiskPageCache.h Threads.h Rebalance.h \
  Msg4.h IndexList.h Indexdb.h
 Collectiondb.o: Collectiondb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Collectiondb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Collectiondb.h \
  SafeBuf.h iana_charset.h Url.h ip.h HashTableX.h PingServer.h Hostdb.h \
  Xml.h XmlNode.h Lang.h Iso8859.h Loop.h Mem.h Conf.h File.h \
  HttpRequest.h TcpSocket.h Spider.h Rdb.h RdbBase.h RdbScan.h BigFile.h \
@@ -186,7 +186,7 @@ Collectiondb.o: Collectiondb.cpp gb-include.h types.h fctypes.h Unicode.h \
  PageCrawlBot.h Parms.h Statsdb.h Stats.h Process.h PageInject.h \
  Cachedb.h Syncdb.h Timedb.h
 Conf.o: Conf.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Conf.h Xml.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Mem.h Loop.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Parms.h Rdb.h RdbBase.h RdbScan.h BigFile.h \
@@ -198,12 +198,12 @@ Conf.o: Conf.cpp gb-include.h types.h fctypes.h Unicode.h \
  AutoBan.h TuringTest.h HashTable.h HashTableT.h
 convert.o: convert.cpp BigFile.h File.h Mem.h Conf.h Xml.h XmlNode.h \
  gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h ip.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h ip.h \
  Hostdb.h HttpRequest.h SafeBuf.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Loop.h RdbMap.h RdbList.h
 CountryCode.o: CountryCode.cpp CountryCode.h HashTableT.h Mem.h Conf.h \
  Xml.h XmlNode.h gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h \
  iana_charset.h File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h HashTable.h \
  Categories.h LanguageIdentifier.h Linkdb.h Rdb.h RdbBase.h RdbScan.h \
@@ -214,12 +214,12 @@ CountryCode.o: CountryCode.cpp CountryCode.h HashTableT.h Mem.h Conf.h \
  Bits.h Pos.h Matches.h Domains.h Tagdb.h Events.h Sections.h IndexList.h \
  Dates.h Msg22.h CatRec.h Catdb.h
 create_ucd_tables.o: create_ucd_tables.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Mem.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h
 DailyMerge.o: DailyMerge.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h DailyMerge.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h DailyMerge.h \
  Collectiondb.h SafeBuf.h iana_charset.h Url.h ip.h HashTableX.h \
  PingServer.h Hostdb.h Xml.h XmlNode.h Lang.h Iso8859.h Repair.h \
  RdbList.h Msg5.h Msg3.h RdbScan.h BigFile.h File.h Mem.h Conf.h \
@@ -238,11 +238,11 @@ DailyMerge.o: DailyMerge.cpp gb-include.h types.h fctypes.h Unicode.h \
  HttpServer.h TcpServer.h PageCrawlBot.h Parms.h Proxy.h Stats.h \
  AutoBan.h TuringTest.h
 DataFeed.o: DataFeed.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h DataFeed.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h DataFeed.h \
  MetaContainer.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h Url.h \
  ip.h
 Datedb.o: Datedb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Datedb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Datedb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -250,7 +250,7 @@ Datedb.o: Datedb.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg3.h RdbMerge.h Dir.h Indexdb.h Titledb.h DiskPageCache.h Clusterdb.h \
  Threads.h
 Dates.o: Dates.cpp Dates.h gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h XmlNode.h Bits.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h XmlNode.h Bits.h \
  Words.h Xml.h Lang.h Iso8859.h iana_charset.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -266,35 +266,35 @@ Dates.o: Dates.cpp Dates.h gb-include.h types.h fctypes.h Unicode.h \
  Msg3a.h Msg1.h Datedb.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h \
  Address.h Spider.h HttpMime.h Json.h Abbreviations.h
 Diff.o: Diff.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Titledb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Titledb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
  RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h Msg5.h \
  Msg3.h RdbMerge.h Dir.h DiskPageCache.h Diff.h
 Dir.o: Dir.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Dir.h File.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Dir.h File.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h ip.h \
  Hostdb.h HttpRequest.h SafeBuf.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Loop.h
 DiskPageCache.o: DiskPageCache.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  DiskPageCache.h RdbCache.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbList.h
 dmozparse.o: dmozparse.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Url.h ip.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Url.h ip.h \
  HttpRequest.h SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h XmlNode.h \
  Lang.h Iso8859.h File.h Loop.h Hostdb.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h sort.h
 Dns.o: Dns.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Dns.h UdpServer.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Dns.h UdpServer.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
  DnsProtocol.h RdbCache.h RdbList.h HashTableT.h
 dnstest.o: dnstest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Rdb.h RdbBase.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Rdb.h RdbBase.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Mem.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -302,21 +302,21 @@ dnstest.o: dnstest.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg3.h RdbMerge.h Dir.h Dns.h UdpServer.h UdpSlot.h UdpProtocol.h \
  DnsProtocol.h
 Domains.o: Domains.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h HashTableX.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h HashTableX.h \
  SafeBuf.h iana_charset.h Domains.h Mem.h Conf.h Xml.h XmlNode.h Lang.h \
  Iso8859.h File.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h PingServer.h
 dumpcore.o: dumpcore.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 Entities.o: Entities.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Entities.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Entities.h \
  HashTableX.h SafeBuf.h iana_charset.h
 Errno.o: Errno.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 errnotest.o: errnotest.cpp
 Facebook.o: Facebook.cpp Facebook.h Conf.h Xml.h XmlNode.h gb-include.h \
  types.h fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h \
- Errno.h Log.h Lang.h Iso8859.h iana_charset.h File.h Mem.h Loop.h \
+ GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h File.h Mem.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Rdb.h RdbBase.h RdbScan.h BigFile.h RdbMap.h \
  RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h Msg5.h \
@@ -334,14 +334,14 @@ Facebook.o: Facebook.cpp Facebook.h Conf.h Xml.h XmlNode.h gb-include.h \
  Repair.h Process.h Speller.h Language.h
 fastIndexTable.o: fastIndexTable.cpp IndexTable.h Query.h SafeBuf.h \
  gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h iana_charset.h Mem.h Conf.h Xml.h \
+ UCPropTable.h hash.h GbErrno.h Log.h iana_charset.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h HttpRequest.h \
  Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h Indexdb.h \
  Rdb.h RdbBase.h RdbScan.h BigFile.h RdbMap.h RdbList.h RdbDump.h \
  RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h Msg5.h Msg3.h RdbMerge.h \
  Dir.h Titledb.h DiskPageCache.h IndexList.h IndexReadInfo.h
 fctypes.o: fctypes.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Loop.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Loop.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Entities.h UCWordIterator.h Timedb.h Rdb.h \
@@ -349,37 +349,37 @@ fctypes.o: fctypes.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbMem.h RdbBuckets.h RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h \
  Titledb.h DiskPageCache.h Threads.h HttpMime.h
 File.o: File.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h File.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h File.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h ip.h Hostdb.h \
  HttpRequest.h SafeBuf.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
  PingServer.h Loop.h Threads.h
 filterquerylogs.o: filterquerylogs.cpp
 Flags.o: Flags.cpp Mem.h Conf.h Xml.h XmlNode.h gb-include.h types.h \
- fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h \
+ fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h \
  Log.h Lang.h Iso8859.h iana_charset.h File.h Loop.h SafeBuf.h ip.h \
  Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
  PingServer.h Flags.h Sanity.h Timer.h
 gbfilter.o: gbfilter.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 gbtitletest.o: gbtitletest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 geneaology.o: geneaology.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 generateSuperMergeCode.o: generateSuperMergeCode.cpp gb-include.h types.h \
- fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h \
+ fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h \
  Log.h
 geo_ip_table.o: geo_ip_table.cpp geo_ip_table.h
 getsample.o: getsample.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 hash.o: hash.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 HashTable.o: HashTable.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h HashTable.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h HashTable.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h
 HashTableT.o: HashTableT.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h HashTableT.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h HashTableT.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Profiler.h TcpServer.h MsgC.h \
@@ -393,18 +393,18 @@ HashTableT.o: HashTableT.cpp gb-include.h types.h fctypes.h Unicode.h \
  Sections.h IndexList.h Dates.h Sanity.h SearchInput.h AutoBan.h \
  TuringTest.h HashTable.h
 HashTableX.o: HashTableX.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h HashTableX.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h HashTableX.h \
  SafeBuf.h iana_charset.h Threads.h Mem.h Conf.h Xml.h XmlNode.h Lang.h \
  Iso8859.h File.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h PingServer.h
 hashtest2.o: hashtest2.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 hashtest3.o: hashtest3.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 hashtest.o: hashtest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h sort.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h sort.h
 Highlight.o: Highlight.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Highlight.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Highlight.h \
  Words.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h \
  StopWords.h Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h \
  Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
@@ -421,7 +421,7 @@ Highlight.o: Highlight.cpp gb-include.h types.h fctypes.h Unicode.h \
  PostQueryRerank.h Sanity.h SiteGetter.h Title.h Address.h Spider.h \
  HttpMime.h Json.h
 Hostdb.o: Hostdb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Hostdb.h Xml.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Hostdb.h Xml.h \
  XmlNode.h Lang.h Iso8859.h iana_charset.h HashTableT.h Mem.h Conf.h \
  File.h Loop.h SafeBuf.h ip.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpServer.h UdpSlot.h \
@@ -439,9 +439,9 @@ Hostdb.o: Hostdb.cpp gb-include.h types.h fctypes.h Unicode.h \
  Spider.h HttpMime.h Json.h Users.h Pages.h HttpServer.h TcpServer.h \
  PageCrawlBot.h Parms.h sort.h Tfndb.h Revdb.h Stats.h
 hosts.o: hosts.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 HttpMime.o: HttpMime.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h HttpMime.h Url.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h HttpMime.h Url.h \
  ip.h HashTable.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Loop.h SafeBuf.h Hostdb.h HttpRequest.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h Dates.h Bits.h \
@@ -449,7 +449,7 @@ HttpMime.o: HttpMime.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h \
  Msg5.h Msg3.h RdbMerge.h Dir.h DiskPageCache.h
 HttpRequest.o: HttpRequest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h HttpRequest.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h HttpRequest.h \
  SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  File.h Loop.h ip.h Hostdb.h TcpSocket.h Url.h Collectiondb.h \
  HashTableX.h PingServer.h Facebook.h Rdb.h RdbBase.h RdbScan.h BigFile.h \
@@ -467,7 +467,7 @@ HttpRequest.o: HttpRequest.cpp gb-include.h types.h fctypes.h Unicode.h \
  Spider.h HttpMime.h Json.h Users.h Pages.h HttpServer.h TcpServer.h \
  PageCrawlBot.h Parms.h
 HttpServer.o: HttpServer.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h HttpServer.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h HttpServer.h \
  TcpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h MsgC.h UdpServer.h UdpSlot.h \
@@ -485,13 +485,13 @@ HttpServer.o: HttpServer.cpp gb-include.h types.h fctypes.h Unicode.h \
  SiteGetter.h Title.h Address.h Spider.h Json.h Proxy.h AutoBan.h Parms.h \
  TuringTest.h
 iana_charset.o: iana_charset.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h iana_charset.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h iana_charset.h \
  HashTableX.h SafeBuf.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h File.h \
  Mem.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h PingServer.h
 Images.o: Images.cpp Images.h Msg0.h UdpServer.h Mem.h Conf.h Xml.h \
  XmlNode.h gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
  Multicast.h Threads.h Indexdb.h Rdb.h RdbBase.h RdbScan.h BigFile.h \
@@ -506,14 +506,14 @@ Images.o: Images.cpp Images.h Msg0.h UdpServer.h Mem.h Conf.h Xml.h \
  Msg3a.h Msg1.h Datedb.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h \
  Address.h Spider.h HttpMime.h Json.h
 Indexdb.o: Indexdb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Indexdb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Indexdb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
  RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h Msg5.h \
  Msg3.h RdbMerge.h Dir.h Titledb.h DiskPageCache.h Clusterdb.h Threads.h
 IndexList.o: IndexList.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h IndexList.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h IndexList.h \
  RdbList.h Indexdb.h Rdb.h RdbBase.h Conf.h Xml.h XmlNode.h Lang.h \
  Iso8859.h iana_charset.h File.h Mem.h Loop.h SafeBuf.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -521,7 +521,7 @@ IndexList.o: IndexList.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h Titledb.h DiskPageCache.h \
  Datedb.h
 IndexReadInfo.o: IndexReadInfo.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  IndexReadInfo.h Query.h SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h HttpRequest.h \
  Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h IndexList.h \
@@ -529,7 +529,7 @@ IndexReadInfo.o: IndexReadInfo.cpp gb-include.h types.h fctypes.h \
  RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h Msg5.h Msg3.h \
  RdbMerge.h Dir.h Titledb.h DiskPageCache.h Datedb.h
 IndexTable2.o: IndexTable2.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h IndexTable2.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h IndexTable2.h \
  Query.h SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h XmlNode.h Lang.h \
  Iso8859.h File.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Indexdb.h Rdb.h RdbBase.h \
@@ -540,7 +540,7 @@ IndexTable2.o: IndexTable2.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg37.h Msg36.h Msg2.h Msg0.h Posdb.h Sections.h Dates.h Bits.h Words.h \
  StopWords.h Msg51.h SearchInput.h Timedb.h
 IndexTable.o: IndexTable.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h IndexTable.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h IndexTable.h \
  Query.h SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h XmlNode.h Lang.h \
  Iso8859.h File.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Indexdb.h Rdb.h RdbBase.h \
@@ -549,25 +549,25 @@ IndexTable.o: IndexTable.cpp gb-include.h types.h fctypes.h Unicode.h \
  DiskPageCache.h IndexList.h IndexReadInfo.h Stats.h UdpProtocol.h \
  TopTree.h Clusterdb.h sort.h
 injector.o: injector.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 ipconfig.o: ipconfig.cpp
 ip.o: ip.cpp gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h ip.h
+ UCPropTable.h hash.h GbErrno.h Log.h ip.h
 Iso8859.o: Iso8859.cpp Iso8859.h
 jointest.o: jointest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 Json.o: Json.cpp Json.h gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h SafeBuf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h SafeBuf.h \
  iana_charset.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h File.h \
  Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h
 keepalive.o: keepalive.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 Lang.o: Lang.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h \
  iana_charset.h
 LangList.o: LangList.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h LangList.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h LangList.h \
  Words.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h \
  StopWords.h Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h \
  Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
@@ -575,7 +575,7 @@ LangList.o: LangList.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbMem.h RdbBuckets.h RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h \
  DiskPageCache.h Indexdb.h
 Language.o: Language.cpp Language.h gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h File.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h File.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h ip.h \
  Hostdb.h HttpRequest.h SafeBuf.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Loop.h HashTableT.h Query.h Multicast.h \
@@ -586,7 +586,7 @@ Language.o: Language.cpp Language.h gb-include.h types.h fctypes.h \
  Bits.h Pos.h Matches.h Domains.h CountryCode.h Tagdb.h Msg0.h Events.h \
  Sections.h Dates.h Msg37.h Msg36.h sort.h Speller.h
 LanguageIdentifier.o: LanguageIdentifier.cpp gb-include.h types.h \
- fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h \
+ fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h \
  Log.h LanguageIdentifier.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h Linkdb.h Conf.h File.h Mem.h Loop.h SafeBuf.h ip.h \
  Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
@@ -600,12 +600,12 @@ LanguageIdentifier.o: LanguageIdentifier.cpp gb-include.h types.h \
  LangList.h geo_ip_table.h Speller.h Language.h Msg37.h Msg36.h \
  ValidPointer.h
 LanguagePages.o: LanguagePages.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Mem.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h LanguagePages.h
 Linkdb.o: Linkdb.cpp Linkdb.h Conf.h Xml.h XmlNode.h gb-include.h types.h \
- fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h \
+ fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h \
  Log.h Lang.h Iso8859.h iana_charset.h File.h Mem.h Loop.h SafeBuf.h ip.h \
  Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
  PingServer.h Rdb.h RdbBase.h RdbScan.h BigFile.h RdbMap.h RdbList.h \
@@ -623,7 +623,7 @@ Linkdb.o: Linkdb.cpp Linkdb.h Conf.h Xml.h XmlNode.h gb-include.h types.h \
  Process.h PageInject.h Users.h Pages.h HttpServer.h TcpServer.h \
  PageCrawlBot.h Parms.h
 linkspam.o: linkspam.cpp linkspam.h gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h ip.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h ip.h \
  Url.h Linkdb.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Mem.h Loop.h SafeBuf.h Hostdb.h HttpRequest.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Rdb.h RdbBase.h RdbScan.h \
@@ -635,7 +635,7 @@ linkspam.o: linkspam.cpp linkspam.h gb-include.h types.h fctypes.h \
  Events.h Sections.h IndexList.h Dates.h Msg22.h CatRec.h Categories.h \
  HashTable.h Catdb.h
 Log.o: Log.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Mem.h Conf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Mem.h Conf.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Process.h PageInject.h XmlDoc.h Words.h \
@@ -653,7 +653,7 @@ Log.o: Log.cpp gb-include.h types.h fctypes.h Unicode.h \
  Address.h Spider.h HttpMime.h Json.h Users.h Pages.h HttpServer.h \
  TcpServer.h PageCrawlBot.h Parms.h
 Loop.o: Loop.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Loop.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Loop.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Threads.h UdpServer.h UdpSlot.h UdpProtocol.h \
@@ -671,12 +671,12 @@ Loop.o: Loop.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg1.h Datedb.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h \
  Address.h Spider.h Json.h Users.h PageParser.h Stats.h
 looptest.o: looptest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Loop.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Loop.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h
 main.o: main.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Version.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Version.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Threads.h Indexdb.h Rdb.h RdbBase.h RdbScan.h \
@@ -698,14 +698,14 @@ main.o: main.cpp gb-include.h types.h fctypes.h Unicode.h \
  Proxy.h linkspam.h sort.h Ads.h LanguagePages.h ValidPointer.h Placedb.h \
  Test.h seo.h
 matches2.o: matches2.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h matches2.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h matches2.h \
  Titledb.h Rdb.h RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h \
  Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h \
  BigFile.h RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h \
  RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h DiskPageCache.h HashTableT.h
 Matches.o: Matches.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Matches.h Query.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Matches.h Query.h \
  SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  File.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Words.h StopWords.h Titledb.h \
@@ -722,9 +722,9 @@ Matches.o: Matches.cpp gb-include.h types.h fctypes.h Unicode.h \
  PostQueryRerank.h Sanity.h SiteGetter.h Address.h Spider.h HttpMime.h \
  Json.h
 membustest.o: membustest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 Mem.o: Mem.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Mem.h Conf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Mem.h Conf.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Threads.h Pages.h HttpServer.h TcpServer.h \
@@ -736,34 +736,34 @@ Mem.o: Mem.cpp gb-include.h types.h fctypes.h Unicode.h \
  Matches.h HashTableT.h Domains.h CountryCode.h Tagdb.h Msg0.h Indexdb.h \
  Events.h Sections.h IndexList.h Dates.h
 MemPool.o: MemPool.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h MemPool.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h MemPool.h \
  MemPoolTree.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h
 MemPoolTree.o: MemPoolTree.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h MemPoolTree.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h MemPoolTree.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h
 memtest.o: memtest.cpp
 mergetest.o: mergetest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h RdbList.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h RdbList.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h sort.h
 MetaContainer.o: MetaContainer.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  MetaContainer.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h Url.h \
  ip.h
 Mime.o: Mime.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Mime.h Url.h ip.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Mime.h Url.h ip.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Loop.h SafeBuf.h Hostdb.h HttpRequest.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h
 mixfile.o: mixfile.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 monitor.o: monitor.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h PingServer.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h PingServer.h \
  Hostdb.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h \
  HttpServer.h TcpServer.h Mem.h Conf.h File.h Loop.h ip.h HttpRequest.h \
  Url.h TcpSocket.h Collectiondb.h HashTableX.h MsgC.h UdpServer.h \
@@ -773,13 +773,13 @@ monitor.o: monitor.cpp gb-include.h types.h fctypes.h Unicode.h \
  HttpMime.h
 Monitordb.o: Monitordb.cpp Monitordb.h Rdb.h RdbBase.h Conf.h Xml.h \
  XmlNode.h gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h \
  File.h Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h \
  RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h \
  Msg5.h Msg3.h RdbMerge.h Dir.h Threads.h
 Msg0.o: Msg0.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg0.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg0.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
@@ -796,7 +796,7 @@ Msg0.o: Msg0.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg3a.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h Address.h \
  HttpMime.h Json.h
 Msg13.o: Msg13.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg13.h Url.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg13.h Url.h \
  ip.h SpiderProxy.h UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h \
  Iso8859.h iana_charset.h File.h Loop.h SafeBuf.h Hostdb.h HttpRequest.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h UdpSlot.h \
@@ -814,7 +814,7 @@ Msg13.o: Msg13.cpp gb-include.h types.h fctypes.h Unicode.h \
  Address.h Spider.h Json.h Test.h Speller.h Language.h PageInject.h \
  Users.h Pages.h PageCrawlBot.h Parms.h
 Msg17.o: Msg17.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg17.h UdpSlot.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg17.h UdpSlot.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpProtocol.h Msg40.h \
@@ -830,7 +830,7 @@ Msg17.o: Msg17.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg13.h SpiderProxy.h MsgC.h Dns.h DnsProtocol.h Msge0.h Msge1.h Msg4.h \
  Msg8b.h SiteGetter.h Title.h Address.h Spider.h HttpMime.h Json.h
 Msg1.o: Msg1.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg1.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg1.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -847,12 +847,12 @@ Msg1.o: Msg1.cpp gb-include.h types.h fctypes.h Unicode.h \
  SearchInput.h Msg40.h Msg39.h Msg37.h Posdb.h TopTree.h Msg51.h Msg17.h \
  Msg3a.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h Address.h Json.h
 Msg1f.o: Msg1f.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg1f.h UdpSlot.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg1f.h UdpSlot.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpProtocol.h UdpServer.h
 Msg20.o: Msg20.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h XmlDoc.h Lang.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h XmlDoc.h Lang.h \
  Iso8859.h iana_charset.h Words.h Xml.h XmlNode.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -869,7 +869,7 @@ Msg20.o: Msg20.cpp gb-include.h types.h fctypes.h Unicode.h \
  Address.h Spider.h HttpMime.h Json.h Process.h PageInject.h Users.h \
  Pages.h HttpServer.h TcpServer.h PageCrawlBot.h Parms.h Stats.h
 Msg22.o: Msg22.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg22.h Url.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg22.h Url.h \
  ip.h Multicast.h Hostdb.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h UdpServer.h Mem.h Conf.h File.h Loop.h SafeBuf.h \
  HttpRequest.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -877,7 +877,7 @@ Msg22.o: Msg22.cpp gb-include.h types.h fctypes.h Unicode.h \
  BigFile.h RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h \
  RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h Titledb.h DiskPageCache.h
 Msg24.o: Msg24.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg51.h Msg0.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg51.h Msg0.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
@@ -889,7 +889,7 @@ Msg24.o: Msg24.cpp gb-include.h types.h fctypes.h Unicode.h \
  Events.h Sections.h Dates.h Speller.h Language.h Msg37.h Msg36.h \
  HashTable.h Scores.h Stats.h
 Msg28.o: Msg28.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg28.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg28.h \
  TcpSocket.h SafeBuf.h iana_charset.h HttpRequest.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h Url.h \
  Collectiondb.h HashTableX.h PingServer.h HttpServer.h TcpServer.h MsgC.h \
@@ -898,7 +898,7 @@ Msg28.o: Msg28.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbMap.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h Msg5.h Msg3.h \
  RdbMerge.h Dir.h HttpMime.h Parms.h Msg4.h
 Msg2a.o: Msg2a.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg2a.h Url.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg2a.h Url.h \
  ip.h Hostdb.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h Msg9b.h \
  Msg1.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h SafeBuf.h \
  HttpRequest.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -911,12 +911,12 @@ Msg2a.o: Msg2a.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg22.h CatRec.h Categories.h HashTable.h Catdb.h Datedb.h Msg8b.h \
  MsgC.h Dns.h DnsProtocol.h
 Msg2b.o: Msg2b.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg2b.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg2b.h \
  Categories.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h HashTable.h sort.h
 Msg2.o: Msg2.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg2.h Query.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg2.h Query.h \
  SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  File.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Msg0.h UdpServer.h UdpSlot.h \
@@ -929,18 +929,18 @@ Msg2.o: Msg2.cpp gb-include.h types.h fctypes.h Unicode.h \
  HashTableT.h Domains.h CountryCode.h Tagdb.h Events.h Msg22.h CatRec.h \
  Categories.h HashTable.h Catdb.h Datedb.h
 Msg30.o: Msg30.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg30.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg30.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h
 Msg35.o: Msg35.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg35.h UdpSlot.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg35.h UdpSlot.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpProtocol.h UdpServer.h \
  Threads.h
 Msg36.o: Msg36.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg36.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg36.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
@@ -950,7 +950,7 @@ Msg36.o: Msg36.cpp gb-include.h types.h fctypes.h Unicode.h \
  HashTableT.h Posdb.h Sections.h Msg0.h IndexList.h Dates.h Bits.h \
  Words.h StopWords.h Query.h
 Msg37.o: Msg37.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg37.h Msg36.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg37.h Msg36.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
@@ -958,7 +958,7 @@ Msg37.o: Msg37.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h \
  Msg5.h Msg3.h RdbMerge.h Dir.h Titledb.h DiskPageCache.h Query.h
 Msg39.o: Msg39.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg39.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg39.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
@@ -969,7 +969,7 @@ Msg39.o: Msg39.cpp gb-include.h types.h fctypes.h Unicode.h \
  Bits.h Words.h StopWords.h TopTree.h Clusterdb.h Msg51.h Stats.h \
  SearchInput.h
 Msg3a.o: Msg3a.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg3a.h Msg39.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg3a.h Msg39.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
@@ -982,7 +982,7 @@ Msg3a.o: Msg3a.cpp gb-include.h types.h fctypes.h Unicode.h \
  CountryCode.h Tagdb.h Events.h Msg22.h CatRec.h Categories.h HashTable.h \
  Catdb.h Datedb.h Wiki.h sort.h Stats.h
 Msg3.o: Msg3.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg3.h RdbList.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg3.h RdbList.h \
  RdbScan.h BigFile.h File.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h ip.h Hostdb.h HttpRequest.h SafeBuf.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Loop.h RdbMap.h Rdb.h RdbBase.h \
@@ -999,7 +999,7 @@ Msg3.o: Msg3.cpp gb-include.h types.h fctypes.h Unicode.h \
  Sanity.h SiteGetter.h Title.h Address.h Spider.h HttpMime.h Json.h \
  Users.h Pages.h HttpServer.h TcpServer.h PageCrawlBot.h Parms.h
 Msg3e.o: Msg3e.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg3e.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg3e.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h Parms.h \
@@ -1007,9 +1007,9 @@ Msg3e.o: Msg3e.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h Msg5.h Msg3.h RdbMerge.h \
  Dir.h Msg4.h
 Msg40Cache.o: Msg40Cache.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg40Cache.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg40Cache.h
 Msg40.o: Msg40.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg40.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg40.h \
  SearchInput.h Query.h SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h HttpRequest.h \
  Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h UdpServer.h \
@@ -1027,7 +1027,7 @@ Msg40.o: Msg40.cpp gb-include.h types.h fctypes.h Unicode.h \
  Address.h Spider.h HttpMime.h Json.h Speller.h Language.h Wiki.h \
  HttpServer.h TcpServer.h PageResults.h
 Msg42.o: Msg42.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg42.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg42.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
@@ -1039,7 +1039,7 @@ Msg42.o: Msg42.cpp gb-include.h types.h fctypes.h Unicode.h \
  Sections.h IndexList.h Dates.h Msg22.h CatRec.h Categories.h HashTable.h \
  Catdb.h
 Msg4.o: Msg4.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h UdpServer.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h UdpServer.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h Msg0.h Multicast.h \
@@ -1057,7 +1057,7 @@ Msg4.o: Msg4.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg3a.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h Address.h Json.h \
  Syncdb.h Process.h PageInject.h Users.h
 Msg51.o: Msg51.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg51.h Msg0.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg51.h Msg0.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
@@ -1066,7 +1066,7 @@ Msg51.o: Msg51.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg5.h Msg3.h RdbMerge.h Dir.h Titledb.h DiskPageCache.h Clusterdb.h \
  IndexList.h Stats.h HashTableT.h
 Msg5.o: Msg5.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg5.h Msg3.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg5.h Msg3.h \
  RdbList.h RdbScan.h BigFile.h File.h Mem.h Conf.h Xml.h XmlNode.h Lang.h \
  Iso8859.h iana_charset.h ip.h Hostdb.h HttpRequest.h SafeBuf.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h Loop.h RdbMap.h \
@@ -1075,7 +1075,7 @@ Msg5.o: Msg5.cpp gb-include.h types.h fctypes.h Unicode.h \
  UdpServer.h UdpSlot.h Multicast.h Indexdb.h Titledb.h DiskPageCache.h \
  Tfndb.h
 Msg6b.o: Msg6b.cpp Msg6b.h gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg3a.h Msg39.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg3a.h Msg39.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
@@ -1088,7 +1088,7 @@ Msg6b.o: Msg6b.cpp Msg6b.h gb-include.h types.h fctypes.h Unicode.h \
  CountryCode.h Tagdb.h Events.h Msg22.h CatRec.h Categories.h HashTable.h \
  Catdb.h Datedb.h
 Msg8b.o: Msg8b.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg8b.h Catdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg8b.h Catdb.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Mem.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Rdb.h RdbBase.h RdbScan.h \
@@ -1098,7 +1098,7 @@ Msg8b.o: Msg8b.cpp gb-include.h types.h fctypes.h Unicode.h \
  Titledb.h DiskPageCache.h Categories.h HashTable.h Msg22.h MsgC.h Dns.h \
  DnsProtocol.h HashTableT.h
 Msg9b.o: Msg9b.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg9b.h Msg1.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg9b.h Msg1.h \
  Rdb.h RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h \
@@ -1111,7 +1111,7 @@ Msg9b.o: Msg9b.cpp gb-include.h types.h fctypes.h Unicode.h \
  Categories.h HashTable.h Catdb.h Datedb.h Msg8b.h MsgC.h Dns.h \
  DnsProtocol.h
 Msgaa.o: Msgaa.cpp Msgaa.h gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Url.h ip.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Url.h ip.h \
  SearchInput.h Query.h SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h Hostdb.h HttpRequest.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h Tagdb.h Rdb.h \
@@ -1125,7 +1125,7 @@ Msgaa.o: Msgaa.cpp Msgaa.h gb-include.h types.h fctypes.h Unicode.h \
  Linkdb.h Msg22.h CatRec.h Categories.h HashTable.h Catdb.h Datedb.h \
  PostQueryRerank.h Sanity.h
 MsgC.o: MsgC.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h MsgC.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h MsgC.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h Dns.h \
@@ -1133,7 +1133,7 @@ MsgC.o: MsgC.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbScan.h BigFile.h RdbMap.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h \
  Msg5.h Msg3.h RdbMerge.h Dir.h
 Msge0.o: Msge0.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msge0.h Tagdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msge0.h Tagdb.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Mem.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Rdb.h RdbBase.h RdbScan.h \
@@ -1145,7 +1145,7 @@ Msge0.o: Msge0.cpp gb-include.h types.h fctypes.h Unicode.h \
  Sections.h IndexList.h Dates.h Msg22.h CatRec.h Categories.h HashTable.h \
  Catdb.h
 Msge1.o: Msge1.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msge1.h MsgC.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msge1.h MsgC.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h Dns.h \
@@ -1158,7 +1158,7 @@ Msge1.o: Msge1.cpp gb-include.h types.h fctypes.h Unicode.h \
  Categories.h HashTable.h Catdb.h Test.h Msg4.h Spider.h Msg1.h \
  Clusterdb.h Datedb.h
 Multicast.o: Multicast.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Multicast.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Multicast.h \
  Hostdb.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h UdpServer.h \
  Mem.h Conf.h File.h Loop.h SafeBuf.h ip.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h UdpSlot.h \
@@ -1176,9 +1176,9 @@ Multicast.o: Multicast.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg51.h Msg17.h Msg3a.h Msg1.h Datedb.h PostQueryRerank.h Sanity.h \
  SiteGetter.h Title.h Address.h Spider.h Json.h Users.h
 numwords.o: numwords.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 OldDiskPageCache.o: OldDiskPageCache.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  DiskPageCache.h RdbCache.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbList.h RdbMap.h \
@@ -1188,7 +1188,7 @@ OldDiskPageCache.o: OldDiskPageCache.cpp gb-include.h types.h fctypes.h \
  DnsProtocol.h Multicast.h Threads.h Parms.h Msg4.h Pages.h HttpServer.h \
  HttpMime.h PageCrawlBot.h
 PageAddColl.o: PageAddColl.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Pages.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Pages.h \
  TcpSocket.h SafeBuf.h iana_charset.h HttpRequest.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h Url.h \
  Collectiondb.h HashTableX.h PingServer.h HttpServer.h TcpServer.h MsgC.h \
@@ -1198,7 +1198,7 @@ PageAddColl.o: PageAddColl.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbMerge.h Dir.h HttpMime.h PageCrawlBot.h Users.h Tagdb.h Msg0.h \
  Indexdb.h Titledb.h DiskPageCache.h Parms.h Msg4.h
 PageAddUrl.o: PageAddUrl.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Pages.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Pages.h \
  TcpSocket.h SafeBuf.h iana_charset.h HttpRequest.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h Url.h \
  Collectiondb.h HashTableX.h PingServer.h HttpServer.h TcpServer.h MsgC.h \
@@ -1212,7 +1212,7 @@ PageAddUrl.o: PageAddUrl.cpp gb-include.h types.h fctypes.h Unicode.h \
  Sections.h IndexList.h Dates.h Msg22.h CatRec.h Categories.h HashTable.h \
  Catdb.h Datedb.h Parms.h
 PageBasic.o: PageBasic.cpp SafeBuf.h gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  iana_charset.h HttpRequest.h Mem.h Conf.h Xml.h XmlNode.h Lang.h \
  Iso8859.h File.h Loop.h ip.h Hostdb.h TcpSocket.h Url.h Collectiondb.h \
  HashTableX.h PingServer.h SearchInput.h Query.h Pages.h HttpServer.h \
@@ -1228,7 +1228,7 @@ PageBasic.o: PageBasic.cpp SafeBuf.h gb-include.h types.h fctypes.h \
  Msg39.h Posdb.h TopTree.h Msg51.h Msg17.h Msg3a.h PostQueryRerank.h \
  Sanity.h Stats.h
 PageCatdb.o: PageCatdb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Pages.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Pages.h \
  TcpSocket.h SafeBuf.h iana_charset.h HttpRequest.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h Url.h \
  Collectiondb.h HashTableX.h PingServer.h HttpServer.h TcpServer.h MsgC.h \
@@ -1241,7 +1241,7 @@ PageCatdb.o: PageCatdb.cpp gb-include.h types.h fctypes.h Unicode.h \
  HashTableT.h Domains.h CountryCode.h Tagdb.h Events.h Sections.h \
  IndexList.h Dates.h Msg22.h CatRec.h Categories.h HashTable.h Catdb.h \
  Datedb.h Msg8b.h
-PageCrawlBot.o: PageCrawlBot.cpp Errno.h PageCrawlBot.h TcpServer.h Mem.h \
+PageCrawlBot.o: PageCrawlBot.cpp GbErrno.h PageCrawlBot.h TcpServer.h Mem.h \
  Conf.h Xml.h XmlNode.h gb-include.h types.h fctypes.h Unicode.h \
  UnicodeProperties.h UCPropTable.h hash.h Log.h Lang.h Iso8859.h \
  iana_charset.h File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
@@ -1259,7 +1259,7 @@ PageCrawlBot.o: PageCrawlBot.cpp Errno.h PageCrawlBot.h TcpServer.h Mem.h \
  Msg3a.h Msg1.h Datedb.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h \
  Address.h Spider.h Json.h PageInject.h Users.h Parms.h Repair.h
 PageDirectory.o: PageDirectory.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Pages.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Pages.h \
  TcpSocket.h SafeBuf.h iana_charset.h HttpRequest.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h Url.h \
  Collectiondb.h HashTableX.h PingServer.h HttpServer.h TcpServer.h MsgC.h \
@@ -1274,7 +1274,7 @@ PageDirectory.o: PageDirectory.cpp gb-include.h types.h fctypes.h \
  Posdb.h TopTree.h Clusterdb.h Msg51.h Msg17.h Msg3a.h Msg1.h Linkdb.h \
  Msg22.h CatRec.h Catdb.h Datedb.h PostQueryRerank.h Sanity.h
 PageEvents.o: PageEvents.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Collectiondb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Collectiondb.h \
  SafeBuf.h iana_charset.h Url.h ip.h HashTableX.h PingServer.h Hostdb.h \
  Xml.h XmlNode.h Lang.h Iso8859.h Stats.h UdpProtocol.h Statsdb.h Rdb.h \
  RdbBase.h Conf.h File.h Mem.h Loop.h HttpRequest.h TcpSocket.h RdbScan.h \
@@ -1294,7 +1294,7 @@ PageEvents.o: PageEvents.cpp gb-include.h types.h fctypes.h Unicode.h \
  TuringTest.h sort.h LanguageIdentifier.h LanguagePages.h PageTurk.h \
  Facebook.h Repair.h
 PageGet.o: PageGet.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h SafeBuf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h SafeBuf.h \
  iana_charset.h Collectiondb.h Url.h ip.h HashTableX.h PingServer.h \
  Hostdb.h Xml.h XmlNode.h Lang.h Iso8859.h Msg22.h Multicast.h \
  UdpServer.h Mem.h Conf.h File.h Loop.h HttpRequest.h TcpSocket.h \
@@ -1312,7 +1312,7 @@ PageGet.o: PageGet.cpp gb-include.h types.h fctypes.h Unicode.h \
  Datedb.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h Address.h \
  Spider.h Json.h PageResults.h Language.h
 PageHosts.o: PageHosts.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h TcpSocket.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h TcpSocket.h \
  SafeBuf.h iana_charset.h HttpServer.h TcpServer.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h HttpRequest.h \
  Url.h Collectiondb.h HashTableX.h PingServer.h MsgC.h UdpServer.h \
@@ -1322,7 +1322,7 @@ PageHosts.o: PageHosts.cpp gb-include.h types.h fctypes.h Unicode.h \
  HttpMime.h Pages.h PageCrawlBot.h Indexdb.h Titledb.h DiskPageCache.h \
  sort.h Users.h Tagdb.h Msg0.h
 PageIndexdb.o: PageIndexdb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Indexdb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Indexdb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -1335,7 +1335,7 @@ PageIndexdb.o: PageIndexdb.cpp gb-include.h types.h fctypes.h Unicode.h \
  HashTable.h Catdb.h Datedb.h Msg36.h HttpServer.h TcpServer.h MsgC.h \
  Dns.h DnsProtocol.h HttpMime.h Pages.h PageCrawlBot.h Users.h
 PageInject.o: PageInject.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h PageInject.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h PageInject.h \
  XmlDoc.h Lang.h Iso8859.h iana_charset.h Words.h Xml.h XmlNode.h \
  SafeBuf.h StopWords.h Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h \
  Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
@@ -1353,7 +1353,7 @@ PageInject.o: PageInject.cpp gb-include.h types.h fctypes.h Unicode.h \
  HttpMime.h Json.h Users.h Pages.h HttpServer.h TcpServer.h \
  PageCrawlBot.h Parms.h PageParser.h Repair.h Stats.h
 PageLogView.o: PageLogView.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Collectiondb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Collectiondb.h \
  SafeBuf.h iana_charset.h Url.h ip.h HashTableX.h PingServer.h Hostdb.h \
  Xml.h XmlNode.h Lang.h Iso8859.h Pages.h TcpSocket.h HttpRequest.h Mem.h \
  Conf.h File.h Loop.h HttpServer.h TcpServer.h MsgC.h UdpServer.h \
@@ -1363,7 +1363,7 @@ PageLogView.o: PageLogView.cpp gb-include.h types.h fctypes.h Unicode.h \
  HttpMime.h PageCrawlBot.h Msg1f.h Parms.h Msg4.h Users.h Tagdb.h Msg0.h \
  Indexdb.h Titledb.h DiskPageCache.h
 PageNetTest.o: PageNetTest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h PageNetTest.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h PageNetTest.h \
  Pages.h TcpSocket.h SafeBuf.h iana_charset.h HttpRequest.h Mem.h Conf.h \
  Xml.h XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h Url.h \
  Collectiondb.h HashTableX.h PingServer.h HttpServer.h TcpServer.h MsgC.h \
@@ -1372,7 +1372,7 @@ PageNetTest.o: PageNetTest.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbMap.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h Msg5.h Msg3.h \
  RdbMerge.h Dir.h HttpMime.h PageCrawlBot.h Mime.h sort.h
 PageOverview.o: PageOverview.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h TcpSocket.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h TcpSocket.h \
  SafeBuf.h iana_charset.h HttpRequest.h Mem.h Conf.h Xml.h XmlNode.h \
  Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h Url.h Collectiondb.h \
  HashTableX.h PingServer.h Pages.h HttpServer.h TcpServer.h MsgC.h \
@@ -1386,7 +1386,7 @@ PageOverview.o: PageOverview.cpp gb-include.h types.h fctypes.h Unicode.h \
  Sections.h IndexList.h Dates.h Msg22.h CatRec.h Categories.h HashTable.h \
  Catdb.h Datedb.h Users.h
 PageParser.o: PageParser.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h PageParser.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h PageParser.h \
  XmlDoc.h Lang.h Iso8859.h iana_charset.h Words.h Xml.h XmlNode.h \
  SafeBuf.h StopWords.h Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h \
  Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
@@ -1403,7 +1403,7 @@ PageParser.o: PageParser.cpp gb-include.h types.h fctypes.h Unicode.h \
  PostQueryRerank.h Sanity.h SiteGetter.h Title.h Address.h Spider.h \
  HttpMime.h Json.h Pages.h HttpServer.h TcpServer.h PageCrawlBot.h
 PagePerf.o: PagePerf.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Stats.h SafeBuf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Stats.h SafeBuf.h \
  iana_charset.h UdpProtocol.h Pages.h TcpSocket.h HttpRequest.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h \
  Url.h Collectiondb.h HashTableX.h PingServer.h HttpServer.h TcpServer.h \
@@ -1412,7 +1412,7 @@ PagePerf.o: PagePerf.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h Msg5.h Msg3.h RdbMerge.h Dir.h \
  HttpMime.h PageCrawlBot.h
 PageReindex.o: PageReindex.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h HttpServer.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h HttpServer.h \
  TcpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h MsgC.h UdpServer.h UdpSlot.h \
@@ -1430,7 +1430,7 @@ PageReindex.o: PageReindex.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msge1.h Msg8b.h SiteGetter.h Title.h Address.h Json.h PageInject.h \
  Parms.h PageReindex.h
 PageResults.o: PageResults.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Collectiondb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Collectiondb.h \
  SafeBuf.h iana_charset.h Url.h ip.h HashTableX.h PingServer.h Hostdb.h \
  Xml.h XmlNode.h Lang.h Iso8859.h Stats.h UdpProtocol.h Statsdb.h Rdb.h \
  RdbBase.h Conf.h File.h Mem.h Loop.h HttpRequest.h TcpSocket.h RdbScan.h \
@@ -1450,7 +1450,7 @@ PageResults.o: PageResults.cpp gb-include.h types.h fctypes.h Unicode.h \
  TuringTest.h sort.h LanguageIdentifier.h LanguagePages.h PageResults.h \
  Proxy.h
 PageRoot.o: PageRoot.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Indexdb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Indexdb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -1468,7 +1468,7 @@ PageRoot.o: PageRoot.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msge1.h Msg8b.h Msg40.h Msg39.h Msg37.h Posdb.h TopTree.h Msg51.h \
  Msg17.h Msg3a.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h Json.h
 Pages.o: Pages.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Pages.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Pages.h \
  TcpSocket.h SafeBuf.h iana_charset.h HttpRequest.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h Url.h \
  Collectiondb.h HashTableX.h PingServer.h HttpServer.h TcpServer.h MsgC.h \
@@ -1487,7 +1487,7 @@ Pages.o: Pages.cpp gb-include.h types.h fctypes.h Unicode.h \
  SiteGetter.h Title.h Address.h Spider.h Json.h Users.h Rebalance.h \
  Profiler.h
 PageSockets.o: PageSockets.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h TcpServer.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h TcpServer.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h MsgC.h UdpServer.h UdpSlot.h UdpProtocol.h \
@@ -1500,7 +1500,7 @@ PageSockets.o: PageSockets.cpp gb-include.h types.h fctypes.h Unicode.h \
  Domains.h CountryCode.h Tagdb.h Events.h Sections.h IndexList.h Dates.h \
  Msg22.h CatRec.h Categories.h HashTable.h Catdb.h
 PageSpam.o: PageSpam.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Pages.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Pages.h \
  TcpSocket.h SafeBuf.h iana_charset.h HttpRequest.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h Url.h \
  Collectiondb.h HashTableX.h PingServer.h HttpServer.h TcpServer.h MsgC.h \
@@ -1509,7 +1509,7 @@ PageSpam.o: PageSpam.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbMap.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h Msg5.h Msg3.h \
  RdbMerge.h Dir.h HttpMime.h PageCrawlBot.h Parms.h Msg4.h
 PageStats.o: PageStats.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Indexdb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Indexdb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -1528,7 +1528,7 @@ PageStats.o: PageStats.cpp gb-include.h types.h fctypes.h Unicode.h \
  HttpServer.h TcpServer.h PageCrawlBot.h Parms.h Proxy.h AutoBan.h \
  TuringTest.h Placedb.h
 PageStatsdb.o: PageStatsdb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Pages.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Pages.h \
  TcpSocket.h SafeBuf.h iana_charset.h HttpRequest.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h Url.h \
  Collectiondb.h HashTableX.h PingServer.h HttpServer.h TcpServer.h MsgC.h \
@@ -1546,7 +1546,7 @@ PageStatsdb.o: PageStatsdb.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg17.h Msg3a.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h \
  Address.h Spider.h Json.h Users.h Parms.h SafeList.h
 PageSubmit.o: PageSubmit.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h XmlDoc.h Lang.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h XmlDoc.h Lang.h \
  Iso8859.h iana_charset.h Words.h Xml.h XmlNode.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -1562,7 +1562,7 @@ PageSubmit.o: PageSubmit.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg3a.h Msg1.h Datedb.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h \
  Address.h Spider.h HttpMime.h Json.h HttpServer.h TcpServer.h
 PageThesaurus.o: PageThesaurus.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  HttpServer.h TcpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h MsgC.h UdpServer.h \
@@ -1571,7 +1571,7 @@ PageThesaurus.o: PageThesaurus.cpp gb-include.h types.h fctypes.h \
  RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h Msg5.h Msg3.h RdbMerge.h Dir.h \
  HttpMime.h Pages.h PageCrawlBot.h Thesaurus.h HashTableT.h
 PageThreads.o: PageThreads.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h TcpServer.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h TcpServer.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h MsgC.h UdpServer.h UdpSlot.h UdpProtocol.h \
@@ -1580,7 +1580,7 @@ PageThreads.o: PageThreads.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbBuckets.h Msg5.h Msg3.h RdbMerge.h Dir.h Pages.h HttpServer.h \
  HttpMime.h PageCrawlBot.h Profiler.h Parms.h Msg4.h
 PageTitledb.o: PageTitledb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Collectiondb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Collectiondb.h \
  SafeBuf.h iana_charset.h Url.h ip.h HashTableX.h PingServer.h Hostdb.h \
  Xml.h XmlNode.h Lang.h Iso8859.h Msg22.h Multicast.h UdpServer.h Mem.h \
  Conf.h File.h Loop.h HttpRequest.h TcpSocket.h UdpSlot.h UdpProtocol.h \
@@ -1597,7 +1597,7 @@ PageTitledb.o: PageTitledb.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg3a.h Msg1.h Datedb.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h \
  Address.h Spider.h Json.h linkspam.h Users.h
 PageTurk.o: PageTurk.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h HttpServer.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h HttpServer.h \
  TcpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h MsgC.h UdpServer.h UdpSlot.h \
@@ -1615,7 +1615,7 @@ PageTurk.o: PageTurk.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msge1.h Msg8b.h SiteGetter.h Title.h Address.h Spider.h Json.h Users.h \
  Parms.h sort.h PageTurk.h Repair.h
 Parms.o: Parms.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Parms.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Parms.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -1634,7 +1634,7 @@ Parms.o: Parms.cpp gb-include.h types.h fctypes.h Unicode.h \
  Address.h Json.h Users.h Repair.h Ads.h LanguagePages.h Proxy.h \
  AutoBan.h TuringTest.h Test.h Rebalance.h
 Phrases.o: Phrases.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Phrases.h Bits.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Phrases.h Bits.h \
  Words.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h \
  StopWords.h Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h \
  Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
@@ -1642,7 +1642,7 @@ Phrases.o: Phrases.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbMem.h RdbBuckets.h RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h \
  DiskPageCache.h
 PingServer.o: PingServer.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h PingServer.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h PingServer.h \
  Hostdb.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h \
  UdpServer.h Mem.h Conf.h File.h Loop.h ip.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h UdpSlot.h UdpProtocol.h \
@@ -1661,7 +1661,7 @@ PingServer.o: PingServer.cpp gb-include.h types.h fctypes.h Unicode.h \
  Address.h Spider.h Json.h Process.h PageInject.h Users.h DailyMerge.h \
  Test.h Rebalance.h Version.h
 Placedb.o: Placedb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Placedb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Placedb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -1669,7 +1669,7 @@ Placedb.o: Placedb.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg3.h RdbMerge.h Dir.h Msg0.h UdpServer.h UdpSlot.h UdpProtocol.h \
  Multicast.h Threads.h Indexdb.h Titledb.h DiskPageCache.h
 Pops.o: Pops.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Pops.h Words.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Pops.h Words.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -1681,7 +1681,7 @@ Pops.o: Pops.cpp gb-include.h types.h fctypes.h Unicode.h \
  Tagdb.h Msg0.h Events.h Sections.h Dates.h Msg37.h Msg36.h
 porter.o: porter.cpp
 Pos.o: Pos.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Pos.h Words.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Pos.h Words.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -1691,7 +1691,7 @@ Pos.o: Pos.cpp gb-include.h types.h fctypes.h Unicode.h \
  Threads.h Indexdb.h IndexList.h Dates.h Bits.h
 Posdb.o: Posdb.cpp Posdb.h Rdb.h RdbBase.h Conf.h Xml.h XmlNode.h \
  gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h \
  File.h Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h \
  RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h \
@@ -1701,7 +1701,7 @@ Posdb.o: Posdb.cpp Posdb.h Rdb.h RdbBase.h Conf.h Xml.h XmlNode.h \
  Clusterdb.h Rebalance.h Msg4.h Stats.h TopTree.h sort.h Msg39.h Msg37.h \
  Msg36.h Msg2.h Msg51.h SearchInput.h Timedb.h
 PostQueryRerank.o: PostQueryRerank.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  PostQueryRerank.h HashTableT.h Mem.h Conf.h Xml.h XmlNode.h Lang.h \
  Iso8859.h iana_charset.h File.h Loop.h SafeBuf.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -1717,7 +1717,7 @@ PostQueryRerank.o: PostQueryRerank.cpp gb-include.h types.h fctypes.h \
  Profiler.h TcpServer.h MsgC.h Dns.h DnsProtocol.h Parms.h Msg4.h Pages.h \
  HttpServer.h HttpMime.h PageCrawlBot.h Phrases.h
 Process.o: Process.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Process.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Process.h \
  HttpRequest.h SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h XmlNode.h \
  Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h TcpSocket.h Url.h \
  Collectiondb.h HashTableX.h PingServer.h PageInject.h XmlDoc.h Words.h \
@@ -1737,7 +1737,7 @@ Process.o: Process.cpp gb-include.h types.h fctypes.h Unicode.h \
  Stats.h Repair.h Speller.h Language.h Profiler.h AutoBan.h TuringTest.h \
  Wiki.h Wiktionary.h Proxy.h Rebalance.h PageTurk.h
 Profiler.o: Profiler.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Profiler.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Profiler.h \
  TcpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h MsgC.h UdpServer.h UdpSlot.h \
@@ -1747,7 +1747,7 @@ Profiler.o: Profiler.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg4.h Pages.h HttpServer.h HttpMime.h PageCrawlBot.h Stats.h sort.h \
  Users.h Tagdb.h Msg0.h Indexdb.h Titledb.h DiskPageCache.h
 Proxy.o: Proxy.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Proxy.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Proxy.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h Stats.h \
@@ -1766,7 +1766,7 @@ Proxy.o: Proxy.cpp gb-include.h types.h fctypes.h Unicode.h \
  SiteGetter.h Title.h Address.h Spider.h Json.h Users.h
 Punycode.o: Punycode.cpp Punycode.h
 QAClient.o: QAClient.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h QAClient.h Url.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h QAClient.h Url.h \
  ip.h Titledb.h Rdb.h RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Mem.h Loop.h SafeBuf.h Hostdb.h HttpRequest.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h \
@@ -1783,7 +1783,7 @@ QAClient.o: QAClient.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg3a.h Msg1.h Datedb.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h \
  Address.h Spider.h Json.h Users.h Pages.h PageCrawlBot.h Parms.h Diff.h
 qa.o: qa.cpp SafeBuf.h gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h iana_charset.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h iana_charset.h \
  HttpServer.h TcpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  File.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h MsgC.h UdpServer.h UdpSlot.h \
@@ -1795,7 +1795,7 @@ qa.o: qa.cpp SafeBuf.h gb-include.h types.h fctypes.h Unicode.h \
  Pages.h PageCrawlBot.h
 quarantine.o: quarantine.cpp
 Query.o: Query.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Query.h SafeBuf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Query.h SafeBuf.h \
  iana_charset.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h File.h \
  Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Words.h StopWords.h Titledb.h Rdb.h RdbBase.h \
@@ -1808,7 +1808,7 @@ Query.o: Query.cpp gb-include.h types.h fctypes.h Unicode.h \
  Categories.h HashTable.h Catdb.h Datedb.h Speller.h Language.h Msg37.h \
  Msg36.h Msg3a.h Msg39.h Posdb.h TopTree.h Msg51.h Synonyms.h Wiki.h
 RdbBase.o: RdbBase.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Rdb.h RdbBase.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Rdb.h RdbBase.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Mem.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -1828,13 +1828,13 @@ RdbBase.o: RdbBase.cpp gb-include.h types.h fctypes.h Unicode.h \
  Repair.h Rebalance.h
 RdbBuckets.o: RdbBuckets.cpp RdbBuckets.h Mem.h Conf.h Xml.h XmlNode.h \
  gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h BigFile.h RdbList.h RdbMem.h \
  RdbTree.h sort.h Threads.h Rdb.h RdbBase.h RdbScan.h RdbMap.h RdbDump.h \
  RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h
 RdbCache.o: RdbCache.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Threads.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Threads.h \
  RdbCache.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbList.h Msg17.h UdpSlot.h \
@@ -1847,7 +1847,7 @@ RdbCache.o: RdbCache.cpp gb-include.h types.h fctypes.h Unicode.h \
  Events.h Sections.h IndexList.h Dates.h Msg22.h CatRec.h Categories.h \
  HashTable.h Catdb.h Datedb.h
 Rdb.o: Rdb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Rdb.h RdbBase.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Rdb.h RdbBase.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Mem.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -1866,7 +1866,7 @@ Rdb.o: Rdb.cpp gb-include.h types.h fctypes.h Unicode.h \
  HttpServer.h TcpServer.h PageCrawlBot.h Parms.h Statsdb.h Stats.h \
  Syncdb.h Placedb.h Revdb.h
 RdbDump.o: RdbDump.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h RdbDump.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h RdbDump.h \
  BigFile.h File.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h ip.h Hostdb.h HttpRequest.h SafeBuf.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Loop.h RdbTree.h RdbList.h \
@@ -1884,7 +1884,7 @@ RdbDump.o: RdbDump.cpp gb-include.h types.h fctypes.h Unicode.h \
  Address.h Spider.h HttpMime.h Json.h Users.h Pages.h HttpServer.h \
  TcpServer.h PageCrawlBot.h Parms.h Accessdb.h
 RdbList.o: RdbList.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h RdbList.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h RdbList.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Clusterdb.h Rdb.h RdbBase.h RdbScan.h \
@@ -1896,7 +1896,7 @@ RdbList.o: RdbList.cpp gb-include.h types.h fctypes.h Unicode.h \
  Domains.h CountryCode.h Events.h Sections.h IndexList.h Dates.h Msg22.h \
  CatRec.h Categories.h HashTable.h Catdb.h Datedb.h
 RdbMap.o: RdbMap.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h RdbMap.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h RdbMap.h \
  BigFile.h File.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h ip.h Hostdb.h HttpRequest.h SafeBuf.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Loop.h RdbList.h IndexList.h \
@@ -1904,14 +1904,14 @@ RdbMap.o: RdbMap.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbBuckets.h RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h Titledb.h \
  DiskPageCache.h
 RdbMem.o: RdbMem.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h RdbMem.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h RdbMem.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
  RdbList.h RdbDump.h RdbTree.h RdbBuckets.h RdbCache.h Msg5.h Msg3.h \
  RdbMerge.h Dir.h Threads.h
 RdbMerge.o: RdbMerge.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Rdb.h RdbBase.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Rdb.h RdbBase.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Mem.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -1929,7 +1929,7 @@ RdbMerge.o: RdbMerge.cpp gb-include.h types.h fctypes.h Unicode.h \
  HttpMime.h Json.h Users.h Pages.h HttpServer.h TcpServer.h \
  PageCrawlBot.h Parms.h
 RdbScan.o: RdbScan.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h RdbScan.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h RdbScan.h \
  BigFile.h File.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h ip.h Hostdb.h HttpRequest.h SafeBuf.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Loop.h RdbMap.h RdbList.h \
@@ -1937,20 +1937,20 @@ RdbScan.o: RdbScan.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbBuckets.h Msg5.h Msg3.h RdbMerge.h Dir.h Threads.h
 rdbtest2.o: rdbtest2.cpp Rdb.h RdbBase.h Conf.h Xml.h XmlNode.h \
  gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h \
  File.h Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h \
  RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h \
  Msg5.h Msg3.h RdbMerge.h Dir.h
 rdbtest.o: rdbtest.cpp Rdb.h RdbBase.h Conf.h Xml.h XmlNode.h \
  gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h \
  File.h Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h \
  RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h \
  Msg5.h Msg3.h RdbMerge.h Dir.h
 RdbTree.o: RdbTree.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h RdbTree.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h RdbTree.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h BigFile.h RdbList.h RdbMem.h Threads.h \
@@ -1962,9 +1962,9 @@ RdbTree.o: RdbTree.cpp gb-include.h types.h fctypes.h Unicode.h \
  Tagdb.h Events.h Sections.h IndexList.h Dates.h Msg22.h CatRec.h \
  Categories.h HashTable.h Catdb.h Spider.h Msg4.h Msg1.h Clusterdb.h
 readRec.o: readRec.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 Rebalance.o: Rebalance.cpp Rebalance.h gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  RdbList.h Msg4.h SafeBuf.h iana_charset.h Msg5.h Msg3.h RdbScan.h \
  BigFile.h File.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h ip.h \
  Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
@@ -1982,9 +1982,9 @@ Rebalance.o: Rebalance.cpp Rebalance.h gb-include.h types.h fctypes.h \
  Msg17.h Msg3a.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h \
  Address.h Json.h Users.h Parms.h
 reindex2.o: reindex2.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 Repair.o: Repair.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Repair.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Repair.h \
  RdbList.h Msg5.h Msg3.h RdbScan.h BigFile.h File.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h iana_charset.h ip.h Hostdb.h HttpRequest.h \
  SafeBuf.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -2002,17 +2002,17 @@ Repair.o: Repair.cpp gb-include.h types.h fctypes.h Unicode.h \
  HttpMime.h Json.h Pages.h HttpServer.h TcpServer.h PageCrawlBot.h \
  Process.h PageInject.h Users.h Parms.h
 RequestTable.o: RequestTable.cpp RequestTable.h gb-include.h types.h \
- fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h \
+ fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h \
  Log.h HashTableT.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h
 rescue.o: rescue.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h File.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h File.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h ip.h Hostdb.h \
  HttpRequest.h SafeBuf.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
  PingServer.h Loop.h
 Revdb.o: Revdb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Revdb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Revdb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -2020,7 +2020,7 @@ Revdb.o: Revdb.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg3.h RdbMerge.h Dir.h Titledb.h DiskPageCache.h Threads.h
 rmbots.o: rmbots.cpp
 SafeBuf.o: SafeBuf.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h iana_charset.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h iana_charset.h \
  SafeBuf.h Words.h Xml.h XmlNode.h Lang.h Iso8859.h StopWords.h Titledb.h \
  Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h HttpRequest.h \
  Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h \
@@ -2036,14 +2036,14 @@ SafeBuf.o: SafeBuf.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg51.h Msg17.h Msg3a.h Msg1.h Datedb.h PostQueryRerank.h Sanity.h \
  SiteGetter.h Title.h Address.h Spider.h HttpMime.h Json.h sort.h
 Scores.o: Scores.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Scores.h Words.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Scores.h Words.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
  RdbScan.h BigFile.h RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h \
  RdbBuckets.h RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h DiskPageCache.h
 Scraper.o: Scraper.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Scraper.h Url.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Scraper.h Url.h \
  ip.h XmlDoc.h Lang.h Iso8859.h iana_charset.h Words.h Xml.h XmlNode.h \
  SafeBuf.h StopWords.h Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h \
  Loop.h Hostdb.h HttpRequest.h TcpSocket.h Collectiondb.h HashTableX.h \
@@ -2060,7 +2060,7 @@ Scraper.o: Scraper.cpp gb-include.h types.h fctypes.h Unicode.h \
  Sanity.h SiteGetter.h Title.h Address.h Spider.h HttpMime.h Json.h \
  Wiki.h HttpServer.h TcpServer.h Speller.h Language.h Repair.h
 SearchInput.o: SearchInput.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h SearchInput.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h SearchInput.h \
  Query.h SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h XmlNode.h Lang.h \
  Iso8859.h File.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Parms.h Rdb.h RdbBase.h \
@@ -2077,7 +2077,7 @@ SearchInput.o: SearchInput.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg51.h Msg17.h Msg3a.h Msg1.h Datedb.h PostQueryRerank.h Sanity.h
 Sections.o: Sections.cpp Sections.h HashTableX.h SafeBuf.h gb-include.h \
  types.h fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h \
- Errno.h Log.h iana_charset.h Msg0.h UdpServer.h Mem.h Conf.h Xml.h \
+ GbErrno.h Log.h iana_charset.h Msg0.h UdpServer.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h HttpRequest.h \
  Url.h TcpSocket.h Collectiondb.h PingServer.h UdpSlot.h UdpProtocol.h \
  Multicast.h Threads.h Indexdb.h Rdb.h RdbBase.h RdbScan.h BigFile.h \
@@ -2092,9 +2092,9 @@ Sections.o: Sections.cpp Sections.h HashTableX.h SafeBuf.h gb-include.h \
  MsgC.h Dns.h DnsProtocol.h Msge0.h Msge1.h Msg4.h Msg8b.h SiteGetter.h \
  Title.h Address.h Spider.h HttpMime.h Json.h sort.h Abbreviations.h
 seektest.o: seektest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 SiteGetter.o: SiteGetter.cpp SiteGetter.h gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Msg0.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Msg0.h \
  UdpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h \
@@ -2107,12 +2107,12 @@ SiteGetter.o: SiteGetter.cpp SiteGetter.h gb-include.h types.h fctypes.h \
  HashTable.h Catdb.h Datedb.h Posdb.h
 sleepandlog.o: sleepandlog.cpp
 sort.o: sort.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h sort.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h sort.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h
 Speller.o: Speller.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Mem.h Conf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Mem.h Conf.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Dns.h UdpServer.h UdpSlot.h UdpProtocol.h \
@@ -2124,7 +2124,7 @@ Speller.o: Speller.cpp gb-include.h types.h fctypes.h Unicode.h \
  matches2.h Words.h Bits.h Pos.h Matches.h Domains.h CountryCode.h \
  Tagdb.h Msg0.h Events.h Sections.h Dates.h Msg37.h Msg36.h
 Spider.o: Spider.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Spider.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Spider.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -2142,7 +2142,7 @@ Spider.o: Spider.cpp gb-include.h types.h fctypes.h Unicode.h \
  Repair.h DailyMerge.h Process.h PageInject.h Users.h Pages.h \
  HttpServer.h TcpServer.h PageCrawlBot.h Parms.h Test.h Rebalance.h
 SpiderProxy.o: SpiderProxy.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Pages.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Pages.h \
  TcpSocket.h SafeBuf.h iana_charset.h HttpRequest.h Mem.h Conf.h Xml.h \
  XmlNode.h Lang.h Iso8859.h File.h Loop.h ip.h Hostdb.h Url.h \
  Collectiondb.h HashTableX.h PingServer.h HttpServer.h TcpServer.h MsgC.h \
@@ -2151,12 +2151,12 @@ SpiderProxy.o: SpiderProxy.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbMap.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h Msg5.h Msg3.h \
  RdbMerge.h Dir.h HttpMime.h PageCrawlBot.h SpiderProxy.h Msg13.h
 Stats.o: Stats.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Stats.h SafeBuf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Stats.h SafeBuf.h \
  iana_charset.h UdpProtocol.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  File.h Mem.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h
 Statsdb.o: Statsdb.cpp Conf.h Xml.h XmlNode.h gb-include.h types.h \
- fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h \
+ fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h \
  Log.h Lang.h Iso8859.h iana_charset.h File.h Mem.h Loop.h SafeBuf.h ip.h \
  Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
  PingServer.h Statsdb.h Rdb.h RdbBase.h RdbScan.h BigFile.h RdbMap.h \
@@ -2174,7 +2174,7 @@ Statsdb.o: Statsdb.cpp Conf.h Xml.h XmlNode.h gb-include.h types.h \
  Spider.h HttpMime.h Json.h Users.h Pages.h HttpServer.h TcpServer.h \
  PageCrawlBot.h Parms.h
 StopWords.o: StopWords.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h StopWords.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h StopWords.h \
  HashTableX.h SafeBuf.h iana_charset.h Speller.h Language.h File.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h ip.h Hostdb.h HttpRequest.h \
  Url.h TcpSocket.h Collectiondb.h PingServer.h Loop.h HashTableT.h \
@@ -2185,12 +2185,12 @@ StopWords.o: StopWords.cpp gb-include.h types.h fctypes.h Unicode.h \
  matches2.h Words.h Bits.h Pos.h Matches.h Domains.h CountryCode.h \
  Tagdb.h Msg0.h Events.h Sections.h Dates.h Msg37.h Msg36.h Posdb.h
 Strings.o: Strings.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h GbStrings.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h GbStrings.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h
 Summary.o: Summary.cpp Summary.h gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h matches2.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h matches2.h \
  Query.h SafeBuf.h iana_charset.h Mem.h Conf.h Xml.h XmlNode.h Lang.h \
  Iso8859.h File.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Words.h StopWords.h Titledb.h \
@@ -2201,13 +2201,13 @@ Summary.o: Summary.cpp Summary.h gb-include.h types.h fctypes.h Unicode.h \
  UdpProtocol.h Threads.h IndexList.h Indexdb.h Msg20.h Tagdb.h Msg0.h \
  Events.h Sections.h Dates.h Msg37.h Msg36.h
 superMergeTest.o: superMergeTest.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  RdbList.h sort.h
 supported_charsets.o: supported_charsets.cpp gb-include.h types.h \
- fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h \
+ fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h \
  Log.h iana_charset.h
 Syncdb.o: Syncdb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Syncdb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Syncdb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -2225,7 +2225,7 @@ Syncdb.o: Syncdb.cpp gb-include.h types.h fctypes.h Unicode.h \
  Spider.h HttpMime.h Json.h Users.h Pages.h HttpServer.h TcpServer.h \
  PageCrawlBot.h Parms.h
 Synonyms.o: Synonyms.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Synonyms.h Xml.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Synonyms.h Xml.h \
  XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h StopWords.h \
  HttpServer.h TcpServer.h Mem.h Conf.h File.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -2238,7 +2238,7 @@ Synonyms.o: Synonyms.cpp gb-include.h types.h fctypes.h Unicode.h \
  CountryCode.h Tagdb.h Msg0.h Events.h Sections.h Dates.h Msg37.h Msg36.h \
  Phrases.h sort.h Wiktionary.h
 Tagdb.o: Tagdb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Titledb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Titledb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
@@ -2256,7 +2256,7 @@ Tagdb.o: Tagdb.cpp gb-include.h types.h fctypes.h Unicode.h \
  PostQueryRerank.h Sanity.h Title.h Address.h Spider.h Json.h Parms.h \
  Rebalance.h
 TcpServer.o: TcpServer.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h TcpServer.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h TcpServer.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h MsgC.h UdpServer.h UdpSlot.h UdpProtocol.h \
@@ -2265,11 +2265,11 @@ TcpServer.o: TcpServer.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbBuckets.h Msg5.h Msg3.h RdbMerge.h Dir.h Stats.h Profiler.h Parms.h \
  Msg4.h Pages.h HttpServer.h HttpMime.h PageCrawlBot.h
 test2.o: test2.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 test_convert.o: test_convert.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 Test.o: Test.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Test.h Msg4.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Test.h Msg4.h \
  SafeBuf.h iana_charset.h Spider.h Rdb.h RdbBase.h Conf.h Xml.h XmlNode.h \
  Lang.h Iso8859.h File.h Mem.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h \
@@ -2290,32 +2290,32 @@ testfloats.o: testfloats.cpp
 test_hash.o: test_hash.cpp hash.h Unicode.h UnicodeProperties.h \
  UCPropTable.h types.h
 test_norm.o: test_norm.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 test_parser2.o: test_parser2.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 test_parser.o: test_parser.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Words.h Xml.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Words.h Xml.h \
  XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
  RdbScan.h BigFile.h RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h \
  RdbBuckets.h RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h DiskPageCache.h
 test_unicode.o: test_unicode.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Words.h Xml.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Words.h Xml.h \
  XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
  RdbScan.h BigFile.h RdbMap.h RdbList.h RdbDump.h RdbTree.h RdbMem.h \
  RdbBuckets.h RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h DiskPageCache.h
 Tfndb.o: Tfndb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Tfndb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Tfndb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
  RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h Msg5.h \
  Msg3.h RdbMerge.h Dir.h Titledb.h DiskPageCache.h Threads.h
 Thesaurus.o: Thesaurus.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Thesaurus.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Thesaurus.h \
  HashTableT.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h HashTable.h \
@@ -2328,7 +2328,7 @@ Thesaurus.o: Thesaurus.cpp gb-include.h types.h fctypes.h Unicode.h \
  Domains.h CountryCode.h Tagdb.h Msg0.h Events.h Sections.h Dates.h \
  Msg37.h Msg36.h Phrases.h sort.h
 Threads.o: Threads.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h BigFile.h File.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h BigFile.h File.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h ip.h \
  Hostdb.h HttpRequest.h SafeBuf.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Loop.h Threads.h Rdb.h RdbBase.h RdbScan.h \
@@ -2346,18 +2346,18 @@ Threads.o: Threads.cpp gb-include.h types.h fctypes.h Unicode.h \
  TcpServer.h Parms.h Pages.h HttpServer.h PageCrawlBot.h Stats.h \
  Process.h PageInject.h Users.h
 threadtest.o: threadtest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 thunder.o: thunder.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 Timedb.o: Timedb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Timedb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Timedb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
  RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h Msg5.h \
  Msg3.h RdbMerge.h Dir.h Titledb.h DiskPageCache.h Threads.h
 Title.o: Title.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Title.h SafeBuf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Title.h SafeBuf.h \
  iana_charset.h Query.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  File.h Loop.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Words.h StopWords.h Titledb.h \
@@ -2375,14 +2375,14 @@ Title.o: Title.cpp gb-include.h types.h fctypes.h Unicode.h \
  Datedb.h PostQueryRerank.h Sanity.h SiteGetter.h Address.h Spider.h \
  Json.h
 Titledb.o: Titledb.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Titledb.h Rdb.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Titledb.h Rdb.h \
  RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h RdbScan.h BigFile.h RdbMap.h \
  RdbList.h RdbDump.h RdbTree.h RdbMem.h RdbBuckets.h RdbCache.h Msg5.h \
  Msg3.h RdbMerge.h Dir.h DiskPageCache.h Threads.h Rebalance.h Msg4.h
 TopTree.o: TopTree.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h TopTree.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h TopTree.h \
  Clusterdb.h Rdb.h RdbBase.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Mem.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h \
  Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h RdbScan.h \
@@ -2397,12 +2397,12 @@ TopTree.o: TopTree.cpp gb-include.h types.h fctypes.h Unicode.h \
  PostQueryRerank.h Sanity.h
 treetest.o: treetest.cpp RdbTree.h Mem.h Conf.h Xml.h XmlNode.h \
  gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h BigFile.h RdbList.h RdbMem.h \
  sort.h
 TuringTest.o: TuringTest.cpp TuringTest.h gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  TcpServer.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h MsgC.h UdpServer.h UdpSlot.h \
@@ -2412,7 +2412,7 @@ TuringTest.o: TuringTest.cpp TuringTest.h gb-include.h types.h fctypes.h \
  HashTable.h
 Turkdb.o: Turkdb.cpp XmlDoc.h Lang.h Unicode.h UnicodeProperties.h \
  UCPropTable.h Iso8859.h iana_charset.h Words.h Xml.h XmlNode.h \
- gb-include.h types.h fctypes.h hash.h Errno.h Log.h SafeBuf.h \
+ gb-include.h types.h fctypes.h hash.h GbErrno.h Log.h SafeBuf.h \
  StopWords.h Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h \
  Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
  PingServer.h RdbScan.h BigFile.h RdbMap.h RdbList.h RdbDump.h RdbTree.h \
@@ -2427,18 +2427,18 @@ Turkdb.o: Turkdb.cpp XmlDoc.h Lang.h Unicode.h UnicodeProperties.h \
  Clusterdb.h Msg51.h Msg17.h Msg3a.h Msg1.h Datedb.h PostQueryRerank.h \
  Sanity.h SiteGetter.h Title.h Address.h Spider.h HttpMime.h Json.h
 UCNormalizer.o: UCNormalizer.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h HashTableX.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h HashTableX.h \
  SafeBuf.h iana_charset.h
 UCPropTable.o: UCPropTable.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Mem.h Conf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Mem.h Conf.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h
 UCWordIterator.o: UCWordIterator.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h \
  UCWordIterator.h
 UdpServer.o: UdpServer.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h UdpServer.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h UdpServer.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h UdpSlot.h UdpProtocol.h Dns.h DnsProtocol.h \
@@ -2456,7 +2456,7 @@ UdpServer.o: UdpServer.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg3a.h Msg1.h Datedb.h PostQueryRerank.h Sanity.h SiteGetter.h Title.h \
  Address.h Spider.h Json.h Users.h
 UdpSlot.o: UdpSlot.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h UdpSlot.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h UdpSlot.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h UdpProtocol.h UdpServer.h Stats.h Proxy.h \
@@ -2466,7 +2466,7 @@ UdpSlot.o: UdpSlot.cpp gb-include.h types.h fctypes.h Unicode.h \
  Parms.h Msg4.h TuringTest.h HashTable.h HashTableT.h Pages.h \
  HttpServer.h HttpMime.h PageCrawlBot.h
 udptest.o: udptest.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Mem.h Conf.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Mem.h Conf.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h UdpServer.h UdpSlot.h UdpProtocol.h Spider.h \
@@ -2478,7 +2478,7 @@ udptest.o: udptest.cpp gb-include.h types.h fctypes.h Unicode.h \
  Domains.h CountryCode.h Tagdb.h Events.h Sections.h IndexList.h Dates.h \
  Msg22.h CatRec.h Categories.h HashTable.h Catdb.h Datedb.h
 Unicode.o: Unicode.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h UCNormalizer.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h UCNormalizer.h \
  Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h \
  Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h HashTable.h Titledb.h Rdb.h \
@@ -2486,14 +2486,14 @@ Unicode.o: Unicode.cpp gb-include.h types.h fctypes.h Unicode.h \
  RdbMem.h RdbBuckets.h RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h \
  DiskPageCache.h
 UnicodeProperties.o: UnicodeProperties.cpp gb-include.h types.h fctypes.h \
- Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Mem.h \
+ Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h
 uniq2.o: uniq2.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h
 Url.o: Url.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Url.h ip.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Url.h ip.h \
  Domains.h HashTable.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h File.h Loop.h SafeBuf.h Hostdb.h HttpRequest.h \
  TcpSocket.h Collectiondb.h HashTableX.h PingServer.h Speller.h \
@@ -2505,7 +2505,7 @@ Url.o: Url.cpp gb-include.h types.h fctypes.h Unicode.h \
  CountryCode.h Tagdb.h Msg0.h Events.h Sections.h Dates.h Msg37.h Msg36.h \
  Punycode.h
 urlinfo.o: urlinfo.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Url.h ip.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Url.h ip.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h Hostdb.h HttpRequest.h TcpSocket.h Collectiondb.h HashTableX.h \
  PingServer.h Titledb.h Rdb.h RdbBase.h RdbScan.h BigFile.h RdbMap.h \
@@ -2514,7 +2514,7 @@ urlinfo.o: urlinfo.cpp gb-include.h types.h fctypes.h Unicode.h \
  UdpServer.h UdpSlot.h UdpProtocol.h Multicast.h Threads.h Indexdb.h \
  Tagdb.h
 Users.o: Users.cpp Users.h gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h RdbCache.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h RdbCache.h Mem.h \
  Conf.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h File.h Loop.h \
  SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h RdbList.h Tagdb.h Rdb.h RdbBase.h RdbScan.h \
@@ -2525,11 +2525,11 @@ Users.o: Users.cpp Users.h gb-include.h types.h fctypes.h Unicode.h \
  PageCrawlBot.h
 ValidPointer.o: ValidPointer.cpp ValidPointer.h Mem.h Conf.h Xml.h \
  XmlNode.h gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h \
  File.h Loop.h SafeBuf.h ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h
 Vector.o: Vector.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Vector.h Url.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Vector.h Url.h \
  ip.h Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h Words.h SafeBuf.h \
  StopWords.h Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h \
  Hostdb.h HttpRequest.h TcpSocket.h Collectiondb.h HashTableX.h \
@@ -2538,12 +2538,12 @@ Vector.o: Vector.cpp gb-include.h types.h fctypes.h Unicode.h \
  DiskPageCache.h sort.h Sections.h Msg0.h UdpServer.h UdpSlot.h \
  UdpProtocol.h Multicast.h Threads.h Indexdb.h IndexList.h Dates.h Bits.h
 Version.o: Version.cpp Mem.h Conf.h Xml.h XmlNode.h gb-include.h types.h \
- fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h Errno.h \
+ fctypes.h Unicode.h UnicodeProperties.h UCPropTable.h hash.h GbErrno.h \
  Log.h Lang.h Iso8859.h iana_charset.h File.h Loop.h SafeBuf.h ip.h \
  Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h \
  PingServer.h
 Weights.o: Weights.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Weights.h Words.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Weights.h Words.h \
  Xml.h XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -2554,14 +2554,14 @@ Weights.o: Weights.cpp gb-include.h types.h fctypes.h Unicode.h \
  IndexList.h Dates.h
 Wiki.o: Wiki.cpp Wiki.h BigFile.h File.h Mem.h Conf.h Xml.h XmlNode.h \
  gb-include.h types.h fctypes.h Unicode.h UnicodeProperties.h \
- UCPropTable.h hash.h Errno.h Log.h Lang.h Iso8859.h iana_charset.h ip.h \
+ UCPropTable.h hash.h GbErrno.h Log.h Lang.h Iso8859.h iana_charset.h ip.h \
  Hostdb.h HttpRequest.h SafeBuf.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Loop.h Query.h Words.h StopWords.h Titledb.h \
  Rdb.h RdbBase.h RdbScan.h RdbMap.h RdbList.h RdbDump.h RdbTree.h \
  RdbMem.h RdbBuckets.h RdbCache.h Msg5.h Msg3.h RdbMerge.h Dir.h \
  DiskPageCache.h Threads.h
 Wiktionary.o: Wiktionary.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Wiktionary.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Wiktionary.h \
  BigFile.h File.h Mem.h Conf.h Xml.h XmlNode.h Lang.h Iso8859.h \
  iana_charset.h ip.h Hostdb.h HttpRequest.h SafeBuf.h Url.h TcpSocket.h \
  Collectiondb.h HashTableX.h PingServer.h Loop.h Query.h Words.h \
@@ -2573,7 +2573,7 @@ Wiktionary.o: Wiktionary.cpp gb-include.h types.h fctypes.h Unicode.h \
  CountryCode.h Tagdb.h Msg0.h Events.h Sections.h Dates.h Msg37.h Msg36.h \
  Synonyms.h
 Words.o: Words.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Words.h Xml.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Words.h Xml.h \
  XmlNode.h Lang.h Iso8859.h iana_charset.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -2584,7 +2584,7 @@ Words.o: Words.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg20.h Summary.h matches2.h Pos.h Matches.h Domains.h CountryCode.h \
  Tagdb.h Msg0.h Events.h Sections.h Dates.h Msg37.h Msg36.h
 Xml.o: Xml.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h Xml.h XmlNode.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h Xml.h XmlNode.h \
  Lang.h Iso8859.h iana_charset.h Mem.h Conf.h File.h Loop.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Titledb.h Rdb.h RdbBase.h RdbScan.h BigFile.h \
@@ -2592,7 +2592,7 @@ Xml.o: Xml.cpp gb-include.h types.h fctypes.h Unicode.h \
  Msg5.h Msg3.h RdbMerge.h Dir.h DiskPageCache.h Words.h StopWords.h \
  HttpMime.h Entities.h
 XmlDoc.o: XmlDoc.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h XmlDoc.h Lang.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h XmlDoc.h Lang.h \
  Iso8859.h iana_charset.h Words.h Xml.h XmlNode.h SafeBuf.h StopWords.h \
  Titledb.h Rdb.h RdbBase.h Conf.h File.h Mem.h Loop.h ip.h Hostdb.h \
  HttpRequest.h Url.h TcpSocket.h Collectiondb.h HashTableX.h PingServer.h \
@@ -2612,7 +2612,7 @@ XmlDoc.o: XmlDoc.cpp gb-include.h types.h fctypes.h Unicode.h \
  TcpServer.h PageCrawlBot.h Parms.h Facebook.h Highlight.h Wiktionary.h \
  seo.h Mime.h Cachedb.h
 XmlNode.o: XmlNode.cpp gb-include.h types.h fctypes.h Unicode.h \
- UnicodeProperties.h UCPropTable.h hash.h Errno.h Log.h XmlNode.h Mem.h \
+ UnicodeProperties.h UCPropTable.h hash.h GbErrno.h Log.h XmlNode.h Mem.h \
  Conf.h Xml.h Lang.h Iso8859.h iana_charset.h File.h Loop.h SafeBuf.h \
  ip.h Hostdb.h HttpRequest.h Url.h TcpSocket.h Collectiondb.h \
  HashTableX.h PingServer.h Words.h StopWords.h Titledb.h Rdb.h RdbBase.h \

@@ -2,7 +2,7 @@
 
 #include "MemPool.h"
 #include "Mem.h"
-#include "Errno.h"
+#include "GbErrno.h"
 
 MemPool::MemPool() {
 	m_mem     = NULL;
