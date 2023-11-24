@@ -29,34 +29,19 @@ extern int g_inMemcpy;
 #endif
 
 
-#include <inttypes.h>
+#include <cinttypes>
 
 #define XINT32 "x"
 #define UINT32 "u"
 #define INT32  "d"
 #define PRIX32 "X"
 
-//#define XINT64 "llx"
-//#define UINT64 "llu"
-//#define INT64  "lli"
-
-#if __WORDSIZE == 64
-#define XINT64 "llx"
-#define UINT64 "llu"
-#define INT64  "lld"
-#define PTRTYPE  uint64_t
-#define SPTRTYPE int64_t
-#define PTRFMT  "llu"
-#endif
-
-#if __WORDSIZE == 32
-#define XINT64 "llx"
-#define UINT64 "llu"
-#define INT64  "lld"
-#define PTRTYPE  unsigned long //uint32_t
-#define SPTRTYPE int32_t
-#define PTRFMT  "lx"
-#endif
+#define XINT64 PRIx64
+#define UINT64 PRIu64
+#define INT64  PRId64
+#define PTRTYPE  uintptr_t
+#define SPTRTYPE intptr_t
+#define PTRFMT  PRIuPTR
 
 #include <ctype.h>	// Log.h
 #include <errno.h>	// Errno.h
