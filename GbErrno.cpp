@@ -1,6 +1,6 @@
 #include "gb-include.h"
 
-#include "Errno.h"
+#include "GbErrno.h"
 
 // use our own errno so threads don't fuck with it
 int g_errno;
