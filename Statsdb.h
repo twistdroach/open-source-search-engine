@@ -19,8 +19,6 @@
 #include "HashTableX.h"
 #include "SafeBuf.h"
 
-#define ST_BUF_SIZE (32*1024)
-
 class Statsdb {
 
  public:

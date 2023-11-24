@@ -6,7 +6,6 @@
 #include "Msg1f.h"
 #include "Parms.h"
 #include "Users.h"
-#define  MAX_LOG_WINDOW 8192
 
 static void gotRemoteLogWrapper(void *state, UdpSlot *slot);
 

@@ -51,9 +51,6 @@ static bool gotSummaryWrapper            ( void *state );
 #define QPOP_MULT_3          4
 #define QPOP_MULT_4          2
 // QTR scoring params
-#define MAX_SCORE_MULTIPLIER 3000  // orig: 3000
-#define ALT_MAX_SCORE        12000 // orig: 12000
-#define ALT_START_SCORE      1000
 #define QTR_ZONE_0           4
 #define QTR_ZONE_1           8
 #define QTR_ZONE_2           12
@@ -62,8 +59,6 @@ static bool gotSummaryWrapper            ( void *state );
 #define QTR_BONUS_1          800
 #define QTR_BONUS_2          500
 #define QTR_BONUS_3          200
-#define QTR_BONUS_CW         1
-#define MULTIPLE_HIT_BOOST   1000 // orig: 1000
 // gigabit phrase scoring params
 //#define SPARSE_MARK          0.34
 //#define SPARSE_PENALTY       1000
@@ -3483,7 +3478,6 @@ static int gigabitCmp ( const void *a, const void *b ) {
 	
 
 //#define MAXPOP 10000
-#define MAXPOP 32000
 
 //
 // . set m_gigabitInfos[] array and return # of them we set

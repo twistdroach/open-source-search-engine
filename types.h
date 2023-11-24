@@ -5,7 +5,6 @@
 // . even AFTER the "inheritance loop"
 // . includes the 4 bytes used for size and # of tags
 //#define MAX_TAGREC_SIZE 1024
-#define MAX_TAGREC_SIZE 4000
 
 // . up to 32768 collections possible, MUST be signed
 // . a collnum_t of -1 is used by RdbCache to mean "no collection"

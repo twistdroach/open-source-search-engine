@@ -33,7 +33,6 @@ bool compareTimeTables ( HashTableX *ht1 , HashTableX *ht2 ,
 
 // mdw subtract 7hrs to get into utc, since all our date intervals are in utc
 #define START2009 (1230793200-7*3600)
-#define START2030 (1893481200-7*3600)
 
 class Timedb {
 

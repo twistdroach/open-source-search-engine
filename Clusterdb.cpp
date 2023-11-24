@@ -466,7 +466,6 @@ void Clusterdb::getSampleVector ( char *vec ,
 // all the termids for the document. we can further hash pairs to reduce the 
 // vector size from 128 to 64 bytes. but we must hash the pair strategically.
 // What are the odds of two things being 90% similar when they are not?
-#define SAMPLE_VECTOR_LEN (SAMPLE_VECTOR_SIZE / 4)
 
 // . it would be nice to use the new addition to the Words class that allows
 //   a word to be a tag. this kinda replaces the xml class.

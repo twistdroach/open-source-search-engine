@@ -32,7 +32,6 @@
 //#define INDEXDB_SPLIT 2
 //#define INDEXDB_SPLIT 8
 //#define DOCID_OFFSET_MASK (INDEXDB_SPLIT-1)
-#define DOCID_OFFSET_MASK (g_conf.m_indexdbSplit-1)
 #define MAX_SHARDS 1024
 
 class Indexdb {

@@ -993,8 +993,6 @@ static void  threadDoneWrapper   ( void *state , ThreadEntry *t ) ;
 static void *mergeListsWrapper_r ( void *state , ThreadEntry *t ) ;
 //static void  gotListWrapper2     ( void *state , RdbList *list , Msg5 *msg5);
 
-#define TFNDBMINRECSIZES (256*1024)
-
 // . this is the NEW gotList() !!! mdw
 // . returns false if blocked, true otherwise
 // . sets g_errno on error

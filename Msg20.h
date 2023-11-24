@@ -31,16 +31,9 @@
 //#define MSG20_MAX_REPLY_SIZE   (1*1024)
 // see what happens if we eliminate these bufs
 #define MAX_MSG20_REQUEST_SIZE (1)
-#define MSG20_MAX_REPLY_SIZE   (1)
 
-#define REQ20FLAG1_USEDATELISTS  0x01
-#define REQ20FLAG1_EXCLDATELIST  0x02
-#define REQ20FLAG1_EXCLQTINANCH  0x04
 #define REQ20FLAG1_PQRENABLED    0x08
 #define REQ20FLAG1_PQRLOCENABLED 0x010
-
-#define INLINK_FLAG_SPAM     0x01
-#define INLINK_FLAG_HASTEXT  0x02
 
 class Msg20Request {
  public:
@@ -210,28 +203,6 @@ class Msg20Request {
 	int32_t       size_displayMetas ; // size includes terminating \0
 
 	// variable data comes here
-};
-
-// the Msg20Reply::ptr_eventSummaryLines is a list of these classes
-class SummaryLine {
- public:
-	int32_t  m_totalSize;
-	//int32_t  m_pageOff;
-	int32_t  m_pageOff1;
-	int32_t  m_pageOff2;
-	int32_t  m_firstDatePageOff;
-	// so we know if two summary lines are adjacent. then we do not
-	// insert the "..." between them when displaying.
-	int32_t  m_alnumPosA;
-	int32_t  m_alnumPosB;
-	// copied from EventDesc::m_dflags. might also include some tags
-	// that we add in XmlDoc::getEventSummary(), like EDF_TRUNCATED
-	int32_t  m_flags;
-	// if two summary lines are adjacent then do not print the ... between
-	// in the serps, will look cleaner...
-	//int32_t  m_alnumWordA;
-	//int32_t  m_alnumWordB;
-	char  m_buf[0];
 };
 
 // values for m_flags3

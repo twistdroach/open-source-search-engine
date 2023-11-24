@@ -3138,9 +3138,6 @@ int parmcmp ( const void *a, const void *b ) {
 	return strcmp(pa->m_pstr,pb->m_pstr);
 }
 
-#define DARK_YELLOW "ffaaaa"
-#define LIGHT_YELLOW "ffcccc"
-
 bool printFrontPageShell ( SafeBuf *sb , char *tabName , CollectionRec *cr ,
 			   bool printGigablast ) ;
 

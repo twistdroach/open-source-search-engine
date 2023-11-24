@@ -225,7 +225,6 @@ extern class Collectiondb g_collectiondb;
 //#define MAX_ADMIN_PASSWORDS  10
 //#define MAX_SITEDB_FILTERS 256
 
-#define MAX_AD_FEEDS         10
 #define MAX_CGI_URL          1024
 #define MAX_XML_LEN          256
 

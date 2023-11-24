@@ -50,7 +50,6 @@ time_t atotime5   ( char *s ) ;
 
 #define ET_IDENTITY 0
 #define ET_GZIP 1
-#define ET_COMPRESS 2
 #define ET_DEFLATE 3
 
 

@@ -10,9 +10,6 @@
 #include "Threads.h"
 
 
-#define TEST_READ		1
-#define TEST_SEND		2
-
 #define NTDGRAM_SIZE		1450
 #define	MAX_TEST_THREADS	4
 #define AVG_TABLE_SIZE		50

@@ -15,49 +15,29 @@ typedef uint64_t evflags_t;
 #define EV_MULT_LOCATIONS    0x0001 
 #define EV_NO_LOCATION       0x0002
 #define EV_UNVERIFIED_LOCATION  0x0004 // is contained by larger event section
-#define EV_OLD_EVENT         0x0008 // event max date is in the past
 #define EV_NO_YEAR           0x0010 // has a daynum but no year
 #define EV_NOT_COMPATIBLE    0x0020
 #define EV_EMPTY_TIMES       0x0040 // date intervals are empty set!
 #define EV_OUTLINKED_TITLE   0x0080
 #define EV_IS_POBOX          0x0100
-#define EV_VENUE_DEFAULT     0x0200
 #define EV_SAMEDAY           0x0400
 #define EV_MISSING_LOCATION  0x0800
 #define EV_REGISTRATION      0x1000
 //#define EV_MENU              0x2000
-#define EV_HASTITLEWITHCOLON 0x2000
 #define EV_TICKET_PLACE      0x4000
 // when one street could be in 2+ cities, etc. we set this
 #define EV_AMBIGUOUS_LOCATION 0x008000
 #define EV_SPECIAL_DUP        0x010000
 //#define EV_BAD_STORE_HOURS  0x020000
-#define EV_INCRAZYTABLE       0x020000
 // are we store hours?
 #define EV_STORE_HOURS        0x00040000
-#define EV_DEDUPED            0x00080000
 #define EV_ADCH32DUP          0x00100000
 #define EV_HADNOTITLE         0x00200000
-#define EV_DO_NOT_INDEX       0x00400000
-#define EV_DESERIALIZED       0x00800000 // HACK: used by getEventDisplay()
-#define EV_SUBSTORE_HOURS     0x01000000
-#define EV_HASTITLEWORDS       0x02000000
 #define EV_SENTSPANSMULTEVENTS 0x04000000
-#define EV_HASTITLEFIELD       0x08000000
-#define EV_HASTITLESUBSENT     0x10000000
-#define EV_HASTITLEBYVOTES     0x20000000
-#define EV_HASTIGHTDATE        0x40000000
-#define EV_LONGDURATION        0x80000000
 
 // now this is 64bits
-#define EV_PRIVATE             0x0000000100000000LL
 // from facebook xml?
-#define EV_FACEBOOK            0x0000000200000000LL
 // facebook flag <hide_guest_list>1</> ? in facebook fql xml
-#define EV_HIDEGUESTLIST       0x0000000400000000LL
-#define EV_LATLONADDRESS       0x0000000800000000LL
-#define EV_STUBHUB             0x0000001000000000LL
-#define EV_EVENTBRITE          0x0000002000000000LL
 
 // i took EV_OUTLINKED_TITLE out of here because it causes us to lose
 // a result if the turks force its title to an outlinked title, then the
@@ -67,7 +47,6 @@ typedef uint64_t evflags_t;
 // if your event flags are not "EV_BAD_EVENT" then the event will still be
 // indexed. it might not qualify for gbresultset:1 however... but at least
 // you can otherwise search for it.
-#define EV_BAD_EVENT ( EV_IS_POBOX | EV_NOT_COMPATIBLE | EV_UNVERIFIED_LOCATION | EV_NO_LOCATION | EV_MULT_LOCATIONS | EV_NO_YEAR | EV_EMPTY_TIMES | EV_MISSING_LOCATION | EV_REGISTRATION | EV_TICKET_PLACE | EV_AMBIGUOUS_LOCATION | EV_SPECIAL_DUP | EV_ADCH32DUP|EV_HADNOTITLE | EV_SAMEDAY | EV_SENTSPANSMULTEVENTS )
 
 #define MAX_CLOSE_DATES 15
 
@@ -325,25 +304,14 @@ public:
 };
 
 // confirmed flags for EventDisplay::m_confirmed
-#define CF_ACCEPT     0x01
-#define CF_REJECT     0x02
-#define CF_TITLE      0x04
-#define CF_VENUE      0x08
-#define CF_VENUE_NONE 0x10
 
 
 // values for EventDesc::m_dflags
-#define EDF_TITLE             0x01
-#define EDF_IN_SUMMARY        0x02
-#define EDF_DATE_ONLY         0x04
 // . if sentence is just the address and no extra info
 // . used by PageGet.cpp
-#define EDF_HASEVENTADDRESS   0x08
 //#define EDF_UNIQUE_TURK_HASH  0x04
 // this means the EventDesc is actually an exact Place Name
-#define EDF_PLACE_TYPE        0x10
 // this is the one we chose
-#define EDF_BEST_PLACE_NAME   0x20
 // . is this a pretty, well-formed sentence?
 // . we need to know this because if the turks change the title
 //   then the pretty sentences that were above the title are all
@@ -353,29 +321,8 @@ public:
 //   but "pretty" sentences are really all that we need to worry about
 //   because they are basically the only sentences in the description,
 //   excluding title, price, phone, date and address based sentences.
-#define EDF_PRETTY              0x0040
-#define EDF_CONFIRMED_DESCR     0x0080
-#define EDF_CONFIRMED_NOT_DESCR 0x0100
-#define EDF_TURK_TITLE          0x0200
-#define EDF_TURK_VENUE          0x0400
-#define EDF_MENU_CRUFT          0x0800
-#define EDF_HASEVENTDATE        0x1000
-#define EDF_INDEXABLE           0x2000
 
-#define EDF_TURK_TITLE_CANDIDATE  0x04000
-#define EDF_TURK_VENUE_CANDIDATE  0x08000
-#define EDF_FARDUP                0x10000
-#define EDF_FARDUPPHONE           0x20000
-#define EDF_FARDUPPRICE           0x40000
-#define EDF_SUBEVENTBROTHER       0x80000
-#define EDF_TAGS                  0x100000
 // these two flags are used by XmlDoc::getEventSummary()
-#define EDF_TRUNCATED             0x200000
-#define EDF_HAS_DATE              0x400000
-#define EDF_HAS_PRICE             0x800000
-#define EDF_INTITLETAG            0x01000000
-#define EDF_FBPICSQUARE           0x02000000
-#define EDF_JUST_PLACE            0x04000000
 
 class EventDesc {
  public:
@@ -618,56 +565,5 @@ class Events {
 	//HashTableX m_eventSentFlagsTable;
 };
 
-
-
-class EventIdBits {
- public:
-	uint8_t m_bits[32];
-
-	void addEventId ( int32_t eid ) {
-		// get our event id bit
-		int32_t byteOff = eid / 8;
-		// bit mask
-		uint8_t bitMask = 1 << ( eid % 8 );
-		// update the byte
-		m_bits[byteOff] |= bitMask;
-	};
-
-	void clear ( ) { memset ( m_bits , 0 , 32 ); };
-
-	bool isEmpty () {
-		for ( int32_t i = 0 ; i < 32 ; i++ )
-			if ( m_bits[i] ) return false;
-		return true;
-	};
-
-	bool hasEventId ( int32_t eid ) {
-		// get our event id bit
-		int32_t byteOff = eid / 8;
-		// bit mask
-		uint8_t bitMask = 1 << ( eid % 8 );
-		// update the byte
-		return ( m_bits[byteOff] & bitMask );
-	};
-
-	void print ( char *evs , int32_t esize ) {
-		char *pe = evs;
-		pe += sprintf(evs," eventIds=");
-		bool first = true;
-		for ( int32_t j = 0 ; j<32 ; j++ ) {
-			// get bit mask
-			int32_t byteOff = j/8;
-			uint8_t bitMask = 1<<(j%8);
-			if ( !( m_bits[byteOff] & bitMask))
-				continue;
-			if ( ! first )
-				pe += sprintf(pe,",");
-			first = false;
-			pe += sprintf(pe,"%" INT32 "",j);
-		}
-	};
-
-	void set ( class HttpRequest *r , char *cgiparm );
-};
 
 #endif

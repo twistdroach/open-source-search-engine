@@ -15,7 +15,6 @@
 #define _CACHEDB_H_
 
 // 12 byte key size
-#define CACHEDBKS sizeof(key96_t)
 
 #include "Rdb.h"
 //#include "DiskPageCache.h"

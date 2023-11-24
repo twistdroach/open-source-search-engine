@@ -11,8 +11,6 @@
 #include "Phrases.h"
 #include "Linkdb.h"
 
-#define TOTAL_RERANKING_TIME_STR  "PostQueryRerank Total Reranking Time" 
-
 //#define DEBUGGING_LANGUAGE
 
 // Type for post query reranking weighted sort list

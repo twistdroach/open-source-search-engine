@@ -49,7 +49,6 @@ typedef int64_t dateflags_t;
 //#define DF_INHYPERLINK         0x0000004000
 #define DF_ONGOING             0x0000004000
 #define DF_MONTH_NUMERIC       0x0000008000
-#define DF_REPEATTAGHASH       0x0000010000
 #define DF_NOTIMEOFDAY         0x0000020000
 // an explicitly specified time for the event which overrides all (facebook)
 #define DF_OFFICIAL            0x0000040000
@@ -161,7 +160,6 @@ int32_t parseDateFromUrl ( char *url             ,
 
 #define DT_RANGE_ANY      (DT_RANGE|DT_RANGE_TOD|DT_RANGE_DOW|DT_RANGE_MONTHDAY|DT_RANGE_DAYNUM|DT_RANGE_TIMEPOINT|DT_RANGE_YEAR|DT_RANGE_MONTH)
 #define DT_LIST_ANY      (DT_LIST_OTHER|DT_LIST_DAYNUM|DT_LIST_MONTHDAY|DT_LIST_TOD|DT_LIST_DOW|DT_LIST_MONTH)
-#define DT_SPECIAL_TYPES (DT_HOLIDAY|DT_SUBDAY|DT_SUBWEEK|DT_SUBMONTH|DT_EVERY_DAY|DT_SEASON|DT_ALL_HOLIDAYS)
 
 // . flags type
 // . plenty of room for growth, 32 bits

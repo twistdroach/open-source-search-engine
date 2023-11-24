@@ -35,7 +35,6 @@
 #include "PageInject.h" // InjectionRequest
 
 // width of input box in characters for url filter expression
-#define REGEX_TXT_MAX 80
 
 Parms g_parms;
 

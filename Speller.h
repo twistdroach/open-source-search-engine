@@ -52,24 +52,6 @@ class StateFrag{
 };
 
 
-class StateSpeller{
- public:
-	void *m_state;
-	void (*m_callback)(void *state);
-	Query *m_q;
-	bool   m_spellcheck;
-	char  *m_dst;
-	char  *m_dend;
-	bool   m_narrowSearch;
-	char  *m_nrw;
-	char  *m_nend;
-	int32_t  *m_numNarrow;
-	uint64_t m_start;
-	int32_t   m_numFrags;
-	int32_t   m_numFragsReceived;
-	StateFrag *m_stFrag[MAX_FRAG_SIZE];
-};
-
 class Speller {
 
  public:

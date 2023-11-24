@@ -67,7 +67,6 @@ UCScript ucGetScript(UChar32 c);
 #define UC_IGNORABLE  ( 1 << 1 )
 #define UC_IDEOGRAPH  ( 1 << 2 )
 #define UC_HIRAGANA   ( 1 << 3 )
-#define UC_KATAKANA   ( 1 << 4 )
 #define UC_THAI       ( 1 << 5 )
 #define UC_EXTEND     ( 1 << 6 )
 // General Properties
@@ -76,8 +75,6 @@ UCScript ucGetScript(UChar32 c);
 #define UC_UPPER      ( 1 << 9 )
 #define UC_LOWER      ( 1 << 10 )
 #define UC_WHITESPACE ( 1 << 11 )
-#define UC_NFKC_QC_NO ( 1 << 12 )
-#define UC_COMP_EX    ( 1 << 13 )
 
 extern UCPropTable g_ucProps;
 extern UCPropTable g_ucLowerMap;

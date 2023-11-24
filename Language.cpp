@@ -4,7 +4,6 @@
 #include "Sections.h"
 
 // word/phrase must be in at least this many docs to be included in our dict
-#define MIN_DOCS 3
 
 // ROUTINES NEEDED FOR GBSORT
 // The dict is stored as a tuple of ( original word, phonetic, (lang, score)..)

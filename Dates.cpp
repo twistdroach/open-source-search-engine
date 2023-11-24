@@ -23253,9 +23253,6 @@ bool Dates::getIntervals2 ( Date *dp ,
 	return sb->safeMemcpy ( (char *)retInt , retni * sizeof(Interval) ) ;
 }
 
-#define MIN_UNBOUNDED 1
-#define MAX_UNBOUNDED 2
-
 //#define _DLOG_ 1
 
 // . returns -1 and sets g_errno on error

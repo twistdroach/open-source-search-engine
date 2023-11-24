@@ -41,7 +41,6 @@ class CountryCode {
 extern CountryCode g_countryCode;
 
 // We're currently at 24x or so...
-#define MAX_COUNTRIES (255)
 
 #endif // _COUNTRYCODE_H
 

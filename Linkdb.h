@@ -24,8 +24,6 @@
 
 #define LDBKS sizeof(key224_t)
 
-#define LDB_MAXSITERANK 0xff
-#define LDB_MAXHOPCOUNT 0xff
 #define LDB_MAXURLHASH  0x00007fffffffffffLL
 
 #define LINKDBEPOCH (1325376000-365*86400*4)
@@ -1138,7 +1136,6 @@ typedef int32_t linkflags_t;
 #define LF_SAMEHOST      0x0001 // same hostname
 #define LF_SAMEDOM       0x0002 // same domain
 #define LF_SITEROOT      0x0004 // for blogrolls
-#define LF_SAMESITE      0x0008 // only get offsite outlink info in Msg20.cpp
 #define LF_OLDLINK       0x0010 // set this if it was on the pg last spider tim
 #define LF_RSS           0x0020 // is it from an rss <link href=> tag?
 #define LF_PERMALINK     0x0040 // a probable permalink? of permalink format?

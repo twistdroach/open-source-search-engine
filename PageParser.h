@@ -5,8 +5,6 @@
 extern bool g_inPageParser ;
 extern bool g_inPageInject ;
 
-#define PP_NICENESS 2
-
 #include "XmlDoc.h"
 #include "Pages.h"
 #include "Unicode.h"

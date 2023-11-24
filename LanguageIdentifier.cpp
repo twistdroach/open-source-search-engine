@@ -84,8 +84,6 @@ const uint8_t *langToTopic[] = {
 	(uint8_t*)"Tagalog"
 };
 
-#define MAX_DOCTYPE_SEARCH_LEN (512)
-
 /// Find a language tag in a DOCTYPE element.
 ///
 /// This looks more complex than it is.

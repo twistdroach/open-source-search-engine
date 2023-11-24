@@ -231,14 +231,9 @@ bool saveTimeAdjustment ( ) ;
 #define to_upper_a(c)          g_map_to_upper[(unsigned char)c]
 // c is latin1 in this case:
 #define to_ascii(c)            g_map_to_ascii[(unsigned char)c]
-#define canBeInTagName(c)      g_map_canBeInTagName[(unsigned char)c]
-#define is_control_a(c)        g_map_is_control[(unsigned char)c]
 #define is_binary_a(c)         g_map_is_binary[(unsigned char)c]
 #define is_wspace_a(c)         g_map_is_wspace[(unsigned char)c]
-#define is_vspace_a(c)         g_map_is_vspace[(unsigned char)c]
-#define is_hspace_a(c)         g_map_is_hspace[(unsigned char)c]
 #define is_ascii(c)           g_map_is_ascii[(unsigned char)c]
-#define is_ascii9(c)           g_map_is_ascii[(unsigned char)c]
 #define is_ascii3(c)           ((unsigned char)c<128 || g_map_is_ascii3[(unsigned char)c])
 #define is_punct_a(c)          g_map_is_punct[(unsigned char)c]
 #define is_alnum_a(c)          g_map_is_alnum[(unsigned char)c]
@@ -246,8 +241,6 @@ bool saveTimeAdjustment ( ) ;
 #define is_digit(c)            g_map_is_digit[(unsigned char)c]
 #define is_hex(c)              g_map_is_hex[(unsigned char)c]
 #define is_tagname_char(c)     g_map_is_tagname_char[(unsigned char)c]
-#define is_tag_control_char(c) g_map_is_tag_control_char[(unsigned char)c]
-#define is_matchskip_a(c)      g_map_is_matchskip[(unsigned char)c]
 
 inline bool is_upper_utf8 ( char *s );
 

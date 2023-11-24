@@ -4991,8 +4991,6 @@ bool Proxy::printDepositTable ( SafeBuf *sb , int32_t userId32 ) {
 }
 
 
-#define BARSIZE 250
-
 /*
 // put a 100 byte directive into th src
 bool Proxy::insertLoginBarDirective ( SafeBuf *sb ) {

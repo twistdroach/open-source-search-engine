@@ -9,16 +9,9 @@
 #include "SafeBuf.h"
 //#include "CollectionRec.h"
 
-#define MAX_BLOB_SIZE 2048
-
 #define MAX_ADS          20
 #define MAX_FEEDS        4
 #define MAX_AD_QUERY_LEN 1024
-
-#define PI_PRIMARY      0
-#define PI_BACKUP       1
-#define SS_PRIMARY      2
-#define SS_BACKUP       3
 
 
 class Ads {
@@ -101,11 +94,6 @@ class Ads {
 
         //static int32_t s_availableAds[16][MAX_AD_FEEDS];
         //static int32_t s_numAvailableAds[16];
-};
-
-struct AdFeed {
-        Ads  *m_ads;
-        int32_t  m_index;
 };
 
 #endif

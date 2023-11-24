@@ -512,37 +512,9 @@ inline char cmp ( char *alo , char *ahi , char *blo , char *bhi ) {
 	 : 0 ))))))))
 
 // like above but we treat positive and negative keys as identical
-#define fcmp2(alo,ahi,blo,bhi) \
-          (*(uint32_t  *)&((char *)ahi)[2] <      \
-	   *(uint32_t  *)&((char *)bhi)[2]  ? -1  \
-       :  (*(uint32_t  *)&((char *)ahi)[2] >      \
-	   *(uint32_t  *)&((char *)bhi)[2]  ?  1  \
-       :  (*(uint16_t *) ((char *)ahi)    <      \
-	   *(uint16_t *) ((char *)bhi)     ? -1  \
-       :  (*(uint16_t *) ((char *)ahi)    >      \
-	   *(uint16_t *) ((char *)bhi)     ?  1  \
-       :  (*(uint32_t  *)&((char *)alo)[2] <      \
-	   *(uint32_t  *)&((char *)blo)[2]  ? -1  \
-       :  (*(uint32_t  *)&((char *)alo)[2] >      \
-	   *(uint32_t  *)&((char *)blo)[2]  ?  1  \
-       :(((*(uint16_t *) ((char *)alo)    )|0x03) <        \
-	 ((*(uint16_t *) ((char *)blo)    )|0x03)    ? -1  \
-       :(((*(uint16_t *) ((char *)alo)    )|0x03) >        \
-	 ((*(uint16_t *) ((char *)blo)    )|0x03)    ?  1  \
-	 : 0 ))))))))
 
 
 // like above but we treat positive and negative keys as identical
-#define fcmp2low(alo,blo) \
-          (*(uint32_t  *)&((char *)alo)[2] <      \
-	   *(uint32_t  *)&((char *)blo)[2]  ? -1  \
-       :  (*(uint32_t  *)&((char *)alo)[2] >      \
-	   *(uint32_t  *)&((char *)blo)[2]  ?  1  \
-       :(((*(uint16_t *) ((char *)alo)    )|0x03) <        \
-	 ((*(uint16_t *) ((char *)blo)    )|0x03)    ? -1  \
-       :(((*(uint16_t *) ((char *)alo)    )|0x03) >        \
-	 ((*(uint16_t *) ((char *)blo)    )|0x03)    ?  1  \
-	 : 0 ))))
 
 // . like above but this compares Tfndb keys so it ignores the tfn bits
 // . see Tfndb.h for the bit map of a Tfndb key
@@ -597,24 +569,6 @@ inline char cmp2b ( char *alo , char *ahi , char *blo , char *bhi ) {
 	 : 0 ))))))))
 
 // like above but we treat positive and negative keys as identical
-#define bfcmp2(alo,ahi,blo,bhi) \
-          (*(uint32_t  *)&((char *)ahi)[2] <      \
-	   *(uint32_t  *)&((char *)bhi)[2]  ? -1  \
-       :  (*(uint32_t  *)&((char *)ahi)[2] >      \
-	   *(uint32_t  *)&((char *)bhi)[2]  ?  1  \
-       :  (*(uint16_t *) ((char *)ahi)    <      \
-	   *(uint16_t *) ((char *)bhi)     ? -1  \
-       :  (*(uint16_t *) ((char *)ahi)    >      \
-	   *(uint16_t *) ((char *)bhi)     ?  1  \
-       :  (*(uint64_t *)&((char *)alo)[2] <      \
-	   *(uint64_t *)&((char *)blo)[2]  ? -1  \
-       :  (*(uint64_t *)&((char *)alo)[2] >      \
-	   *(uint64_t *)&((char *)blo)[2]  ?  1  \
-       :(((*(uint16_t *) ((char *)alo)    )|0x03) <        \
-	 ((*(uint16_t *) ((char *)blo)    )|0x03)    ? -1  \
-       :(((*(uint16_t *) ((char *)alo)    )|0x03) >        \
-	 ((*(uint16_t *) ((char *)blo)    )|0x03)    ?  1  \
-	 : 0 ))))))))
 
 
 inline char bfcmpPosdb ( char *alo , char *ame , char *ahi , 

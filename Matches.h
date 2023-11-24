@@ -41,7 +41,6 @@ typedef int32_t mf_t;
 #define MF_RSSTITLE                   0x1000 
 #define MF_RSSDESC                    0x2000 
 #define MF_URL                        0x4000  // in url
-#define MF_SYNONYM                    0x8000
 
 class Match {
  public:

@@ -4,7 +4,6 @@
 #define SPIDERH
 
 #define MAX_SPIDER_PRIORITIES 128
-#define MAX_DAYS 365
 
 #include "Rdb.h"
 #include "Conf.h"
@@ -1194,7 +1193,6 @@ extern class Doledb g_doledb;
 
 // was 1000 but breached, now equals SR_READ_SIZE/sizeof(SpiderReply)
 #define MAX_BEST_REQUEST_SIZE (MAX_URL_LEN+1+sizeof(SpiderRequest))
-#define MAX_DOLEREC_SIZE      (MAX_BEST_REQUEST_SIZE+sizeof(key_t)+4)
 #define MAX_SP_REPLY_SIZE     (sizeof(SpiderReply))
 
 #define OVERFLOWLISTSIZE 200

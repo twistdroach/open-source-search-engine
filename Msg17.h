@@ -16,7 +16,6 @@
 #include "UdpSlot.h"
 // there is no need to send the store request to the async server
 //#define MSG17_BUF_SIZE (TMPBUFSIZE)
-#define MSG17_BUF_SIZE (50*1024)
 
 // . the cache the holds our compressed Msg40s
 // . it is global so PageStats.cpp can display its stats

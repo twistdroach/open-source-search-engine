@@ -248,10 +248,8 @@ public:
 // 10.
 // there were a total of 3.8M related queries among all the related docids. so
 // the MIN_DOCID_VOTES constraint is about 20% of the total.
-#define MIN_DOCID_VOTES 10
 
 // m_flags values
-#define QEF_ESTIMATE_SCORE 0x01
 
 // use this now to make things simpler
 class QueryLogEntry {

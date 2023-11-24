@@ -223,8 +223,6 @@ static void sendBackAddress ( class State2c *st ) ;
 
 Place *g_pa = NULL;
 
-#define MIN_POP_COUNT 500
-
 //#define MAX_STREETS 300
 //#define MAX_PLACES  3500
 // i raised from 15 to 25 since "Virginia Beach" city was not being picked up

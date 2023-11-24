@@ -12,25 +12,13 @@
 #include "Mem.h"
 #include "HashTable.h"
 
-#define RDFBUFFER_SIZE      (1024*1024*100)
 #define RDFSMALLBUFFER_SIZE (32*1024)
 #define RDFSTRUCTURE_FILE "structure.rdf.u8"
 #define RDFCONTENT_FILE   "content.rdf.u8"
 
-#define STRUCTURE_OUTPUT_FILE  "gbdmoz.structure.dat"
-#define CONTENT_OUTPUT_FILE    "gbdmoz.content.dat"
-#define URL_OUTPUT_FILE        "gbdmoz.urls.dat"
-#define URLTEXT_OUTPUT_FILE    "gbdmoz.urls.txt"
-
-#define MAX_CATID_LEN    63
 #define MAX_TAG_LEN      127
-#define MAX_URL_CATIDS   64
-#define MAX_URLTXT_SIZE  500000
 #define MAX_CATIDS       96
 #define MAX_CATNAME_LEN  1024
-
-#define HASHTABLE_SIZE    (1024*1024)
-#define URLHASHTABLE_SIZE (10*1024*1024)
 
 #define MAX_SUB_CATS       1024
 #define SUBCAT_LETTERBAR   10

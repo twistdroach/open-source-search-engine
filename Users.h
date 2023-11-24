@@ -8,7 +8,6 @@
 #include "HashTableX.h"
 
 // cache reload freq from Conf::m_users
-#define USER_DATA_READ_FREQ 3600
 
 #define MAX_USER_SIZE 50
 #define MAX_PASS_SIZE 50
@@ -16,7 +15,6 @@
 #define MAX_IPS_PER_USER 5
 #define MAX_TAGS_PER_USER 10
 #define MAX_PAGES_PER_USER 15
-#define USER_SESSION_TIMEOUT 18000
 
 // fwd and back scan limits
 // for user accuracy

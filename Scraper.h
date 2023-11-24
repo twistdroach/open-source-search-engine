@@ -6,8 +6,6 @@
 #include "Url.h"   // MAX_COLL_LEN
 #include "XmlDoc.h"
 
-#define MAX_SCRAPES_OUT 1
-
 class Scraper {
 
  public:

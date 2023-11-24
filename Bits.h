@@ -51,7 +51,6 @@
 // title, all other dates are no-no!
 #define D_IS_DAYNUM             0x1000
 // for setting event titles in Events.cpp
-#define D_GENERIC_WORD          0x2000
 #define D_CRUFTY                0x4000
 #define D_IS_NUM                        0x00008000
 #define D_IS_IN_UNVERIFIED_ADDRESS_NAME 0x00010000

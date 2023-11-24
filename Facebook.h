@@ -13,19 +13,6 @@
 // likedb flags
 #define LF_DELBIT        0x0001 // reserved internal use
 #define LF_TYPEBIT       0x0002 // reserved internal use (true if 2nd type)
-#define LF_ISEVENTGURUID 0x0004 // reserved internal use
-#define LF_FROMFACEBOOK  0x0008
-#define LF_PRIVATE       0x0010 // used for LF_SECRET OR LF_CLOSED
-
-#define LF_DECLINED      0x0020
-#define LF_LIKE_EG       0x0040
-#define LF_HIDE          0x0080
-#define LF_REJECT        0x0100 // turk vote
-#define LF_ACCEPT        0x0200 // turk vote
-#define LF_INVITED       0x0400
-#define LF_GOING         0x0800
-#define LF_MAYBE_FB      0x1000
-#define LF_EMAILED_EG    0x2000 // have we emailed this to the user? dedup!
 
 bool saveQueryLoopState ( ) ;
 bool loadQueryLoopState ( ) ;
@@ -60,7 +47,6 @@ class Facebookdb {
 // values for FBRec::m_flags
 // is it currently in the queue? if it is we display that we are waiting
 // on facebook download to complete if the user clicks "show friends events..."
-#define FB_INQUEUE             0x01
 
 // we store this in Facebookdb
 class FBRec {
@@ -214,12 +200,7 @@ class FBRec {
 // https://developers.facebook.com/apps
 
 // facebook app info
-#define APPID "356806354331432"
-#define APPSECRET "ba5b51a5175951748cb43a5cea9b352e"
-#define APPNAMESPACE "eventguru"
 
-#define APPNAME "Event Guru"
-#define APPDOMAIN "eventguru.com"
 #define APPSUBDOMAIN "www.eventguru.com"
 
 //#define TITAN
@@ -238,20 +219,16 @@ class FBRec {
 #endif
 
 // facebook id for matt wells
-#define FB_MATTWELLS 100003532411011LL
 
 
 //#define APPNAME "Event Widget"
 //#define APPDOMAIN "eventwidget.com"
 //#define APPHOST "http://www2.eventwidget.com:8000/"
 
-#define APPFBPAGE "http://www.facebook.com/pages/Event-Guru/385608851465019"
-
 // . ask for interests now so we can email them something
 // . might as well get offline access since we are paying for this stuff now
 //   so we can mine their events... and need it for emailing...
 // . need user_birthday so we don't send them kids events?
-#define APPSCOPE1 "user_events,friends_events,email,user_interests,user_activities,user_location,offline_access,user_birthday"
 
 // fix this so it is not hogging mem!
 //#define MAXEVENTPTRS 1000
@@ -263,144 +240,6 @@ class FBRec {
 // let the user know more events are pending so the search results might
 // be incomplete.
 bool isStillDownloading ( int64_t fbId , collnum_t collnum ) ;
-
-class Msgfb {
-public:
-
-	Msgfb();
-	~Msgfb();
-	void reset();
-
-	//
-	// login pipeline (pipeline #1)
-	//
-	bool getFacebookUserInfo ( HttpRequest *hr ,
-				   TcpSocket *s,
-				   char *coll ,
-				   void *state ,
-				   char *redirPath ,
-				   void (* callback) ( void *) ,
-				   int32_t niceness );
-	bool downloadAccessToken ( );
-	bool gotFBAccessToken ( class TcpSocket *s );
-	bool doneRechecking ( );
-	bool downloadUserToUserRequestInfo();
-	bool gotFBUserToUserRequest( class TcpSocket *s );
-	bool downloadFBUserInfo();
-	bool gotFBUserRec ( ) ;
-	bool gotFQLUserInfo ( class TcpSocket *s );
-	bool saveFBRec ( class FBRec * );
-
-
-	//
-	// event download & injection pipeline (pipeline #2)
-	//
-	bool processFBId ( int64_t fbId , 
-			   collnum_t collnum ,
-			   void *state, 
-			   void (* callback)(void *));
-	bool hitFacebook ( );
-	bool gotFQLReply ( class TcpSocket *s );
-	bool downloadEvents ( );
-	bool injectFBEvents ( class TcpSocket *s );
-	bool doInjectionLoop ( );
-	bool addLikes ( );
-	bool doFinalFBRecSave ( ) ;
-
-	bool makeLikedbKeyList ( class Msg7 *msg7 , class RdbList *list );
-	bool setFBRecFromFQLReply ( char *reply, 
-				    int32_t replySize ,
-				    class FBRec *fbrec );
-	//bool overwriteFriendsFromFQLReply ( char *reply, int32_t replySize );
-	//bool overwriteEventIdsFromFQLReply ( char *reply, int32_t replySize );
-	bool setNewEventIdsFromFQLReply ( char *reply, int32_t replySize );
-	bool parseFacebookEventReply ( char *reply, int32_t replySize );
-	// the http reply from facebook that contains event titles/descrs/etc.
-	bool  m_inProgress;
-	int32_t  m_i;
-	char *m_facebookReply;
-	int32_t  m_facebookReplySize;
-	int32_t  m_facebookAllocSize;
-	// another one
-	//char *m_facebookReply2;
-	//int32_t  m_facebookReplySize2;
-	//int32_t  m_facebookAllocSize2;
-	// facebook reply buf is now rbuf
-	SafeBuf m_rbuf;
-	//char *m_facebookContent;
-	//char  m_c;
-	int32_t m_eventStartNum;
-	int32_t m_eventStep;
-	int32_t m_errorCount;
-	int32_t m_retryCount;
-
-	int32_t m_phase;
-	SafeBuf m_fullReply;
-	int32_t m_niceness;
-	int32_t m_chunkStart;
-	int32_t m_chunkSize;
-	int32_t m_myChunkStart;
-	int32_t m_myChunkSize;
-	void queueLoop ( );
-
-	char *m_redirPath;
-
-	int64_t m_userToUserWidgetId;
-
-	int32_t m_privacy;
-	// fixed length. include +1 for \0
-	char m_accessToken[MAX_TOKEN_LEN+1];
-
-	// parse output. set eventPtrs to NULL if not new!
-	//char     *m_eventPtrs[MAXEVENTPTRS];
-	//int32_t      m_eventLens[MAXEVENTPTRS];
-	//int64_t m_eventIds [MAXEVENTPTRS];
-	SafeBuf   m_evPtrBuf;
-	SafeBuf   m_evIdsBuf;
-	int32_t      m_numEvents;
-
-	// parse fql reply and store into here and reference from
-	// m_fbrec::ptr_* etc.
-	//SafeBuf m_sbuf;
-
-	int64_t m_fbId;
-	void (*m_afterSaveCallback) ( void * );
-	HttpRequest m_hr;
-	TcpSocket *m_socket;
-	int32_t m_requests;
-	int32_t m_replies;
-	int32_t m_errno;
-	RdbList m_list1;
-	RdbList m_list2;
-	RdbList m_list3;
-	RdbList m_list4;
-	RdbList m_list33;
-	Msg5 m_msg5;
-	Msg4 m_msg4;
-	Msg0 m_msg0;
-	Msg1 m_msg1;
-	class Msg7 *m_msg7;
-	void *m_state;
-	void (* m_callback)(void *state);
-	//char *m_coll;
-	collnum_t m_collnum;
-
-	FBRec  m_fbrecGen;
-	FBRec *m_fbrecPtr;
-	FBRec *m_oldFbrec;
-
-	void *m_tmp;
-
-	// store friend and event ids in here, reference via 
-	// FBRec::ptr_friendIds and ptr_oldEventIds and ptr_newEventIds
-	SafeBuf m_fidBuf;
-	SafeBuf m_eidBuf; // fb event ids
-	HashTableX m_dedupEidBuf;
-
-	int64_t m_widgetId;
-
-	HashTableX m_likedbTable;
-};
 
 //////////////////
 //
@@ -484,27 +323,6 @@ class Likedb {
 // LIKEDB ACCESSOR class
 //
 /////////
-
-class Msgfc {
- public:
-
-	char m_recs [ LIKEDB_RECSIZE * 4 ];
-	RdbList m_list6;
-	Msg1 m_msg1;
-
-	// add this to likedb (or remove if "neg" is true.
-	bool addLikedbTag ( int64_t userId,
-			    int64_t docId,
-			    int32_t      eventId,
-			    uint64_t eventHash64 ,
-			    int32_t start_time,
-			    int32_t likedbTag , // LB_* #define's above
-			    bool negative , // turn off that flag?
-			    char *coll,
-			    void *state ,
-			    void (* callback)(void *) );
-
-};
 
 ///////////////////
 //

@@ -20,7 +20,6 @@
 #include "Catdb.h"
 
 #define MAX_IND_CATIDS 1024
-#define MAX_SITE_TYPES 12
 // url, catids, indirect catids, numCatids, numIndCatids, filenum
 #define CATREC_BUF_SIZE MAX_URL_LEN + MAX_CATIDS*4 + 9
 

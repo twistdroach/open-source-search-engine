@@ -12,7 +12,6 @@
 #define _MONITORDB_H_
 
 // 12 byte key size
-#define MONITORDBKS sizeof(key96_t)
 
 #include "Rdb.h"
 //#include "DiskPageCache.h"

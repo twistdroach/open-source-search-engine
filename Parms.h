@@ -231,23 +231,10 @@ class GigablastRequest {
 
 
 // values for Parm::m_subMenu
-#define SUBMENU_DISPLAY     1
-#define SUBMENU_MAP         2
-#define SUBMENU_CALENDAR    3
-#define SUBMENU_LOCATION    4
-#define SUBMENU_SOCIAL      5
-#define SUBMENU_TIME        6
-#define SUBMENU_CATEGORIES  7
-#define SUBMENU_LINKS       8
-#define SUBMENU_WIDGET      9
-#define SUBMENU_SUGGESTIONS 10
-#define SUBMENU_SEARCH      11
-#define SUBMENU_CHECKBOX    0x80 // flag
 
 // values for Parm::m_flags
 #define PF_COOKIE  0x01  // store in cookie?
 #define PF_REDBOX  0x02  // redbox constraint on search results
-#define PF_SUBMENU_HEADER  0x04
 #define PF_WIDGET_PARM     0x08
 #define PF_API             0x10
 #define PF_REBUILDURLFILTERS 0x20

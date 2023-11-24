@@ -19,7 +19,6 @@
 #include "Msg37.h"
 
 // max chars in any language
-#define MAX_WORDS_PER_PHRASE 5
 #define MAX_CHARS 256
 #define TOP_POP_PHRASES 40 * 1024
 #define NUM_CHARS 40

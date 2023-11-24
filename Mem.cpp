@@ -40,7 +40,6 @@ bool g_inMemFunction = false;
 //#include "malloc.c"
 
 #define sysmalloc ::malloc
-#define syscalloc ::calloc
 #define sysrealloc ::realloc
 #define sysfree ::free
 /*

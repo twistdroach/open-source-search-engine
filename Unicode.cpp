@@ -95,10 +95,6 @@ void gbiconv_reset(){
 #define iconv_close(cd) ((int)coreme(0))
 
 
-
-
-#define MAX_BAD_CHARS 500
-
 #define VERIFY_UNICODE_CHECKSUMS 1
 
 #define CHKSUM_UPPERMAP          1241336150
@@ -106,7 +102,6 @@ void gbiconv_reset(){
 #define CHKSUM_PROPERTIES        33375957
 #define CHKSUM_COMBININGCLASS    526097805
 #define CHKSUM_SCRIPTS           1826246000
-#define CHKSUM_KDMAP             1920116453
 
 bool ucInit(char *path, bool verifyFiles){
 

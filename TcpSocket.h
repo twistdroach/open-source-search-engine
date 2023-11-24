@@ -13,7 +13,6 @@
 // . we use stack space for the read's buffer so this is how much stack space
 // . we usually copy the stack to a permanent malloc'ed buffer 
 // . we read into this buf first to get the msg size (Content-Length: xxxx)
-#define READ_CHUNK_SIZE (10*1024)
 
 // . states of a non-blocking TcpSocket 
 // . held by TcpSocket's m_sockState member variable

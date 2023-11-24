@@ -759,8 +759,6 @@ class PosdbTable {
 	int32_t m_realMaxTop;
 };
 
-#define MAXDST 10
-
 // distance used when measuring word from title/linktext/etc to word in body
 #define FIXED_DISTANCE 400
 

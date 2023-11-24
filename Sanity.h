@@ -4,7 +4,6 @@
 #define _SANITY_H_
 
 #define GBASSERT(c)            (gb_sanityCheck((c),__FILE__,__FUNCTION__,__LINE__))
-#define GBASSERTMSG(c, msg)    (gb_sanityCheckMsg((c),(msg),__FILE__,__FUNCTION__,__LINE__))
 
 inline void gb_sanityCheck ( bool cond, 
 			     const char *file, const char *func, const int line ) {
