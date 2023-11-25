@@ -1735,9 +1735,7 @@ collnum_t Collectiondb::reserveCollNum ( ) {
 //
 ///////////////
 
-#include "HttpServer.h"     // printColors2()
 #include "Threads.h"
-#include "Process.h"
 
 static CollectionRec g_default;
 
