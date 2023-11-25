@@ -1,13 +1,7 @@
 #include "gb-include.h"
 
 #include "Msg1.h"
-#include "Tfndb.h"
-#include "Clusterdb.h"
-#include "Spider.h"
-//#include "Checksumdb.h"
-#include "Datedb.h"
 #include "Rdb.h"
-//#include "Indexdb.h"
 #include "Profiler.h"
 #include "Repair.h"
 

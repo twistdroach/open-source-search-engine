@@ -1,16 +1,10 @@
 #include "gb-include.h"
 
 #include "Msg0.h"
-#include "Tfndb.h"
-//#include "Checksumdb.h"
-#include "Clusterdb.h"
 #include "Stats.h"
-#include "Tagdb.h"
 #include "Catdb.h"
 #include "Posdb.h"
-#include "Titledb.h"
 #include "Spider.h"
-#include "Datedb.h"
 #include "Linkdb.h"
 #include "Msg5.h"                 // local getList()
 #include "XmlDoc.h"
@@ -1209,8 +1203,6 @@ void handleRequest0 ( UdpSlot *slot , int32_t netnice ) {
 	// call wrapper ouselves
 	gotListWrapper ( st0 , NULL , NULL );
 }
-
-#include "Sections.h" // SectionVote
 
 // . slot should be auto-nuked upon transmission or error
 // . TODO: ensure if this sendReply() fails does it really nuke the slot?

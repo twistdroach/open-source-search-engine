@@ -1,27 +1,16 @@
 #include "gb-include.h"
 
+#include "Process.h"
 #include "Collectiondb.h"
-//#include "CollectionRec.h"
-#include "Xml.h"
 #include "Url.h"
 #include "Loop.h"
 #include "Spider.h"  // for calling SpiderLoop::collectionsUpdated()
 #include "Posdb.h"
-//#include "Indexdb.h"
-#include "Datedb.h"
 #include "Titledb.h"
-//#include "Revdb.h"
-//#include "Sections.h"
-#include "Placedb.h"
 #include "Tagdb.h"
 #include "Catdb.h"
-#include "Tfndb.h"
-#include "Spider.h"
-//#include "Checksumdb.h"
 #include "Clusterdb.h"
-#include "Spider.h"
 #include "Repair.h"
-#include "Users.h"
 #include "Parms.h"
 
 void testRegex ( ) ;
@@ -245,10 +234,6 @@ void Collectiondb::updateTime() {
 	m_needsSave = true;
 }
 */
-
-#include "Statsdb.h"
-#include "Cachedb.h"
-#include "Syncdb.h"
 
 // same as addOldColl()
 bool Collectiondb::addExistingColl ( char *coll, collnum_t collnum ) {
@@ -735,7 +720,7 @@ RdbBase *CollectionRec::getBase ( char rdbId ) {
 
 	return m_bases[(unsigned char)rdbId];	
 }
-
+/*
 bool CollectionRec::swapOut ( ) {
 
 	if ( m_swappedOut ) return true;
@@ -762,7 +747,7 @@ bool CollectionRec::swapOut ( ) {
 	g_collectiondb.m_numCollsSwappedOut++;
 
 	return true;
-}
+} */
 
 // . called only by addNewColl() and by addExistingColl()
 bool Collectiondb::registerCollRec ( CollectionRec *cr ,  bool isNew ) {
@@ -941,7 +926,6 @@ void Collectiondb::deleteSpiderColl ( SpiderColl *sc ) {
 	}
 }
 */
-
 /// this deletes the collection, not just part of a reset.
 bool Collectiondb::deleteRec2 ( collnum_t collnum ) { //, WaitEntry *we ) {
 	// do not allow this if in repair mode
@@ -1751,16 +1735,8 @@ collnum_t Collectiondb::reserveCollNum ( ) {
 //
 ///////////////
 
-#include "gb-include.h"
-
-//#include "CollectionRec.h"
-//#include "Collectiondb.h"
 #include "HttpServer.h"     // printColors2()
-#include "Msg5.h"
 #include "Threads.h"
-#include "Datedb.h"
-#include "Timedb.h"
-#include "Spider.h"
 #include "Process.h"
 
 static CollectionRec g_default;

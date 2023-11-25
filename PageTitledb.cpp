@@ -4,12 +4,7 @@
 #include "Pages.h"
 #include "XmlDoc.h"
 #include "Title.h"
-#include "Pos.h"
 #include "SafeBuf.h"
-#include "linkspam.h"
-#include "CountryCode.h"
-#include "Users.h"
-#include "Tagdb.h"
 #include "Spider.h"
 
 // TODO: meta redirect tag to host if hostId not ours
