@@ -10,41 +10,24 @@
 #include "Clusterdb.h" // g_clusterdb
 #include "Categories.h" // g_categories
 #include "iana_charset.h"
-//#include "Checksumdb.h"
-//#include "Msg24.h"
 #include "Stats.h"
-#include "Sanity.h"
 #include "Speller.h"
 #include "CountryCode.h"
-//#include "SiteBonus.h"
 #include "linkspam.h"
 #include "Tagdb.h"
-//#include "Dates.h"
 #include "Repair.h"
-//#include "Links.h"
 #include "HashTableX.h"
 #include "LanguageIdentifier.h" // g_langId
-#include "CountryCode.h" // g_countryCode
 #include "sort.h"
 #include "Wiki.h"
-#include "Speller.h"
 #include "SiteGetter.h"
 #include "Placedb.h"
-#include "Test.h"
 #include "Synonyms.h"
-//#include "Revdb.h"
-#include "Timedb.h"
-#ifdef _USETURKS_
-//#include "PageTurk.h"
-#endif
 #include "PageInject.h"
 #include "HttpServer.h"
-#include "Facebook.h"
 #include "Posdb.h"
 #include "Highlight.h"
-#include "Wiktionary.h"
 #include "seo.h" // Msg99Request etc.
-//#include <regex.h>
 #include "PingServer.h"
 #include "Parms.h"
 
@@ -49037,8 +49020,6 @@ void XmlDoc::gotMsg95Reply ( UdpSlot *slot ) {
 	// all done! should call getScoredInsertableTerms() indirectly
 	m_masterLoop ( m_masterState );
 }
-
-#include "seo.h" // for Msg95Request class
 
 /*
 // return a buffer of WordFreqInfo instances for every word in the

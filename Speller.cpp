@@ -2,14 +2,11 @@
 
 #include "Mem.h"
 #include "Conf.h"
-#include "Dns.h"
 #include "HttpServer.h"
 #include "Loop.h"
-#include <sys/resource.h>  // setrlimit
 
 #include "Speller.h"
 #include <stdio.h>
-#include <ctype.h>
 
 /*
 static void handleRequestSpeller ( UdpSlot *slot , int32_t netnice );

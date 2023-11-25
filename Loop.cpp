@@ -3,13 +3,10 @@
 #include "Loop.h"
 #include "Threads.h"    // g_threads.launchThreads()
 #include "UdpServer.h"  // g_udpServer2.makeCallbacks()
-#include "HttpServer.h" // g_httpServer.m_tcp.m_numQueued
 #include "Profiler.h"
 #include "Process.h"
 #include "PageParser.h"
-#include "Threads.h"
 
-#include "Stats.h"
 // raised from 5000 to 10000 because we have more UdpSlots now and Multicast
 // will call g_loop.registerSleepCallback() if it fails to get a UdpSlot to
 // send on.
@@ -2264,9 +2261,6 @@ void Loop::doPoll ( ) {
 	// debug msg
 	if ( g_conf.m_logDebugLoop ) log(LOG_DEBUG,"loop: Exited doPoll.");
 }
-
-// for FileState class
-#include "BigFile.h"
 
 // call this when you don't want to be interrupted
 void Loop::interruptsOff ( ) {

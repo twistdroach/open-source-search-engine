@@ -1,7 +1,5 @@
 #include "gb-include.h"
 
-#include <sys/stat.h>
-#include "Titledb.h"
 #include "Tagdb.h"
 #include "Categories.h"
 #include "Unicode.h"
@@ -11,7 +9,6 @@
 #include "Pages.h"
 #include "SiteGetter.h"
 #include "HashTableX.h"
-#include "Users.h"
 #include "Process.h"
 #include "Rebalance.h"
 

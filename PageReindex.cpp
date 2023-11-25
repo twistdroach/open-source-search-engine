@@ -2,22 +2,13 @@
 
 #include "HttpServer.h"
 #include "Msg0.h"
-#include "Msg1.h"
-#include "IndexList.h"
-#include "Msg20.h"
 #include "Collectiondb.h"
 #include "Hostdb.h"
 #include "Conf.h"
-#include "Query.h"
-#include "RdbList.h"
 #include "Pages.h"
-#include "Msg3a.h"
 #include "Msg40.h"
 #include "sort.h"
-#include "Users.h"
 #include "Spider.h"
-#include "Revdb.h"
-#include "XmlDoc.h"
 #include "PageInject.h" // Msg7
 #include "PageReindex.h"
 

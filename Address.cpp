@@ -15923,8 +15923,6 @@ bool Addresses::hashForPlacedb ( int64_t   docId    ,
 }
 
 
-#include "Placedb.h"
-
 // . H = 48 bit hash of (streetname,ctryId,adm1,city)
 //   N = 16 bit hash of streetnum
 // . placedb key format:

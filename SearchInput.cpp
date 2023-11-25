@@ -2,14 +2,10 @@
 
 #include "SearchInput.h"
 #include "Parms.h"         // g_parms
-//#include "CollectionRec.h" // cr
 #include "Pages.h"         // g_msg
 #include "LanguageIdentifier.h"
 #include "CountryCode.h"
-#include "geo_ip_table.h"
-#include "Users.h"
 #include "Address.h" // getLatLonFromUserInput
-#include "Timedb.h"
 #include "PageResults.h"
 
 //char getFormatFromRequest ( class HttpRequest *hr ) ;

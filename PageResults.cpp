@@ -15,12 +15,10 @@
 #include "SafeBuf.h"
 #include "iana_charset.h"
 #include "Pos.h"
-#include "Bits.h"
 #include "AutoBan.h"
 #include "sort.h"
 #include "LanguageIdentifier.h"
 #include "LanguagePages.h"
-#include "LangList.h"
 #include "CountryCode.h"
 #include "Unicode.h"
 #include "XmlDoc.h" // GigabitInfo class

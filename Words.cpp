@@ -3,7 +3,6 @@
 #include "Words.h"
 #include "Phrases.h" // for isInPhrase() for hashWordIffNotInPhrase
 #include "Unicode.h" // getUtf8CharSize()
-#include "StopWords.h"
 #include "Speller.h"
 #include "HashTableX.h"
 #include "Sections.h"
@@ -276,8 +275,6 @@ bool Words::set ( char *s , int32_t version,
 	
 	return addWords(s,0x7fffffff, computeWordIds, niceness );
 }
-
-#include "XmlNode.h"
 
 bool Words::addWords(char *s,int32_t nodeLen,bool computeWordIds, int32_t niceness) {
 	int32_t  i = 0;

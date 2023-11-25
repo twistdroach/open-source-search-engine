@@ -22,7 +22,6 @@
 #include "GeoIP_internal.h"
 #include "GeoIPCity.h"
 #if !defined(_WIN32)
-#include <netdb.h>
 #include <netinet/in.h> /* For ntohl */
 #else
 #include <windows.h>

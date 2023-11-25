@@ -5,9 +5,7 @@
 #include "Pages.h"
 #include "Users.h"
 #include "XmlDoc.h"
-#include "PageParser.h"
 #include "Repair.h"
-#include "PageCrawlBot.h"
 #include "HttpRequest.h"
 #include "Stats.h"
 

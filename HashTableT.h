@@ -8,8 +8,6 @@
 #include "types.h"
 using namespace std;
 
-#define HT_BUF_SIZE (4*1024)
-
 template<class Key_t, class Val_t>
 class HashTableT {
 

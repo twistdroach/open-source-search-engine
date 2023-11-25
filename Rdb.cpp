@@ -1,7 +1,6 @@
 #include "gb-include.h"
 
 #include "Rdb.h"
-//#include "Checksumdb.h"
 #include "Clusterdb.h"
 #include "Hostdb.h"
 #include "Tagdb.h"
@@ -10,11 +9,7 @@
 #include "Posdb.h"
 #include "Cachedb.h"
 #include "Monitordb.h"
-//#include "Datedb.h"
 #include "Titledb.h"
-#include "Spider.h"
-//#include "Tfndb.h"
-//#include "Sync.h"
 #include "Spider.h"
 #include "Repair.h"
 #include "Process.h"
@@ -22,10 +17,8 @@
 #include "Syncdb.h"
 #include "Sections.h"
 #include "Placedb.h"
-#include "Spider.h"
 #include "Revdb.h"
 #include "hash.h"
-//#include "CollectionRec.h"
 
 void attemptMergeAll ( int fd , void *state ) ;
 

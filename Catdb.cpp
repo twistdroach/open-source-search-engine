@@ -1,10 +1,8 @@
 #include "gb-include.h"
 
-#include <sys/stat.h>
 #include "Catdb.h"
 #include "Categories.h"
 #include "CatRec.h"
-#include "Unicode.h"
 #include "Threads.h"
 
 // use this to query delete all the banned sites in tagdb

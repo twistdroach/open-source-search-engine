@@ -4,7 +4,6 @@
 #include <errno.h>
 #include <sched.h>
 #include <unistd.h>
-#include <assert.h>
 
 static int s_called = 0;
 

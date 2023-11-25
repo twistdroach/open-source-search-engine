@@ -5,15 +5,11 @@
 #include "GbErrno.h"
 #include "Loop.h"
 #include <sys/time.h>
-#include <sys/resource.h>
 #include <sys/types.h>    // getuid()/pid_t/getpid()
 #include <sys/wait.h>     // waitpid()
-#include "Rdb.h"          // g_mergeUrgent
 #include <sched.h>        // clone()
-//#include "Msg16.h"      // g_pid g_ticker
 #include "XmlDoc.h"       // g_pid g_ticker
 #include "Profiler.h"
-#include "Stats.h"
 #include "Process.h"
 
 // try using pthreads again
@@ -3143,7 +3139,6 @@ const char *ThreadQueue::getThreadType ( ) {
 	return s;
 }
 
-#include "BigFile.h" // FileState class
 /*
 MDW: this is unused
 int32_t Threads::getDiskThreadLoad ( int32_t maxNiceness , int32_t *totalToRead ) {

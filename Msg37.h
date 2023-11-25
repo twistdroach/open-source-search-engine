@@ -13,6 +13,4 @@
 #include "Msg36.h"
 #include "Query.h"  // MAX_QUERY_TERMS
 
-#define MAX_MSG36_OUT 20
-
 #endif

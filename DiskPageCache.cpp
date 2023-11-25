@@ -1,7 +1,6 @@
 #include "gb-include.h"
 
 #include "DiskPageCache.h"
-#include "RdbCache.h"
 
 // key = 24 bytes = 192 bits
 // vvvvvvvv vvvvvvvv vvvvvvvv vvvvvvvv v = vfd = unique file handle

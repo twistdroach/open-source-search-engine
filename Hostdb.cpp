@@ -1,6 +1,5 @@
 #include "gb-include.h"
 #include <ifaddrs.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include "Hostdb.h"
 #include "HashTableT.h"
@@ -9,14 +8,12 @@
 #include "Process.h"
 #include <sched.h>
 #include "sort.h"
-#include "Rdb.h" // RDB_INDEXDB,...
 //#include "Indexdb.h"
 #include "Posdb.h"
 #include "Titledb.h"
 #include "Spider.h"
 #include "Clusterdb.h"
 #include "Datedb.h"
-#include "Tfndb.h"
 #include "Dns.h"
 #include "Revdb.h"
 

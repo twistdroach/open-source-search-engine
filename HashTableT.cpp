@@ -4,11 +4,7 @@
 #include "Profiler.h" //For fnInfo struct
 #include "Title.h" // For Title::InLinkInfo
 #include "Dns.h"
-//#include "Thesaurus.h" // SynonymLinkGroup structure
 #include "PostQueryRerank.h" // for ComTopInDmozRec
-//#include "DateParse.h" // TimeZoneInfo structure
-//#include "PageTurk.h" // TurkUserState structure
-#include "types.h"
 
 template<class Key_t, class Val_t> 
 HashTableT<Key_t, Val_t>::HashTableT() {

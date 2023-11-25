@@ -3,11 +3,7 @@
 #include "gb-include.h"
 
 #include "Indexdb.h"
-#include "Url.h"
-#include "Clusterdb.h"
-//#include "Checksumdb.h"
 #include "Threads.h"
-#include "Posdb.h"
 #include "Rebalance.h"
 
 // a global class extern'd in .h file
@@ -660,9 +656,6 @@ int64_t Posdb::getTermFreq ( collnum_t collnum, int64_t termId ) {
 //
 //////////////////
 
-#include "gb-include.h"
-
-#include "Stats.h"
 #include <math.h>
 #include "Conf.h"
 #include "Mem.h"        // getHighestLitBitValue()
@@ -670,7 +663,6 @@ int64_t Posdb::getTermFreq ( collnum_t collnum, int64_t termId ) {
 #include "sort.h"
 #include "RdbBase.h"
 #include "Msg39.h"
-//#include "CollectionRec.h"
 #include "SearchInput.h"
 #include "Timedb.h"
 

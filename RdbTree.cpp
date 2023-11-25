@@ -8,7 +8,6 @@
 #include "Loop.h"
 #include "Threads.h"
 #include "Datedb.h"
-#include "Linkdb.h"
 
 RdbTree::RdbTree () {
 	//m_countsInitialized = false;
@@ -2703,8 +2702,6 @@ int32_t RdbTree::fastSaveBlock_r ( int fd , int32_t start , int64_t offset ) {
 	// return bytes written
 	return offset - oldOffset;
 }
-
-#include "Spider.h"
 
 // . caller should call f->set() himself
 // . we'll open it here

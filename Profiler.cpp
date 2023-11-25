@@ -15,10 +15,8 @@ Profiler g_profiler;
 #else
 
 #include <execinfo.h>
-#include <assert.h>
 #include "gb-include.h"
 #include "Profiler.h"
-#include "Stats.h"
 #include "sort.h"
 #include "Users.h"
 Profiler g_profiler;

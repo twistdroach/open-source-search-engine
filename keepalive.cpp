@@ -1,12 +1,5 @@
 #include "gb-include.h"
 
-#include <errno.h>
-#include <sys/types.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
-
 int main ( int argc , char *argv[] ) {
 
  loop:

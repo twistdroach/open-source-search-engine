@@ -2,11 +2,9 @@
 
 #include "Loop.h"
 #include "Entities.h"
-#include "UCWordIterator.h"
 #include "SafeBuf.h"
 #include "Xml.h"
 #include "XmlNode.h"
-#include "iana_charset.h"
 
 static bool g_clockInSync = false;
 

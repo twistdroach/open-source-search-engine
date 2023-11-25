@@ -3,16 +3,9 @@
 #include "GbErrno.h"    // for EDATANOTOWNED
 #include "RdbList.h"
 #include "Mem.h"      // for g_mem.malloc()
-//#include "Tfndb.h"       // groupid filtering in merge
-//#include "Checksumdb.h"  
-#include "Clusterdb.h"
-#include "Hostdb.h"
 #include "Tagdb.h"
-#include "Indexdb.h"
 #include "Titledb.h"
 #include "Spider.h"
-#include "Datedb.h"
-#include "Linkdb.h"
 #include "sched.h"
 
 /////

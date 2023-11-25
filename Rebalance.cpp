@@ -10,11 +10,9 @@
 #include "gb-include.h"
 
 #include "Rdb.h"
-#include "Spider.h"
 #include "Msg4.h"
 #include "Pages.h"
 #include "PingServer.h"
-#include "Spider.h"
 #include "Process.h"
 #include "Parms.h"
 

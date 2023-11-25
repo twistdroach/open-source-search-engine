@@ -1,7 +1,6 @@
 #include "gb-include.h"
 
 #include "AutoBan.h"
-#include <limits.h>
 #include "SafeBuf.h"
 #include "Pages.h"
 #include "Loop.h"

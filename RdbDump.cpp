@@ -2,14 +2,8 @@
 
 #include "RdbDump.h"
 #include "Rdb.h"
-//#include "Tfndb.h"
-//#include "Sync.h"
 #include "Collectiondb.h"
-//#include "CollectionRec.h"
-#include "Tagdb.h"
-//#include "Catdb.h"
 #include "Statsdb.h"
-#include "Accessdb.h"
 
 extern void dumpDatedb   ( char *coll,int32_t sfn,int32_t numFiles,bool includeTree, 
 			   int64_t termId , bool justVerify ) ;

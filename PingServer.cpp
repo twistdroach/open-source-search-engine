@@ -1873,7 +1873,6 @@ void emailSleepWrapper ( int fd, void *state ){
 }
 
 
-#include "HttpServer.h"
 static void gotDocWrapper ( void *state , TcpSocket *ts ) ;
 
 // JAB: warning abatement

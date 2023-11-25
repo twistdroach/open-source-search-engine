@@ -10,35 +10,21 @@
 #include "Posdb.h"
 #include "Cachedb.h"
 #include "Monitordb.h"
-#include "Datedb.h"
 #include "Titledb.h"
-//#include "Revdb.h"
 #include "Sections.h"
 #include "Spider.h"
 #include "Statsdb.h"
-//#include "Tfndb.h"
 #include "Threads.h"
 #include "PingServer.h"
 #include "Dns.h"
 #include "Repair.h"
 #include "RdbCache.h"
-#include "Spider.h"
-//#include "Classifier.h"
-//#include "PageTopDocs.h"
 #include "HttpServer.h"
 #include "Speller.h"
-//#include "Thesaurus.h"
-#include "Spider.h"
 #include "Profiler.h"
-//#include "PageNetTest.h"
 #include "LangList.h"
 #include "AutoBan.h"
-//#include "SiteBonus.h"
 #include "Msg4.h"
-#include "Msg5.h"
-//#include "PageTurk.h"
-//#include "Syncdb.h"
-//#include "Placedb.h"
 #include "Wiki.h"
 #include "Wiktionary.h"
 #include "Users.h"
@@ -2043,8 +2029,6 @@ bool Process::saveBlockingFiles1 ( ) {
 
 	return true;
 }
-
-#include "PageTurk.h"
 
 bool Process::saveBlockingFiles2 ( ) {
 	// never if in read only mode

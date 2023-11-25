@@ -6,7 +6,6 @@
 #include "XmlDoc.h"
 #include "Threads.h"
 #include "Hostdb.h"
-#include "XmlDoc.h" // my_system_r()
 
 // TODO: image is bad if repeated on same page, check for that
 

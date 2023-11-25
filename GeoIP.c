@@ -30,12 +30,9 @@ static geoipv6_t IPV6_NULL;
 #include <sys/mman.h>
 #endif /* !defined(_WIN32) */ 
 
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
-#include <sys/types.h> /* for fstat */
 #include <sys/stat.h>	/* for fstat */
 
 #ifdef HAVE_GETTIMEOFDAY

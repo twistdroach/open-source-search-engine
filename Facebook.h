@@ -233,8 +233,6 @@ class FBRec {
 // fix this so it is not hogging mem!
 //#define MAXEVENTPTRS 1000
 
-#define MAX_TOKEN_LEN 128
-
 // are we downloading or waiting to download events from facebook for
 // this person, fbId? used by PageEvents to display a warning msg to
 // let the user know more events are pending so the search results might
@@ -249,7 +247,6 @@ bool isStillDownloading ( int64_t fbId , collnum_t collnum ) ;
 
 #define LIKEDB_KEYSIZE sizeof(key192_t)
 #define LIKEDB_DATASIZE 12
-#define LIKEDB_RECSIZE  (LIKEDB_KEYSIZE+LIKEDB_DATASIZE)
 
 class Likedb {
  public:

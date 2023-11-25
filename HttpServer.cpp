@@ -5,7 +5,6 @@
 #include "Collectiondb.h"
 #include "HashTable.h"
 #include "Stats.h"
-#include "Users.h"
 #include "XmlDoc.h" // gbzip
 #include "UdpServer.h"
 #include "Proxy.h"
@@ -938,8 +937,6 @@ bool sendPageRobotsTxt ( TcpSocket *s , HttpRequest *r ) {
 bool endsWith(char *haystack, int haystackLen, char *needle, int needleLen) {
     return haystackLen >= needleLen && !strncmp(haystack + haystackLen - needleLen, needle, needleLen);
 }
-
-#include "Pages.h" // sendPageAPI, printApiForPage()
 
 // . reply to a GET (including partial get) or HEAD request
 // . HEAD just returns the MIME header for the file requested

@@ -1,21 +1,11 @@
 #include "gb-include.h"
 
-#include "Indexdb.h"     // makeKey(int64_t docId)
-#include "Titledb.h"
-#include "Spider.h"
-#include "Tagdb.h"
-#include "Dns.h"
-//#include "PageResults.h" // for query buf, g_qbuf
 #include "Collectiondb.h"
-//#include "CollectionRec.h"
-#include "Clusterdb.h"    // for getting # of docs indexed
-//#include "Checksumdb.h"   // should migrate to this one, though
 #include "Pages.h"
 #include "Query.h"        // MAX_QUERY_LEN
 #include "SafeBuf.h"
 #include "LanguageIdentifier.h"
 #include "LanguagePages.h"
-#include "Users.h"
 #include "Address.h" // getIPLocation
 #include "Proxy.h"
 
@@ -2198,9 +2188,6 @@ bool printTopDirectory ( SafeBuf& sb , char format ) {
 #include "PageInject.h"
 #include "TuringTest.h"
 #include "AutoBan.h"
-//#include "CollectionRec.h"
-#include "Users.h"
-#include "Spider.h"
 
 //static bool sendReply        ( void *state  , bool addUrlEnabled );
 static bool canSubmit        (uint32_t h, int32_t now, int32_t maxUrlsPerIpDom);

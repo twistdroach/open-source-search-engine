@@ -12,28 +12,13 @@ void printEventIds ( char *evs , int32_t esize , uint8_t *bits ) ;
 typedef uint64_t evflags_t;
 //typedef uint32_t evflags_t;
 
-#define EV_MULT_LOCATIONS    0x0001 
-#define EV_NO_LOCATION       0x0002
-#define EV_UNVERIFIED_LOCATION  0x0004 // is contained by larger event section
-#define EV_NO_YEAR           0x0010 // has a daynum but no year
-#define EV_NOT_COMPATIBLE    0x0020
-#define EV_EMPTY_TIMES       0x0040 // date intervals are empty set!
 #define EV_OUTLINKED_TITLE   0x0080
-#define EV_IS_POBOX          0x0100
 #define EV_SAMEDAY           0x0400
-#define EV_MISSING_LOCATION  0x0800
-#define EV_REGISTRATION      0x1000
 //#define EV_MENU              0x2000
-#define EV_TICKET_PLACE      0x4000
 // when one street could be in 2+ cities, etc. we set this
-#define EV_AMBIGUOUS_LOCATION 0x008000
-#define EV_SPECIAL_DUP        0x010000
 //#define EV_BAD_STORE_HOURS  0x020000
 // are we store hours?
 #define EV_STORE_HOURS        0x00040000
-#define EV_ADCH32DUP          0x00100000
-#define EV_HADNOTITLE         0x00200000
-#define EV_SENTSPANSMULTEVENTS 0x04000000
 
 // now this is 64bits
 // from facebook xml?

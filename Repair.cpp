@@ -9,16 +9,10 @@
 #include "Rdb.h"
 #include "Spider.h"
 #include "Msg1.h"
-//#include "Datedb.h"
 #include "Pages.h"
 #include "PingServer.h"
-#include "Spider.h"
 #include "Process.h"
 #include "Tagdb.h"
-//#include "Placedb.h"
-#include "Sections.h"
-//#include "Revdb.h"
-//#include "Tfndb.h"
 
 static void repairWrapper ( int fd , void *state ) ;
 static void loopWrapper   ( void *state , RdbList *list , Msg5 *msg5 ) ;

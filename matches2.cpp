@@ -2,7 +2,6 @@
 
 #include "matches2.h"
 #include "Unicode.h"
-#include "Titledb.h"
 #include "HashTableT.h"
 
 //make the key, it is just the needles ptr 

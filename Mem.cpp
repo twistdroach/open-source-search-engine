@@ -1,15 +1,10 @@
 #include "gb-include.h"
 
 #include "Mem.h"
-#include <sys/time.h>      // setrlimit()
-#include <sys/resource.h>  // setrlimit()
 
 #include "Threads.h"
 #include "SafeBuf.h"
 #include "PingServer.h"
-//#include "MemPoolVar.h"
-//#include "malloc.h"
-//#include "Stats.h"
 #include "Pages.h"
 
 // uncomment this #define to electric fence just on umsg00 buffers:

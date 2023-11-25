@@ -3,7 +3,6 @@
 #include "Parms.h"
 #include "File.h"
 #include "Conf.h"
-//#include "CollectionRec.h"
 #include "TcpSocket.h"
 #include "HttpRequest.h"
 #include "Pages.h"         // g_pages
@@ -11,22 +10,17 @@
 #include "Catdb.h"
 #include "Collectiondb.h"
 #include "HttpMime.h"      // atotime()
-//#include "Msg28.h"
-//#include "Sync.h"
-#include "Indexdb.h" // for MIN_TRUNC
 #include "SearchInput.h"
 #include "Unicode.h"
 #include "Threads.h"
 #include "Spider.h" // MAX_SPIDER_PRIORITIES
 #include "Statsdb.h"
-#include "Sections.h"
 #include "Msg17.h"
 #include "Process.h"
 #include "Repair.h"
 #include "Ads.h"
 #include "LanguagePages.h"
 #include "PingServer.h"
-#include "Users.h"
 #include "Proxy.h"
 #include "hash.h"
 #include "Test.h"
@@ -39,14 +33,7 @@
 Parms g_parms;
 
 
-//#include "Tfndb.h"
-#include "Spider.h"
-#include "Tagdb.h"
-#include "Indexdb.h"
-#include "Datedb.h"
-//#include "Checksumdb.h"
 #include "Clusterdb.h"
-#include "Collectiondb.h"
 
 //
 // new functions to extricate info from parm recs

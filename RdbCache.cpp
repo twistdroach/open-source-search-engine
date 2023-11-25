@@ -8,11 +8,7 @@
 #include "RdbCache.h"
 #include "Collectiondb.h"
 #include "Loop.h"
-#include "Msg17.h"
-//#include "Dns.h"   // g_dns
-//#include "Msg36.h" // g_qtable
 #include "Msg13.h"
-//#include "Msg10.h"   // g_deadWaitCache
 #include "Dns.h"
 #include "BigFile.h"
 #include "Spider.h"

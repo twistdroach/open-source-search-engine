@@ -1,34 +1,20 @@
 #include "gb-include.h"
 
-#include "Indexdb.h"     // makeKey(int64_t docId)
-#include "Datedb.h"
 #include "Titledb.h"
-//#include "Revdb.h"
 #include "Spider.h"
-#include "Tfndb.h"
 #include "Tagdb.h"
-#include "Cachedb.h"
 #include "Monitordb.h"
 #include "Catdb.h"
-//#include "Checksumdb.h"
 #include "Clusterdb.h"
 #include "Statsdb.h"
 #include "Linkdb.h"
 #include "Dns.h"
-#include "TcpServer.h"
 #include "UdpServer.h"
 #include "Msg40.h"       // g_resultsCache
 #include "Pages.h"
-//#include "Msg36.h" // g_qtable
 #include "Stats.h"
-#include <sys/time.h>      // getrlimit()
 #include <sys/resource.h>  // getrlimit()
-//#include "GBVersion.h"
-//#include "Msg10.h" // g_deadWaitCache
 #include "Proxy.h"
-#include "Placedb.h"
-#include "Sections.h"
-//#include "Msg0.h" // g_termlistCache
 #include "Msg13.h"
 #include "Msg3.h"
 

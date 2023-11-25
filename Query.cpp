@@ -10,12 +10,8 @@
 #include "Url.h"
 #include "Clusterdb.h" // g_clusterdb.getNumGlobalRecs()
 #include "StopWords.h" // isQueryStopWord()
-#include "Sections.h"
 #include "Msg1.h"
-#include "Speller.h"
-//#include "Thesaurus.h"
 #include "Mem.h"
-#include "Msg3a.h"
 #include "HashTableX.h"
 #include "Synonyms.h"
 #include "Wiki.h"

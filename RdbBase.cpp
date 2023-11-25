@@ -1,28 +1,17 @@
 #include "gb-include.h"
 
 #include "Rdb.h"
-//#include "Msg35.h"
-//#include "Tfndb.h"
-//#include "Checksumdb.h"
-#include "Clusterdb.h"
 #include "Hostdb.h"
 #include "Tagdb.h"
-#include "Catdb.h"
 #include "Posdb.h"
 #include "Cachedb.h"
 #include "Monitordb.h"
-#include "Datedb.h"
 #include "Titledb.h"
-#include "Sections.h"
-#include "Spider.h"
 #include "Statsdb.h"
 #include "Linkdb.h"
 #include "Syncdb.h"
 #include "Collectiondb.h"
-//#include "CollectionRec.h"
-#include "Repair.h"
 #include "Rebalance.h"
-//#include "Msg3.h" // debug include
 
 // how many rdbs are in "urgent merge" mode?
 int32_t g_numUrgentMerges = 0;

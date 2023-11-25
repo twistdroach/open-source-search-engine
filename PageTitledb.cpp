@@ -1,13 +1,7 @@
 #include "gb-include.h"
 
-//#include "Checksumdb.h"
 #include "Collectiondb.h"
-#include "Msg22.h"
 #include "Pages.h"
-//#include "Links.h"
-//#include "TitleRec.h" // hasAdultWords()
-//#include "CollectionRec.h"
-//#include "TitleRec.h" 	// containsAdultWords()
 #include "XmlDoc.h"
 #include "Title.h"
 #include "Pos.h"
@@ -17,7 +11,6 @@
 #include "Users.h"
 #include "Tagdb.h"
 #include "Spider.h"
-//#include "DateParse2.h"
 
 // TODO: meta redirect tag to host if hostId not ours
 static bool gotTitleRec        ( void *state );

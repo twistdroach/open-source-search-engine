@@ -394,8 +394,6 @@ key224_t Linkdb::makeKey_uk ( uint32_t  linkeeSiteHash32       ,
 /////////
 
 #include "Collectiondb.h"
-//#include "CollectionRec.h"
-#include "matches2.h"
 
 // 1MB read size for now
 #define READSIZE 1000000
@@ -3710,10 +3708,7 @@ void sendLinkInfoReplyWrapper ( void *state ) { // , LinkInfo *infoArg ) {
 
 #include "HashTableX.h"
 #include "Words.h"
-#include "Titledb.h"
 #include "Msge0.h"
-#include "IndexList.h"
-#include "XmlDoc.h" // score8to32()
 
 #define MAX_LINKERS          3000
 #define MAX_INTERNAL_INLINKS 10

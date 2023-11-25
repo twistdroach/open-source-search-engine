@@ -1,11 +1,9 @@
 #include "gb-include.h"
 
 #include <sys/stat.h>
-#include "iana_charset.h"
 #include "Unicode.h"
 #include "SafeBuf.h"
 #include "Words.h"
-#include "Sections.h"
 
 //static uint32_t utf8Decode ( char *p, char **next = NULL );
 
@@ -189,8 +187,6 @@ bool SafeBuf::safeMemcpy_nospaces(char *s, int32_t len) {
 	m_buf[m_length] = '\0';
 	return true;
 }
-
-#include "Words.h"
 
 bool SafeBuf::safeMemcpy ( Words *w , int32_t a , int32_t b ) {
 	char *p    = w->m_words[a];

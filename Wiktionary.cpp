@@ -7,7 +7,6 @@
 
 #include "Query.h"
 #include "Words.h"
-#include "Titledb.h"
 #include "Speller.h"
 
 // the global instance

@@ -17,18 +17,13 @@
 #include "Hostdb.h"
 #include "Indexdb.h"
 #include "Posdb.h"
-#include "Cachedb.h"
-#include "Monitordb.h"
 #include "Datedb.h"
 #include "Titledb.h"
 #include "Revdb.h"
 #include "Tagdb.h"
 #include "Catdb.h"
 #include "Users.h"
-//#include "Tfndb.h"
 #include "Spider.h"
-//#include "Doledb.h"
-//#include "Checksumdb.h"
 #include "Clusterdb.h"
 #include "Sections.h"
 #include "Statsdb.h"
@@ -39,95 +34,47 @@
 #include "MsgC.h"
 #include "HttpServer.h"
 #include "Loop.h"
-#include "Spider.h"
 #include <sys/resource.h>  // setrlimit
 #include "Stats.h"
-#include "Spider.h"
-//#include "GBVersion.h"
 #include "Speller.h"       // g_speller
-//#include "Thesaurus.h"     // g_thesaurus
-//#include "Synonyms.h"      // g_synonyms
 #include "Wiki.h"          // g_wiki
 #include "Wiktionary.h"    // g_wiktionary
 #include "Scraper.h"       // g_scraper
-//#include "QueryRouter.h"
 #include "Categories.h"
 #include "CountryCode.h"
 #include "Pos.h"
 #include "Title.h"
-#include "Speller.h"
-//#include "Syncdb.h"
 
 // include all msgs that have request handlers, cuz we register them with g_udp
 #include "Msg0.h"
 #include "Msg1.h"
 #include "Msg4.h"
-//#include "Msg6.h"
-//#include "Msg7.h"
-//#include "Msg11.h"
-//#include "Msg12.h"
 #include "Msg13.h"
 #include "Msg20.h"
 #include "Msg22.h"
-//#include "Msg23.h"
 #include "Msg2a.h"
-#include "Msg36.h"
 #include "Msg39.h"
 #include "Msg40.h"    // g_resultsCache
 #include "Msg9b.h"
 #include "Msg17.h"
-//#include "Msg34.h"
-//#include "Msg35.h"
-//#include "Msg24.h"
-//#include "Msg28.h"
-//#include "Msg30.h"
-//#include "MsgB.h"
-//#include "Msg3e.h"
 #include "Parms.h"
-//#include "Msg50.h"
-//#include "MsgF.h"
-//#include "Msg33.h"
-//#include "mmseg.h"  // open_lexicon(), etc. for Chinese parsing
-//#include "PageTopDocs.h"
-//#include "PageNetTest.h"
-//#include "Sync.h"
 #include "Pages.h"
-//#include "Msg1c.h"
-//#include "Msg2e.h"
-//#include "Msg6a.h"
 #include "Unicode.h"
 
-//#include <pthread.h>
 #include "AutoBan.h"
-//#include "SiteBonus.h"
 #include "Msg1f.h"
 #include "Profiler.h"
-//#include "HashTableT.h"
-//#include "Classifier.h"
 #include "Blaster.h"
 #include "Proxy.h"
-//#include "HtmlCarver.h"
 
-//#include "Matchers.h"
-#include "linkspam.h"
 #include "Process.h"
 #include "sort.h"
-//#include "SiteBonus.h"
-#include "Ads.h"
 #include "LanguagePages.h"
-//#include "Msg3b.h"
-#include "ValidPointer.h"
 #include "RdbBuckets.h"
-//#include "PageTurk.h"
-//#include "QAClient.h"
-//#include  "Diff.h"
-#include "Placedb.h"
 #include "Test.h"
 #include "seo.h"
 #include "Json.h"
 #include "SpiderProxy.h"
-//#include "Facebook.h"
-//#include "Accessdb.h"
 
 // from qa.cpp
 //bool qainject ( ) ;
@@ -6486,9 +6433,6 @@ void zlibtest() {
 
 #include "Rdb.h"
 #include "Xml.h"
-//#include "Tfndb.h"
-//#include "Checksumdb.h"
-#include "Threads.h"
 
 //
 // dump routines here now
@@ -11743,12 +11687,7 @@ bool thrutest ( char *testdir , int64_t fileSize ) {
 // SEEK TEST
 //
 
-#include <sys/time.h>  // gettimeofday()
-#include <sys/time.h>
-#include <sys/resource.h>
-//#include <pthread.h>
 #include <time.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
@@ -11766,7 +11705,6 @@ static int64_t s_maxReadSize = 1;
 static int64_t s_startTime = 0;
 static bool s_doSeqWriteThread;
 //#define MAX_READ_SIZE (2000000)
-#include <sys/types.h>
 #include <sys/wait.h>
 
 void seektest ( char *testdir, int32_t numThreads, int32_t maxReadSize , 
