@@ -12373,7 +12373,7 @@ int32_t getUrlFilterNum2 ( SpiderRequest *sreq       ,
 			if ( ext[0] != '.' &&
 			     ext[1] != '.' &&
 			     urlLen > 10 ) {
-				for(register int32_t k=urlLen-10;k<urlLen;k++){
+				for(int32_t k=urlLen-10;k<urlLen;k++){
 					if ( url[k] != '.' ) continue;
 					if ( url[k+1] == 'c' &&
 					     url[k+2] == 's' &&

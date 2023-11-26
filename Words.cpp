@@ -893,9 +893,9 @@ bool Words::set2 ( Xml *xml,
 	m_xml = xml;
 	m_version = xml->getVersion();
 	m_version = xml->getVersion();
-	register char *p = (char *)xml->getContent();
+	char *p = (char *)xml->getContent();
 	if ( *p ) p++;
-	register int32_t x = 0;
+	int32_t x = 0;
  ploop:
 	//if ( is_alnum(*(p-1)) ^ is_alnum(*p) ) x++;
 	//if ( is_alnum(*p ) ) x++;

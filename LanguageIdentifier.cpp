@@ -157,7 +157,7 @@ LanguageIdentifier::LanguageIdentifier() {
 }
 
 inline bool LanguageIdentifier::isAmbiguousTLD(char *tld, int len) {
-	register int x;
+	int x;
 	for(x = 0; ambiguousTLDs[x]; x++) {
 		if(!strncmp(tld, ambiguousTLDs[x],
 					maxOf(len, gbstrlen(ambiguousTLDs[x]))))
@@ -559,7 +559,7 @@ uint8_t LanguageIdentifier::guessLanguageFromQuery(Query *q) {
 		// Look for two consecutive identical languages
 		// Not as good as a frequency count, but much faster
 		uint8_t last = 255;
-		register int32_t qcount;
+		int32_t qcount;
 		for(qcount = 0; qcount < q->getNumTerms(); qcount++) {
 			if(g_langList.lookup(q->getTermId(qcount), &lang) &&
 					last == lang) {

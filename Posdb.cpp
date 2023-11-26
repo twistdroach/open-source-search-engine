@@ -4863,9 +4863,9 @@ void PosdbTable::rmDocIdVotes ( QueryTermInfo *qti ) {
 	// int16_tcut
 	char *bufStart = m_docIdVoteBuf.getBufStart();
 
-	register char *dp = NULL;
-	register char *dpEnd;
-	register char *recPtr     ;
+	char *dp = NULL;
+	char *dpEnd;
+	char *recPtr     ;
 	char          *subListEnd ;
 
 	// just scan each sublist vs. the docid list
@@ -4921,7 +4921,7 @@ void PosdbTable::rmDocIdVotes ( QueryTermInfo *qti ) {
 	// now remove docids with a 0xff vote, they are nuked
 	dp    =      m_docIdVoteBuf.getBufStart();
 	dpEnd = dp + m_docIdVoteBuf.length();
-	register char *dst   = dp;
+	char *dst   = dp;
 	for ( ; dp < dpEnd ; dp += 6 ) {
 		// do not re-copy it if it was in this negative termlist
 		if ( dp[5] == -1 ) continue;
@@ -4998,8 +4998,8 @@ int64_t PosdbTable::countUniqueDocids( QueryTermInfo *qti ) {
 	// get that sublist. facets should only have one sublist since
 	// they have no synonyms.
 	char *start = qti->m_subLists[0]->getList();
-	register char *recPtr     = start;
-	register char *subListEnd = qti->m_subLists[0]->getListEnd();
+	char *recPtr     = start;
+	char *subListEnd = qti->m_subLists[0]->getListEnd();
 	int64_t count = 0;
  loop:
 	if ( recPtr >= subListEnd ) {
@@ -5039,9 +5039,9 @@ void PosdbTable::addDocIdVotes ( QueryTermInfo *qti , int32_t   listGroupNum) {
 	// int16_tcut
 	char *bufStart = m_docIdVoteBuf.getBufStart();
 
-	register char *dp = NULL;
-	register char *dpEnd;
-	register char *recPtr     ;
+	char *dp = NULL;
+	char *dpEnd;
+	char *recPtr     ;
 	char          *subListEnd ;
 
 	// range terms tend to disappear if the docid's value falls outside
@@ -5147,7 +5147,7 @@ void PosdbTable::addDocIdVotes ( QueryTermInfo *qti , int32_t   listGroupNum) {
 		// votes which means they are missing a query term
 		dp    =      m_docIdVoteBuf.getBufStart();
 		dpEnd = dp + m_docIdVoteBuf.length();
-		register char *dst   = dp;
+		char *dst   = dp;
 		for ( ; dp < dpEnd ; dp += 6 ) {
 			// skip if it has enough votes to be in search 
 			// results so far
@@ -5331,11 +5331,11 @@ void PosdbTable::shrinkSubLists ( QueryTermInfo *qti ) {
 	for ( int32_t i = 0 ; i < qti->m_numSubLists ; i++ ) {
 
 		// get that sublist
-		register char *recPtr     = qti->m_subLists[i]->getList();
-		register char *subListEnd = qti->m_subLists[i]->getListEnd();
+		char *recPtr     = qti->m_subLists[i]->getList();
+		char *subListEnd = qti->m_subLists[i]->getListEnd();
 		// reset docid list ptrs
-		register char *dp    =      m_docIdVoteBuf.getBufStart();
-		register char *dpEnd = dp + m_docIdVoteBuf.length();
+		char *dp    =      m_docIdVoteBuf.getBufStart();
+		 char *dpEnd = dp + m_docIdVoteBuf.length();
 
 		// re-copy into the same buffer!
 		char *dst = recPtr;
@@ -6248,8 +6248,8 @@ void PosdbTable::intersectLists10_r ( ) {
 		// do each sublist
 		for ( int32_t j = 0 ; j < qti->m_numNewSubLists ; j++ ) {
 			// int16_tcuts
-			register char *xc    = qti->m_cursor[j];
-			register char *xcEnd = qti->m_newSubListEnd[j];
+			char *xc    = qti->m_cursor[j];
+			char *xcEnd = qti->m_newSubListEnd[j];
 			// exhausted? (we can't make cursor NULL because
 			// getMaxPossibleScore() needs the last ptr)
 			// must match docid

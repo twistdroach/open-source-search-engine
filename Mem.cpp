@@ -1950,26 +1950,26 @@ int32_t Mem::printBits  ( void *src, int32_t srcBits , int32_t nb ) {
 }
 
 // ass = async signal safe, dumb ass
-void memset_ass ( register void *dest , register const char c , int32_t len ) {
-	register char *end  = (char *)dest + len;
+void memset_ass ( void *dest , const char c , int32_t len ) {
+	char *end  = (char *)dest + len;
 	// JAB: so... the optimizer should take care of the extra
 	// register declaration for d, below...  see note below.
-	register char *d    = (char *)dest;
+	char *d    = (char *)dest;
 	// JAB: gcc-3.4 did not like the cast in the previous version
 	// while ( dest < end ) *((char *)dest)++ = c;
 	while ( d < end ) { *d++ = c; }
 }
 
-void memset_nice( register void *dest , register const char c , int32_t len ,
+void memset_nice( void *dest , const char c , int32_t len ,
 		  int32_t niceness ) {
 	char *end  = (char *)dest + len;
 	// JAB: so... the optimizer should take care of the extra
 	// register declaration for d, below...  see note below.
-	register char *d    = (char *)dest;
+	char *d    = (char *)dest;
 	// JAB: gcc-3.4 did not like the cast in the previous version
 	// while ( dest < end ) *((char *)dest)++ = c;
  loop:
-	register char *seg = d + 5000;
+	char *seg = d + 5000;
 	if ( seg > end ) seg = end;
 	QUICKPOLL ( niceness );
 	while ( d < seg ) { *d++ = c; }

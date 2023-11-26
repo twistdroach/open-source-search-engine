@@ -461,7 +461,7 @@ bool PostQueryRerank::rerank ( ) {
 
 
 	// rerank weighted sort list
-	for ( register int32_t x = 0; x < m_numToSort; x++ ) {
+	for ( int32_t x = 0; x < m_numToSort; x++ ) {
 		M20List *sortArrItem = &m_m20List [ x ];
 		Msg20 *msg20 = sortArrItem->m_m20;
 		char *url = NULL;

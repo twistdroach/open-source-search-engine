@@ -1599,7 +1599,7 @@ bool Categories::loadLangTables(void) {
 		}
 
 		if(h && !strncmp(line, "  <topic>Top/World/", 18)) {
-			for(register int i = 2; i <= langTagalog; i++) {
+			for(int i = 2; i <= langTagalog; i++) {
 				if(!memcmp(line + 19, langToTopic[i], 
 					   gbstrlen((char *)langToTopic[i]))) {
 					langTables[i].addKey(h, 1);
@@ -1615,7 +1615,7 @@ bool Categories::loadLangTables(void) {
 	fclose(content);
 
 	// Save all the tables for later
-	for(register int i = 2; i <= langTagalog; i++) {
+	for(int i = 2; i <= langTagalog; i++) {
 		sprintf(line, "catlang%03d.dat", i);
 		langTables[i].save(g_hostdb.m_dir, line);
 		if(langTables[i].getNumSlotsUsed() <= 0 ) {
@@ -1628,7 +1628,7 @@ bool Categories::loadLangTables(void) {
 
 bool Categories::initLangTables(void) {
 	char name[512];
-	register int i;
+	int i;
 	// int64_t memory = g_mem.m_used;
 	uint64_t start;
 	uint64_t stop;
@@ -1675,7 +1675,7 @@ uint8_t Categories::findLanguage(char *addr) {
 	char *cp = addr;
 	if(!strncmp(cp, "http://", 7)) cp += 7;
 	h = hash32(cp, gbstrlen(cp));
-	for(register int i = 2; i <= langTagalog; i++) {
+	for(int i = 2; i <= langTagalog; i++) {
 		if(i == 5) continue; // There is no language 5!
 		if(langTables[i].getNumSlotsUsed() > 0 &&
 			langTables[i].getSlot(h) >= 0)

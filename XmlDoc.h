@@ -2613,9 +2613,9 @@ inline int32_t XmlDoc::getProbSpam(int32_t *profile, int32_t plen, int32_t step)
 	// if our step is bigger than the profile return 0
 	if ( step == plen ) return 0;
 
-	register int32_t avgSpacing, stdDevSpacing;
+	int32_t avgSpacing, stdDevSpacing;
 	int32_t d,dev=0;
-	register int32_t i;
+	int32_t i;
 	
 	for (int32_t j = 0; j < step; j++) {
 

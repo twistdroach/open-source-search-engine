@@ -16556,10 +16556,10 @@ void membustest ( int32_t nb , int32_t loops , bool readf ) {
 	//register char *buf = (char *)malloc(n + 64);
 	//#define malloc coreme
 	int32_t bufSize = 50*1024*1024;
-	register char *buf = (char *) mmalloc ( bufSize , "main" );
+	char *buf = (char *) mmalloc ( bufSize , "main" );
 	if ( ! buf ) return;
 	char *bufStart = buf;
-	register char *bufEnd = buf + n;
+	char *bufEnd = buf + n;
 
 	//fprintf(stderr,"pre-reading %" INT32 " NB \n",nb);
 	// pre-read it so sbrk() can do its thing
@@ -16580,7 +16580,7 @@ void membustest ( int32_t nb , int32_t loops , bool readf ) {
 	//   movl	4(%eax), %eax
 	//   ...
  loop:
-	register int32_t c;
+	int32_t c;
 
 	if ( readf ) {
 		while ( buf < bufEnd ) {

@@ -59,8 +59,8 @@ uint32_t reverseBits ( uint32_t x ) ;
 
 // async signal safe functions
 //void memcpy_ass ( register void *dest , register const void *src , int32_t len ) ;
-void memset_ass ( register void *dst , register const char c , int32_t len ) ;
-void memset_nice ( register void *dst , register const char c , int32_t len ,
+void memset_ass ( void *dst , const char c , int32_t len ) ;
+void memset_nice ( void *dst , const char c , int32_t len ,
 		   int32_t niceness ) ;
 
 // . "*Bits" is bit offset in *
