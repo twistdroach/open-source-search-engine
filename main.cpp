@@ -359,13 +359,6 @@ int main2 ( int argc , char *argv[] ) {
 	g_conf.m_runAsDaemon = false;
 	g_conf.m_logToFile = false;
 
-#ifndef CYGWIN
-	// appears that linux 2.4.17 kernel would crash with this?
-	// let's try again on gk127 to make sure
-	// YES! gk0 cluster has run for months with this just fine!!
-	mlockall(MCL_CURRENT|MCL_FUTURE);
-#endif
-
 	//g_timedb.makeStartKey ( 0 );
 
 	// Anchor the stack start point at the first stack variable
