@@ -2,7 +2,6 @@
 
 // . mostly just wrappers for most memory functions
 // . allows us to constrain memory
-// . also calls mlockall() on construction to avoid swapping out any mem
 // . TODO: primealloc(int slotSize,int numSlots) :
 //         pre-allocs a table of these slots for faster mmalloc'ing
 
@@ -13,15 +12,8 @@
 #include <netinet/in.h>      // for htonll
 #include "Conf.h"
 #include <new>
-//#ifdef DMALLOC
-//#include <dmalloc.h>
-//#endif
 
 extern bool g_inMemFunction;
-
-// we share malloc between threads, so you need to get the lock
-//void mutexLock   ( );
-//void mutexUnlock ( );
 
 class SafeBuf;
 // some memory manipulation functions inlined below
@@ -33,13 +25,6 @@ int64_t ntohll ( uint64_t a );
 #endif
 key_t ntohkey ( key_t key ) ;
 key_t htonkey ( key_t key ) ;
-
-/*
-int32_t getNumBitsOn ( unsigned char      bits );
-int32_t getNumBitsOn ( uint16_t     bits );
-int32_t getNumBitsOn ( uint32_t      bits );
-int32_t getNumBitsOn ( uint64_t bits );
-*/
 
 // assume only one bit is set for this (used by Address.cpp)
 int32_t getBitPosLL   ( uint8_t *bit );
@@ -87,7 +72,7 @@ class Mem {
 	Mem();
 	~Mem();
 
-	bool init ( );//int64_t maxMem );
+	bool init ( );
 
 	void  setPid();
 	pid_t getPid();
@@ -102,14 +87,6 @@ class Mem {
 		return dup ( string , gbstrlen ( string ) + 1 , note ); };
 
 	int32_t validate();
-
-	//void *gbmalloc2  ( int size , const char *note  );
-	//void *gbcalloc2  ( int size , const char *note);
-	//void *gbrealloc2 ( void *oldPtr,int oldSize ,int newSize,
-	//			const char *note);
-	//void  gbfree2    ( void *ptr , int size , const char *note);
-	//char *dup2       ( const void *data , int32_t dataSize ,
-	//			const char *note);
 
 	// this one does not include new/delete mem, only *alloc()/free() mem
 	int64_t getUsedMem () { return m_used; };
@@ -158,16 +135,9 @@ class Mem {
 
 	int32_t findPtr ( void *target ) ;
 
-	// alloc this much memory then immediately free it.
-	// this should assign this many pages to this process id so no other
-	// process can grab them -- only us.
-	// TODO: use sbrk()
-	//	bool  reserveMem ( int64_t bytesToReserve );
-
 	int64_t m_maxAlloced; // at any one time
 	int64_t m_maxAlloc; // the biggest single alloc ever done
 	const char *m_maxAllocBy; // the biggest single alloc ever done
-	//int64_t m_maxMem;
 
 	// shared mem used
 	int64_t m_sharedUsed;
@@ -189,10 +159,7 @@ class Mem {
 
 extern class Mem g_mem;
 
-//#define mmalloc(size,note) malloc(size)
-//#define mfree(ptr,size,note) free(ptr)
-//#define mrealloc(oldPtr,oldSize,newSize,note) realloc(oldPtr,newSize)
-inline void *mmalloc ( int size , const char *note ) { 
+inline void *mmalloc ( int size , const char *note ) {
 	return g_mem.gbmalloc(size,note); };
 inline void *mcalloc ( int size , const char *note ) { 
 	return g_mem.gbcalloc(size,note); };
@@ -212,24 +179,15 @@ inline void mdelete ( void *ptr , int32_t size , const char *note ) {
 inline bool relabel   ( void *ptr , int32_t size , const char *note ) {
 	return g_mem.lblMem( ptr, size, note ); };
 
-//#ifdef _LEAKCHECK_
-// use a macro to make delete calls call g_mem.rmMem()
-//#define delete(X) { delete X; g_mem.m_freed += sizeof(*X); g_mem.rmMem(X,sizeof(*X),"new"); }
-//#elif
-//#define delete(X) { delete X; g_mem.m_freed += sizeof(*X); }
-//#endif
-//#ifndef DMALLOC
 void operator delete ( void *p ) throw();
 void * operator new (size_t size) noexcept(false);
 // you MUST call mmalloc, mcalloc and mrealloc!!
 #define malloc coreme 
 #define calloc coreme 
 #define realloc coreme 
-//#endif
 inline void *coreme ( int x ) { char *xx = NULL; *xx = 0; return NULL; }
 
 int32_t getAllocSize(void *p);
-//void * operator new (size_t size) ;
 
 inline int32_t getHighestLitBit ( uint16_t bits ) {
 	unsigned char b = *((unsigned char *)(&bits) + 1);

@@ -27,23 +27,9 @@
 
 bool g_inMemFunction = false;
 
-// from malloc.c (dlmalloc)
-//void *dlmalloc(size_t);
-//void  dlfree(void*);
-//void* dlcalloc(size_t, size_t);
-//void* dlrealloc(void*, size_t);
-//#include "malloc.c"
-
 #define sysmalloc ::malloc
 #define sysrealloc ::realloc
 #define sysfree ::free
-/*
-// try using dlmalloc to see how it cores
-#define sysmalloc dlmalloc
-#define syscalloc dlcalloc
-#define sysrealloc dlrealloc
-#define sysfree dlfree
-*/
 
 // allocate an extra space before and after the allocated memory to try
 // to catch sequential buffer underruns and overruns. if the write is way
@@ -72,90 +58,6 @@ static void *getElecMem ( int32_t size ) ;
 static void  freeElecMem ( void *p  ) ;
 #endif
 
-/*
-static int32_t s_mutexLockAvail = 1;
-
-// usually we can use the UdpServer ptr as the pid, or if the main process,
-// then just use 0
-void mutexLock ( ) {
-
-	//log("gb: mutex lock");
- loop:
-
-	//log("gb: mutex lock loop 1");
-
-	// wait for the lock if already taken
-	while ( s_mutexLockAvail != 1 ) sched_yield();
-	
-	//log("gb: mutex lock loop 2");
-	
-	// . it now *seems* to be available, i.e. equal to 1 so try to get it
-	// . similar to atomic.h in kernel source
-	
-	// Atomically decrements @s_mutexLockAvail by 1
-	// and returns true if the result is zero, or false for all
-	// other cases.  Note that the guaranteed
-	// useful range of an atomic_t is only 24 bits.
-	unsigned char c;
-	__asm__ __volatile__(
-			     "lock;"
-			     "decl %0; sete %1"
-			     :"=m" (s_mutexLockAvail), "=qm" (c)
-			     :"m" (s_mutexLockAvail) 
-			     : "memory");
-
-
-	//log("gb c=%" INT32 " mutexAvail=%" INT32 "",c,s_mutexLockAvail);
-	
-	// if c is 0, we got the lock, otherwise, keep trying
-	if ( c != 1 ) {
-		//log("gb: failed to get lock. retrying.");
-		goto loop;
-	}
-	// log("gb: got mutex lock");
-	s_mutexLockAvail = 0;
-}
-
-void mutexUnlock ( ) {
-	//if ( s_mutexLockAvail != 0 ) {
-	//	log("gb: mutex unlock HEY lock=%" INT32 "",s_mutexLockAvail);
-	//	//char *xx = NULL; *xx = 0;
-	//}
-
-	// a single instruction is atomic
-	__asm__ __volatile__(
-			     //"lock;"
-			     "movl $1,%0;"
-			     :"=m" (s_mutexLockAvail)
-			     :"m" (s_mutexLockAvail) 
-			     : "memory");
-
-	if ( s_mutexLockAvail != 1 )
-		logf(LOG_INFO,"gb: mutex unlock lock=%" INT32 "",s_mutexLockAvail);
-}
-*/
-
-// if we alloc too much in one call, pthread_create() fails for some reason
-//#define MAXMEMPERCALL (256*1024*1024-1)
-
-//[mwells@lenny c]$ echo "inuse on" > .psrc
-//[mwells@lenny c]$ ./slowleak
-//** Insure messages will be written to insra **
-//[mwells@lenny c]$ tca -X
-
-// the thread lock
-//static pthread_mutex_t s_lock = PTHREAD_MUTEX_INITIALIZER;
-
-// make it big for production machines
-//#define DMEMTABLESIZE (1024*602)
-// there should not be too many mallocs any more
-// i boosted from 300k to 600k so we can get summaries for 150k results
-// for the csv download...
-//#define DMEMTABLESIZE (1024*600)
-//#define DMEMTABLESIZE (1024*202)
-// and small for local machine
-//#define DMEMTABLESIZE (1024*50)
-
 // a table used in debug to find mem leaks
 static void **s_mptrs ;
 static int32_t  *s_sizes ;
@@ -165,7 +67,6 @@ static int32_t   s_n = 0;
 static bool   s_initialized = 0;
 
 // our own memory manager
-//static MemPoolVar s_pool;
 void operator delete (void *ptr) throw () {
 	// now just call this
 	g_mem.gbfree ( (char *)ptr , -1 , NULL );
@@ -178,10 +79,6 @@ void operator delete [] ( void *ptr ) throw () {
 }
 
 #define MINMEM 6000000
-//#define MINMEM 0
-
-// caution -- put {}'s around the "new"
-//#define new(X) new X; g_mem.addMem(X,sizeof(*X),"new");
 
 void Mem::addnew ( void *ptr , int32_t size , const char *note ) {
 	// 1 --> isnew
@@ -194,28 +91,7 @@ void Mem::delnew ( void *ptr , int32_t size , const char *note ) {
 	// s_sizes[]. and the delete() operator is overridden below to
 	// catch this.
 	return;
-	/*
-	// don't let electric fence zap us
-	//if ( size == 0 && ptr==(void *)0x7fffffff) return;
-	if ( size == 0 ) return;
-	// watch out for bad sizes
-	if ( size < 0 ) {
-		log(LOG_LOGIC,"mem: delete(%" INT32 "): Bad size.", size );
-		return;
-	}
-	// debug
-	if ( size > MINMEM )
-		log(LOG_INFO,"mem: delete(%" INT32 "): %s.",size,note);
-	// count it
-	if ( size > 0 ) {
-		m_used -= size;
-		m_numAllocated--;
-	}
-	*/
 }
-
-// this must be defined for newer libc++
-//int bad_alloc ( ) { return 1; };
 
 // . global override of new and delete operators
 // . seems like constructor and destructor are still called
@@ -230,32 +106,20 @@ void * operator new (size_t size) {
 
 	// . fail randomly
 	// . good for testing if we can handle out of memory gracefully
-	//static int32_t s_mcount = 0;
-	//s_mcount++;
-	//if ( s_mcount > 57 && (rand() % 1000) < 2 ) { 
-	if ( g_conf.m_testMem && (rand() % 100) < 2 ) { 
+	if ( g_conf.m_testMem && (rand() % 100) < 2 ) {
 		g_errno = ENOMEM; 
 		log("mem: new-fake(%" UINT32 "): %s",(uint32_t)size, 
 		    mstrerror(g_errno));
 		throw std::bad_alloc(); 
-		// return NULL; }
-	} 
+	}
 
-	//char unlock = true;
-	//if ( ! g_stats.m_gotLock || g_threads.amThread() ) mutexLock();
-	//else                                               unlock = false;
-
-	// hack so hostid #0 can use more mem
 	int64_t max = g_conf.m_maxMem;
-	//if ( g_hostdb.m_hostId == 0 )  max += 2000000000;
 
 	// don't go over max
 	if ( g_mem.m_used + (int32_t)size >= max &&
 	     g_conf.m_maxMem > 1000000 ) {
 		log("mem: new(%" UINT32 "): Out of memory.", (uint32_t)size );
-		//if ( unlock ) mutexUnlock();
 		throw std::bad_alloc();
-		//throw 1;
 	}
 
 	g_inMemFunction = true;
@@ -269,7 +133,6 @@ void * operator new (size_t size) {
 	else
 		mem = sysmalloc ( size );
 #else
-	//void *mem = dlmalloc ( size );
 	void *mem = sysmalloc ( size );
 #endif
 
@@ -277,15 +140,11 @@ void * operator new (size_t size) {
 
 	int32_t  memLoop = 0;
 newmemloop:
-	//void *mem = s_pool.malloc ( size );
 	if ( ! mem && size > 0 ) {
 		g_mem.m_outOfMems++;
 		g_errno = errno;
 		log("mem: new(%" INT32 "): %s",(int32_t)size,mstrerror(g_errno));
-		//if ( unlock ) mutexUnlock();
 		throw std::bad_alloc();
-		//throw 1;
-		//return NULL;
 	}
 	if ( (PTRTYPE)mem < 0x00010000 ) {
 #ifdef EFENCE
@@ -309,7 +168,6 @@ newmemloop:
 					"memory allocation 100 times, "
 					"aborting and returning ENOMEM." );
 			g_errno = ENOMEM;
-			//if ( unlock ) mutexUnlock();
 			throw std::bad_alloc();
 		}
 		goto newmemloop;
@@ -317,7 +175,6 @@ newmemloop:
 
 	g_mem.addMem ( mem , size , "TMPMEM" , 1 );
 
-	//if ( unlock ) mutexUnlock();
 	return mem;
 }
 
@@ -343,16 +200,13 @@ void * operator new [] (size_t size) {
 	//	// return NULL; }
 	//} 
 	
-	// hack so hostid #0 can use more mem
 	int64_t max = g_conf.m_maxMem;
-	//if ( g_hostdb.m_hostId == 0 )  max += 2000000000;
 
 	// don't go over max
 	if ( g_mem.m_used + (int32_t)size >= max &&
 	     g_conf.m_maxMem > 1000000 ) {
 		log("mem: new(%" UINT32 "): Out of memory.", (uint32_t)size );
 		throw std::bad_alloc();
-		//throw 1;
 	}
 
 	g_inMemFunction = true;
@@ -366,7 +220,6 @@ void * operator new [] (size_t size) {
 	else
 		mem = sysmalloc ( size );
 #else
-	//void *mem = dlmalloc ( size );
 	void *mem = sysmalloc ( size );
 #endif
 
@@ -375,16 +228,12 @@ void * operator new [] (size_t size) {
 
 	int32_t  memLoop = 0;
 newmemloop:
-	//void *mem = s_pool.malloc ( size );
 	if ( ! mem && size > 0 ) {
 		g_errno = errno;
 		g_mem.m_outOfMems++;
 		log("mem: new(%" UINT32 "): %s",
 		    (uint32_t)size, mstrerror(g_errno));
-		//if ( unlock ) mutexUnlock();
 		throw std::bad_alloc();
-		//throw 1;
-		//return NULL;
 	}
 	if ( (PTRTYPE)mem < 0x00010000 ) {
 #ifdef EFENCE
@@ -407,7 +256,6 @@ newmemloop:
 					"memory allocation 100 times, "
 					"aborting and returning ENOMEM." );
 			g_errno = ENOMEM;
-			//if ( unlock ) mutexUnlock();
 			throw std::bad_alloc();
 		}
 		goto newmemloop;
@@ -417,21 +265,18 @@ newmemloop:
 	//in the array
 	g_mem.addMem ( (char*)mem+4 , size-4, "TMPMEM" , 1 );
 
-	//if ( unlock ) mutexUnlock();
 	return mem;
 }
 
 
 Mem::Mem() {
 	m_used = 0;
-	// assume large max until this gets set for real
-	//m_maxMem  = 50000000;
 	m_numAllocated = 0;
 	m_numTotalAllocated = 0;
 	m_maxAlloc = 0;
 	m_maxAllocBy = "";
 	m_maxAlloced = 0;
-	m_memtablesize = 0;//DMEMTABLESIZE;
+	m_memtablesize = 0;
  	m_stackStart = NULL;
 	// shared mem used
 	m_sharedUsed = 0LL;
@@ -441,10 +286,6 @@ Mem::Mem() {
 
 Mem::~Mem() {
 	if ( getUsedMem() == 0 ) return;
-	//log(LOG_INIT,"mem: Memory allocated now: %" INT32 ".\n", getUsedMem() );
-	// this is now called from main.cpp::allExit() because it freezes
-	// up in printMem()'s call to sysmalloc() for some reason
-	//	printMem();
 }
 
 //int32_t Mem::getUsedMem    () { return 0; }; //return mallinfo().usmblks; };
@@ -458,30 +299,16 @@ pid_t s_pid = (pid_t) -1;
 
 void Mem::setPid() {
 	s_pid = getpid();
-	//log("mem: pid is %" INT32 "",(int32_t)s_pid);
-	if(s_pid == -1 ) { log("monitor: bad s_pid"); char *xx=NULL;*xx=0; } 
+	if(s_pid == -1 ) { log("monitor: bad s_pid"); char *xx=NULL;*xx=0; }
 }
 
 pid_t Mem::getPid() {
 	return s_pid;
 }
 
-bool Mem::init  ( ) { // int64_t maxMem ) { 
+bool Mem::init  ( ) {
 	// set main process pid
 	s_pid = getpid();
-	// . don't swap our memory out, man...
-	// . damn, linux 2.4.17 seems to crash the kernel sometimes w/ this
-	//if ( mlockall( MCL_CURRENT | MCL_FUTURE ) == -1 ) {
-	//	log("Mem::init: mlockall: %s" , strerror(errno) );
-	//	errno = 0;
-	//}
-	//m_maxMem  = maxMem;
-	// set it 
-	//struct rlimit lim;
-	//lim.rlim_max = maxMem;
-	//setrlimit ( RLIMIT_AS , &lim ); // ulimit -v
-	// note
-	//log(LOG_INIT,"mem: Max memory usage set to %" INT64 " bytes.", maxMem);
 	// warning msg
 	if ( g_conf.m_detectMemLeaks )
 		log(LOG_INIT,"mem: Memory leak checking is enabled.");
@@ -490,81 +317,19 @@ bool Mem::init  ( ) { // int64_t maxMem ) {
 	log(LOG_INIT,"mem: using electric fence!!!!!!!");
 #endif
 
-	/*
-	  take this out for now it seems to hang the OS when running
-	  as root
-
-#ifndef TITAN
-	// if we can't alloc 3gb exit and retry
-	int64_t start = gettimeofdayInMilliseconds();
-	char *pools[30];
-	int64_t count = 0LL;
-	int64_t chunk = 100000000LL; // 100MB chunks
-	int64_t need = 3000000000LL; // 3GB
-	int32_t i = 0; for ( i = 0 ; i < 30 ; i++ ) {
-		pools[i] = (char *)mmalloc(chunk,"testmem");
-		count += chunk;
-		if ( pools[i] ) continue;
-		count -= chunk;
-		log("mem: could only alloc %" INT64 " bytes of the "
-		    "%" INT64 " required to run gigablast. exiting.",
-		    count , need );
-	}
-	for ( int32_t j = 0 ; j < i ; j++ )
-		mfree ( pools[j] , chunk , "testmem" );
-	int64_t now = gettimeofdayInMilliseconds();
-	int64_t took = now - start;
-	if ( took > 20 ) log("mem: took %" INT64 " ms to check memory ceiling",took);
-	// return if could not alloc the full 3GB
-	if ( i < 30 ) return false;
-#endif
-	*/
-
 	// reset this, our max mem used over time ever because we don't
 	// want the mem test we did above to count towards it
 	m_maxAlloced = 0;
 
-	// init or own malloc stuff in malloc.c (from doug leay)
-	//if ( mdw_init_sbrk ( maxMem ) ) return true;
-	// bitch
-	//return log("Mem::init: failed to malloc %" INT32 " bytes", maxMem);
 	return true;
 }
-
-//bool  Mem::reserveMem ( int64_t bytesToReserve ) {
-	// TODO: use sbrk()?
-//	char *s = (char *) malloc ( bytesToReserve );
-//	if ( s ) { free ( s ); return true; }
-	// TODO: try smaller blocks
-//	return false;
-//}
 
 // this is called by C++ classes' constructors to register mem
 void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 
-	// enforce safebuf::setLabel being called
-	//if ( size>=100000 && note && strcmp(note,"SafeBuf")==0 ) {
-	//	char *xx=NULL;*xx=0; }
-
-	//validate();
-
-	 // if ( note && note[0] == 'S' && note[1] == 'a' &&
-	 //      note[2] == 'f' && size == 1179 )
-	 // 	log("mem: got mystery safebuf");
-
-
-        //m_memtablesize = 0;//DMEMTABLESIZE;
-	  // 4G/x = 600*1024 -> x = 4000000000.0/(600*1024) = 6510
-	// crap, g_hostdb.init() is called inmain.cpp before
-	// g_conf.init() which is needed to set g_conf.m_maxMem...
 	if ( ! s_initialized ) {
-		//m_memtablesize = m_maxMem / 6510;
-		// support 1.2M ptrs for now. good for about 8GB
-		// raise from 3000 to 8194 to fix host #1
 		m_memtablesize = 8194*1024;//m_maxMem / 6510;
-		//if ( m_maxMem < 8000000000 ) { char *xx=NULL;*xx=0; }
 	}
-
 
 	if ( (int32_t)m_numAllocated + 100 >= (int32_t)m_memtablesize ) { 
 		bool s_printed = false;
@@ -580,19 +345,9 @@ void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 		log(LOG_LOGIC,"mem: In sig handler.");
 		char *xx = NULL; *xx = 0;
 	}
-	// debug msg (mdw)
-	//char bb[100];
-	//bb[0]=0;
-	//if ( strcmp(note,"UdpSlot")== 0 ) {
-	//	unsigned char c = (*(unsigned char *)mem) & 0x3f;
-	//	sprintf(bb," msgType=0x%"XINT32"",(int32_t)c);
-	//}
 	if ( g_conf.m_logDebugMem )
 		log("mem: add %08" PTRFMT " %" INT32 " bytes (%" INT64 ") (%s)",
 		    (PTRTYPE)mem,size,m_used,note);
-
-	//if ( strcmp(note,"RdbList") == 0 ) 
-	//	log("mem: freelist%08"XINT32" %" INT32 "bytes (%s)",(int32_t)mem,size,note);
 
 	// check for breech after every call to alloc or free in order to
 	// more easily isolate breeching code.. this slows things down a lot
@@ -601,8 +356,6 @@ void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 
 	// copy the magic character, iff not a new() call
 	if ( size == 0 ) { char *xx = NULL; *xx = 0; }
-	// don't add 0 bytes
-	//if ( size == 0 ) return;
 	// sanity check
 	if ( size < 0 ) {
 		log("mem: addMem: Negative size.");
@@ -636,34 +389,22 @@ void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 		for ( int32_t i = 0 ; i < OVERPAD ; i++ )
 			((char *)mem)[0+size+i] = MAGICCHAR;
 	}
-	// hey!
+
 	if ( s_pid == -1 && m_numTotalAllocated >1000 ) {
 		log(LOG_WARN, "pid is %i and numAllocs is %i", (int)s_pid,  
 		    (int)m_numTotalAllocated);
-        //char *xx=NULL;*xx=0;}
-        //	if ( s_pid == -1 && m_numTotalAllocated >1000 ) { char *xx=NULL;*xx=0;}
     }
 
 	// threads can't be here!
 	if ( s_pid != -1 && getpid() != s_pid ) {
 		log("mem: addMem: Called from thread.");
 		sleep(50000);
-		//char *p = NULL;
-		//*p = 1;
 		char *xx = NULL; *xx = 0;
 	}
 
 	// if no label!
 	if ( ! note[0] ) log(LOG_LOGIC,"mem: addmem: NO note.");
 
-	// lock for threads
-	//pthread_mutex_lock ( &s_lock );
-	// return NULL if we'd go over our limit
-	//if ( getUsedMem() + size > s_maxMem ) {
-	//	log("Mem::addMem: max mem limit breeched");
-	//	sleep(50000); 
-	//	return;
-	//}
 	// clear mem ptrs if this is our first call
 	if ( ! s_initialized ) {
 
@@ -687,8 +428,6 @@ void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 	if ( (int32_t)s_n > (int32_t)m_memtablesize ) {
 		log("mem: addMem: No room in table for %s size=%" INT32 ".",
 		    note,size);
-		// unlock for threads
-		//pthread_mutex_unlock ( &s_lock );
 		return;
 	}
 	// hash into table
@@ -737,8 +476,6 @@ void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 	s_mptrs  [ h ] = mem;
 	s_sizes  [ h ] = size;
 	s_isnew  [ h ] = isnew;
-	//log("adding %" INT32 " size=%" INT32 " to [%" INT32 "] #%" INT32 " (%s)",
-	//(int32_t)mem,size,h,s_n,note);
 	s_n++;
 	// debug
 	if ( (size > MINMEM && g_conf.m_logDebugMemUsage) || size>=100000000 )
@@ -761,9 +498,6 @@ void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 	gbmemcpy ( here , note , len );
 	// make sure NULL terminated
 	here[len] = '\0';
-	// unlock for threads
-	//pthread_mutex_unlock ( &s_lock );
-	//validate();
 }
 
 
@@ -857,8 +591,6 @@ bool Mem::printMemBreakdownTable ( SafeBuf* sb,
 	for ( ; i < n ; i++ ) {
 		// if empty skip
 		if ( ! e[i].m_hash ) continue;
-		//if ( e[i].m_allocated > 120 && e[i].m_allocated < 2760 )
-		//	log("hey %" INT32 "", e[i].m_allocated);
 		// skip if not a winner
 		if ( e[i].m_allocated <= min ) continue;
 		// replace the lowest winner
@@ -926,11 +658,6 @@ bool Mem::lblMem( void *mem, int32_t size, const char *note ) {
 		//     "relabeling.", mem );
 		return val;
 	}
-	// else if( (uint32_t)mem == 0x7fffffff ) {
-	// 	//log( "mem: lblMem: Mem addr (0x%08X) is dummy address, not "
-	// 	//     "relabeling.", mem );
-	// 	return val;
-	// }
 
 	uint32_t u = (PTRTYPE)mem * (PTRTYPE)0x4bf60ade;
 	uint32_t h = u % (uint32_t)m_memtablesize;
@@ -968,8 +695,6 @@ bool Mem::lblMem( void *mem, int32_t size, const char *note ) {
 // this is called by C++ classes' destructors to unregister mem
 bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 
-	//validate();
-
 	// sanity check
 	if ( g_inSigHandler ) {
 		log(LOG_LOGIC,"mem: In sig handler 2.");
@@ -980,9 +705,6 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 		log("mem: free %08" PTRFMT " %" INT32 "bytes (%s)",
 		    (PTRTYPE)mem,size,note);
 
-	//if ( strcmp(note,"RdbList") == 0 ) 
-	//	log("mem: freelist%08"XINT32" %" INT32 "bytes (%s)",(int32_t)mem,size,note);
-
 	// check for breech after every call to alloc or free in order to
 	// more easily isolate breeching code.. this slows things down a lot
 	// though.
@@ -990,11 +712,9 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 
 	// don't free 0 bytes
 	if ( size == 0 ) return true;
-	// hey!
 	if ( s_pid == -1 && m_numTotalAllocated >1000 ) {
 		log(LOG_WARN, "pid is %i and numAllocs is %i", 
 		    (int)s_pid,  (int)m_numTotalAllocated);
-        //char *xx=NULL;*xx=0;}
 	}
 	// threads can't be here!
 	if ( s_pid != -1 && getpid() != s_pid ) {
@@ -1002,13 +722,7 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 		sleep(50000);
 		// throw a bogus sig so we crash
 		char *xx=NULL;*xx=0;
-		//sigval_t svt; 
-		//svt.sival_int = 1; // fd;
-		//sigqueue ( s_pid, GB_SIGRTMIN+1 , svt ) ;
-		//return true;
 	}
-	// lock for threads
-	//pthread_mutex_lock ( &s_lock );
 	// . hash by first hashing "mem" to mix it up some
 	// . balance the mallocs/frees
 	// . hash into table
@@ -1030,14 +744,10 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 		//   and m_numAllocated here
 		// . no, we should core otherwise it can result in some
 		//   pretty hard to track down bugs later.
-		//return false;
 #ifndef _VALGRIND_
 		char *xx = NULL;
 		*xx = 0;
 #endif
-		//sleep(50000);
-		// unlock for threads
-		//pthread_mutex_unlock ( &s_lock );
 		return false;
 	}
 	// are we from the "new" operator
@@ -1060,9 +770,6 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 		char *xx = NULL;
 		*xx = 0;
 #endif
-		//sleep(50000);
-		// unlock for threads
-		//pthread_mutex_unlock ( &s_lock );
 		return false;
 	}
 
@@ -1077,9 +784,6 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 	//
 	// decrement freed mem
 	m_used -= size;
-	// new/delete does not have padding because the "new"
-	// function can't support it right now
-	//if ( ! isnew ) m_used -= (UNDERPAD + OVERPAD);
 	m_numAllocated--;
 
 	// check for breeches, if we don't do it here, we won't be able
@@ -1105,8 +809,6 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 		if ( k == h ) { h++; continue; }
 		// otherwise, move it back to fill the gap
 		s_mptrs[h] = NULL;
-		// dec count
-		//s_n--;
 		// if slot #k is full, chain
 		for ( ; s_mptrs[k] ; )
 			if ( ++k >= m_memtablesize ) k = 0;
@@ -1121,10 +823,6 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 		if ( h >= m_memtablesize ) h = 0;
 	}
 
-	//validate();
-
-	// unlock for threads
-	//pthread_mutex_unlock ( &s_lock );
 	return true;
 }
 
@@ -1363,15 +1061,12 @@ int Mem::printMem ( ) {
 	// print out table sorted by sizes
 	for ( int32_t i = 0 ; i < np ; i++ ) {
 		int32_t a = p[i];
-		//if ( strcmp((char *)&s_labels[a*16],"umsg20") == 0 )
-		//	log("hey");
-		log(LOG_INFO,"mem: %05" INT32 ") %" INT32 " 0x%" PTRFMT " %s", 
+		log(LOG_INFO,"mem: %05" INT32 ") %" INT32 " 0x%" PTRFMT " %s",
 		    i,s_sizes[a] , (PTRTYPE)s_mptrs[a] , &s_labels[a*16] );
 	}
 	sysfree ( p );
 	log(LOG_INFO,"mem: # current objects allocated now = %" INT32 "", np );
 	log(LOG_INFO,"mem: totalMem allocated now = %" INT64 "", total );
-	//log("mem: max allocated at one time = %" INT32 "", (int32_t)(m_maxAlloced));
 	log(LOG_INFO,"mem: Memory allocated now: %" INT64 ".\n", getUsedMem() );
 	log(LOG_INFO,"mem: Num allocs %" INT32 ".\n", m_numAllocated );
 	return 1;
@@ -1382,11 +1077,8 @@ void *Mem::gbmalloc ( int size , const char *note ) {
 	if ( size == 0 ) return (void *)0x7fffffff;
 	
 	// random oom testing
-	//static int32_t s_mcount = 0;
-	//s_mcount++;
-	if ( g_conf.m_testMem && (rand() % 100) < 2 ) { 
-		//if ( s_mcount > 1055 && (rand() % 1000) < 2 ) { 
-		g_errno = ENOMEM; 
+	if ( g_conf.m_testMem && (rand() % 100) < 2 ) {
+		g_errno = ENOMEM;
 		log("mem: malloc-fake(%i,%s): %s",size,note,
 		    mstrerror(g_errno));
 		return NULL;
@@ -1396,7 +1088,6 @@ void *Mem::gbmalloc ( int size , const char *note ) {
 
 	// hack so hostid #0 can use more mem
 	int64_t max = g_conf.m_maxMem;
-	//if ( g_hostdb.m_hostId == 0 )  max += 2000000000;
 
 	// don't go over max
 	if ( m_used + size + UNDERPAD + OVERPAD >= max ) {
@@ -1449,28 +1140,11 @@ void *Mem::gbmalloc ( int size , const char *note ) {
 	}
 #endif
 
-	//void *mem = dlmalloc ( size );
 	mem = (void *)sysmalloc ( size + UNDERPAD + OVERPAD );
 #endif
 
 	g_inMemFunction = false;
 
-	// initialization debug
-	//char *pend = (char *)mem + UNDERPAD + size;
-	//for ( char *p = (char *)mem + UNDERPAD ; p < pend ; p++ )
-	//	*p = (char )(rand() % 256);
-	// test mem fragmentation email
-	//static int32_t s_count = 0;
-	//s_count++;
-	//if ( s_count > 1500 && (rand() % 100) < 2 ) { 
-	//	log("mem: malloc-system(%i,%s): %s",size,note,
-	//	    mstrerror(g_errno));
-	//	mem = NULL;
-	//} 
-	// special log
-	//if ( size > 1000000 ) 
-	//	log("allocated %i. (%s) current=%" INT64 "",size,note,m_used);
-	//void *mem = s_pool.malloc ( size ); 
 	int32_t memLoop = 0;
 mallocmemloop:
 	if ( ! mem && size > 0 ) {

@@ -21,10 +21,6 @@
 int gbsystem(char *cmd);
 FILE* gbpopen(char* cmd);
 
-
-#define sleep(a) { char *xx=NULL;*xx=0; }
-//#define sleep(a) logf(LOG_INFO,"sleep: sleep"); 
-
 // we have 2 arrays of slots, m_readSlots and m_writeSlots
 class Slot {
  public:
@@ -34,13 +30,6 @@ class Slot {
 	Slot   *m_next;
 	// save niceness level for doPoll() to segregate
 	int32_t    m_niceness;
-	// last time we called m_callback for this fd
-	//	time_t  m_lastActivity;
-	// . when should this fd timeout and we call the callback with
-	//   errno set to ETIMEDOUT
-	// . set to -1 for never timeout
-	// . m_timeout is in seconds
-	//	int32_t    m_timeout;     
 	// this callback should be called every X milliseconds
 	int32_t      m_tick;
 	// when we were last called in ms time (only valid for sleep callbacks)
@@ -51,11 +40,9 @@ class Slot {
 
 #define  sleep(a) { char *xx=NULL;*xx=0; }
 #define usleep(a) { char *xx=NULL;*xx=0; }
-//#define sleep(a) logf(LOG_INFO,"sleep: sleep"); 
 
 // linux 2.2 kernel has this limitation
 #define MAX_NUM_FDS 1024
-
 
 // . niceness can only be 0, 1 or 2
 // . we use 0 for query traffic
@@ -66,7 +53,6 @@ class Slot {
 // . 0  niceness for disk threads will cancel other threads before launching
 // . 1+ niceness threads will be set to lowest priority using setpriority()
 // . 1  niceness disk thread, when running, will not allow niceness 2 to launch
-//#define MAX_NICENESS 2
 
 // are we using async signal handlers?
 extern bool g_isHot;
@@ -243,7 +229,6 @@ class Loop {
 
 extern class Loop g_loop;
 
-//#define QUICKPOLL(a) if(g_loop.m_canQuickPoll && g_loop.m_needsToQuickPoll) g_loop.quickPoll(a, __PRETTY_FUNCTION__, __LINE__)
 #define QUICKPOLL(a) if(g_niceness && g_loop.m_needsToQuickPoll) g_loop.quickPoll(a, __PRETTY_FUNCTION__, __LINE__)
 
 #endif
