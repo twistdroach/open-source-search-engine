@@ -2799,6 +2799,11 @@ void TcpServer::makeCallback ( TcpSocket * s ) {
 			log("tcp: null callback for s=0x%" PTRFMT "",(PTRTYPE)s);
 		return;
 	}
+    if ( ! s->m_state ) {
+        if ( g_conf.m_logDebugTcp )
+            log("tcp: null callback state for s=0x%" PTRFMT "",(PTRTYPE)s);
+        return;
+    }
 	// record times for profiler
 	//int32_t address = (int32_t)s->m_callback;
 // 	uint64_t start ;

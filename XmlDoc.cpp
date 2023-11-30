@@ -13119,7 +13119,7 @@ int32_t getIsContacty ( Url *url ,
 
 	int32_t check = 0;
 	// loop over the link texts we got
-	for ( Inlink *k = NULL; (k = info1->getNextInlink(k)) ; ) {
+	for ( Inlink *k = NULL; info1 && (k = info1->getNextInlink(k)) ; ) {
 		// never do anything if hop count >= 3
 		if ( hops >= 3 ) break;
 		// javascript must be hopcount 1 only

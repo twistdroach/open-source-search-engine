@@ -1506,6 +1506,7 @@ bool Msg25::sendRequests ( ) {
 			// recycle old inlinks at this point
 			if ( m_k == (Inlink *)-1 ) m_k = NULL;
 			// get it
+            if ( ! m_oldLinkInfo ) break;
 			m_k = m_oldLinkInfo->getNextInlink ( m_k );
 			// if none left, we really are done
 			if ( ! m_k ) break;
@@ -4141,6 +4142,9 @@ Inlink *LinkInfo::getNextInlink ( Inlink *k ) {
 */
 
 Inlink *LinkInfo::getNextInlink ( Inlink *k ) {
+    //TODO - this check gets optimized out in higher optimization levels
+    // because it is relying on undefined behavior.  Callers to this method
+    // need to make sure to call it on a valid object.
 	if ( this == NULL ) return NULL;
 	// if none, return NULL
 	if ( m_numStoredInlinks == 0 ) return NULL;
