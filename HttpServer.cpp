@@ -488,7 +488,7 @@ bool HttpServer::gotDoc ( int32_t n, TcpSocket *s ) {
 		s = unzipReply(s);
 	}
 	// callback 
-	callback ( state, s );
+	if (callback) callback ( state, s );
 	return true;
 
 }
