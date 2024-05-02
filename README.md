@@ -1,44 +1,34 @@
-open-source-search-engine
-=========================
+# open-source-search-engine
+An open source web search engine and spider/crawler. This was once the codebase for a search engine called Gigablast, but the site is no longer operational.  This is a fork of the original codebase located at https://github.com/gigablast/open-source-search-engine
 
-An open source web and enterprise search engine and spider/crawler. As can be seen on http://www.gigablast.com/ .
+# Quick Start
+To experiment, you can quickly launch via docker by running:
+```
+docker run -p 8000:8000 -it --rm moldybits/open-source-search-engine
+```
 
-RUNNING GIGABLAST
------------------
+If you wish to preserve data between runs, you can:
+```
+docker run -p 8000:8000 -it --rm -v $(pwd)/data:/var/gigablast/data0 moldybits/open-source-search-engine
+```
 
-See <a href=html/faq.html>html/faq.html</a> 
-for all administrative documentation including 
-the quick start instructions.
+# Building
+This does not build on ARM and does not work correctly on modern versions of MacOS, though it looks like there once was support at one point in time.
 
-Alternatively, visit http://www.gigablast.com/faq.html
+## Debian or Ubuntu
+```
+sudo apt-get install make g++ libssl-dev libz-dev
+```
 
+## RedHat or AlmaLinux
+I haven't tried this lately...
+```
+sudo yum install gcc-c++ openssl-devel
+```
 
+# Issues & Pull Requests
+Should be filed at https://github.com/twistdroach/open-source-search-engine
 
-CODE ARCHITECTURE
------------------
+# Documentation
+There are various docs located in the html directory.  The FAQ & developer.html are particularly interesting.
 
-See <a href=html/developer.html>html/developer.html</a> 
-for all code documentation.
-
-Alternatively, visit http://www.gigablast.com/developer.html
-
-
-
-CONTACT
--------
-
-Contact me for feature requests or help in general. I will work for free
-for good use cases. mattdwells@hotmail.com.
-
-
-BUILD DEPENDENCIES
-------------------
-
-### On Debian (and derivatives)
-
-    sudo apt-get install make g++ libssl-dev zlib1g-dev
-
-
-### On RedHat/CentOS
-
-    sudo yum install gcc-c++ openssl-devel
