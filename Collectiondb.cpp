@@ -1251,13 +1251,17 @@ int mv(char* src, char* dest) {
         fwrite(buf, 1, read, fdest);
     }
 
+    int retval = 0;
+    if (ferror(fdest) || ferror(fsrc))
+        retval = -1;
+
     fclose(fsrc);
     fclose(fdest);
-    if (ferror(fdest) || ferror(fsrc))
-        return -1;
 
-    remove(src);
-    return 0;
+    if (retval == 0)
+        remove(src);
+
+    return retval;
 }
 
 // . returns false if we need a re-call, true if we completed
@@ -1962,19 +1966,9 @@ bool CollectionRec::load ( char *coll , int32_t i ) {
 
 	// if it had corrupted data from saving corrupted mem zero it out
 	CrawlInfo *stats = &m_localCrawlInfo;
-	// point to the stats for that host
-	int64_t *ss = (int64_t *)stats;
+
 	// are stats crazy?
-	bool crazy = false;
-	for ( int32_t j = 0 ; j < NUMCRAWLSTATS ; j++ ) {
-		// crazy stat?
-		if ( *ss > 1000000000LL ||
-		     *ss < -1000000000LL ) {
-			crazy = true;
-			break;
-		}
-		ss++;
-	}
+	bool crazy = !stats->is_sane();
 	if ( m_localCrawlInfo.m_collnum != m_collnum )
 		crazy = true;
 	if ( crazy ) {
@@ -3666,9 +3660,6 @@ bool CollectionRec::rebuildUrlFiltersDiffbot() {
 	int32_t wait = (int32_t)(m_collectiveCrawlDelay * 1000.0);
 	// default to 250ms i guess. -1 means unset i think.
 	if ( m_collectiveCrawlDelay < 0.0 ) wait = 250;
-
-	bool isEthan = false;
-	if (m_coll)isEthan=strstr(m_coll,"2b44a0e0bb91bbec920f7efd29ce3d5b");
 
 	// it looks like we are assuming all crawls are repeating so that
 	// &rountStart=<currenttime> or &roundStart=0 which is the same

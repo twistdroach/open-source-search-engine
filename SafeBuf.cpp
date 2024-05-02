@@ -164,7 +164,12 @@ bool SafeBuf::safeMemcpy(char *s, int32_t len) {
 	if ( m_length + len > m_capacity ) {
 		if ( ! reserve(m_length+len) ) return false;
 	}
-	gbmemcpy(m_buf + m_length, s, len);
+	/* Only call memcpy if we have something to copy, otherwise
+	 * a freshly reset() SafeBuf being called with
+     * 0 length string invokes gbmemcopy with a nullptr destination
+     */
+	if (len != 0)
+	    gbmemcpy(m_buf + m_length, s, len);
 	m_length = m_length + len; // tmp-1;
 	// this should not hurt anything
 	//m_buf[m_length] = '\0';

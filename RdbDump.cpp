@@ -400,8 +400,7 @@ bool RdbDump::dumpTree ( bool recall ) {
 		// . check the list we got from the tree for problems
 		// . ensures keys are ordered from lowest to highest as well
 		//#ifdef GBSANITYCHECK
-		if ( 1==1 ||
-		     g_conf.m_verifyWrites ||
+		if ( g_conf.m_verifyWrites ||
 		     g_conf.m_verifyDumpedLists ) {
 			char *s = "none";
 			if ( m_rdb ) s = getDbnameFromId(m_rdb->m_rdbId);
@@ -409,13 +408,13 @@ bool RdbDump::dumpTree ( bool recall ) {
 			char *ks2 = "";
 			char tmp1[32];
 			char tmp2[32];
-			if ( m_firstKeyInQueue ) {
+			if ( *m_firstKeyInQueue ) {
 				strcpy ( tmp1 , 
 					 KEYSTR(m_firstKeyInQueue,
 						m_list->m_ks));
 				ks1 = tmp1;
 			}
-			if ( m_lastKeyInQueue ) {
+			if ( *m_lastKeyInQueue ) {
 				strcpy ( tmp2 , 
 					 KEYSTR(m_lastKeyInQueue,
 						m_list->m_ks));

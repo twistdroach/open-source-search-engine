@@ -41,8 +41,8 @@ bool g_inMemFunction = false;
 #define UNDERPAD 0
 #define OVERPAD  0
 #else
-#define UNDERPAD 4
-#define OVERPAD  4
+#define UNDERPAD alignof(int64_t)
+#define OVERPAD  alignof(int64_t)
 #endif
 
 #define MAGICCHAR 0xda

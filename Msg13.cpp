@@ -909,7 +909,7 @@ void gotProxyHostReplyWrapper ( void *state , UdpSlot *slot ) {
 	r->m_proxyUsernamePwdAuth[0] = '\0';
 
 	// if proxy had one copy into the buf
-	if ( prep->m_usernamePwd && prep->m_usernamePwd[0] ) {
+	if ( prep->m_usernamePwd[0] ) {
 		int32_t len = gbstrlen(prep->m_usernamePwd);
 		gbmemcpy ( r->m_proxyUsernamePwdAuth , 
 			   prep->m_usernamePwd ,
@@ -3321,7 +3321,7 @@ bool addNewProxyAuthorization ( SafeBuf *req , Msg13Request *r ) {
 	SpiderProxy *sp = getSpiderProxyByIpPort (r->m_proxyIp,r->m_proxyPort);
 
 	// if none required, all done
-	if ( ! sp->m_usernamePwd ) return true;
+	if ( ! sp->m_usernamePwd[0] ) return true;
 	// strange?
 	if ( req->length() < 8 ) return false;
 	// back up over final \r\n
@@ -12145,7 +12145,7 @@ bool printHammerQueueTable ( SafeBuf *sb ) {
 	Url cu;
 	cu.set ( r->ptr_url );
 	bool isHttps = false;
-	if ( cu.m_url && cu.m_url[4] == 's' ) isHttps = true;
+	if ( cu.m_url[4] == 's' ) isHttps = true;
 	if ( isHttps ) sb->safeStrcpy ( "https://");
 	else           sb->safeStrcpy ( "http://" );
         sb->safeMemcpy ( cu.getHost() , cu.getHostLen() );

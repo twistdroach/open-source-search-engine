@@ -301,6 +301,32 @@ class CrawlInfo {
 
 
 	void reset() { memset ( this , 0 , sizeof(CrawlInfo) ); };
+	[[nodiscard]] bool is_sane() const {
+	    return is_sane_value(m_objectsDeleted) &&
+                is_sane_value(m_objectsAdded) &&
+                is_sane_value(m_urlsConsideredNOTUSED) &&
+                is_sane_value(m_pageDownloadAttempts) &&
+                is_sane_value(m_pageDownloadSuccesses) &&
+                is_sane_value(m_pageProcessAttempts) &&
+                is_sane_value(m_pageProcessSuccesses) &&
+                is_sane_value(m_urlsHarvested);
+	}
+
+	void accumulate(const CrawlInfo &crawlInfo) {
+	    m_objectsDeleted += crawlInfo.m_objectsDeleted;
+	    m_objectsAdded += crawlInfo.m_objectsAdded;
+	    m_urlsConsideredNOTUSED += crawlInfo.m_urlsConsideredNOTUSED;
+	    m_pageDownloadAttempts += crawlInfo.m_pageDownloadAttempts;
+	    m_pageDownloadSuccesses += crawlInfo.m_pageDownloadSuccesses;
+	    m_pageProcessAttempts += crawlInfo.m_pageProcessAttempts;
+	    m_pageProcessSuccesses += crawlInfo.m_pageProcessSuccesses;
+	    m_urlsHarvested += crawlInfo.m_urlsHarvested;
+	}
+
+private:
+[[nodiscard]] static bool is_sane_value(int64_t val) {
+    return val < 1000000000LL && val > -1000000000LL;
+}
 	//bool print (class SafeBuf *sb ) ;
 	//bool setFromSafeBuf (class SafeBuf *sb ) ;
 } __attribute__((packed, aligned(4)));

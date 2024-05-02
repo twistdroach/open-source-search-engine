@@ -4950,7 +4950,7 @@ bool SpiderColl::scanListForWinners ( ) {
 		// . add to table which allows us to ensure same url not 
 		//   repeated in tree
 		// . just skip if fail to add...
-		if ( m_winnerTable.addKey ( &uh48 , &wk ) < 0 ) continue;
+		if ( ! m_winnerTable.addKey ( &uh48 , &wk ) ) continue;
 
 		// use an individually allocated buffer for each spiderrequest
 		// so if it gets removed from tree the memory can be freed by 
@@ -14107,34 +14107,17 @@ void gotCrawlInfoReply ( void *state , UdpSlot *slot ) {
 			// get the CrawlInfo for the ith host
 			CrawlInfo *stats = &cia[k];
 			// point to the stats for that host
-			int64_t *ss = (int64_t *)stats;
-			int64_t *gs = (int64_t *)gi;
 			// are stats crazy?
-			bool crazy = false;
-			for ( int32_t j = 0 ; j < NUMCRAWLSTATS ; j++ ) {
-				// crazy stat?
-				if ( *ss > 1000000000LL ||
-				     *ss < -1000000000LL ) {
-					log("spider: crazy stats %" INT64 " "
-					    "from host #%" INT32 " coll=%s. "
-					    "ignoring.",
-					    *ss,k,cr->m_coll);
-					crazy = true;
-					break;
-				}
-				ss++;
-			}
-			// reset ptr to accumulate
-			ss = (int64_t *)stats;
-			for ( int32_t j = 0 ; j < NUMCRAWLSTATS ; j++ ) {
-				// do not accumulate if corrupted.
-				// probably mem got corrupted and it saved
-				// to disk.
-				if ( crazy ) break;
-				*gs = *gs + *ss;
-				gs++;
-				ss++;
-			}
+			bool crazy = !stats->is_sane();
+			if (crazy) {
+                log("spider: crazy stats "
+                    "from host #%" INT32 " coll=%s. "
+                    "ignoring.",
+                    k,cr->m_coll);
+            } else {
+                gi->accumulate(*stats);
+            }
+
 			// . special counts
 			// . assume round #'s match!
 			//if ( ss->m_spiderRoundNum == 
