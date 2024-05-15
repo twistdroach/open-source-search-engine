@@ -25,6 +25,7 @@
 #include <openssl/ssl.h>          // for ssl stuff
 #include <openssl/crypto.h>
 #include <openssl/err.h>
+#include <array>
 #include "Mem.h"     // for mem routines
 #include "MsgC.h"           // for udp-only, non-blocking dns lookups
 #include "TcpSocket.h"            
@@ -214,7 +215,7 @@ class TcpServer {
 	// # used for incoming connections
 	int32_t       m_numIncomingUsed;
 	// let's have them all pre-allocated, it's only ~1.1MB...
-	TcpSocket  m_actualSockets [ MAX_TCP_SOCKS ];
+	std::array<TcpSocket, MAX_TCP_SOCKS>  m_actualSockets;
 
 
 	// . how many socket descriptors can we use simultaneously?
