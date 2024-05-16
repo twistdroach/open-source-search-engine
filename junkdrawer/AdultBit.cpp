@@ -2,6 +2,7 @@
 
 #include "AdultBit.h"
 #include "HashTableX.h"
+#include "Loop.h"
 
 // . returns true if document is adult, false otherwise
 bool AdultBit::getBit ( char *s , int32_t niceness) {
