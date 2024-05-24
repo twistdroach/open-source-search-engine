@@ -680,10 +680,11 @@ void sigpwrHandler ( int x , siginfo_t *info , void *y ) {
 }
 
 #include <execinfo.h>
+#include <dlfcn.h>
+#include <cxxabi.h>
 void printStackTrace ( int signum , siginfo_t *info , void *ptr ) {
 
-	logf(LOG_DEBUG,"gb: Printing stack trace. use "
-	     "'addr2line -e gb' to decode the hex below.");
+	logf(LOG_DEBUG,"gb: Printing stack trace...");
 
 	if ( g_inMemFunction ) {
 		logf(LOG_DEBUG,"gb: in mem function not doing backtrace");
@@ -692,20 +693,17 @@ void printStackTrace ( int signum , siginfo_t *info , void *ptr ) {
 
 	static void *s_bt[200];
 	int sz = backtrace(s_bt, 200);
+	char **bt_strings = backtrace_symbols(s_bt, sz);
 	for( int i = 0; i < sz; ++i) {
-		logf(LOG_DEBUG,"addr2line -e gb 0x%" XINT64 ""
-		     ,(uint64_t)s_bt[i]
-		     );
-#ifdef INLINEDECODE
-		char cmd[256];
-		sprintf(cmd,"addr2line -e gb 0x%" XINT64 " > ./tmpout"
-			,(uint64_t)s_bt[i]);
-		gbsystem ( cmd );
-		char obuf[1024];
-		SafeBuf fb (obuf,1024);
-		fb.load("./tmpout");
-		log("stack: %s",fb.getBufStart());
-#endif
+		Dl_info info;
+		if (dladdr(s_bt[i], &info)) {
+			int status;
+			char *demangled = abi::__cxa_demangle(info.dli_sname, NULL, 0, &status);
+			logf(LOG_DEBUG,"%s: %s", status == 0 ? demangled : info.dli_sname, bt_strings[i]);
+			free(demangled);
+		} else {
+			logf(LOG_DEBUG,"%s", bt_strings[i]);
+		}
 	}
 }
 

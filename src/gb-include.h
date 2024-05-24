@@ -28,6 +28,12 @@ extern int g_inMemcpy;
 #define memcpy_ass(xx,yy,zz) {bcopy(yy,xx,zz); }
 #endif
 
+#include <signal.h>
+#define gbassert(expr) \
+((expr) ?                                                                          \
+        (void) 0 :                                                                 \
+        (void) (fprintf(stderr, "%s:%d: %s: gb Assertion `%s` failed\n",              \
+                        __FILE__, __LINE__, __FUNCTION__, #expr), raise(SIGSEGV)))
 
 #include <cinttypes>
 

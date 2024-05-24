@@ -16,6 +16,7 @@ DEFS := -DPTHREADS -D_REENTRANT_ -D_CHECK_FORMAT_STRING_
 CPPFLAGS := -g -Wall -Wextra -Wpedantic -pipe -fno-stack-protector $(DEFS) -O3 -std=c++23
 LDLIBS := -lm -lpthread -lssl -lcrypto -lz
 TEST_CPPFLAGS := -I$(SRC_DIR) -Iextern/catch2
+LDFLAGS := -rdynamic -export-dynamic
 
 all: $(EXE)
 
