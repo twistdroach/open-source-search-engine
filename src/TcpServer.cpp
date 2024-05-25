@@ -103,7 +103,7 @@ bool TcpServer::init ( void (* requestHandler)(TcpSocket *s) ,
 	// init the sockets array to hold our TcpSockets
 	memset ( m_tcpSockets , 0 , sizeof(TcpSocket *) * MAX_TCP_SOCKS );
 	// clear the actual tcp sockets array
-	std::for_each(m_actualSockets.begin(), m_actualSockets.end(), [](TcpSocket &s) {s.clear();});
+	std::ranges::for_each(m_actualSockets, [](TcpSocket &s) { s.clear(); } );
 	m_lastFilled = 0;
 	m_numUsed    = 0;
 	m_numOpen    = 0;
