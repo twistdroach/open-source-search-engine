@@ -1440,10 +1440,7 @@ int main2 ( int argc , char *argv[] ) {
 		    NOFILE,mstrerror(errno) );
 	struct rlimit rlim;
 	getrlimit ( RLIMIT_NOFILE,&rlim);
-	if ( (int32_t)rlim.rlim_max > NOFILE || (int32_t)rlim.rlim_cur > NOFILE ) {
-		log("db: setrlimit RLIMIT_NOFILE failed!");
-		char *xx=NULL;*xx=0;
-	}
+	gbassert_false( (int32_t)rlim.rlim_max > NOFILE || (int32_t)rlim.rlim_cur > NOFILE  /* setrlimit RLIMIT_NOFILE failed */);
 
 	// set the s_pages array for print admin pages
 	g_pages.init ( );
@@ -1625,7 +1622,6 @@ int main2 ( int argc , char *argv[] ) {
 		return 0;
 	}
 	*/
-
 
 	//Put this here so that now we can log messages
   	if ( strcmp ( cmd , "proxy" ) == 0 ) {
@@ -2636,10 +2632,6 @@ int main2 ( int argc , char *argv[] ) {
 	// init the loop, needs g_conf
 	if ( ! g_loop.init() ) {
 		log("db: Loop init failed." ); return 1; }
-
-
-	// test the infinite keep alive bug fix. is recovery futile bug.
-	//char *xx=NULL;*xx=0; 
 
 	// the new way to save all rdbs and conf
 	// if g_process.m_powerIsOn is false, logging will not work, so init
@@ -6939,7 +6931,7 @@ void dumpDoledb (char *coll,int32_t startFileNum,int32_t numFiles,bool includeTr
 		// get it
 		char *drec = list.getCurrentRec();
 		// sanity check
-		if ( (drec[0] & 0x01) == 0x00 ) {char *xx=NULL;*xx=0; }
+		gbassert_false( (drec[0] & 0x01) == 0x00 );
 		// get spider rec in it
 		char *srec = drec + 12 + 4;
 		// print doledb info first then spider request
@@ -6962,12 +6954,11 @@ void dumpDoledb (char *coll,int32_t startFileNum,int32_t numFiles,bool includeTr
 		if ( ! g_spiderdb.isSpiderRequest((key128_t *)srec) ) {
 			// error!
 			continue;
-			char *xx=NULL;*xx=0; }
+		}
 		// cast it
 		SpiderRequest *sreq = (SpiderRequest *)srec;
 		// skip negatives
-		if ( (sreq->m_key.n0 & 0x01) == 0x00 ) {
-			char *xx=NULL;*xx=0; }
+		gbassert_false( (sreq->m_key.n0 & 0x01) == 0x00 );
 	}
 	startKey = *(key_t *)list.getLastKey();
 	startKey += (uint32_t) 1;
@@ -11829,7 +11820,7 @@ skip:
 	// sleep til done
 #undef sleep
 	while ( 1 == 1 ) sleep(1000);
-#define sleep(a) { char *xx=NULL;*xx=0; }
+#define sleep(a) { gbassert(false /* sleep */) }
 	//int status;
 	//for ( int32_t i = 0 ; i < s_numThreads ; i++ ) waitpid(pid,&status,0);
 }
@@ -11870,11 +11861,6 @@ void *startUp ( void *state , ThreadEntry *t ) {
 	fprintf(stderr,"threadid=%" INT32 " launched. "
 		"Performing 100000 %s.\n",id,s);
 
-// #undef sleep
-// 	if (  id == 0 ) sleep(1000);
-// #define sleep(a) { char *xx=NULL;*xx=0; }
-
-
 	// wait for lock to be unleashed
 	//while ( s_launched != s_numThreads ) usleep(10);
 	// now do a stupid loop
@@ -11905,7 +11891,7 @@ void *startUp ( void *state , ThreadEntry *t ) {
 		int64_t now = gettimeofdayInMilliseconds_force();
 #undef usleep
 		usleep(0);
-#define usleep(a) { char *xx=NULL;*xx=0; }
+#define usleep(a) { gbassert(false /* usleep */) }
 		s_count++;
 		float sps = (float)((float)s_count * 1000.0) / 
 			(float)(now - s_startTime);
@@ -11992,12 +11978,11 @@ void dumpSectiondb(char *coll,int32_t startFileNum,int32_t numFiles,
 			       k->n1  , k->n0   | 0x01  );  // fix it!
 			continue;
 		}
-		if ( size != sizeof(SectionVote) ) { char *xx=NULL;*xx=0; }
+		gbassert( size == sizeof(SectionVote) );
 		// sanity check
 		if ( ! firstKey ) {
-			if ( k->n1 < lastk.n1 ) { char *xx=NULL;*xx=0; }
-			if ( k->n1 == lastk.n1 && k->n0 < lastk.n0 ) { 
-				char *xx=NULL;*xx=0; }
+			gbassert_false( k->n1 < lastk.n1 );
+			gbassert_false( k->n1 == lastk.n1 && k->n0 < lastk.n0 );
 		}
 		// no longer a first key
 		firstKey = false;
@@ -12118,12 +12103,10 @@ void dumpRevdb(char *coll,int32_t startFileNum,int32_t numFiles, bool includeTre
 			       k->n1  , k->n0   | 0x01  , d );  // fix it!
 			continue;
 		}
-		//if ( size != sizeof(SectionVote) ) { char *xx=NULL;*xx=0; }
 		// sanity check
 		if ( ! firstKey ) {
-			if ( k->n1 < lastk.n1 ) { char *xx=NULL;*xx=0; }
-			if ( k->n1 == lastk.n1 && k->n0 < lastk.n0 ) { 
-				char *xx=NULL;*xx=0; }
+			gbassert_false( k->n1 < lastk.n1 );
+			gbassert_false( k->n1 == lastk.n1 && k->n0 < lastk.n0 );
 		}
 		// no longer a first key
 		firstKey = false;
@@ -13472,7 +13455,6 @@ void dumpPosdb (char *coll,int32_t startFileNum,int32_t numFiles,bool includeTre
 			//d,nd1,nd2,nd3);
 			err = " (alignerror1)";
 			if ( nd1 < d ) err = " (alignordererror1)";
-			//char *xx=NULL;*xx=0;
 		}
 		if ( recSize == 12 && !(rec[1] & 0x02) )  {
 			//int64_t nd1 = g_posdb.getDocId(rec+6);
@@ -13484,8 +13466,6 @@ void dumpPosdb (char *coll,int32_t startFileNum,int32_t numFiles,bool includeTre
 			// seems like 12 bytes
 			//log("debug1: d=%" INT64 " nd1=%" INT64 " nd2=%" INT64 " nd3=%" INT64 "",
 			//d,nd1,nd2,nd3);
-			//if ( nd2 < d ) { char *xx=NULL;*xx=0; }
-			//char *xx=NULL;*xx=0;
 			err = " (alignerror2)";
 			if ( nd2 < d ) err = " (alignorderrror2)";
 		}
@@ -13500,7 +13480,6 @@ void dumpPosdb (char *coll,int32_t startFileNum,int32_t numFiles,bool includeTre
 			// seems like 12 bytes really as well!
 			//log("debug2: d=%" INT64 " nd1=%" INT64 " nd2=%" INT64 " nd3=%" INT64 "",
 			//d,nd1,nd2,nd3);
-			//char *xx=NULL;*xx=0;
 			err = " (alignerror3)";
 			if ( nd2 < d ) err = " (alignordererror3)";
 		}
@@ -13511,7 +13490,6 @@ void dumpPosdb (char *coll,int32_t startFileNum,int32_t numFiles,bool includeTre
 		//if ( err )
 		//	printf("%s",err );
 		//continue;
-		//if ( ! magicBit && recSize == 6 ) { char *xx=NULL;*xx=0; }
 		int32_t facetVal32 = g_posdb.getFacetVal32 ( &k );
 
 		if ( termId < 0 )
@@ -14337,7 +14315,6 @@ void dumpLinkdb ( char *coll,
 		//uint32_t gid = g_hostdb.getGroupId (RDB_LINKDB,&k,true);
 		//int32_t groupNum = g_hostdb.getGroupNum ( gid );
 		int32_t shardNum = getShardNum(RDB_LINKDB,&k);
-		//if ( hc != 0 ) { char *xx=NULL;*xx=0; }
 		// is it an ip or url record?
 		//bool isHost = g_linkdb.isHostRecord ( &k );
 		// is it a url or site key?
@@ -15073,10 +15050,7 @@ void doInject ( int fd , void *state ) {
 				 , content
 				 );
 		content[contentLen] = c;
-		if ( reqLen >= reqAlloc ) { 
-			log("inject: bad engineer here");
-			char *xx=NULL;*xx=0; 
-		}
+		gbassert_false( reqLen >= reqAlloc );
 		// set content length
 		char *start = strstr(req,"c=");
 		int32_t realContentLen = strlen(start);
@@ -15260,45 +15234,7 @@ void doInject ( int fd , void *state ) {
 		rp += sprintf(rp,"&ucontent=");
 		//}
 
-		if ( ! url ) {
-			// what is this?
-			char *xx=NULL;*xx=0;
-			/*
-			// stick mime in there
-			gbmemcpy ( rp , mimePtr , m.getMimeLen() );
-			// skip that
-			rp += m.getMimeLen();
-			// turn \n\n into \r\n\r\n
-			if ( rp[-2] == '\n' && rp[-1] == '\n' ) {
-				rp[-2] = '\r';
-				rp[ 0] = '\r';
-				rp[ 1] = '\n';
-				rp += 2;
-			}
-			// advance
-			s_off += m.getMimeLen();
-			// read from file into content
-			int32_t contRead = contentLen;
-			if ( s_off + contRead > fsize ) {
-				log("build: inject: Content-Length of %" INT32 " "
-				    "specified "
-				    "for content at offset %" INT64 " would breech "
-				    "EOF",
-				    contentLen,s_off);
-				exit(0);
-			}
-			if ( contRead != s_file.read ( rp ,contRead , s_off)) {
-				log("build: inject: Read of %s failed at "
-				    "offset %" INT64 "",
-				    s_file.getFilename(), s_off);
-				exit(0);
-			}
-			// skip that
-			rp += contRead;
-			// success
-			s_off += contRead;
-			*/
-		}
+        gbassert(url);
 
 		// store the content after the &ucontent
 		gbmemcpy ( rp , contentPtr , contentPtrLen );
@@ -15324,7 +15260,7 @@ void doInject ( int fd , void *state ) {
 		// set this
 		reqLen = rp - req;
 		// sanity
-		if ( reqLen > reqAlloc ) { char *xx=NULL;*xx=0; }
+		gbassert_false( reqLen > reqAlloc );
 	}
 
 	int32_t ip = s_ip;
@@ -16699,7 +16635,7 @@ bool cacheTest() {
 		key_t back = oldk[next];
 		char *rec;
 		int32_t  recSize;
-		if ( ! c.getRecord ( (collnum_t)0 ,
+		gbassert( c.getRecord ( (collnum_t)0 ,
 				     back         ,
 				     &rec     ,
 				     &recSize ,
@@ -16707,10 +16643,8 @@ bool cacheTest() {
 				     -1       ,  // maxAge   ,
 				     true     , // inc count?
 				     NULL     , // *cachedTime = NULL,
-				     true     )){ // promoteRecord?
-			char *xx= NULL; *xx = 0; }
-		if ( ! rec || recSize != 4 || *(int32_t *)rec != oldip[next] ) {
-			char *xx= NULL; *xx = 0; }
+				     true     )); // promoteRecord?
+		gbassert_false( ! rec || recSize != 4 || *(int32_t *)rec != oldip[next] );
 	}		     		
 
 	// now try variable sized recs
@@ -16778,12 +16712,10 @@ bool cacheTest() {
 		memset ( rec , (char)k.n1, recSize );
 		//log("test: v0");
 		// make rec,size, like dns, will be 4 byte hash and 4 byte key?
-		if ( ! c.addRecord((collnum_t)0,k,rec,recSize,timestamp) ) {
-			char *xx=NULL; *xx=0; }
+		gbassert( c.addRecord((collnum_t)0,k,rec,recSize,timestamp) );
 		// do a dup add 1% of the time
 		if ( (i % 100) == 0 )
-			if(!c.addRecord((collnum_t)0,k,rec,recSize,timestamp)){
-				char *xx=NULL; *xx=0; }
+			gbassert( c.addRecord((collnum_t)0,k,rec,recSize,timestamp));
 		//log("test: v1");
 		//c.verify();
 		// reset g_errno in case it had an error (we don't care)
@@ -16806,8 +16738,6 @@ bool cacheTest() {
 			numMisses++;
 			//logf(LOG_DEBUG,"test: missed"); 
 			continue;
-			char *xx= NULL; 
-			*xx = 0; 
 		}
 		//log("cache: got rec");
 		//char *p = c.m_bufs[0] + 9210679 + 51329;
@@ -16816,18 +16746,16 @@ bool cacheTest() {
 		//lastp = *p;
 		if ( recSize != oldrs[next] ) {
 			logf(LOG_DEBUG,"test: bad rec size.");
-			char *xx=NULL; *xx = 0;
+			gbassert(false);
 			continue;
 		}
 		char r = (char)back.n1;
 		for ( int32_t j = 0 ; j < recSize ; j++ ) {
 			if ( rec[j] == r ) continue;
 			logf(LOG_DEBUG,"test: bad char in rec.");
-			char *xx=NULL; *xx = 0;
-		}
-		//if ( ! rec || recSize != 4 || *(int32_t *)rec != oldip[next] ) {
-		//	char *xx= NULL; *xx = 0; }
-	}		     		
+            gbassert(false);
+        }
+	}
 
 	c.verify();
 
@@ -18701,7 +18629,7 @@ char *getcwd2 ( char *arg2 ) {
 		}
 		// find previous /
 		char *slash = p-1;
-		if ( *slash !='/' ) { char *xx=NULL;*xx=0; }
+		gbassert( *slash =='/' );
 		slash--;
 		for ( ; slash > arg && *slash != '/' ; slash-- );
 		if ( slash<arg) slash=arg;
