@@ -1,6 +1,7 @@
 //-*- coding: utf-8 -*-
 
 #include "gb-include.h"
+#include "gbassert.h"
 
 #include "hash.h"
 #include "XmlDoc.h"
@@ -19402,10 +19403,9 @@ char **XmlDoc::getRawUtf8Content ( ) {
 	if ( ! fc || fc == (void *)-1 ) return (char **)fc;
 
 	// make sure NULL terminated always
-	if ( m_filteredContent &&
+	gbassert_false( m_filteredContent &&
 	     m_filteredContentValid &&
-	     m_filteredContent[m_filteredContentLen] ) {
-		char *xx=NULL;*xx=0; }
+	     m_filteredContent[m_filteredContentLen] );
 
 	// NULL out if no content
 	if ( ! m_filteredContent ) {
@@ -19438,7 +19438,7 @@ char **XmlDoc::getRawUtf8Content ( ) {
 			return NULL;
 		}
 		// sanity check
-		if ( ! csName ) { char *xx=NULL;*xx=0; }
+		gbassert(csName);
 		// note it
 		setStatus ( "converting doc to utf8" );
 		// returns # of bytes i guess
@@ -19513,7 +19513,7 @@ char **XmlDoc::getRawUtf8Content ( ) {
 	//   utf8, and that we can parse it without breaching our buffer!
 	p = m_rawUtf8Content;
 	// make sure NULL terminated always
-	if ( p[m_rawUtf8ContentSize-1]) { char *xx=NULL;*xx=0;}
+	gbassert(p[m_rawUtf8ContentSize-1] == '\0');
 	// make sure we don't breach the buffer when parsing it
 	char size;
 	char *lastp = NULL;
@@ -19534,13 +19534,13 @@ char **XmlDoc::getRawUtf8Content ( ) {
 		    "keepalive?) in doc %s",m_firstUrl.m_url);
 	}
 	// overflow?
-	if ( p != pend ) { char *xx=NULL;*xx=0; }
+	gbassert(p == pend);
 	// sanity check for breach. or underrun in case we encountered a
 	// premature \0
-	if (p-m_rawUtf8Content!=m_rawUtf8ContentSize-1) {char*xx=NULL;*xx=0;}
+	gbassert(p-m_rawUtf8Content==m_rawUtf8ContentSize-1);
 
 	// sanity -- must be \0 terminated
-	if ( m_rawUtf8Content[m_rawUtf8ContentSize-1] ) {char *xx=NULL;*xx=0; }
+	gbassert(m_rawUtf8Content[m_rawUtf8ContentSize-1] == '\0');
 
         // it might have shrunk us
 	//m_rawUtf8ContentSize = n + 1;
@@ -19749,11 +19749,11 @@ char **XmlDoc::getExpandedUtf8Content ( ) {
 		// . return -1 if it blocked???
 		// . no, this is not supported right now
 		// . it will mess up our for loop
-		if ( ped == (void *)-1 ) {char *xx=NULL;*xx=0;}
-		// cast it
+        gbassert( ped != (void *)-1 );
+        // cast it
 		ed = *ped;
 		// sanity
-		if ( ! ed ) { char *xx=NULL;*xx=0; }
+		gbassert(ed);
 		// jump in here from above
 	gotMime:
 		// make it not use the ips.txt cache
@@ -19772,7 +19772,7 @@ char **XmlDoc::getExpandedUtf8Content ( ) {
 		// update m_downloadEndTime if we should
 		if ( ed->m_downloadEndTimeValid ) {
 			// we must already be valid
-			if ( ! m_downloadEndTimeValid ) {char *xx=NULL;*xx=0;}
+			gbassert( m_downloadEndTimeValid );
 			// only replace it if it had ip and robots.txt allowed
 			if ( ed->m_downloadEndTime )
 				m_downloadEndTime = ed->m_downloadEndTime;
@@ -19780,9 +19780,6 @@ char **XmlDoc::getExpandedUtf8Content ( ) {
 
 		// re-write that extra doc into the content
 		char **puc = ed->getRawUtf8Content();
-		// this should not block
-		//if ( puc == (void *)-1 ) { char *xx=NULL;*xx=0; }
-		// it blocked before! because the charset was not known!
 		if ( puc == (void *)-1 ) return (char **)puc;
 		// error?
 		if ( ! puc ) return (char **)puc;
@@ -19796,7 +19793,7 @@ char **XmlDoc::getExpandedUtf8Content ( ) {
 			continue;
 		}
 		// size includes terminating \0
-		if ( uc[ed->m_rawUtf8ContentSize-1] ) { char *xx=NULL;*xx=0;}
+        gbassert( uc[ed->m_rawUtf8ContentSize-1] == '\0');
 
 		// if first time we are expanding, set this
 		if ( ! m_oldp ) m_oldp = *up;
@@ -19838,7 +19835,7 @@ char **XmlDoc::getExpandedUtf8Content ( ) {
 		// end of frame tag, skip over whole thing
 		m_oldp = fend ;
 		// sanity check
-		if ( m_oldp > pend ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_oldp > pend );
 		// another flag
 		m_didExpansion = true;
 		// count how many we did
@@ -19987,7 +19984,7 @@ FILE *XmlDoc::getUtf8ContentInFile () {
 			exit(0);
 			//return NULL;
 			// FIXME
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 		char *s = tmp.getBufStart();
 		char *line;
@@ -20122,9 +20119,8 @@ char **XmlDoc::getUtf8Content ( ) {
 			m_contentType      = od->m_contentType;
 			m_contentTypeValid = true;
 			// sanity check
-			if ( ptr_utf8Content &&
-			     ptr_utf8Content[size_utf8Content-1] ) {
-				char *xx=NULL;*xx=0; }
+			gbassert_false( ptr_utf8Content &&
+			     ptr_utf8Content[size_utf8Content-1] );
 			return &ptr_utf8Content;
 		}
 		// if could not find title rec and we are docid-based then
@@ -20173,28 +20169,11 @@ char **XmlDoc::getUtf8Content ( ) {
 	// why would the spider proxy, who use msg13.cpp to call
 	// XmlDoc::getExpandedUtf8Content() want to call this??? it seems
 	// to destroy expandedutf8content with a call to htmldecode
-	if ( m_isSpiderProxy ) { char *xx=NULL;*xx=0; }
-	
-
-	// not if rss file extension
-	//bool isRSSExt = false;
-	//char *ext = m_firstUrl.getExtension();
-	//if ( ext && strcasecmp(ext,"rss") == 0 ) isRSSExt = true;
-	//if ( ext && strcasecmp(ext,"xml") == 0 ) isRSSExt = true;
-	//if ( ext && strcasecmp(ext,"atom") == 0 ) isRSSExt = true;
-
-	//if ( ! m_contentTypeValid ) { char *xx=NULL;*xx=0; }
-	//if ( m_contentTypeValid && m_contentType == CT_XML ) isRSSExt = true;
-
-	// convert &lt; to <gb and &gt; to gb/> ???? and &amp; to utf32 char
-	// for a double wide ampersand?
-	//bool doSpecial = true;
-	// convert to what it should be if we are an .rss file extension
-	//if ( isRSSExt ) doSpecial = false;
+	gbassert(!m_isSpiderProxy);
 
 	// sabnity check
-	if ( m_xmlValid   ) { char *xx=NULL;*xx=0; }
-	if ( m_wordsValid ) { char *xx=NULL;*xx=0; }
+	gbassert(!m_xmlValid);
+	gbassert(!m_wordsValid);
 
 	QUICKPOLL(m_niceness);
 
@@ -33146,9 +33125,6 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 	//reply-> ptr_tagRec = (char *)gr;
 	//reply->size_tagRec = gr->getSize();
 
-	// we use this instead of nowGlobal
-	//if ( ! m_spideredTimeValid ) { char *xx=NULL;*xx=0; }
-
 	// this should be valid, it is stored in title rec
 	if ( m_contentHash32Valid ) reply->m_contentHash32 = m_contentHash32;
 	else                        reply->m_contentHash32 = 0;
@@ -33302,7 +33278,7 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 		if ( hsum ) hsumLen = gbstrlen(hsum);
 		// must be \0 terminated. not any more, it can be a subset
 		// of a larger summary used for deduping
-		if ( hsumLen > 0 && hsum[hsumLen] ) { char *xx=NULL;*xx=0; }
+		gbassert_false( hsumLen > 0 && hsum[hsumLen] );
 		// assume size is 0
 		//int32_t sumSize = 0;
 		// include the \0 in size
@@ -33388,7 +33364,7 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 		reply-> ptr_tbuf = tit;
 		reply->size_tbuf = titLen + 1; // include \0
 		// sanity
-		if ( tit && tit[titLen] != '\0' ) { char *xx=NULL;*xx=0; }
+		gbassert_false( tit && tit[titLen] != '\0' );
 		if ( ! tit || titLen <= 0 ) {
 			reply->ptr_tbuf = NULL;
 			reply->size_tbuf = 0;
@@ -33651,8 +33627,7 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 	*/
 
 	// check the tag first
-	if ( ! m_siteNumInlinksValid ) { char *xx=NULL;*xx=0; }
-	//if ( ! m_sitePopValid        ) { char *xx=NULL;*xx=0; }
+	gbassert( m_siteNumInlinksValid );
 	//Tag *tag1 = gr->getTag ("sitenuminlinks");
 	//Tag *tag2 = gr->getTag ("sitepop");
 	//int32_t sni  = 0;
@@ -33705,28 +33680,6 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 
 	// breathe
 	QUICKPOLL( m_niceness );
-
-	// . get score weight of link text
-	// . phase out the sitedb*.xml files
-	//int64_t x[] = {0,20,30,40,50,70,90,100}; qualities!
-	// map these siteNumInlinks (x) to a weight (y)
-	//int64_t x[] = {0,50,100,200,500,3000,10000,50000};
-	// these are the weights the link text will receive
-	//int64_t y[] = {10,30,2000,3000,4000,5000,6000,7000};
-	// sanity check
-	//if ( ! m_siteNumInlinksValid ) { char *xx=NULL;*xx=0; }
-	// int16_tcut
-	//int32_t sni = m_siteNumInlinks;// *getSiteNumInlinks();
-	// get the final link text weight as a percentage
-	//int32_t ltw = getY ( m_siteNumInlinks , x , y , 8 );
-	// store the weight in the reply
-	//reply->m_linkTextScoreWeight = ltw;
-
-	//log(LOG_DEBUG,"build: got score weight of %" INT32 " for sni=%" INT32 "",
-	//    (int32_t)reply->m_linkTextScoreWeight, m_siteNumInlinks);
-
-	// breathe
-	//QUICKPOLL( m_niceness );
 
 	// . we need the mid doma hash in addition to the ip domain because
 	//   chat.yahoo.com has different ip domain than www.yahoo.com , ...
@@ -33833,11 +33786,9 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 		     "a sitehash collision, or an area tag link.",
 		     linkNode,getFirstUrl()->getUrl(),m_req->ptr_linkee,
 		     m_xml.getContentLen());
-		//g_errno = ECORRUPTDATA;
 		// do not let multicast forward to a twin! so use this instead
 		// of ECORRUTPDATA
 		g_errno = EBADENGINEER;
-		//char *xx=NULL;*xx=0;
 		return NULL;
 	}
 
@@ -33866,9 +33817,9 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 		// save the size into the reply, include the \0
 		reply->size_linkText = blen + 1;
 		// sanity check
-		if ( blen + 2 > MAX_LINK_TEXT_LEN ) { char *xx=NULL;*xx=0; }
+		gbassert_false( blen + 2 > MAX_LINK_TEXT_LEN );
 		// sanity check. null termination required.
-		if ( linkTextBuf[blen] ) { char *xx=NULL;*xx=0; }
+		gbassert( linkTextBuf[blen] == '\0' );
 	}
 
 	// . the link we link to
@@ -33906,7 +33857,7 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 		// reset to NULL to avoid gbstrlen segfault
 		char *note = NULL;
 		// need this
-		if ( ! m_xmlValid ) { char *xx=NULL;*xx=0; }
+		gbassert(m_xmlValid);
 		// time it
 		//int64_t start = gettimeofdayInMilliseconds();
 
@@ -33953,10 +33904,9 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 	QUICKPOLL(m_niceness);
 
 	// sanity check
-	if ( reply->ptr_rssItem && 
+	gbassert_false( reply->ptr_rssItem &&
 	     reply->size_rssItem>0 && 
-	     reply->ptr_rssItem[reply->size_rssItem-1]!=0) {
-		char *xx=NULL;*xx=0; }
+	     reply->ptr_rssItem[reply->size_rssItem-1]!=0);
 
 
 	//log ("nogl=%" INT32 "",(int32_t)m_req->m_onlyNeedGoodInlinks );
@@ -34055,8 +34005,6 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 	int32_t   n;
 	for ( n = 0; n < nw && wp[n] < node ; n++ ) 
 		QUICKPOLL(m_niceness);
-	// sanity check
-	//if ( n >= nw ) { char *xx=NULL; *xx=0; }
 	if ( n >= nw ) {
 		log("links: crazy! could not get word before linknode");
 		g_errno = EBADENGINEER;
@@ -34261,10 +34209,6 @@ char **XmlDoc::getImageUrl() {
 			m_imageUrlBuf.pushChar(*s);
 		// wrap it up
 		m_imageUrlBuf.safeStrcpy ( "/2.jpg" );
-		// size includes \0;
-		//m_imageUrlSize = p - m_imageUrl ;
-		// sanity check
-		//if ( m_imageUrlSize > 100 ) { char *xx=NULL;*xx=0; }
 		m_imageUrl = m_imageUrlBuf.getBufStart();
 		return &m_imageUrl;
 	}
@@ -34290,10 +34234,6 @@ char **XmlDoc::getImageUrl() {
 		m_imageUrlBuf.safePrintf("http://s2.mcstatic."
 					 "com/thumb/%" INT32 ".jpg", id);
 		m_imageUrl = m_imageUrlBuf.getBufStart();
-		// size includes \0;
-		//m_imageUrlSize = p - m_imageUrl ;
-		// sanity check
-		//if ( m_imageUrlSize > 100 ) { char *xx=NULL;*xx=0; }
 		break;
 	}
 	return &m_imageUrl;
@@ -34671,7 +34611,7 @@ char *XmlDoc::getHighlightedSummary ( ) {
 		//return fsum;
 	}
 
-	if ( ! m_langIdValid ) { char *xx=NULL;*xx=0; }
+	gbassert(m_langIdValid);
 
 	Highlight hi;
 	StackBuf(hb);
@@ -34693,7 +34633,7 @@ char *XmlDoc::getHighlightedSummary ( ) {
 	// highlight::set() returns 0 on error
 	if ( hlen < 0 ) {
 		log("build: highlight class error = %s",mstrerror(g_errno));
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		return NULL;
 	}
 
@@ -35630,8 +35570,6 @@ int gbcompress7 ( unsigned char *dest      ,
 		// -y = yes on all. so we overwrite "in.7z"
 		cmd.safePrintf( "%s7za -o%s -y e %s > /dev/null",
 			  g_hostdb.m_dir,g_hostdb.m_dir , in);//,in);
-	// breach sanity check
-	//if ( gbstrlen(cmd) > 2040 ) { char *xx=NULL;*xx=0; }
 
 	// exectue it
 	int retVal = gbsystem ( cmd.getBufStart() );
@@ -35676,7 +35614,7 @@ int gbcompress7 ( unsigned char *dest      ,
 	close ( fd );
 	// delete output file
 	//unlink ( out );
-	if ( r > (int32_t)*destLen ) { char *xx=NULL;*xx=0; }
+	gbassert_false( r > (int32_t)*destLen );
 	// assign
 	*destLen = r;
 	// debug for now
@@ -35859,8 +35797,8 @@ bool XmlDoc::hashSingleTerm ( char       *s         ,
 			      HashInfo   *hi        ) {
 	// empty?
 	if ( slen <= 0 ) return true;
-	if ( ! m_versionValid    ) { char *xx=NULL;*xx=0; }
-	if ( hi->m_useCountTable && ! m_countTableValid){char *xx=NULL;*xx=0; }
+	gbassert( m_versionValid );
+	gbassert_false( hi->m_useCountTable && ! m_countTableValid);
 
 	//
 	// POSDB HACK: temporarily turn off posdb until we hit 1B pages!
@@ -35885,7 +35823,7 @@ bool XmlDoc::hashSingleTerm ( char       *s         ,
 	// int16_tcut
 	HashTableX *dt = hi->m_tt;
 	// sanity check
-	if ( dt->m_ks != sizeof(key144_t) ) { char *xx=NULL;*xx=0; }
+	gbassert_false( dt->m_ks != sizeof(key144_t) );
 	// make the key like we do in hashWords()
 	key144_t k;
 	g_posdb.makeKey ( &k ,
@@ -35947,9 +35885,9 @@ bool XmlDoc::hashString ( char *s, HashInfo *hi ) {
 bool XmlDoc::hashString ( char       *s          ,
 			  int32_t        slen       ,
 			  HashInfo   *hi         ) {
-	if ( ! m_versionValid        ) { char *xx=NULL;*xx=0; }
-	if ( hi->m_useCountTable && ! m_countTableValid){char *xx=NULL;*xx=0; }
-	if ( ! m_siteNumInlinksValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_versionValid );
+	gbassert_false( hi->m_useCountTable && ! m_countTableValid);
+	gbassert( m_siteNumInlinksValid );
 	int32_t *sni = getSiteNumInlinks();
 	return   hashString3( s                ,
 			      slen             ,
@@ -35987,7 +35925,7 @@ bool XmlDoc::hashString3( char       *s              ,
 		return false;
 
 	// use primary langid of doc
-	if ( ! m_langIdValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_langIdValid );
 
 	// words
 	//SafeBuf myLangVec;
@@ -36060,16 +35998,15 @@ bool XmlDoc::hashWords ( //int32_t        wordStart ,
 			 //int32_t        wordEnd   ,
 			 HashInfo   *hi        ) {
 	// sanity checks
-	if ( ! m_wordsValid   ) { char *xx=NULL; *xx=0; }
-	if ( ! m_phrasesValid ) { char *xx=NULL; *xx=0; }
-	if ( hi->m_useCountTable &&!m_countTableValid){char *xx=NULL; *xx=0; }
-	if ( ! m_bitsValid ) { char *xx=NULL; *xx=0; }
-	if ( ! m_sectionsValid) { char *xx=NULL; *xx=0; }
-	//if ( ! m_synonymsValid) { char *xx=NULL; *xx=0; }
-	if ( ! m_fragBufValid ) { char *xx=NULL; *xx=0; }
-	if ( ! m_wordSpamBufValid ) { char *xx=NULL; *xx=0; }
-	if ( m_wts && ! m_langVectorValid  ) { char *xx=NULL; *xx=0; }
-	if ( ! m_langIdValid ) { char *xx=NULL; *xx=0; }
+	gbassert( m_wordsValid );
+	gbassert( m_phrasesValid );
+	gbassert_false( hi->m_useCountTable &&!m_countTableValid);
+	gbassert( m_bitsValid );
+	gbassert( m_sectionsValid);
+	gbassert( m_fragBufValid );
+	gbassert( m_wordSpamBufValid );
+	gbassert_false( m_wts && ! m_langVectorValid );
+	gbassert( m_langIdValid );
 	// . is the word repeated in a pattern?
 	// . this should only be used for document body, for meta tags,
 	//   inlink text, etc. we should make sure words are unique
@@ -36135,18 +36072,18 @@ bool XmlDoc::hashWords3 ( //int32_t        wordStart ,
 
 	// . sanity checks
 	// . posdb just uses the full keys with docid
-	if ( dt->m_ks != 18 ) { char *xx=NULL;*xx=0; }
-	if ( dt->m_ds != 4  ) { char *xx=NULL;*xx=0; }
+	gbassert( dt->m_ks == 18 );
+	gbassert( dt->m_ds == 4  );
 
 	// if provided...
 	if ( wts ) {
-		if ( wts->m_ks != 12               ) { char *xx=NULL;*xx=0; }
-		if ( wts->m_ds != sizeof(TermDebugInfo)){char *xx=NULL;*xx=0; }
-		if ( ! wts->m_allowDups ) { char *xx=NULL;*xx=0; }
+		gbassert( wts->m_ks == 12 );
+		gbassert( wts->m_ds == sizeof(TermDebugInfo));
+		gbassert( wts->m_allowDups );
 	}
 
 	// ensure caller set the hashGroup
-	if ( hi->m_hashGroup < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( hi->m_hashGroup >= 0 );
 
 	// handy
 	char **wptrs = words->getWordPtrs();
@@ -36161,14 +36098,6 @@ bool XmlDoc::hashWords3 ( //int32_t        wordStart ,
 		// because if it is 'focal length' we can't search
 		// 'focal length:10' because that comes across as TWO terms.
 		prefixHash = hash64Lower_utf8_nospaces ( hi->m_prefix , plen );
-		// . sanity test, make sure it is in supported list
-		// . hashing diffbot json output of course fails this so
-		//   skip in that case if diffbot
-		//if ( ! m_isDiffbotJSONObject &&
-		//     getFieldCode3 ( prefixHash ) == FIELD_GENERIC ) { 
-		//	if (hi->m_desc&&strcmp(hi->m_desc,"custom meta tag")) {
-		//		char *xx=NULL;*xx=0; }
-		//}
 	}
 
 	bool hashIffUnique = false;
@@ -37136,7 +37065,7 @@ bool XmlDoc::hashNumber2 ( float f , HashInfo *hi , char *sortByStr ) {
 	if ( hi->m_prefix && nameLen ) 
 		nameHash = hash64Lower_utf8_nospaces( hi->m_prefix , nameLen );
 	// need a prefix for hashing numbers... for now
-	else { char *xx=NULL; *xx=0; }
+	else { gbassert(false); }
 		
 	// combine prefix hash with a special hash to make it unique to avoid
 	// collisions. this is the "TRUE" prefix.
@@ -37193,7 +37122,7 @@ bool XmlDoc::hashNumber2 ( float f , HashInfo *hi , char *sortByStr ) {
 
 	// sanity
 	float t = g_posdb.getFloat ( &k );
-	if ( t != f ) { char *xx=NULL;*xx=0; }
+	gbassert(t==f);
 
 	HashTableX *dt = hi->m_tt;
 
@@ -37243,7 +37172,7 @@ bool XmlDoc::hashNumber3 ( int32_t n , HashInfo *hi , char *sortByStr ) {
 	if ( hi->m_prefix && nameLen ) 
 		nameHash = hash64Lower_utf8_nospaces( hi->m_prefix , nameLen );
 	// need a prefix for hashing numbers... for now
-	else { char *xx=NULL; *xx=0; }
+	else { gbassert(false); }
 		
 	// combine prefix hash with a special hash to make it unique to avoid
 	// collisions. this is the "TRUE" prefix.
@@ -37302,7 +37231,7 @@ bool XmlDoc::hashNumber3 ( int32_t n , HashInfo *hi , char *sortByStr ) {
 	// sanity
 	//float t = g_posdb.getFloat ( &k );
 	int32_t x = g_posdb.getInt ( &k );
-	if ( x != n ) { char *xx=NULL;*xx=0; }
+	gbassert(x==n);
 
 	HashTableX *dt = hi->m_tt;
 
@@ -37877,7 +37806,7 @@ bool XmlDoc::printDoc ( SafeBuf *sb ) {
 	*/
 
 	// must always start with http i guess!
-	if ( strncmp ( fu , "http" , 4 ) ) { char *xx=NULL;*xx=0; }
+	gbassert_false( strncmp ( fu , "http" , 4 ) );
 	// show the host that should spider it
 	//int32_t domLen ; char *dom = getDomFast ( fu , &domLen , true );
 	//int32_t hostId;
@@ -37992,7 +37921,7 @@ bool XmlDoc::printDoc ( SafeBuf *sb ) {
 	//char *ls = getIsLinkSpam();
 	Links *links = getLinks();
 	// sanity check. should NEVER block!
-	if ( links == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( links != (void *)-1 );
 
 	// this is all to get "note"
 	//char *note = NULL;
@@ -38001,7 +37930,7 @@ bool XmlDoc::printDoc ( SafeBuf *sb ) {
 	// sanity check
 	Xml *xml = getXml();
 	// sanity check
-	if ( xml == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( xml != (void *)-1 );
 
 	sb->safePrintf (
 		  "<tr><td>datedb date</td><td>%s UTC (%" UINT32 ")%s"
@@ -38229,7 +38158,7 @@ bool XmlDoc::printDoc ( SafeBuf *sb ) {
 	// PRINT ADDRESSES (prints streets first)
 	//
 	Addresses *aa = getAddresses ();
-	if ( ! aa || aa == (Addresses *)-1 ) { char *xx=NULL;*xx=0;}
+	gbassert(aa && aa != (Addresses *)-1);
 	aa->print(sb,uh64);
 	
 
@@ -38242,7 +38171,7 @@ bool XmlDoc::printDoc ( SafeBuf *sb ) {
 	// or not clock!
 	Dates *dp = getDates() ;
 	// should never block!
-	if ( dp == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( dp != (void *)-1 );
 	// print it out
 	if ( dp ) dp->printDates ( sb );
 
@@ -38252,8 +38181,8 @@ bool XmlDoc::printDoc ( SafeBuf *sb ) {
 	// PRINT SECTIONS
 	//
 	Sections *sections = getSections();
-	if ( ! sections ||sections==(Sections *)-1) {char*xx=NULL;*xx=0;}
-	//SectionVotingTable *nsvt = getNewSectionVotingTable();
+    gbassert( sections && sections != (Sections *)-1);
+    //SectionVotingTable *nsvt = getNewSectionVotingTable();
 	//if ( ! nsvt || nsvt == (void *)-1 ) {char*xx=NULL;*xx=0;}
 	//SectionVotingTable *osvt = getOldSectionVotingTable();
 	//if ( ! osvt || osvt == (void *)-1 ) {char*xx=NULL;*xx=0;}
