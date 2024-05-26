@@ -1,6 +1,7 @@
 // Matt Wells, copyright Jul 2001
 
 #include "gb-include.h"
+#include "gbassert.h"
 
 #include "HashTableX.h"
 #include "Threads.h"

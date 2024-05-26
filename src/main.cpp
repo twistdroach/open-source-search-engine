@@ -3,6 +3,7 @@
 // 
 
 #include "gb-include.h"
+#include "gbassert.h"
 
 #include <sched.h>        // clone()
 // declare this stuff up here for call the pread() in our seek test below
