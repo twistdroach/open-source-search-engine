@@ -338,8 +338,8 @@ void XmlDoc::reset ( ) {
 	//m_setForLinkPtrs  = false;
 
 	// must be none outstanding
-	if ( m_numMsg3fReplies != m_numMsg3fRequests ) { char *xx=NULL;*xx=0;}
-	if ( m_numMsg4fReplies != m_numMsg4fRequests ) { char *xx=NULL;*xx=0;}
+	gbassert( m_numMsg3fReplies == m_numMsg3fRequests );
+	gbassert( m_numMsg4fReplies == m_numMsg4fRequests );
 
 	m_numMsg4fRequests = 0;
 	m_numMsg4fReplies = 0;
@@ -358,7 +358,7 @@ void XmlDoc::reset ( ) {
 
 	m_triedToAddWordPosInfoToCachedb = false;
 
-	if ( m_numLinkRequestsOut > m_numLinkRequestsIn ){char *xx=NULL;*xx=0;}
+	gbassert( m_numLinkRequestsOut <= m_numLinkRequestsIn );
 
 	m_doConsistencyTesting = g_conf.m_doConsistencyTesting;
 
@@ -473,7 +473,7 @@ void XmlDoc::reset ( ) {
 		m_seoSocket = NULL;
 	}
 	*/
-	if ( m_registeredSocketCallback ) { char *xx=NULL; *xx=0; }
+	gbassert( ! m_registeredSocketCallback );
 	//for ( int32_t i = 0 ; i < m_numMsg99Replies ; i++ ) {
 	//	if ( ! m_msg99ReplyPtrs[i] ) continue;
 	//	mfree ( m_msg99ReplyPtrs [i] ,
@@ -969,7 +969,7 @@ bool XmlDoc::set1 ( char    *url         ,
 	m_versionValid = true;
 
 	// sanity check
-	if ( m_niceness == 0 ) { char *xx=NULL; *xx=0; }
+	gbassert( m_niceness != 0 );
 
 	// copy this in case collection gets deleted i guess...
 	//m_forceDelete = forceDelete;
@@ -1043,7 +1043,7 @@ int32_t XmlDoc::getSpideredTime ( ) {
 
 	// get url
 	Url *cu = getCurrentUrl();
-	if ( ! cu || cu == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( cu && cu != (void *)-1 );
 
 	// this returns false if not in there, in which case, add it
 	if ( ! getTestSpideredDate(cu,&date,testDir) ) {
@@ -1105,7 +1105,7 @@ bool XmlDoc::set3 ( int64_t  docId       ,
 void loadFromOldTitleRecWrapper ( void *state ) {
 	XmlDoc *THIS = (XmlDoc *)state;
 	// make sure has not been freed from under us!
-	if ( THIS->m_freed ) { char *xx=NULL;*xx=0;}
+	gbassert( ! THIS->m_freed );
 	// note it
 	THIS->setStatus ( "loading from old title rec wrapper" );
 	// return if it blocked
@@ -1165,7 +1165,7 @@ bool XmlDoc::loadFromOldTitleRec ( ) {
 	// we are now loaded, do not re-call
 	m_loaded = true;
 	// sanity check
-	if ( ! m_titleRecBufValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_titleRecBufValid );
 	// good to go
 	return true;
 }
@@ -1186,7 +1186,7 @@ bool XmlDoc::setCollNum ( char *coll ) {
 }
 
 CollectionRec *XmlDoc::getCollRec ( ) {
-	if ( ! m_collnumValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_collnumValid );
 	CollectionRec *cr = g_collectiondb.m_recs[m_collnum];
 	if ( ! cr ) {
 		log("build: got NULL collection rec for collnum=%" INT32 ".",
@@ -1224,7 +1224,7 @@ bool XmlDoc::set4 ( SpiderRequest *sreq      ,
 ) {
 
 	// sanity check
-	if ( sreq->m_dataSize == 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( sreq->m_dataSize != 0 );
 
 	reset();
 
@@ -1474,7 +1474,7 @@ bool XmlDoc::set4 ( SpiderRequest *sreq      ,
 		//   this out. MDW 9/25/2014.
 		//m_recycleContent = true;
 		// sanity
-		if ( m_docId == 0LL ) { char *xx=NULL;*xx=0; }
+		gbassert( m_docId != 0LL );
 	}
 	else {
 		// add www is now REQUIRED for all!
@@ -1530,7 +1530,7 @@ bool XmlDoc::set2 ( char    *titleRec ,
 	//m_state     = state;
 
 	// sanity check - since we do not reset
-	if ( m_contentValid ) { char *xx=NULL;*xx=0; }
+	gbassert( ! m_contentValid );
 
 	// this is true
 	m_setFromTitleRec = true;
@@ -1598,7 +1598,7 @@ bool XmlDoc::set2 ( char    *titleRec ,
 	if ( (m_titleRecKey.n0 & 0x01) == 0x00 ) {
 		g_errno = EBADTITLEREC;
 		log("db: Titledb record is a negative key.");
-		char *xx=NULL; *xx=0;
+		gbassert(false);
 		return false;
 	}
 	// set m_docId from key
@@ -1748,7 +1748,7 @@ bool XmlDoc::set2 ( char    *titleRec ,
 		// get the size
 		*ps = *(int32_t *)up;
 		// this should never be 0, otherwise, why was its flag set?
-		if ( *ps <= 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( *ps > 0 );
 		// skip over to point to data
 		up += 4;
 		// point to the data. could be 64-bit ptr.
@@ -1770,7 +1770,7 @@ bool XmlDoc::set2 ( char    *titleRec ,
 	// cap it
 	char *pend = m_ubuf + m_ubufSize;
 	// sanity check. must match exactly.
-	if ( up != pend ) { char *xx=NULL;*xx=0; }
+	gbassert( up == pend );
 
 	// set the urls i guess
 	m_firstUrl.set   ( ptr_firstUrl );
@@ -1906,7 +1906,7 @@ bool XmlDoc::set2 ( char    *titleRec ,
 	//m_siteNumInlinks      = atol(tag->getTagData());
 	//m_siteNumInlinksValid = true;
 	// must not be negative
-	if ( m_siteNumInlinks < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( m_siteNumInlinks >= 0 );
 
 	// set m_hasContactInfo in case someone calls ::getHasContactInfo()
 	// which will do a bunch of parsing!!
@@ -2068,9 +2068,9 @@ void XmlDoc::setCallback ( void *state, void (* callback) (void *state) ) {
 	m_callback1 = callback;
 	// add this additional state==this constraint to prevent core when
 	// doing a page parser
-	if ( state == this &&
+	gbassert_false( state == this &&
 	     // i don't remember why i added this sanity check...
-	     callback == getMetaListWrapper ) { char *xx=NULL;*xx=0; }
+	     callback == getMetaListWrapper );
 }
 
 void XmlDoc::setCallback ( void *state, bool (*callback) (void *state) ) {
@@ -2096,7 +2096,7 @@ bool XmlDoc::addToSpiderdb ( ) {
 void indexDocWrapper ( void *state ) {
 	XmlDoc *THIS = (XmlDoc *)state;
 	// make sure has not been freed from under us!
-	if ( THIS->m_freed ) { char *xx=NULL;*xx=0;}
+	gbassert( ! THIS->m_freed );
 	// note it
 	THIS->setStatus ( "in index doc wrapper" );
 	// return if it blocked
@@ -2231,7 +2231,7 @@ bool XmlDoc::injectDoc ( char *url ,
 			  payloadLen
                   )) {
 		// g_errno should be set if that returned false
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		return true;
 	}
 
@@ -2326,16 +2326,16 @@ bool XmlDoc::injectDoc ( char *url ,
 // a SpiderReply in spiderdb but no matching SpiderRequest as well.
 void XmlDoc::getRevisedSpiderRequest ( SpiderRequest *revisedReq ) {
 
-	if ( ! m_sreqValid ) { char *xx=NULL; *xx=0; }
+	gbassert( m_sreqValid );
 
 	// we are doing this because it has a fake first ip
-	if ( ! m_sreq.m_fakeFirstIp ) { char *xx=NULL;*xx=0; }
+	gbassert( m_sreq.m_fakeFirstIp );
 
 	// copy it over from our current spiderrequest
 	gbmemcpy ( revisedReq , &m_sreq , m_sreq.getRecSize() );
 
 	// this must be valid for us of course
-	if ( ! m_firstIpValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_firstIpValid );
 
 	// wtf? it might be invalid!!! parent caller will handle it...
 	//if ( m_firstIp == 0 || m_firstIp == -1 ) { char *xx=NULL;*xx=0; }
@@ -2368,13 +2368,13 @@ void XmlDoc::getRebuiltSpiderRequest ( SpiderRequest *sreq ) {
 	// assume not valid
 	sreq->m_siteNumInlinks = -1;
 
-	if ( ! m_siteNumInlinksValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_siteNumInlinksValid );
 
 	// how many site inlinks?
 	sreq->m_siteNumInlinks       = m_siteNumInlinks;
 	sreq->m_siteNumInlinksValid  = true;
 
-	if ( ! m_firstIpValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_firstIpValid );
 
 	// set other fields besides key
 	sreq->m_firstIp              = m_firstIp;
@@ -2441,7 +2441,7 @@ bool XmlDoc::indexDoc ( ) {
 	// return from the msg4.addMetaList() below?
 	if ( m_msg4Launched ) {
 		// must have been waiting
-		if ( ! m_msg4Waiting ) { char *xx=NULL;*xx=0; }
+		gbassert( m_msg4Waiting );
 		return true;
 	}
 
@@ -2620,7 +2620,7 @@ bool XmlDoc::indexDoc ( ) {
 			goto logErr;
 		}
 		// sanity log
-		if ( ! m_firstIpValid ) { char *xx=NULL;*xx=0; }
+		gbassert( m_firstIpValid );
 		// sanity log
 		if ( *fip == 0 || *fip == -1 ) {
 			// 
@@ -3070,7 +3070,7 @@ bool XmlDoc::indexDoc2 ( ) {
 	}
 
 	// make sure our msg4 is no longer in the linked list!
-	if (m_msg4Waiting && isInMsg4LinkedList(&m_msg4)){char *xx=NULL;*xx=0;}
+	gbassert_false(m_msg4Waiting && isInMsg4LinkedList(&m_msg4));
 
 	if ( m_msg4Waiting && g_conf.m_testSpiderEnabled )
 		logf(LOG_DEBUG,"build: msg4=0x%" PTRFMT " returned"
@@ -3241,7 +3241,7 @@ bool XmlDoc::indexContainerDoc ( ) {
 	char **cpp = getContent();//getUtf8Content();
 	// return true with g_errno set on error
 	if ( ! cpp ) {
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		return true;
 	}
 	// would block? return false then
@@ -3275,7 +3275,7 @@ bool XmlDoc::indexContainerDoc ( ) {
 		ir->m_spiderLinks = false;
 		ir->m_injectLinks = false;
 		ir->m_hopCount = 0;//*hc + 1;
-		if ( ! m_collnumValid ) { char *xx=NULL;*xx=0; }
+		gbassert( m_collnumValid );
 		ir->m_collnum = m_collnum;
 		// will this work on a content delimeterized doc?
 		ir->m_deleteUrl = m_deleteFromIndex;
@@ -3450,7 +3450,7 @@ bool XmlDoc::readMoreWarc() {
 
 	// return true with g_errno set on error
 	if ( ! m_pipe ) {
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
         log("We don't have the warc pipe.");
 		return true;
 	}
@@ -4044,7 +4044,7 @@ bool XmlDoc::indexWarcOrArc ( ) {
 	InjectionRequest *ir = &msg7->m_injectionRequest;
 	// reset it
 	ir->m_hopCount = *hc + 1;
-	if ( ! m_collnumValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_collnumValid );
 	ir->m_collnum = m_collnum;
 	// will this work on a content delimeterized doc?
 	ir->m_deleteUrl = m_deleteFromIndex;
@@ -4154,7 +4154,7 @@ bool XmlDoc::indexWarcOrArc ( ) {
 void getTitleRecBufWrapper ( void *state ) {
 	XmlDoc *THIS = (XmlDoc *)state;
 	// make sure has not been freed from under us!
-	if ( THIS->m_freed ) { char *xx=NULL;*xx=0;}
+	gbassert( ! THIS->m_freed );
 	// note it
 	THIS->setStatus ( "in get title rec wrapper" );
 	// return if it blocked
@@ -4272,7 +4272,7 @@ int32_t *XmlDoc::getIndexCode2 ( ) {
 	//	m_masterState = this;
 	//}
 
-	if ( ! m_firstUrlValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_firstUrlValid );
 
 	if ( m_firstUrl.m_ulen <= 5 ) {
 		m_indexCode = EBADURL;
@@ -4420,7 +4420,7 @@ int32_t *XmlDoc::getIndexCode2 ( ) {
 	Url **redirp = getRedirUrl();
 	if ( ! redirp || redirp == (void *)-1 ) return (int32_t *)redirp;
 	// this must be valid now
-	if ( ! m_redirErrorValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_redirErrorValid );
 	if ( m_redirError ) {
 		m_indexCode      = m_redirError;
 		m_indexCodeValid = true;
@@ -4703,7 +4703,7 @@ int32_t *XmlDoc::getIndexCode2 ( ) {
 	}
 
 	// i think an oom error is not being caught by Sections.cpp properly
-	if ( g_errno ) { char *xx=NULL;*xx=0; }
+	gbassert( ! g_errno );
 
 	Dates *dp = getDates();
 	if ( ! dp && g_errno == EBUFOVERFLOW ) {
@@ -5011,7 +5011,7 @@ bool XmlDoc::setDmozInfo () {
 	if ( ! m_dmozBuf.reserve(12000) ) {
 		log("xmldoc: error getting dmoz info: %s",mstrerror(g_errno));
 		// ensure log statement does not clear g_errno
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		return true;
 	}
 
@@ -5257,7 +5257,7 @@ bool XmlDoc::setTitleRecBuf ( SafeBuf *tbuf, int64_t docId, int64_t uh48 ){
 		p += *ps;
 	}
 	// sanity check
-	if ( p != ubuf + need1 ) { char *xx=NULL; *xx=0; }
+	gbassert( p == ubuf + need1 );
 
 	// now restore it for other functions to use
 	//size_content = saved;
@@ -5382,7 +5382,7 @@ SafeBuf *XmlDoc::getTitleRecBuf ( ) {
 
 	int32_t *indexCode = getIndexCode();
 	// not allowed to block here
-	if ( indexCode == (void *)-1) { char *xx=NULL;*xx=0; }
+	gbassert( indexCode != (void *)-1);
 	// return on errors with g_errno set
 	if ( ! indexCode ) return NULL;
 	// force delete? EDOCFORCEDELETE
@@ -5427,18 +5427,17 @@ SafeBuf *XmlDoc::getTitleRecBuf ( ) {
 	/////////
 
 	// verify key parts
-	if ( ! m_docIdValid                  ) { char *xx=NULL;*xx=0; }
+	gbassert( m_docIdValid );
 
 	// verify record parts
-	//if ( ! m_versionValid                ) { char *xx=NULL;*xx=0; }
-	if ( ! m_ipValid                     ) { char *xx=NULL;*xx=0; }
-	if ( ! m_spideredTimeValid           ) { char *xx=NULL;*xx=0; }
-	if ( ! m_pubDateValid                ) { char *xx=NULL;*xx=0; }
-	if ( ! m_firstIndexedDateValid       ) { char *xx=NULL;*xx=0; }
-	if ( ! m_outlinksAddedDateValid      ) { char *xx=NULL;*xx=0; }
-	if ( ! m_charsetValid                ) { char *xx=NULL;*xx=0; }
-	if ( ! m_countryIdValid              ) { char *xx=NULL;*xx=0; }
-	if ( ! m_httpStatusValid             ) { char *xx=NULL;*xx=0; }
+	gbassert( m_ipValid );
+	gbassert( m_spideredTimeValid );
+	gbassert( m_pubDateValid );
+	gbassert( m_firstIndexedDateValid );
+	gbassert( m_outlinksAddedDateValid );
+	gbassert( m_charsetValid );
+	gbassert( m_countryIdValid );
+	gbassert( m_httpStatusValid );
 
 	/*
 	if ( ! m_titleWeightValid            ) { char *xx=NULL;*xx=0; }
@@ -5449,65 +5448,65 @@ SafeBuf *XmlDoc::getTitleRecBuf ( ) {
 	if ( ! m_conceptWeightValid          ) { char *xx=NULL;*xx=0; }
 	*/
 
-	if ( ! m_siteNumInlinksValid         ) { char *xx=NULL;*xx=0; }
+	gbassert( m_siteNumInlinksValid );
 	// if ( ! m_siteNumInlinksUniqueIpValid     ) { char *xx=NULL;*xx=0; }
 	// if ( ! m_siteNumInlinksUniqueCBlockValid ) { char *xx=NULL;*xx=0; }
 	// if ( ! m_siteNumInlinksTotalValid )        { char *xx=NULL;*xx=0; }
 	//if ( ! m_sitePopValid                ) { char *xx=NULL;*xx=0; }
-	if ( ! m_rootLangIdValid             ) { char *xx=NULL;*xx=0; }
+	gbassert( m_rootLangIdValid );
 
-	if ( ! m_hopCountValid               ) { char *xx=NULL;*xx=0; }
-	if ( ! m_metaListCheckSum8Valid      ) { char *xx=NULL;*xx=0; }
+	gbassert( m_hopCountValid               );
+	gbassert( m_metaListCheckSum8Valid      );
 	//if ( ! m_numBannedOutlinksValid    ) { char *xx=NULL;*xx=0; }
-	if ( ! m_langIdValid                 ) { char *xx=NULL;*xx=0; }
-	if ( ! m_contentTypeValid            ) { char *xx=NULL;*xx=0; }
+	gbassert( m_langIdValid                 );
+	gbassert( m_contentTypeValid            );
 
-	if ( ! m_isRSSValid                  ) { char *xx=NULL;*xx=0; }
-	if ( ! m_isPermalinkValid            ) { char *xx=NULL;*xx=0; }
-	if ( ! m_isAdultValid                ) { char *xx=NULL;*xx=0; }
+	gbassert( m_isRSSValid                  );
+	gbassert( m_isPermalinkValid            );
+	gbassert( m_isAdultValid                );
 	//if ( ! m_eliminateMenusValid         ) { char *xx=NULL;*xx=0; }
-	if ( ! m_spiderLinksValid            ) { char *xx=NULL;*xx=0; }
-	if ( ! m_isContentTruncatedValid     ) { char *xx=NULL;*xx=0; }
-	if ( ! m_isLinkSpamValid             ) { char *xx=NULL;*xx=0; }
+	gbassert( m_spiderLinksValid            );
+	gbassert( m_isContentTruncatedValid     );
+	gbassert( m_isLinkSpamValid             );
 
 	// buffers
-	if ( ! m_firstUrlValid               ) { char *xx=NULL;*xx=0; }
-	if ( ! m_redirUrlValid               ) { char *xx=NULL;*xx=0; }
+	gbassert( m_firstUrlValid               );
+	gbassert( m_redirUrlValid               );
 	//if ( ! m_metaRedirUrlValid           ) { char *xx=NULL;*xx=0; }
-	if ( ! m_tagRecValid                 ) { char *xx=NULL;*xx=0; }
-	if ( ! m_gigabitHashesValid          ) { char *xx=NULL;*xx=0; }
-	if ( ! m_adVectorValid               ) { char *xx=NULL;*xx=0; }
-	if ( ! m_wikiDocIdsValid             ) { char *xx=NULL;*xx=0; }
-	if ( ! m_imageDataValid              ) { char *xx=NULL;*xx=0; }
-	if ( ! m_catIdsValid                 ) { char *xx=NULL;*xx=0; }
-	if ( ! m_indCatIdsValid              ) { char *xx=NULL;*xx=0; }
-	if ( ! m_dmozInfoValid               ) { char *xx=NULL;*xx=0; }
+	gbassert( m_tagRecValid                 );
+	gbassert( m_gigabitHashesValid          );
+	gbassert( m_adVectorValid               );
+	gbassert( m_wikiDocIdsValid             );
+	gbassert( m_imageDataValid              );
+	gbassert( m_catIdsValid                 );
+	gbassert( m_indCatIdsValid              );
+	gbassert( m_dmozInfoValid               );
 	// if m_recycleContent is true, these are not valid
 	if ( ! m_recycleContent ) {
-		if ( ! m_rawUtf8ContentValid         ) { char *xx=NULL;*xx=0; }
-		if ( ! m_expandedUtf8ContentValid    ) { char *xx=NULL;*xx=0; }
+		gbassert( m_rawUtf8ContentValid         );
+		gbassert( m_expandedUtf8ContentValid    );
 	}
-	if ( ! m_utf8ContentValid            ) { char *xx=NULL;*xx=0; }
-	if ( ! m_datesValid                  ) { char *xx=NULL;*xx=0; }
+	gbassert( m_utf8ContentValid            );
+	gbassert( m_datesValid                  );
 	// why do we need valid sections for a titlerec? we no longer user
 	// ptr_sectiondbData...
 	//if ( ! m_sectionsValid               ) { char *xx=NULL;*xx=0; }
 	//if ( ! m_sectionsReplyValid          ) { char *xx=NULL;*xx=0; }
 	//if ( ! m_addressReplyValid          ) { char *xx=NULL;*xx=0; }
-	if ( ! m_siteValid                   ) { char *xx=NULL;*xx=0; }
-	if ( ! m_linkInfo1Valid              ) { char *xx=NULL;*xx=0; }
-	if ( ! m_linkInfo2Valid              ) { char *xx=NULL;*xx=0; }
+	gbassert( m_siteValid                   );
+	gbassert( m_linkInfo1Valid              );
+	gbassert( m_linkInfo2Valid              );
 	//if ( ! m_sectiondbDataValid          ) { char *xx=NULL;*xx=0; }
 	//if ( ! m_placedbDataValid            ) { char *xx=NULL;*xx=0; }
 	//if ( ! m_clockCandidatesDataValid    ) { char *xx=NULL;*xx=0; }
 
 	// do we need these?
-	if ( ! m_hostHash32aValid            ) { char *xx=NULL;*xx=0; }
-	if ( ! m_contentHash32Valid          ) { char *xx=NULL;*xx=0; }
+	gbassert( m_hostHash32aValid            );
+	gbassert( m_contentHash32Valid          );
 	//if ( ! m_tagHash32Valid              ) { char *xx=NULL;*xx=0; }
-	if ( ! m_tagPairHash32Valid          ) { char *xx=NULL;*xx=0; }
+	gbassert( m_tagPairHash32Valid          );
 	// sanity checks
-	if ( ! m_addressesValid              ) { char *xx=NULL;*xx=0; }
+	gbassert( m_addressesValid              );
 
 	// breathe
 	QUICKPOLL( m_niceness );
@@ -6362,7 +6361,7 @@ int64_t **XmlDoc::getWikiDocIds ( ) {
 	// skip over ip
 	p += 4;
 	// sanity check
-	if ( p - m_wikiqbuf > need ) { char *xx=NULL;*xx=0; }
+	gbassert( p - m_wikiqbuf <= need );
 
 	int32_t ip = g_conf.m_wikiProxyIp;
 	// if not given, make it gf1 for now
@@ -6505,7 +6504,7 @@ Dates *XmlDoc::getDates ( ) {
 	Dates *dd = getSimpleDates();
 	// bail on error
 	if ( ! dd ) {
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		return NULL;
 	}
 
@@ -6564,7 +6563,7 @@ Dates *XmlDoc::getDates ( ) {
 	// now set part2 , returns false and sets g_errno on error
 	if ( ! m_dates.setPart2 ( aa , minPubDate, maxPubDate,//osvt,
 				  isXml , *isRoot )) {
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		// note it
 		log("doc: dates2: %s",mstrerror(g_errno));
 		// this just means we ran out of stack space to parse
@@ -6576,7 +6575,7 @@ Dates *XmlDoc::getDates ( ) {
 		if ( g_errno ) return NULL;
 	}
 	// debug EBADENGINEER error
-	if ( g_errno ) { char *xx=NULL;*xx=0; }
+	gbassert( ! g_errno );
 
 	// overflow? does not set g_errno. at least clear all so we do not
 	// get a messed up partial representation.
@@ -6668,7 +6667,7 @@ Dates *XmlDoc::getSimpleDates ( ) {
 				  cr->m_coll     ,
 				  m_niceness )) {
 		// sanity check
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		// note it
 		log("doc: dates1: %s",mstrerror(g_errno));
 		// this just means we ran out of stack space to parse
@@ -6765,7 +6764,7 @@ HashTableX *XmlDoc::getClockCandidatesTable ( ) {
 int32_t XmlDoc::getUrlPubDate ( ) {
 	if ( m_urlPubDateValid ) return m_urlPubDate;
 	// need a first url. caller should have called setFirstUrl()
-	if ( ! m_firstUrlValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_firstUrlValid );
 	// use Dates
 	//Dates dp;
 	// -1 means unknown
@@ -6775,7 +6774,7 @@ int32_t XmlDoc::getUrlPubDate ( ) {
 	Url *u = getFirstUrl();
 	// get last url we redirected to
 	Url **redir = getRedirUrl();
-	if ( ! redir || redir == (Url **)-1 ) {char *xx=NULL;*xx=0;}
+	gbassert( redir && redir != (Url **)-1 );
 
  subloop:
 	// . try to get the date just from the url
@@ -7591,7 +7590,7 @@ Sections *XmlDoc::getExplicitSections ( ) {
 	// the site hash
 	int64_t *sh64 = getSiteHash64();
 	// sanity check
-	if ( ! sh64 && ! g_errno ) { char *xx=NULL; *xx=0; }
+	gbassert_false( ! sh64 && ! g_errno );
 	if ( ! sh64 || sh64 == (void *)-1 ) return (Sections *)sh64;
 	// the docid
 	int64_t *d = getDocId();
@@ -7682,7 +7681,7 @@ Sections *XmlDoc::getImpliedSections ( ) {
 	uint8_t *ct = getContentType();
 	if ( ! ct ) return NULL;
 
-	if ( ! m_firstUrlValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_firstUrlValid );
 
 	// now we need basic date types to add implied sections that
 	// have a dow/dom header and tod brother sections
@@ -7882,7 +7881,7 @@ Sections *XmlDoc::getSections ( ) {
 		// breathe
 		QUICKPOLL ( m_niceness );
 		// sanity check
-		if ( ! si->m_sentenceContentHash64 ) { char *xx=NULL;*xx=0; }
+		gbassert( si->m_sentenceContentHash64 );
 		// how many pages from this site have this taghash for
 		// a sentence
 		float nt;
@@ -8039,7 +8038,7 @@ Sections *XmlDoc::getSectionsWithDupStats ( ) {
 		// NULL means g_errno
 		if ( ! stats ) {
 			// ensure g_errno is set
-			if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+			gbassert( g_errno );
 			// save it
 			m_secStatsErrno = g_errno;
 			// clear it
@@ -8245,7 +8244,7 @@ SectionStats *XmlDoc::getSectionStats ( uint32_t secHash32 ,
 		if ( ! m_mcastArray[i].m_inUse ) break;
 
 	// wtf?
-	if ( i >= maxOut ) { char *xx=NULL;*xx=0; }
+	gbassert( i < maxOut );
 
 	// and our vehicle
 	Multicast *mcast = &m_mcastArray[i];
@@ -8433,7 +8432,7 @@ SectionStats *XmlDoc::getSectionStats ( uint32_t secHash32 ,
 bool XmlDoc::gotSectionFacets ( Multicast *mcast ) {
 	//SectionStats *stats = &msg39->m_sectionStats;
 
-	if ( mcast->m_inUse ) { char *xx=NULL;*xx=0;}
+	gbassert_false( mcast->m_inUse );
 
 	// count it as returned
 	m_mcastRequestsIn++;
@@ -8548,7 +8547,7 @@ bool XmlDoc::gotSectionFacets ( Multicast *mcast ) {
 	// reset that msg39 to free its data
 	//msg39->reset();
 
-	if ( mcast != &m_mcastArray[num] ) { char *xx=NULL;*xx=0; }
+	gbassert( mcast == &m_mcastArray[num] );
 
 	// . make it available again
 	// . do this after all in case we were in quickpoll interruptting
@@ -8875,8 +8874,7 @@ int32_t *XmlDoc::getLinkSiteHashes ( ) {
 			}
 			// store that then. should not fail since we allocated
 			// right above
-			if ( ! m_linkSiteHashBuf.pushLong(siteHash32) ) {
-				char *xx=NULL;*xx=0; }
+			gbassert( m_linkSiteHashBuf.pushLong(siteHash32) );
 		}
 		// return ptr of array, which is a safebuf
 		return (int32_t *)m_linkSiteHashBuf.getBufStart();
@@ -8920,9 +8918,8 @@ int32_t *XmlDoc::getLinkSiteHashes ( ) {
 				return NULL;
 		}
 		// store it always in this buf
-		if ( ! m_linkSiteHashBuf.pushLong(linkeeSiteHash32) ) { 
-			// space should have been reserved above!
-			char *xx=NULL;*xx=0; }
+        // space should have been reserved above!
+        gbassert(m_linkSiteHashBuf.pushLong(linkeeSiteHash32));
 	}
 	// set ptr_linkdbData
 	ptr_linkdbData  = m_linkdbDataBuf.getBufStart();
@@ -9549,7 +9546,7 @@ int32_t *XmlDoc::getPostLinkTextVector ( int32_t linkNode ) {
 	if ( ! ww || ww == (Words *)-1 ) return (int32_t *)ww;
 
 	// sanity check
-	if ( linkNode < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( linkNode >= 0 );
 
 	// linkNode starts pointing to a <a> tag so skip over that!
 	linkNode++;
@@ -9687,8 +9684,7 @@ int32_t XmlDoc::computeVector ( Sections *sections, Words *words, uint32_t *vec 
 	// dedup our vector using this hashtable, "ht"
 	char hbuf[3000*6*2];
 	HashTableX ht;
-	if ( ! ht.set(4,0,3000,hbuf,3000*6*2,false,m_niceness,"xmlvecdedup")){
-		char*xx=NULL;*xx=0;}
+	gbassert( ht.set(4,0,3000,hbuf,3000*6*2,false,m_niceness,"xmlvecdedup"));
 
  again:
 	// a buffer to hold the top termIds
@@ -9711,7 +9707,7 @@ int32_t XmlDoc::computeVector ( Sections *sections, Words *words, uint32_t *vec 
 		// do not add if we already got it
 		if ( ht.getSlot ( &wid32 ) >= 0 ) continue;
 		// add to hash table. return NULL and set g_errno on error
-		if ( ! ht.addKey (&wid32 )){char*xx=NULL;*xx=0; }
+		gbassert(ht.addKey (&wid32 ));
 		// add it to our vector
 		d[nd] = (uint32_t)wids[i];
 		// stop after 3000 for sure
@@ -9825,7 +9821,7 @@ float *XmlDoc::getPercentChanged ( ) {
 // . returns length of word vector in int32_ts (# components stored)
 int32_t makeSimpleWordVector (char *s,int32_t *vbuf,int32_t vbufSize,int32_t niceness ) {
 	// nonsense?
-	if ( vbufSize < 4 ) { char *xx=NULL;*xx=0; }
+	gbassert( vbufSize >= 4 );
 	// empty it
 	*vbuf = 0;
 	// no words, no vector
@@ -10027,7 +10023,7 @@ float computeSimilarity ( int32_t   *vec0 ,
 	//else           percent = 100 * (float)matches    / (float)total;
 	// sanity
 	//if ( percent > 100 ) percent = 100;
-	if ( percent > 100 ) { char *xx=NULL;*xx=0; }
+	gbassert( percent <= 100 );
 
 	return percent;
 }
@@ -10327,7 +10323,7 @@ char *XmlDoc::getIsDup ( ) {
 	if ( ! list || list == (RdbList *)-1 ) return (char *)list;
 
 	// sanity. must be posdb list.
-	if ( ! list->isEmpty() && list->m_ks != 18 ) { char *xx=NULL;*xx=0;}
+	gbassert_false( ! list->isEmpty() && list->m_ks != 18 );
 
 	// so getSiteRank() does not core
 	int32_t *sni = getSiteNumInlinks();
@@ -10450,12 +10446,12 @@ char *XmlDoc::getIsDup ( ) {
 
 char *XmlDoc::isDupOfUs ( int64_t d ) {
 	// sanity check
-	if ( d <= 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( d > 0 );
 	// get our current title rec
 	SafeBuf *tr = getTitleRecBuf();
 	if ( ! tr || tr == (void *)-1 ) return (char *)tr;
 	// we should not be here if we know we are a dup of another doc
-	if ( m_isDup ) { char *xx=NULL;*xx=0; }
+	gbassert( ! m_isDup );
 	CollectionRec *cr = getCollRec();
 	if ( ! cr ) return NULL;
 	// get the title rec for this docid if we haven't yet done so
@@ -10583,7 +10579,7 @@ int32_t **XmlDoc::getGigabitHashes ( ) {
 	char *gq = getGigabitQuery();
 	if ( ! gq || gq == (char *)-1) return (int32_t **)gq;
 	// it should be valid now!
-	if ( ! m_gigabitHashesValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_gigabitHashesValid );
 	return &ptr_gigabitHashes;
 }
 
@@ -10750,7 +10746,7 @@ int32_t getTopGigabits ( HashTableX   *ht          ,
 		// get his info
 		GigabitInfo *gi = (GigabitInfo *)ht->getValueFromSlot(i);
 		// must be valid
-		if ( gi->m_count <= 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( gi->m_count > 0 );
 		// must be in this many docs minimum
 		if ( gi->m_numDocs < minDocCount ) continue;
 		// make the key
@@ -10768,7 +10764,7 @@ int32_t getTopGigabits ( HashTableX   *ht          ,
 		// get the smallest node
 		int32_t tn = tree.getLowestNode ( ) ;
 		// sanity check
-		if ( tn < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( tn >= 0 );
 		// kick out smallest
 		tree.deleteNode3 ( tn , false );
 		// get new smallest
@@ -11147,7 +11143,7 @@ bool addGigabit ( HashTableX *ht         ,
 		gi->m_hash            = h;
 		// sanity test
 		GigabitInfo *tt = (GigabitInfo *)ht->getValue ( &h );
-		if ( tt->m_pop != pop ) { char *xx=NULL;*xx=0; }
+		gbassert( tt->m_pop == pop );
 	}
 	else {
 		gi = (GigabitInfo *)ht->getValueFromSlot ( slot );
@@ -11273,9 +11269,9 @@ Url *XmlDoc::getFirstUrl() {
 		return &m_firstUrl;
 	}
 	// must be this otherwise
-	if ( ! m_setFromDocId ) { char *xx=NULL;*xx=0; }
+	gbassert( m_setFromDocId );
 	// this must be valid
-	if ( ! m_docIdValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_docIdValid );
 
 	// get the old xml doc from the old title rec
 	XmlDoc **pod = getOldXmlDoc ( );
@@ -11292,7 +11288,7 @@ Url *XmlDoc::getFirstUrl() {
 int64_t XmlDoc::getFirstUrlHash48() {
 	if ( m_firstUrlHash48Valid ) return m_firstUrlHash48;
 	// this must work
-	if ( ! m_firstUrlValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_firstUrlValid );
 	if ( getUseTimeAxis() ) {
 		m_firstUrlHash48 = hash64b ( getTimeAxisUrl()->getBufStart() ) & 0x0000ffffffffffffLL;
 		m_firstUrlHash48Valid = true;
@@ -11307,7 +11303,7 @@ int64_t XmlDoc::getFirstUrlHash48() {
 int64_t XmlDoc::getFirstUrlHash64() {
 	if ( m_firstUrlHash64Valid ) return m_firstUrlHash64;
 	// this must work
-	if ( ! m_firstUrlValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_firstUrlValid );
 
 	if ( getUseTimeAxis() ) {
 		m_firstUrlHash64 = hash64b ( getTimeAxisUrl()->getBufStart() );
@@ -11349,7 +11345,7 @@ Url **XmlDoc::getRedirUrl() {
 	//	return &m_redirUrlPtr;
 	//}
 	// we might have a title rec
-	if ( m_setFromTitleRec ) { char *xx=NULL;*xx=0; }
+	gbassert( ! m_setFromTitleRec );
 
 	// or recycling content from old title rec
 	if ( m_recycleContent ) {
@@ -11360,14 +11356,14 @@ Url **XmlDoc::getRedirUrl() {
 	}
 		
 	// get the current http reply, not the final http reply necessarily
-	if ( ! m_httpReplyValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_httpReplyValid );
 
 	// set a mime on the stack
 	HttpMime mime;
 	// int16_tcut
 	int32_t LEN = m_httpReplySize - 1;
 	// sanity check
-	if ( LEN > 0 && ! m_httpReply ) { char *xx=NULL;*xx=0; }
+	gbassert_false( LEN > 0 && ! m_httpReply );
 	// empty reply, no redir
 	if ( LEN == 0 ) {
 		// bad mime, but i guess valid empty redir url
@@ -11982,7 +11978,7 @@ uint8_t *XmlDoc::getRootLangId ( ) {
 		uint8_t *rl = rd->getLangId();
 		if ( ! rl || rl == (void *)-1 ) return (uint8_t *)rl;
 		// must be legit now!
-		if ( ! rd->m_langIdValid ) { char *xx=NULL;*xx=0;}
+		gbassert( rd->m_langIdValid );
 		// now validate our stuff
 		m_rootLangIdValid = true;
 		//m_rootLangIdScore = rd->m_langIdScore;
@@ -11991,7 +11987,7 @@ uint8_t *XmlDoc::getRootLangId ( ) {
 	}
 	// sanity check ( must be like "en,50\0" or could be
 	// "en_US,50\0" or "zh_cn,50"
-	if ( tag->getTagDataSize() > 6 ) { char *xx=NULL;*xx=0; }
+	gbassert( tag->getTagDataSize() <= 6 );
 	// point to 2 character language abbreviation
 	char *abbr = tag->getTagData();
 	/*
@@ -12086,7 +12082,7 @@ XmlDoc **XmlDoc::getOldXmlDoc ( ) {
 				NULL       , // pbuf
 				m_niceness ) ) {
 		log("build: failed to set old doc for %s",m_firstUrl.m_url);
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		int32_t saved = g_errno;
 		// ok, fix the memleak here
 		mdelete ( m_oldDoc , sizeof(XmlDoc), "odnuke" );
@@ -12163,9 +12159,9 @@ XmlDoc **XmlDoc::getExtraDoc ( char *u , int32_t maxCacheAge ) {
 	//int32_t *pfip = getFirstIp();
 	//if ( ! pfip || pfip == (void *)-1 ) return (XmlDoc **)pfip;
 	// must be NULL
-	if ( m_extraDoc ) { char *xx=NULL;*xx=0; }
+	gbassert( ! m_extraDoc );
 	// sanity check
-	if ( ! u || ! u[0] ) { char *xx=NULL;*xx=0; }//return &m_extraDoc;
+	gbassert_false( ! u || ! u[0] );
 	CollectionRec *cr = getCollRec();
 	if ( ! cr ) return NULL;
 	// . if *otr is NULL that means not found
@@ -12256,7 +12252,7 @@ XmlDoc **XmlDoc::getExtraDoc ( char *u , int32_t maxCacheAge ) {
 
 	// without this we send all the msg13 requests to host #3! because
 	// Msg13 uses it to determine what host to handle it
-	if ( ! m_firstIpValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_firstIpValid );
 	m_extraDoc->m_firstIp = m_firstIp;
 	m_extraDoc->m_firstIpValid = true;
 
@@ -12279,7 +12275,7 @@ bool XmlDoc::getIsPageParser ( ) {
 XmlDoc **XmlDoc::getRootXmlDoc ( int32_t maxCacheAge ) {
 	if ( m_rootDocValid ) return &m_rootDoc;
 	// help avoid mem leaks
-	if ( m_rootDoc ) { char *xx=NULL;*xx=0; }
+	gbassert( ! m_rootDoc );
 	// note it
 	setStatus ( "getting root doc");
 	// are we a root?
@@ -12505,8 +12501,7 @@ char **XmlDoc::getOldTitleRec ( ) {
 		return &m_oldTitleRec;
 	}
 	// sanity check
-	if ( m_oldTitleRecValid && m_msg22a.m_outstanding ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( m_oldTitleRecValid && m_msg22a.m_outstanding );
 	// point to url
 	//char *u = getCurrentUrl()->getUrl();
 	//char *u = getFirstUrl()->getUrl();
@@ -12528,7 +12523,7 @@ char **XmlDoc::getOldTitleRec ( ) {
 		return &m_oldTitleRec;
 	}
 	// sanity check. if we have no url or docid ...
-	if ( ! m_firstUrlValid && ! m_docIdValid ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! m_firstUrlValid && ! m_docIdValid );
 	// use docid if first url not valid
 	int64_t docId = 0;
 	if ( ! m_firstUrlValid ) docId = m_docId;
@@ -12760,8 +12755,7 @@ int64_t *XmlDoc::getDocId ( ) {
 		int64_t pd = g_titledb.getProbableDocId(u);
 		int64_t d1 = g_titledb.getFirstProbableDocId ( pd );
 		int64_t d2 = g_titledb.getLastProbableDocId  ( pd );
-		if ( m_docId < d1 || m_docId > d2 ) {
-			char *xx=NULL;*xx=0; }
+		gbassert_false( m_docId < d1 || m_docId > d2 );
 	}
 
 	// if docid is zero, none is a available!!!
@@ -12797,7 +12791,7 @@ char *XmlDoc::getIsIndexed ( ) {
 	if ( ! cr ) return NULL;
 
 	// sanity check. if we have no url or docid ...
-	if ( ! m_firstUrlValid && ! m_docIdValid ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! m_firstUrlValid && ! m_docIdValid );
 	// use docid if first url not valid
 	int64_t docId = 0;
 	char      *url  = NULL;
@@ -14039,7 +14033,7 @@ Addresses *XmlDoc::getAddresses ( ) {
 	// assume valid, really only when it returns in case it blocked...
 	//m_addressesValid = true;
 	// this should not be outstanding!
-	if ( m_addressSetCalled ) { char *xx=NULL;*xx=0; }
+	gbassert( ! m_addressSetCalled );
 	// assume valid, really only when it returns in case it blocked...
 	m_addressesValid = true;
 	// set it
@@ -14078,10 +14072,9 @@ Addresses *XmlDoc::getAddresses ( ) {
 				 this ))
 		return (Addresses *)-1;
 	// sanity check
-	if ( m_addresses.m_msg2c &&
+	gbassert_false( m_addresses.m_msg2c &&
 	     m_addresses.m_msg2c->m_requests != 
-	     m_addresses.m_msg2c->m_replies) {
-		char *xx=NULL;*xx=0; }
+	     m_addresses.m_msg2c->m_replies);
 	// error?
 	if ( g_errno ) return NULL;
 	// return it if not breached
@@ -14178,7 +14171,7 @@ int32_t *XmlDoc::getSiteNumInlinks ( ) {
 	if ( m_siteNumInlinksValid ) return &m_siteNumInlinks;
 
 	// sanity check
-	if ( m_setFromTitleRec && ! m_useSecondaryRdbs) {char *xx=NULL;*xx=0;}
+	gbassert_false( m_setFromTitleRec && ! m_useSecondaryRdbs);
 
 	CollectionRec *cr = getCollRec();
 	if ( ! cr ) return NULL;
@@ -14421,7 +14414,7 @@ int32_t *XmlDoc::getSiteNumInlinks ( ) {
 	setStatus ( "adding site info tags to tagdb 1");
 
 	// why are we adding tag again! should already be in tagdb!!!
-	if ( m_doingConsistencyCheck ) {char*xx=NULL;*xx=0;}
+	gbassert( ! m_doingConsistencyCheck );
 
 	// do not re-call at this point
 	//m_siteNumInlinks      = sinfo->m_numInlinksExtrapolated;
@@ -14779,7 +14772,7 @@ int32_t *XmlDoc::gotIp ( bool save ) {
 		//}
 		// get the best url
 		Url *u = getCurrentUrl();
-		if ( !u || u == (void *)-1 ) { char *xx=NULL;*xx=0; }
+		gbassert( u && u != (void *)-1 );
 		// . add it to "./test/ips.txt"
 		// . this function is in Msge1.cpp
 		addTestIp ( u->getHost() , u->getHostLen() , m_ip );
@@ -15077,7 +15070,7 @@ bool *XmlDoc::getIsAllowed ( ) {
 		
 
 	// double get?
-	if ( m_crawlDelayValid ) { char *xx=NULL;*xx=0; }
+	gbassert( ! m_crawlDelayValid );
 
 	// bulk jobs don't need this
 	CollectionRec *cr = getCollRec();
@@ -15145,7 +15138,7 @@ bool *XmlDoc::getIsAllowed ( ) {
 	if ( cu->isHttps() ) p += sprintf ( p , "https://" );
 	else                 p += sprintf ( p , "http://" );
 	// sanity
-	if ( ! cu->getHost() ) { char *xx=NULL;*xx=0; }
+	gbassert( cu->getHost() );
 	gbmemcpy ( p , cu->getHost() , cu->getHostLen() );
 	p += cu->getHostLen();
 	int32_t port = cu->getPort();
@@ -15169,7 +15162,7 @@ bool *XmlDoc::getIsAllowed ( ) {
 	// return NULL on error with g_errno set
 	if ( ! ed ) {
 		// sanity check, g_errno must be set
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		// log it -- should be rare?
 		log("doc: had error getting robots.txt: %s",
 		    mstrerror(g_errno));
@@ -15200,8 +15193,7 @@ bool *XmlDoc::getIsAllowed ( ) {
 	// get content
 	char *content = *pcontent;
 	// sanity check
-	if ( content && contentLen>0 && content[contentLen] != '\0'){
-		char*xx=NULL;*xx=0;}
+	gbassert_false( content && contentLen>0 && content[contentLen] != '\0');
 
 	// reset this. -1 means unknown or none found.
 	m_crawlDelay = -1;
@@ -15435,7 +15427,7 @@ LinkInfo *XmlDoc::getLinkInfo1 ( ) {
 		log("xmldoc: crap no g_errno");
 		g_errno = EBADENGINEER;
 		return NULL;
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		return NULL;
 	}
 	char *mysite = getSite();
@@ -15590,7 +15582,7 @@ LinkInfo *XmlDoc::getLinkInfo1 ( ) {
 		log("build: xmldoc call to msg25 did not block");
 		// must now block since it uses multicast now to
 		// send the request onto the network
-		char *xx=NULL;*xx=0; 
+		gbassert(false);
 		//}
 	}
 
@@ -15607,7 +15599,7 @@ LinkInfo *XmlDoc::getLinkInfo1 ( ) {
 	// this can not be NULL!
 	if ( ! ptr_linkInfo1 || size_linkInfo1 <= 0 ) { 
 		log("build: error getting linkinfo1: %s",mstrerror(g_errno));
-		char *xx=NULL;*xx=0; 
+		gbassert(false);
 		return NULL;
 	}
 	// take it from msg25 permanently
@@ -15743,7 +15735,7 @@ char *XmlDoc::getSite ( ) {
 	// need this
 	TagRec *gr = getTagRec();
 	// sanity check
-	if ( ! gr && ! g_errno ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! gr && ! g_errno );
 	// blocked or error?
 	if ( ! gr || gr == (TagRec *)-1 ) return (char *)gr;
 	CollectionRec *cr = getCollRec();
@@ -15792,16 +15784,16 @@ void gotSiteWrapper ( void *state ) {
 
 void XmlDoc::gotSite ( ) {
 	// sanity check
-	if ( ! m_siteGetter.m_allDone && ! g_errno ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! m_siteGetter.m_allDone && ! g_errno );
 	// this sets g_errno on error
 	ptr_site    = m_siteGetter.m_site;
 	size_site   = m_siteGetter.m_siteLen+1; // include \0
 	// sanity check -- must have a site
-	if ( ! g_errno && size_site <= 1 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! g_errno && size_site <= 1 );
 	// sitegetter.m_errno might be set!
 	m_siteValid = true;
 	// must be valid
-	if ( ! m_tagRecValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_tagRecValid );
 	// add the sitepathdepth tag to our tagrec
 	//Tag *a = m_siteGetter.m_addedTag.getFirstTag();
 	//if ( a ) m_newTagRec.addTag ( a );
@@ -15811,7 +15803,7 @@ int64_t *XmlDoc::getSiteHash64 ( ) {
 	if ( m_siteHash64Valid ) return &m_siteHash64;
 	char *site = getSite();
 	// sanity check
-	if ( ! site && ! g_errno ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! site && ! g_errno );
 	if ( ! site || site == (void *)-1) return (int64_t *)site;
 	m_siteHash64 = hash64 ( site , gbstrlen(site) );
 	m_siteHash64Valid = true;
@@ -15874,7 +15866,7 @@ void gotDiffbotReplyWrapper ( void *state , TcpSocket *s ) {
 	     // set location url to "null"
 	     ! mime.set ( s->m_readBuf , s->m_readOffset , NULL ) ) {
 		// g_errno should be set
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		// note it
 		log("build: error setting diffbot mime");
 		THIS->m_diffbotReplyError = EDIFFBOTMIMEERROR;
@@ -16122,7 +16114,7 @@ void gotDiffbotReplyWrapper ( void *state , TcpSocket *s ) {
 		// any embedded \0's in the utf8?
 		int32_t testLen1 = THIS->m_diffbotReply.length();
 		int32_t testLen2 = gbstrlen(THIS->m_diffbotReply.getBufStart());
-		if ( testLen1 != testLen2 ) { char *xx=NULL;*xx=0; }
+		gbassert( testLen1 == testLen2 );
 		// convert the \u1f23 to utf8 (\n and \r as well)
 		//THIS->m_diffbotReply.decodeJSONToUtf8 ( THIS->m_niceness );
 		//THIS->m_diffbotReply.nullTerm();
@@ -16968,7 +16960,7 @@ SafeBuf *XmlDoc::getDiffbotReply ( ) {
 						 gotDiffbotProxyReplyWrapper,
 						 9999999  )){// 99999sectimeout
 			// sanity check
-			if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+			gbassert( g_errno );
 			// report it
 			log("spider: msg54 request3: %s %s",
 			    mstrerror(g_errno),r->ptr_url);
@@ -17062,7 +17054,7 @@ SafeBuf *XmlDoc::getDiffbotReply ( ) {
 	m_diffbotUrl.nullTerm();
 
 	// mark as tried
-	if ( m_srepValid ) { char *xx=NULL;*xx=0; }
+	gbassert( ! m_srepValid );
 
 	m_sentToDiffbotThisTime = true;
 
@@ -17090,8 +17082,7 @@ SafeBuf *XmlDoc::getDiffbotReply ( ) {
 	// doing a bulk, then core. we need the webpage to harvest links
 	// and sometimes to check the pageprocesspattern to see if we should
 	// process.
-	if ( cr->m_isCustomCrawl ==1 && ! m_downloadStatusValid ) { 
-		char *xx=NULL;*xx=0; }
+	gbassert_false( cr->m_isCustomCrawl ==1 && ! m_downloadStatusValid );
 
 	log(LOG_INFO,
 	    "diffbot: getting %s headers=%s",m_diffbotUrl.getBufStart(),
@@ -17124,7 +17115,7 @@ SafeBuf *XmlDoc::getDiffbotReply ( ) {
 		// return -1 if blocked
 		return (SafeBuf *)-1;
 	// error?
-	if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+	gbassert( g_errno );
 	// wha?
 	log("diffbot: http error %s",mstrerror(g_errno));
 	// had an error!
@@ -17165,7 +17156,7 @@ char **XmlDoc::getHttpReply ( ) {
 	// to NULL to avoid unnecessary lookups.
 	if ( ! redirp || redirp == (void *)-1 ) return (char **)redirp;
 	// sanity check
-	if ( *redirp && ! m_redirUrlValid ) { char *xx=NULL;*xx=0; }
+	gbassert_false( *redirp && ! m_redirUrlValid );
 	// if NULL, we are done
 	if ( ! *redirp ) return &m_httpReply;
 	// . also, hang it up if we got a simplified redir url now
@@ -17284,7 +17275,7 @@ char **XmlDoc::getHttpReply2 ( ) {
 	// error or blocked
 	if ( ! isAllowed || isAllowed == (void *)-1) return (char **)isAllowed;
 	// this must be valid, since we share m_msg13 with it
-	if ( ! m_isAllowedValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_isAllowedValid );
 
 	int32_t *cd = getFinalCrawlDelay();
 	if ( ! cd || cd == (void *)-1 ) return (char **)cd;
@@ -17323,7 +17314,7 @@ char **XmlDoc::getHttpReply2 ( ) {
 	}
 
 	// sanity check
-	if ( od && m_recycleContent ) {char *xx=NULL;*xx=0; }
+	gbassert_false( od && m_recycleContent );
 
 	// validate m_firstIpValid
 	int32_t *pfip = getFirstIp();
@@ -17345,7 +17336,7 @@ char **XmlDoc::getHttpReply2 ( ) {
 
 
 	// sanity check
-	if ( ! m_masterLoop ) { char *xx=NULL;*xx=0; }
+	gbassert( m_masterLoop );
 
 	// int16_tcut. this will return the redirUrl if it is non-empty.
 	Url *cu = getCurrentUrl();
@@ -17398,7 +17389,7 @@ char **XmlDoc::getHttpReply2 ( ) {
 		r->m_isRootSeedUrl = 1;
 
 	// sanity check
-	if ( ! m_firstIpValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_firstIpValid );
 
 	// r->m_maxTextDocLen          = maxDownload;
 	// r->m_maxOtherDocLen         = maxDownload;
@@ -17551,7 +17542,7 @@ char **XmlDoc::getHttpReply2 ( ) {
 	// if we had already spidered it... try to save bandwidth and time
 	if ( od ) {
 		// sanity check
-		if ( ! od->m_spideredTimeValid ) { char *xx=NULL;*xx=0; }
+		gbassert( od->m_spideredTimeValid );
 		// only get it if modified since last spider time
 		r->m_ifModifiedSince = od->m_spideredTime;
 	}
@@ -17590,13 +17581,13 @@ char **XmlDoc::getHttpReply2 ( ) {
 	// sanity check. keep injections fast. no downloading!
 	if ( m_wasContentInjected ) { 
 		log("xmldoc: url injection failed! error!");
-		char *xx=NULL;*xx=0; 
+		gbassert(false);
 	}
 
 	// sanity check
 	if ( m_deleteFromIndex ) {
 		log("xmldoc: trying to download page to delete");
-		char *xx=NULL;*xx=0; 
+		gbassert(false);
 	}
 
 	m_downloadStartTimeValid = true;
@@ -17616,7 +17607,7 @@ char **XmlDoc::gotHttpReply ( ) {
 	setStatus ( "got web page" );
 
 	// sanity check. are we already valid?
-	if ( m_httpReply && m_httpReplyValid ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_httpReply && m_httpReplyValid );
 
 	// do not re-call
 	m_httpReplyValid = true;
@@ -17635,7 +17626,7 @@ char **XmlDoc::gotHttpReply ( ) {
 	m_httpReplyAllocSize = m_msg13.m_replyBufAllocSize;
 
 	// sanity check
-	if ( m_httpReplySize > 0 && ! m_httpReply ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_httpReplySize > 0 && ! m_httpReply );
 	// what is this for? that makes it into a length not a size!
 	//if ( m_httpReplySize > 0 ) m_httpReplySize--;
 	// . save entire reply length we read from the net so
@@ -17660,8 +17651,8 @@ char **XmlDoc::gotHttpReply ( ) {
 	// . sanity test -- only if not the test collection
 	// . i.e. what are you doing downloading the page if there was
 	//   a problem with the page we already know about
-	if ( m_indexCode && m_indexCodeValid &&
-	     strcmp(cr->m_coll,"qatest123") ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_indexCode && m_indexCodeValid &&
+	     strcmp(cr->m_coll,"qatest123") );
 
 	// fix this
 	if ( saved == EDOCUNCHANGED ) {
@@ -17881,7 +17872,7 @@ int32_t *XmlDoc::getDownloadStatus ( ) {
 	char **reply = getHttpReply ();
 	if ( ! reply || reply == (void *)-1 ) return (int32_t *)reply;
 	// must be valid now
-	if ( ! m_downloadStatusValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_downloadStatusValid );
 	// return it
 	return &m_downloadStatus;
 }
@@ -17918,7 +17909,7 @@ int64_t *XmlDoc::getDownloadEndTime ( ) {
 	char **reply = getHttpReply ();
 	if ( ! reply || reply == (void *)-1 ) return (int64_t *)reply;
 	// must be valid now
-	if ( ! m_downloadEndTimeValid ) { char *xx=NULL;*xx=0;}
+	gbassert( m_downloadEndTimeValid );
 	// return it
 	return &m_downloadEndTime;
 }
@@ -18070,7 +18061,7 @@ char **XmlDoc::getContent ( ) {
 
 	// if we were set from a title rec use that we do not have the original
 	// content, and caller should be calling getUtf8Content() anyway!!
-	if ( m_setFromTitleRec ) { char *xx=NULL; *xx=0; }
+	gbassert( ! m_setFromTitleRec );
 
 	// query reindex has m_setFromDocId to true and we WANT to re-download
 	// the content... so why did i have this here? MDW 9/25/2014
@@ -18084,7 +18075,7 @@ char **XmlDoc::getContent ( ) {
 	if ( ! mime || mime == (HttpMime *)-1 ) return (char **)mime;
 
 	// http reply must be valid
-	if ( ! m_httpReplyValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_httpReplyValid );
 
 	// make it valid
 	m_contentValid = true;
@@ -18391,7 +18382,7 @@ Url **XmlDoc::getMetaRedirUrl ( ) {
 	// get ptr to utf8 content
 	//char **u8 = getHttpReply();
 	//if ( ! u8 || u8 == (void *)-1 ) return (Url **)u8;
-	if ( ! m_httpReplyValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_httpReplyValid );
 
 	char *p    = m_httpReply;
 	// subtract one since this is a size not a length
@@ -19045,7 +19036,7 @@ char **XmlDoc::getFilteredContent ( ) {
 
 	// how can this be? don't core like this in thread, because it
 	// does not save our files!!
-	if ( ! m_mimeValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_mimeValid );
 
 	// do it
 	if ( g_threads.call ( FILTER_THREAD        ,
@@ -19080,7 +19071,7 @@ skip:
 	// but bail out if it set g_errno
 	if ( g_errno ) return NULL;
 	// must be valid now - sanity check
-	if ( ! m_filteredContentValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_filteredContentValid );
 	// return it
 	return &m_filteredContent;
 }
@@ -19119,7 +19110,7 @@ void XmlDoc::filterStart_r ( bool amThread ) {
 	// get thread id
 	pthread_t id = getpidtid();
 	// sanity check
-	if ( ! m_contentTypeValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_contentTypeValid );
 	// int16_tcut
 	int32_t ctype = m_contentType;
 
@@ -19151,7 +19142,7 @@ void XmlDoc::filterStart_r ( bool amThread ) {
 		return;
 	}
 	// we are in a thread, this must be valid!
-	if ( ! m_mimeValid ) { char *xx=NULL;*xx=0;}
+	gbassert( m_mimeValid );
 
  retry12:
 	// write the content into the input file
@@ -19200,7 +19191,7 @@ void XmlDoc::filterStart_r ( bool amThread ) {
 		snprintf(cmd,3071, "ulimit -v 25000 ; ulimit -t 30 ; timeout 10s nice -n 19 %s/ppthtml %s > %s" , wdir , in , out );
 	else if ( ctype == CT_PS  )
 		snprintf(cmd,3071, "ulimit -v 25000 ; ulimit -t 30; timeout 10s nice -n 19 %s/pstotext %s > %s" , wdir , in , out );
-	else { char *xx=NULL;*xx=0; }
+	else { gbassert(false); }
 
 	// breach sanity check
 	//if ( gbstrlen(cmd) > 2040 ) { char *xx=NULL;*xx=0; }
@@ -19238,7 +19229,7 @@ void XmlDoc::filterStart_r ( bool amThread ) {
 		return;
 	}
 	// sanity -- need room to store a \0
-	if ( m_filteredContentAllocSize < 2 ) { char *xx=NULL;*xx=0; }
+	gbassert( m_filteredContentAllocSize >= 2 );
 	// to read - leave room for \0
 	int32_t toRead = m_filteredContentAllocSize - 1;
  retry14:
@@ -19264,7 +19255,7 @@ void XmlDoc::filterStart_r ( bool amThread ) {
 	// save the new buf len
 	m_filteredContentLen = r;
 	// ensure enough room for null term
-	if ( r >= m_filteredContentAllocSize ) { char *xx=NULL;*xx=0; }
+	gbassert( r < m_filteredContentAllocSize );
 	// ensure filtered stuff is NULL terminated so we can set the Xml class
 	m_filteredContent [ m_filteredContentLen ] = '\0';
 	// it is good
@@ -19856,8 +19847,7 @@ char **XmlDoc::getExpandedUtf8Content ( ) {
 		m_expandedUtf8ContentSize = m_esbuf.m_length; // + 1;
 	}
 	// sanity -- must be \0 terminated
-	if ( m_expandedUtf8Content[m_expandedUtf8ContentSize-1] ) {
-		char *xx=NULL;*xx=0; }
+	gbassert( m_expandedUtf8Content[m_expandedUtf8ContentSize-1] == '\0');
 
 	m_expandedUtf8ContentValid = true;
 	return &m_expandedUtf8Content;
@@ -20216,7 +20206,7 @@ char **XmlDoc::getUtf8Content ( ) {
 	}
 
 	// sanity
-	if ( ! m_contentTypeValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_contentTypeValid );
 
 	// if we are an xml doc, then before we call htmlDecode translate
 	// all tags like <title> or <link> to <gbtitle> or <gblink> so we
@@ -20309,9 +20299,9 @@ char **XmlDoc::getUtf8Content ( ) {
 
 	// can't exceed this! n does not include the final \0 even though
 	// we do right it out.
-	if ( n > m_expandedUtf8ContentSize-1 ) {char *xx=NULL;*xx=0; }
+	gbassert( n <= m_expandedUtf8ContentSize-1 );
 	// sanity
-	if ( m_expandedUtf8Content[n] != '\0' ) { char *xx=NULL;*xx=0; }
+	gbassert( m_expandedUtf8Content[n] == '\0' );
 
 	// now rss has crap in it like "&amp;nbsp;" so we have to do another
 	// decoding pass
@@ -20324,9 +20314,9 @@ char **XmlDoc::getUtf8Content ( ) {
 	// 		       false,//doSpecial,
 	// 		       m_niceness);
 	// sanity
-	if ( n > m_expandedUtf8ContentSize-1 ) {char *xx=NULL;*xx=0; }
+	gbassert( n <= m_expandedUtf8ContentSize-1 );
 	// sanity
-	if ( m_expandedUtf8Content[n] != '\0' ) { char *xx=NULL;*xx=0; }
+	gbassert( m_expandedUtf8Content[n] == '\0' );
 
 
 
@@ -20477,11 +20467,10 @@ char **XmlDoc::getUtf8Content ( ) {
 	size_utf8Content = (char *)dst - m_expandedUtf8Content;
 
 	// sanity -- skipped over the \0???
-	if ( p > pend ) { char *xx=NULL;*xx=0; }
+	gbassert( p <= pend );
 
 	// sanity check
-	if ( ptr_utf8Content && ptr_utf8Content[size_utf8Content-1] ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( ptr_utf8Content && ptr_utf8Content[size_utf8Content-1] );
 
 	m_utf8ContentValid = true;
 	return &ptr_utf8Content;
@@ -20494,7 +20483,7 @@ int32_t getContentHash32Fast ( unsigned char *p ,
 	// sanity
 	if ( ! p ) return 0;
 	if ( plen <= 0 ) return 0;
-	if ( p[plen] != '\0' ) { char *xx=NULL;*xx=0; }
+	gbassert( p[plen] == '\0' );
 	unsigned char *pend = p + plen;
 
 	static bool s_init = false;
@@ -21056,7 +21045,7 @@ TagRec ***XmlDoc::getOutlinkTagRecVector () {
 				    m_masterState      ,
 				    m_masterLoop       )) {
 		// sanity check
-		if ( m_doingConsistencyCheck ) { char *xx=NULL;*xx=0; }
+		gbassert( ! m_doingConsistencyCheck );
 		// we blocked
 		return (TagRec ***)-1;
 	}
@@ -21199,7 +21188,7 @@ int32_t **XmlDoc::getOutlinkFirstIpVector () {
 				     addTags            ,
 				     testDir            )) {
 		// sanity check
-		if ( m_doingConsistencyCheck ) { char *xx=NULL;*xx=0; }
+		gbassert( ! m_doingConsistencyCheck );
 		// we blocked
 		return (int32_t **)-1;
 	}
@@ -21946,7 +21935,7 @@ int32_t *XmlDoc::getSpiderPriority ( ) {
 	int32_t *ufn = getUrlFilterNum();
 	if ( ! ufn || ufn == (void *)-1 ) return (int32_t *)ufn;
 	// sanity check
-	if ( *ufn < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( *ufn >= 0 );
 	CollectionRec *cr = getCollRec();
 	if ( ! cr ) return NULL;
 
@@ -22643,12 +22632,12 @@ bool XmlDoc::doConsistencyTest ( bool forceTest ) {
 	char *rv = doc->getMetaList ( );
 
 	// sanity check - compare urls
-	if ( doc->m_firstUrl.m_ulen != m_firstUrl.m_ulen){char *xx=NULL;*xx=0;}
+	gbassert( doc->m_firstUrl.m_ulen == m_firstUrl.m_ulen);
 
 	// error setting it?
 	if ( ! rv ) {
 		// sanity check
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert( g_errno );
 		// free it
 		mdelete ( doc , sizeof(XmlDoc) , "xdnuke");
 		delete ( doc );
@@ -22656,7 +22645,7 @@ bool XmlDoc::doConsistencyTest ( bool forceTest ) {
 		return false;
 	}
 	// blocked? that is not allowed
-	if ( rv == (void *)-1 ) { char *xx=NULL; *xx=0; }
+	gbassert( rv != (void *)-1 );
 
 	// compare with the old list
 	char *list1     = m_metaList;
@@ -22693,13 +22682,13 @@ bool XmlDoc::doConsistencyTest ( bool forceTest ) {
 	
 	// see if each key in list1 is in list2
 	if ( ! hashMetaList ( &ht1 , p1 , pend1 , false ) ) {
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 		mdelete ( doc , sizeof(XmlDoc) , "xdnuke");
 		delete ( doc );
 		return log("doc: failed consistency test for %s",ptr_firstUrl);
 	}
 	if ( ! hashMetaList ( &ht2 , p2 , pend2 , false ) ) {
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 		mdelete ( doc , sizeof(XmlDoc) , "xdnuke");
 		delete ( doc );
 		return log("doc: failed consistency test for %s",ptr_firstUrl);
@@ -22771,7 +22760,7 @@ void XmlDoc::printMetaList ( char *p , char *pend , SafeBuf *sb ) {
 		// convert into a key128_t, the biggest possible key
 		//key224_t k ; 
 		char k[MAX_KEY_BYTES];
-		if ( ks > MAX_KEY_BYTES ) { char *xx=NULL;*xx=0; }
+		gbassert( ks <= MAX_KEY_BYTES );
 		//k.setMin();
 		gbmemcpy ( &k , p , ks );
 		// is it a negative key?
@@ -22794,9 +22783,9 @@ void XmlDoc::printMetaList ( char *p , char *pend , SafeBuf *sb ) {
 			// inc this
 			recSize += 4;
 			// sanity check
-                        if ( dataSize < 0 ) { char *xx=NULL;*xx=0; }
+            gbassert( dataSize >= 0 );
 			p += 4;
-                }
+        }
 		// point to it
 		char *data = p;
 		// skip the data
@@ -22835,7 +22824,7 @@ void XmlDoc::printMetaList ( char *p , char *pend , SafeBuf *sb ) {
 			//uint8_t score8 = g_posdb.getScore ( *k2 );
 			//uint32_t score32 = score8to32 ( score8 );
 			// sanity check
-			if(dataSize!=0){char*xx=NULL;*xx=0;}
+			gbassert( dataSize == 0 );
 			sb->safePrintf("<td>"
 				       "termId=%020" UINT64 " "
 				       //"score8=%03" UINT32 " "
@@ -22855,7 +22844,7 @@ void XmlDoc::printMetaList ( char *p , char *pend , SafeBuf *sb ) {
 			int32_t date = g_datedb.getDate ( k2 );
 			uint32_t score32 = score8to32 ( score8 );
 			// sanity check
-			if(dataSize!=0){char*xx=NULL;*xx=0;}
+			gbassert( dataSize == 0 );
 			sb->safePrintf("<td>"
 				       "termId=%020" UINT64 " "
 				       "date=%010" UINT32 " "
@@ -22882,8 +22871,8 @@ void XmlDoc::printMetaList ( char *p , char *pend , SafeBuf *sb ) {
 				dd = "tagPairHash32";
 			// sanity check
 			int32_t ds = sizeof(SectionVote);
-			if (!neg&&dataSize!=ds){char*xx=NULL;*xx=0;}
-			if ( neg&&dataSize!=0 ){char*xx=NULL;*xx=0;}
+			gbassert_false( ! neg && dataSize != ds );
+			gbassert_false( neg && dataSize != 0 );
 			float score      = 0.0;
 			float numSampled = 0.0;
 			if ( data ) {
@@ -22917,7 +22906,7 @@ void XmlDoc::printMetaList ( char *p , char *pend , SafeBuf *sb ) {
 			int32_t ip32       = g_linkdb.getLinkerIp_uk       (k2);
 			int64_t docId = g_linkdb.getLinkerDocId_uk      (k2);
 			// sanity check
-			if(dataSize!=0){char*xx=NULL;*xx=0;}
+			gbassert( dataSize == 0 );
 			sb->safePrintf("<td>"
 				       "<nobr>"
 				       "linkeeSiteHash32=0x%08" XINT32 " "
@@ -22948,7 +22937,7 @@ void XmlDoc::printMetaList ( char *p , char *pend , SafeBuf *sb ) {
 			int64_t docId = g_clusterdb.getDocId        ( r );
 			char ff         = g_clusterdb.getFamilyFilter ( r );
 			// sanity check
-			if(dataSize!=0){char*xx=NULL;*xx=0;}
+			gbassert( dataSize == 0 );
 			sb->safePrintf("<td>"
 				       // 26 bit site hash
 				       "siteHash26=0x%08" XINT32 " "
@@ -22969,8 +22958,8 @@ void XmlDoc::printMetaList ( char *p , char *pend , SafeBuf *sb ) {
 			int32_t      snh     = g_placedb.getStreetNumHash ( k2 );
 			//int32_t smallHash    = g_placedb.getSmallHash ( k2 );
 			// sanity check
-			if(!neg &&dataSize<=0){char*xx=NULL;*xx=0;}
-			if( neg &&dataSize!=0){char*xx=NULL;*xx=0;}
+			gbassert_false( ! neg && dataSize <= 0 );
+			gbassert_false( neg && dataSize != 0 );
 			sb->safePrintf("<td><nobr>"
 				       "bigHash64=0x%016" XINT64 " "
 				       "docId=%" UINT64 " "
@@ -23042,7 +23031,7 @@ void XmlDoc::printMetaList ( char *p , char *pend , SafeBuf *sb ) {
 			sb->safePrintf("</nobr></td>");
 		}
 		else {
-			char *xx=NULL;*xx=0; 
+			gbassert(false);
 		}
 
 		// close it up
@@ -23120,16 +23109,16 @@ bool XmlDoc::verifyMetaList ( char *p , char *pend , bool forDelete ) {
 		if      ( rdbId == RDB_POSDB || rdbId == RDB2_POSDB2 ) {
 			ks = 18;
 			// no compress bits set!
-			if ( p[0] & 0x06 ) { char*xx=NULL;*xx=0; }
+			gbassert_false( p[0] & 0x06 );
 			// alignment bit set or cleared
-			if ( ! ( p[1] & 0x02 ) ) { char *xx=NULL;*xx=0; }
-			if (   ( p[7] & 0x02 ) ) { char *xx=NULL;*xx=0; }
+			gbassert_false( ! ( p[1] & 0x02 ) );
+			gbassert_false(   ( p[7] & 0x02 ) );
 			int64_t docId = g_posdb.getDocId(p);
 			if ( docId != m_docId && !cr->m_indexSpiderReplies) { 
 				log("xmldoc: %" INT64 " != %" INT64 ""
 				    , docId
 				    , m_docId );
-				char *xx=NULL;*xx=0;
+				    gbassert(false);
 			}
 			// else
 			// 	log("xmldoc: %" INT64 " == %" INT64 ""
@@ -23145,13 +23134,12 @@ bool XmlDoc::verifyMetaList ( char *p , char *pend , bool forDelete ) {
 		else if ( rdbId == RDB_DATEDB  ) ks = 16;
 		else ks = getKeySizeFromRdbId ( rdbId );
 		// sanity
-		if ( ks < 12 ) { char *xx=NULL;*xx=0; }
-		if ( ks > MAX_KEY_BYTES ) { char *xx=NULL;*xx=0; }
+		gbassert( ks >= 12 );
+		gbassert( ks <= MAX_KEY_BYTES );
 		// another check
 		Rdb *rdb = getRdbFromId(rdbId);
-		if ( ! rdb ) { char *xx=NULL;*xx=0; }
-		if ( rdb->m_ks < 12 || rdb->m_ks > MAX_KEY_BYTES ) { 
-			char *xx=NULL;*xx=0;}
+		gbassert( rdb );
+		gbassert_false( rdb->m_ks < 12 || rdb->m_ks > MAX_KEY_BYTES );
 
 		// special linkdb check
 		//if ( rdbId == RDB_LINKDB ) {
@@ -23193,26 +23181,25 @@ bool XmlDoc::verifyMetaList ( char *p , char *pend , bool forDelete ) {
 		if ( del ) dataSize = 0;
 
 		// ensure spiderdb request recs have data/url in them
-		if ( (rdbId == RDB_SPIDERDB || rdbId == RDB2_SPIDERDB2) &&
+		gbassert_false( (rdbId == RDB_SPIDERDB || rdbId == RDB2_SPIDERDB2) &&
 		     g_spiderdb.isSpiderRequest ( (SPIDERDBKEY *)rec ) &&
 		     ! forDelete &&
 		     ! del &&
-		     dataSize == 0 ) {
-			char *xx=NULL;*xx=0; }
+		     dataSize == 0 );
 
 		// if variable read that in
 		if ( dataSize == -1 ) {
 			// -1 means to read it in
 			dataSize = *(int32_t *)p;
 			// sanity check
-			if ( dataSize < 0 ) { char *xx=NULL;*xx=0; }
+			gbassert( dataSize >= 0 );
 			// skip dataSize
 			p += 4;
 		}
 		// skip over the data, if any
 		p += dataSize;
 		// breach us?
-		if ( p > pend ) { char *xx=NULL;*xx=0; }
+		gbassert( p <= pend );
 	}
 	// must be exactly equal to end
 	if ( p != pend ) return false;
@@ -23282,7 +23269,7 @@ bool XmlDoc::hashMetaList ( HashTableX *ht        ,
 		// get key size
 		int32_t ks = getKeySizeFromRdbId ( rdbId );
 		// sanity check
-		if ( ks > 28 ) { char *xx=NULL;*xx=0; }
+		gbassert( ks <= 28 );
 		// is it a delete key?
 		char del ;
 		if ( ( p[0] & 0x01 ) == 0x00 ) del = true;
@@ -23303,9 +23290,9 @@ bool XmlDoc::hashMetaList ( HashTableX *ht        ,
 		if ( dataSize == -1 ) {
 			dataSize = *(int32_t *)p;
 			// sanity check
-                        if ( dataSize < 0 ) { char *xx=NULL;*xx=0; }
+            gbassert( dataSize >= 0 );
 			p += 4;
-                }
+        }
 		// hash the data into a int32_t for hash table
 		//int32_t h32 = 0;
 		//h32 = hash32 ( p , dataSize );
@@ -23383,7 +23370,7 @@ bool XmlDoc::hashMetaList ( HashTableX *ht        ,
 				    term,prefix);//,(int32_t)ti->m_score32);
 			}
 
-			char *xx=NULL; *xx=0; 
+			gbassert(false);
 			// count it for PageStats.cpp
 			g_stats.m_parsingInconsistencies++;
 			continue;
@@ -23401,7 +23388,7 @@ bool XmlDoc::hashMetaList ( HashTableX *ht        ,
 			    "ks=%s "
 			    ,count,getDbnameFromId(rdbId),(int32_t)ks,
 			    (int32_t)dataSize,KEYSTR(k,ks));
-			char *xx=NULL; *xx=0; 
+			gbassert(false);
 			// count it for PageStats.cpp
 			g_stats.m_parsingInconsistencies++;
 			continue;
@@ -23456,7 +23443,7 @@ bool XmlDoc::hashMetaList ( HashTableX *ht        ,
 			log("build: rec2=%s",sb2.getBufStart());
 
 		}
-		char *xx=NULL; *xx=0; 
+		gbassert(false);
 		// count it for PageStats.cpp
 		g_stats.m_parsingInconsistencies++;
 	}
@@ -23576,7 +23563,7 @@ bool XmlDoc::doesPageContentMatchDiffbotProcessPattern() {
 */
 
 bool XmlDoc::doesPageContentMatchDiffbotProcessPattern() {
-	if ( ! m_utf8ContentValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_utf8ContentValid );
 	CollectionRec *cr = getCollRec();
 	if ( ! cr ) return false;
 	char *p = cr->m_diffbotPageProcessPattern.getBufStart();
@@ -23645,7 +23632,7 @@ int32_t *XmlDoc::redoJSONObjects ( int32_t *newTitleHashes ,
 	int32_t  numOldHashes;
 	int32_t *oldTitleHashes = getDiffbotTitleHashes ( &numOldHashes );
 	// sanity. should return right away without having to block
-	if ( oldTitleHashes == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( oldTitleHashes != (void *)-1 );
 
 	//int32_t count = m_diffbotJSONCount;
 	// sanity again
@@ -23751,7 +23738,7 @@ int32_t *XmlDoc::redoJSONObjects ( int32_t *newTitleHashes ,
 void getMetaListWrapper ( void *state ) {
 	XmlDoc *THIS = (XmlDoc *)state;
 	// make sure has not been freed from under us!
-	if ( THIS->m_freed ) { char *xx=NULL;*xx=0;}
+	gbassert( ! THIS->m_freed );
 	// note it
 	THIS->setStatus ( "in get meta list wrapper" );
 	// get it
@@ -23760,12 +23747,12 @@ void getMetaListWrapper ( void *state ) {
 	if ( ! ml && ! g_errno ) { 
 		log("doc: getMetaList() returned NULL without g_errno");
 		sleep(5);
-		char *xx=NULL;*xx=0; 
+		gbassert(false);
 	}
 	// return if it blocked
 	if ( ml == (void *)-1 ) return;
 	// sanityh check
-	if ( THIS->m_callback1 == getMetaListWrapper ) { char *xx=NULL;*xx=0;}
+	gbassert( THIS->m_callback1 != getMetaListWrapper );
 	// otherwise, all done, call the caller callback
 	if ( THIS->m_callback1 ) THIS->m_callback1 ( THIS->m_state );
 	else                     THIS->m_callback2 ( THIS->m_state );
@@ -24000,7 +23987,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		// can unlock this url so it can be spidered again.
 		int64_t lock1 = makeLockTableKey(&m_sreq);
 		int64_t lock2 = makeLockTableKey(&srep);
-		if ( lock1 != lock2 ) { char *xx=NULL;*xx=0; }
+		gbassert( lock1 == lock2 );
 		// make a fake spider reply so this docid-based spider
 		// request is not used again
 		//SpiderReply srep;
@@ -24121,7 +24108,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 	int32_t *indexCode = getIndexCode();
 	if ( ! indexCode || indexCode ==(void *)-1) return (char *)indexCode;
 	// sanity check
-	if ( ! m_indexCodeValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_indexCodeValid );
 
 	// this means to abandon the injection
 	if ( *indexCode == EABANDONED || 
@@ -24164,7 +24151,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		|| *indexCode == EDOCUNCHANGED
 		) {
 		// sanity - in repair mode?
-		if ( m_useSecondaryRdbs ) { char *xx=NULL;*xx=0; }
+		gbassert( ! m_useSecondaryRdbs );
 		// . this seems to be an issue for blocking
 		// . if we do not have a valid ip, we can't compute this,
 		//   in which case it will not be valid in the spider reply
@@ -24253,7 +24240,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		if ( ! newsr ) return (char *)newsr;
 		// . panic on blocking! this is supposed to be fast!
 		// . it might still have to lookup the tagdb rec?????
-		if ( newsr == (void *)-1 ) { char *xx=NULL;*xx=0; }
+		gbassert( newsr != (void *)-1 );
 		// how much we need
 		int32_t needx = sizeof(SpiderReply) + 1;
 
@@ -24359,7 +24346,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		*/
 
 		// sanity check
-		if ( ! m_docIdValid ) { char *xx=NULL;*xx=0; }
+		gbassert( m_docIdValid );
 		// . make a fake titledb key
 		// . remove the spider lock (Msg12 in Spider.cpp)
 		// . now SPider.cpp uses SpiderReply reception to remove lock
@@ -24378,7 +24365,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		if ( m_useSecondaryRdbs ) rd = RDB2_SPIDERDB2;
 		*m_p++ = rd;
 		// get this
-		if ( ! m_srepValid ) { char *xx=NULL;*xx=0; }
+		gbassert( m_srepValid );
 		// store the spider rec
 		int32_t newsrSize = newsr->getRecSize();
 		gbmemcpy ( m_p , newsr , newsrSize );
@@ -24386,7 +24373,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		m_addedSpiderReplySize = newsrSize;
 		m_addedSpiderReplySizeValid = true;
 		// sanity check
-		if ( m_p - saved != needx ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_p - saved != needx );
 		// sanity check
 		verifyMetaList( m_metaList , m_p , forDelete );
 		// verify it
@@ -24529,7 +24516,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		// This will download the diffbot reply if not already there.
 		int32_t numHashes;
 		int32_t *th = getDiffbotTitleHashes(&numHashes);
-		if ( ! th && ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert_false( ! th && ! g_errno );
 		if ( ! th || th == (void *)-1 ) return (char *)th;
 		// this returns false if it blocks
 		int32_t *status = od->nukeJSONObjects( th , numHashes );
@@ -24965,11 +24952,10 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 
 		// get title hashes of the json items
 		titleHashBuf = getDiffbotTitleHashes(&numHashes);
-		if (!titleHashBuf || titleHashBuf == (void *)-1){
-			char *xx=NULL;*xx=0;}
+		gbassert(titleHashBuf && titleHashBuf != (void *)-1);
 
 		// make sure diffbot reply is valid for sure
-		if ( ! m_diffbotReplyValid ) { char *xx=NULL;*xx=0; }
+		gbassert( m_diffbotReplyValid );
 		// set status for this
 		setStatus ( "indexing diffbot json doc");
 		// new guy here
@@ -24993,7 +24979,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 			
 			// sanity. ensure the json item we are trying to
 			// index has a title hash in this buf
-			if(m_diffbotJSONCount>=numHashes){char *xx=NULL;*xx=0;}
+			gbassert( m_diffbotJSONCount < numHashes );
 
 			// get the title of the json we are indexing
 			int32_t jth = titleHashBuf [ m_diffbotJSONCount ];
@@ -25008,7 +24994,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 			if ( fakeUrl.length() > MAX_URL_LEN ) {
 				log("build: diffbot enhanced url too long for "
 				    "%s",fakeUrl.getBufStart());
-				char *xx=NULL;*xx=0;
+				gbassert(false);
 			}
 			m_diffbotJSONCount++;
 			// this can go on the stack since set4() copies it
@@ -25174,7 +25160,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		// shit, this blocks which is bad!!!
 		char *nod = hashAll ( &tt1 ) ;
 		// you can't block here because if we are re-called we lose tt1
-		if ( nod == (char *)-1 ) { char *xx=NULL;*xx=0; }
+		gbassert( nod != (char *)-1 );
 		// error?
 		if ( ! nod ) return NULL;
 		int32_t done = tt1.m_numSlots;
@@ -25536,12 +25522,12 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		SafeBuf *tr = getTitleRecBuf ();
 		// panic if this blocks! it should not at this point because 
 		// we'd have to re-hash the crap above
-		if ( tr == (void *) -1 ) { char *xx=NULL;*xx=0; }
+		gbassert( tr != (void *) -1 );
 		// return NULL with g_errno set on error
 		if ( ! tr ) return (char *)tr;
 		// sanity check - if the valid title rec is null, 
 		// m_indexCode is set!
-		if ( tr->length()==0 && ! m_indexCode ) { char *xx=NULL;*xx=0;}
+		gbassert_false( tr->length()==0 && ! m_indexCode );
 	}
 
 	// . add in title rec size
@@ -25574,7 +25560,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 
 	// . alloc mem for metalist
 	// . sanity
-	if ( m_metaListSize > 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( m_metaListSize <= 0 );
 	// make the buffer
 	m_metaList = (char *)mmalloc ( need , "metalist");
 	if ( ! m_metaList ) return NULL;
@@ -25612,7 +25598,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		if ( m_useSecondaryRdbs ) *m_p++ = RDB2_TITLEDB2;
 		else                      *m_p++ = RDB_TITLEDB;
 		// sanity
-		if ( ! nd->m_titleRecBufValid ) { char *xx=NULL;*xx=0; }
+		gbassert( nd->m_titleRecBufValid );
 		// key, dataSize, data is the whole rec
 		int32_t tsize = nd->m_titleRecBuf.length();
 		// if getting an "oldList" to do incremental posdb updates
@@ -25627,7 +25613,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		//if ( forDelete ) { *(int32_t *)m_p = 0; m_p += 4; }
 	}
 	// sanity check
-	if ( m_p - saved > needTitledb ) { char *xx=NULL;*xx=0; }
+	gbassert( m_p - saved <= needTitledb );
 	// sanity check
 	verifyMetaList( m_metaList , m_p , forDelete );
 
@@ -25642,7 +25628,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 	//if(!addTable96 ( &tt2, &tt1, date2, date1, true ,false)) return NULL;
 	//if ( od ) tt2.clear();
 	// sanity check
-	if ( m_p - saved > needIndexdb ) { char*xx=NULL;*xx=0; }
+	gbassert( m_p - saved <= needIndexdb );
 	// free all mem
 	tt1.reset();
 	//tt2.reset();
@@ -25700,7 +25686,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		return NULL;
 	//if(! addTable128 (&st2,&st1, RDB_SECTIONDB,true ,true))return NULL;
 	// sanity check
-	if ( m_p - saved > needSectiondb ) { char *xx=NULL;*xx=0; }
+	gbassert( m_p - saved <= needSectiondb );
 	// free mem
 	st1.reset();
 	//st2.reset();
@@ -25716,7 +25702,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 	saved = m_p;
 	// . do we have adult content?
 	// . should already be valid!
-	if ( nd && ! m_isAdultValid ) { char *xx=NULL;*xx=0; }
+	gbassert_false( nd && ! m_isAdultValid );
 	// . get new clusterdb key
 	// . we use the host hash for the site hash! hey, this is only 26 bits!
 	key_t newk ; newk.setMin();
@@ -25765,7 +25751,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 	//	m_p += sizeof(key_t);
 	//}
 	// sanity check
-	if ( m_p - saved > needClusterdb ) { char *xx=NULL;*xx=0; }
+	gbassert( m_p - saved <= needClusterdb );
 	// sanity check
 	verifyMetaList( m_metaList , m_p , forDelete );
 
@@ -25782,7 +25768,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		return NULL;
 	//if(add2&&!addTable128(&kt2,&kt1,RDB_LINKDB, false))return NULL;
 	// sanity check
-	if ( m_p - saved > needLinkdb ) { char *xx=NULL;*xx=0; }
+	gbassert( m_p - saved <= needLinkdb );
 	// all done
 	kt1.reset();
 	//kt2.reset();
@@ -25802,7 +25788,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		return NULL;
 	//if(! addTable128 ( &pt2, &pt1, RDB_PLACEDB, true , true))return NULL;
 	// sanity check
-	if ( m_p - saved > needPlacedb ) { char *xx=NULL;*xx=0; }
+	gbassert( m_p - saved <= needPlacedb );
 	// free mem
 	pt1.reset();
 	//pt2.reset();
@@ -25938,7 +25924,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		if ( m_useSecondaryRdbs ) *m_p = RDB2_SPIDERDB2;
 		m_p++;
 		// get this
-		if ( ! m_srepValid ) { char *xx=NULL;*xx=0; }
+		gbassert( m_srepValid );
 		// store the spider rec
 		int32_t newsrSize = newsr->getRecSize();
 		gbmemcpy ( m_p , newsr , newsrSize );
@@ -25948,10 +25934,9 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		m_addedSpiderReplySizeValid = true;
 
 		// sanity check - must not be a request, this is a reply
-		if ( g_spiderdb.isSpiderRequest( &newsr->m_key ) ) {
-			char *xx=NULL;*xx=0; }
+		gbassert( ! g_spiderdb.isSpiderRequest( &newsr->m_key ) );
 		// sanity check
-		if ( m_p - saved != needSpiderdb1 ) { char *xx=NULL;*xx=0; }
+		gbassert( m_p - saved == needSpiderdb1 );
 		// sanity check
 		verifyMetaList( m_metaList , m_p , forDelete );
 	}		
@@ -25978,7 +25963,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		if ( ! m_useSecondaryRdbs ) {
 			getRevisedSpiderRequest ( &revisedReq );
 			// sanity log
-			if ( ! m_firstIpValid ) { char *xx=NULL;*xx=0; }
+			gbassert( m_firstIpValid );
 			// sanity log
 			if ( m_firstIp == 0 || m_firstIp == -1 ) {
 				char *url = "unknown";
@@ -25998,7 +25983,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		// skip over it
 		m_p += revisedReq.getRecSize();
 		// sanity check
-		if ( m_p - saved > needSpiderdb3 ) { char *xx=NULL;*xx=0; }
+		gbassert( m_p - saved <= needSpiderdb3 );
 
 		m_addedSpiderRequestSize = revisedReq.getRecSize();
 		m_addedSpiderRequestSizeValid = true;
@@ -26015,7 +26000,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 	//
 	setStatus ( "adding spiderdb keys" );
 	// sanity check. cannot spider until in sync
-	if ( ! isClockInSync() ) { char *xx=NULL;*xx=0; }
+	gbassert( isClockInSync() );
 	// checkpoint
 	saved = m_p;
 	// . should be fixed from Links::setRdbList
@@ -26032,14 +26017,14 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		// returns NULL and sets g_errno on error
 		char *ret = addOutlinkSpiderRecsToMetaList ();
 		// sanity check
-		if ( ! ret && ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert_false( ! ret && ! g_errno );
 		// return NULL on error
 		if ( ! ret ) return NULL;
 		// this MUST not block down here, to avoid re-hashing above
-		if ( ret == (void *)-1 ) { char *xx=NULL;*xx=0; }
+		gbassert( ret != (void *)-1 );
 	}
 	// sanity check
-	if ( m_p - saved > needSpiderdb2 ) { char *xx=NULL;*xx=0; }
+	gbassert( m_p - saved <= needSpiderdb2 );
 	// sanity check
 	verifyMetaList( m_metaList , m_p , forDelete );
 
@@ -26060,7 +26045,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 		m_p += srcSize;
 	}
 	// sanity check
-	if ( m_p - saved > needTagdb ) { char *xx=NULL;*xx=0; }
+	gbassert( m_p - saved <= needTagdb );
 	// sanity check
 	verifyMetaList( m_metaList , m_p , forDelete );
 
@@ -26240,7 +26225,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 	*/
 
 	// sanity check
-	if ( m_p > m_pend || m_p < m_metaList ) { char *xx=NULL;*xx=0;}
+	gbassert_false( m_p > m_pend || m_p < m_metaList );
 
 	int32_t now = getTimeGlobal();
 
@@ -26328,10 +26313,9 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 			else    
 				hk = hash64 (k,ks);
 			// sanity check
-			if ( rdbId == RDB_LINKDB &&
+			gbassert_false( rdbId == RDB_LINKDB &&
 			     g_linkdb.getLinkerDocId_uk((key224_t *)k)!=
-			     m_docId ) {
-				char *xx=NULL;*xx=0; }
+			     m_docId );
 			//if ( getDataSize(rdbId) != 0 ) continue;
 			// hash this key
 			//bool status;
@@ -26491,7 +26475,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 			// key size
 			int32_t ks = getKeySizeFromRdbId(rdbId);
 			// sanity test - no negative keys
-			if ( (rec[1] & 0x01) == 0x00 ) { char *xx=NULL;*xx=0;}
+			gbassert( (rec[1] & 0x01) != 0x00 );
 			// copy the rdbId byte and key
 			gbmemcpy ( nptr , rec , 1 + ks );
 			// skip over rdbid
@@ -26508,7 +26492,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 				int32_t lost = g_linkdb.getLostDate_uk( rec+1 );
 				// how can it be non-zero? it should have
 				// been freshly made from the old titlerec...
-				if ( lost ) { char *xx=NULL;*xx=0; }
+				gbassert( ! lost );
 				// if zero, set it to now!
 				//g_linkdb.setLostDate_uk(realRec,now);
 				// copy the rdbId byte and key
@@ -26525,7 +26509,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 
 		}
 		// sanity. check for metalist breach
-		if ( nptr > nmax ) { char *xx=NULL;*xx=0; }
+		gbassert( nptr <= nmax );
 		// free the old meta list
 		mfree ( m_metaList , m_metaListAllocSize , "fm" );
 		// now switch over to the new one
@@ -26730,7 +26714,7 @@ SpiderReply *XmlDoc::getFakeSpiderReply ( ) {
 	// if m_isChildDoc is true, like for diffbot url, this should be
 	// a bogus one.
 	SpiderReply *nsr = getNewSpiderReply ();
-	if ( nsr == (void *)-1) { char *xx=NULL;*xx=0; }
+	gbassert( nsr != (void *)-1);
 	if ( ! nsr ) {
 		log("doc: crap, could not even add spider reply "
 		    "to indicate internal error: %s",mstrerror(g_errno));
@@ -26755,7 +26739,7 @@ SpiderReply *XmlDoc::getNewSpiderReply ( ) {
 	setStatus ( "getting spider reply" );
 
 	// diffbot guys, robots.txt, frames, sshould not be here
-	if ( m_isChildDoc ) { char *xx=NULL;*xx=0; }
+	gbassert( ! m_isChildDoc );
 
 	// . get the mime first
 	// . if we are setting XmlDoc from a titleRec, this causes 
@@ -26887,9 +26871,9 @@ SpiderReply *XmlDoc::getNewSpiderReply ( ) {
 	if ( fu ) m_srep.m_domHash32  = getDomHash32();
 	else      m_srep.m_domHash32  = 0;
 
-	if ( ! m_tagRecValid               ) { char *xx=NULL;*xx=0; }
-	if ( ! m_ipValid                   ) { char *xx=NULL;*xx=0; }
-	if ( ! m_siteHash32Valid           ) { char *xx=NULL;*xx=0; }
+	gbassert( m_tagRecValid               );
+	gbassert( m_ipValid                   );
+	gbassert( m_siteHash32Valid           );
 	//if ( ! m_spideredTimeValid         ) { char *xx=NULL;*xx=0; }
 
 	// . set other fields besides key
@@ -27071,7 +27055,7 @@ SpiderReply *XmlDoc::getNewSpiderReply ( ) {
 			// we should have had a spider request, because that's
 			// where we got the m_contentHash32 we passed to 
 			// Msg13Request.
-			if ( ! m_sreqValid ) { char *xx=NULL;*xx=0; }
+			gbassert( m_sreqValid );
 			// make it a success
 			m_srep.m_errCode = 0;
 			// and no error count, it wasn't an error per se
@@ -27102,7 +27086,7 @@ SpiderReply *XmlDoc::getNewSpiderReply ( ) {
 	}
 	
 	// this will help us avoid hammering ips & respect same ip wait
-	if ( ! m_downloadEndTimeValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_downloadEndTimeValid );
 	m_srep.m_downloadEndTime      = m_downloadEndTime;
 
 	// . if m_indexCode was 0, we are indexed then...
@@ -27163,7 +27147,7 @@ SpiderReply *XmlDoc::getNewSpiderReply ( ) {
 	if ( ! pl || pl == (char *)-1 ) 
 		return (SpiderReply *)pl;
 
-	if ( ! m_hasContactInfoValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_hasContactInfoValid );
 	if ( m_hasContactInfo ) {
 		m_srep.m_hasContactInfo = 1;
 		m_srep.m_hasContactInfoValid = 1;
@@ -27177,14 +27161,14 @@ SpiderReply *XmlDoc::getNewSpiderReply ( ) {
 
 	// sanity checks
 	//if(! m_sreqValid                ) { char *xx=NULL;*xx=0; }
-	if ( ! m_siteNumInlinksValid       ) { char *xx=NULL;*xx=0; }
-	if ( ! m_hopCountValid             ) { char *xx=NULL;*xx=0; }
-	if ( ! m_pubDateValid              ) { char *xx=NULL;*xx=0; }
-	if ( ! m_langIdValid               ) { char *xx=NULL;*xx=0; }
-	if ( ! m_isRSSValid                ) { char *xx=NULL;*xx=0; }
-	if ( ! m_isPermalinkValid          ) { char *xx=NULL;*xx=0; }
+	gbassert( m_siteNumInlinksValid       );
+	gbassert( m_hopCountValid             );
+	gbassert( m_pubDateValid              );
+	gbassert( m_langIdValid               );
+	gbassert( m_isRSSValid                );
+	gbassert( m_isPermalinkValid          );
 	//if ( ! m_pageNumInlinksValid     ) { char *xx=NULL;*xx=0; }
-	if ( ! m_percentChangedValid       ) { char *xx=NULL;*xx=0; }
+	gbassert( m_percentChangedValid       );
 	//if ( ! m_isSpamValid               ) { char *xx=NULL;*xx=0; }
 	//if ( ! m_crawlDelayValid           ) { char *xx=NULL;*xx=0; }
 
@@ -27212,10 +27196,10 @@ SpiderReply *XmlDoc::getNewSpiderReply ( ) {
 		// -1 means invalid/unknown
 		m_srep.m_crawlDelayMS = -1;
 
-	if ( ! m_hasAddressValid    ) { char *xx=NULL;*xx=0; }
-	if ( ! m_hasTODValid        ) { char *xx=NULL;*xx=0; }
+	gbassert( m_hasAddressValid    );
+	gbassert( m_hasTODValid        );
 	//if ( ! m_hasSiteVenueValid  ) { char *xx=NULL;*xx=0; }
-	if ( ! m_hasContactInfoValid) { char *xx=NULL;*xx=0; }
+	gbassert( m_hasContactInfoValid);
 
 	// . we use this to store "bad" spider recs to keep from respidering
 	//   a "bad" url over and over again
@@ -27269,7 +27253,7 @@ SpiderReply *XmlDoc::getNewSpiderReply ( ) {
 		if ( lock1 != lock2 ) { 
 			log("build: lock1 != lock2 lock mismatch for %s",
 			    m_firstUrl.m_url);
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 	}
 
@@ -27287,14 +27271,14 @@ void XmlDoc::setSpiderReqForMsg20 ( SpiderRequest *sreq   ,
 				    SpiderReply   *srep   ) {
 
 	// sanity checks
-	if ( ! m_ipValid                   ) { char *xx=NULL;*xx=0; }
+	gbassert( m_ipValid                   );
 	//if ( ! m_domHash32Valid            ) { char *xx=NULL;*xx=0; }
 	//if ( ! m_siteNumInlinksValid       ) { char *xx=NULL;*xx=0; }
-	if ( ! m_hopCountValid             ) { char *xx=NULL;*xx=0; }
-	if ( ! m_pubDateValid              ) { char *xx=NULL;*xx=0; }
-	if ( ! m_langIdValid               ) { char *xx=NULL;*xx=0; }
-	if ( ! m_isRSSValid                ) { char *xx=NULL;*xx=0; }
-	if ( ! m_isPermalinkValid          ) { char *xx=NULL;*xx=0; }
+	gbassert( m_hopCountValid             );
+	gbassert( m_pubDateValid              );
+	gbassert( m_langIdValid               );
+	gbassert( m_isRSSValid                );
+	gbassert( m_isPermalinkValid          );
 	//if ( ! m_isUrlPermalinkFormatValid ) { char *xx=NULL;*xx=0; }
 	//if ( ! m_spideredTimeValid         ) { char *xx=NULL;*xx=0; }
 	//if ( ! m_pageNumInlinksValid     ) { char *xx=NULL;*xx=0; }
@@ -27311,7 +27295,7 @@ void XmlDoc::setSpiderReqForMsg20 ( SpiderRequest *sreq   ,
 	// assume not valid
 	sreq->m_siteNumInlinks = -1;
 
-	if ( ! m_siteNumInlinksValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_siteNumInlinksValid );
 	// how many site inlinks?
 	sreq->m_siteNumInlinks       = m_siteNumInlinks;
 	sreq->m_siteNumInlinksValid  = true;
@@ -27376,7 +27360,7 @@ int32_t isInSeedBuf ( CollectionRec *cr , char *url, int len ) ;
 //   "inject" it, with only m_useSpiderdb set to true...
 char *XmlDoc::addOutlinkSpiderRecsToMetaList ( ) {
 
-	if ( m_doingConsistencyCheck ) { char *xx=NULL;*xx=0; }
+	gbassert( ! m_doingConsistencyCheck );
 
 	// do not do this if recycling content
 	// UNLESS REBUILDING...
@@ -27411,7 +27395,7 @@ char *XmlDoc::addOutlinkSpiderRecsToMetaList ( ) {
 	Addresses *aa = getAddresses ();
 	if ( ! aa || aa == (Addresses *)-1 ) return (char *)aa;
 	// sanity check
-	if ( ! m_hasContactInfoValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_hasContactInfoValid );
 
 	// . ignore address in dup sections
 	// . this way if the place always has their address in the header or
@@ -27420,7 +27404,7 @@ char *XmlDoc::addOutlinkSpiderRecsToMetaList ( ) {
 
 	// need this
 	int32_t parentDomHash32 = getDomHash32();
-	if ( parentDomHash32 != m_domHash32 ) { char *xx=NULL;*xx=0; }
+	gbassert( parentDomHash32 == m_domHash32 );
 
 	char *isRoot = getIsSiteRoot();
 	if ( ! isRoot || isRoot == (char *)-1 ) return (char *)isRoot;
@@ -27481,12 +27465,12 @@ char *XmlDoc::addOutlinkSpiderRecsToMetaList ( ) {
 	if ( n <= 0 ) return (char *)0x01;
 
 	// sanity checks
-	if ( ! m_ipValid             ) { char *xx=NULL;*xx=0; }
-	if ( ! m_domHash32Valid      ) { char *xx=NULL;*xx=0; }
-	if ( ! m_siteNumInlinksValid ) { char *xx=NULL;*xx=0; }
-	if ( ! m_hostHash32aValid    ) { char *xx=NULL;*xx=0; }
-	if ( ! m_siteHash32Valid     ) { char *xx=NULL;*xx=0; }
-	if ( ! m_hopCountValid       ) { char *xx=NULL;*xx=0; }
+	gbassert( m_ipValid             );
+	gbassert( m_domHash32Valid      );
+	gbassert( m_siteNumInlinksValid );
+	gbassert( m_hostHash32aValid    );
+	gbassert( m_siteHash32Valid     );
+	gbassert( m_hopCountValid       );
 	//if ( ! m_spideredTimeValid   ) { char *xx=NULL;*xx=0; }
 
 	int64_t myUh48 = m_firstUrl.getUrlHash48();
@@ -27858,7 +27842,7 @@ char *XmlDoc::addOutlinkSpiderRecsToMetaList ( ) {
 		// hascontactinfo tag can have a value of 0 or 1
 		//tag = gr->getTag("hascontactinfo");
 		//if ( tag ) {
-		if ( ! m_hasContactInfoValid ) { char *xx=NULL;*xx=0; }
+		gbassert( m_hasContactInfoValid );
 		if ( m_hasContactInfo ) {
 			ksr.m_hasContactInfo = 1;
 			ksr.m_hasContactInfoValid     = true;
@@ -27950,7 +27934,7 @@ char *XmlDoc::addOutlinkSpiderRecsToMetaList ( ) {
 		// copy the url into SpiderRequest::m_url buffer
 		strcpy(ksr.m_url,s);
 		// this must be valid
-		if ( ! m_docIdValid ) { char *xx=NULL;*xx=0; }
+		gbassert( m_docIdValid );
 
 		// set the key, ksr.m_key. isDel = false
 		ksr.setKey ( firstIp, *d , false );
@@ -28033,7 +28017,7 @@ char *XmlDoc::addOutlinkSpiderRecsToMetaList ( ) {
 		// sanity check
 		//if ( need + 12 + 4 > thought ) { char *xx=NULL;*xx=0; }
 		// sanity check
-		if ( p + 1 + need > m_pend ) { char *xx=NULL;*xx=0; }
+		gbassert( p + 1 + need <= m_pend );
 		// store the rdbId
 		if ( m_useSecondaryRdbs ) *p++ = RDB2_SPIDERDB2;
 		else                      *p++ = RDB_SPIDERDB;
@@ -28166,7 +28150,7 @@ bool XmlDoc::addTable128 ( HashTableX *tt1     , // T <key128_t,char> *tt1
 			   bool        forDelete ) {
 	
 	// sanity check
-	if ( rdbId == 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( rdbId != 0 );
 
 	bool useRdb2 = m_useSecondaryRdbs;//g_repair.isRepairActive();
 	//if ( g_repair.m_fullRebuild            ) useRdb2 = false;
@@ -28181,16 +28165,16 @@ bool XmlDoc::addTable128 ( HashTableX *tt1     , // T <key128_t,char> *tt1
 	if ( useRdb2 && rdbId == RDB_SECTIONDB ) useRdbId = RDB2_SECTIONDB2;
 
 	// sanity checks
-	if ( tt1->m_ks != 16 ) { char *xx=NULL;*xx=0; }
+	gbassert( tt1->m_ks == 16 );
 	if ( rdbId == RDB_PLACEDB ) {
-		if ( tt1->m_ds !=  512 ) { char *xx=NULL;*xx=0; }
+		gbassert( tt1->m_ds ==  512 );
 	}
 	else if ( rdbId == RDB_SECTIONDB ) {
 		int32_t svs = sizeof(SectionVote);
-		if ( tt1->m_ds !=  svs ) { char *xx=NULL;*xx=0; }
+		gbassert( tt1->m_ds ==  svs );
 	}
 	else {
-		if ( tt1->m_ds !=  0 ) { char *xx=NULL;*xx=0; }
+		gbassert( tt1->m_ds ==  0 );
 	}
 
 	int32_t count = 0;
@@ -28205,14 +28189,14 @@ bool XmlDoc::addTable128 ( HashTableX *tt1     , // T <key128_t,char> *tt1
 		key128_t *k = (key128_t *)tt1->getKey ( i );
 		// no key is allowed to have the del bit clear at this point
 		// because we reserve that for making negative keys!
-		if ( ! ( k->n0 & 0x0000000000000001LL ) ){char*xx=NULL;*xx=0;}
+		gbassert( k->n0 & 0x0000000000000001LL );
 		// store rdbid
 		*m_p++ = useRdbId; // (useRdbId | f);
 		// store it
 		// *(key128_t *)m_p = *k; does this work?
 		gbmemcpy ( m_p , k , sizeof(key128_t) );
 		// all keys must be positive at this point
-		if ( ! ( m_p[0] & 0x01 ) ) { char *xx=NULL;*xx=0; }
+		gbassert( m_p[0] & 0x01 );
 		// or if getting for incremental indexing and this is
 		// from the "oldList"
 		//if ( forDelete ) *m_p = *m_p & 0xfe;
@@ -28251,7 +28235,7 @@ bool XmlDoc::addTable128 ( HashTableX *tt1     , // T <key128_t,char> *tt1
 }
 
 int32_t XmlDoc::getSiteRank ( ) {
-	if ( ! m_siteNumInlinksValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_siteNumInlinksValid );
 	return ::getSiteRank ( m_siteNumInlinks );
 }
 
@@ -28261,8 +28245,8 @@ bool XmlDoc::addTable144 ( HashTableX *tt1 , int64_t docId , SafeBuf *buf ) {
 
 	// sanity check
 	if ( tt1->m_numSlots ) {
-		if ( tt1->m_ks != sizeof(key144_t) ) {char *xx=NULL;*xx=0;}
-		if ( tt1->m_ds != 4                ) {char *xx=NULL;*xx=0;}
+		gbassert( tt1->m_ks == sizeof(key144_t) );
+		gbassert( tt1->m_ds == 4                );
 	}
 
 	// assume we are storing into m_p
@@ -28279,7 +28263,7 @@ bool XmlDoc::addTable144 ( HashTableX *tt1 , int64_t docId , SafeBuf *buf ) {
 
 	int32_t siteRank = getSiteRank ();
 
-	if ( ! m_langIdValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_langIdValid );
 
 	char rdbId = RDB_POSDB;
 	if ( m_useSecondaryRdbs ) rdbId = RDB2_POSDB2;
@@ -28358,7 +28342,7 @@ bool XmlDoc::addTable144 ( HashTableX *tt1 , int64_t docId , SafeBuf *buf ) {
 	// fix SafeBuf::m_length
 	buf->setLength ( p - start );
 	// sanity
-	if ( buf->length() > buf->getCapacity() ) { char *xx=NULL;*xx=0; }
+	gbassert( buf->length() <= buf->getCapacity() );
 
 	return true;
 }
@@ -28368,8 +28352,8 @@ bool XmlDoc::addTable224 ( HashTableX *tt1 ) {
 
 	// sanity check
 	if ( tt1->m_numSlots ) {
-		if ( tt1->m_ks != sizeof(key224_t) ) {char *xx=NULL;*xx=0;}
-		if ( tt1->m_ds != 0                ) {char *xx=NULL;*xx=0;}
+		gbassert( tt1->m_ks == sizeof(key224_t) );
+		gbassert( tt1->m_ds == 0                );
 	}
 
 	char rdbId = RDB_LINKDB;
@@ -28756,7 +28740,7 @@ bool XmlDoc::hashNoSplit ( HashTableX *tt ) {
 	// this should be ready to go and not block!
 	int64_t *pch64 = getExactContentHash64();
 	//int64_t *pch64 = getLooseContentHash64();
-	if ( ! pch64 || pch64 == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( pch64 && pch64 != (void *)-1 );
 
 	// int16_tcut
 	Url *fu = getFirstUrl();
@@ -28836,7 +28820,7 @@ bool XmlDoc::hashNoSplit ( HashTableX *tt ) {
 	// skip if root
 	if ( fu->m_plen <= 1 ) add = false;
 	// sanity check
-	if ( ! m_linksValid ) { char *xx=NULL; *xx=0; }
+	gbassert( m_linksValid );
 	// . skip if we have no subdirectory outlinks
 	// . that way we do not confuse all the pages in dictionary.com or
 	//   wikipedia.org as subsites!!
@@ -28865,7 +28849,7 @@ bool XmlDoc::hashNoSplit ( HashTableX *tt ) {
 	setStatus ( "hashing no-split gbsitetemplate keys" );
 
 	// must be valid
-	if ( ! m_siteValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_siteValid );
 	char buf[MAX_URL_LEN+20];
 	//uint32_t th = m_tagVector.getVectorHash();
 	uint32_t tph = *getTagPairHash32();
@@ -28874,7 +28858,7 @@ bool XmlDoc::hashNoSplit ( HashTableX *tt ) {
 	//   specify that...
 	char *site = getSite();
 	// sanity check, must NOT start with http://
-	if ( ! strncmp ( site , "http://", 7 ) ) { char *xx=NULL;*xx=0;}
+	gbassert( strncmp ( site , "http://", 7 ) );
 	// this must match what we search in Images.cpp::getThumbnail()
 	int32_t blen = sprintf(buf,"%" UINT32 "%s",tph,site);
 
@@ -28923,12 +28907,12 @@ char *XmlDoc::hashAll ( HashTableX *table ) {
 	if ( m_allHashed ) return (char *)1;
 
 	// sanity checks
-	if ( table->m_ks != 18 ) { char *xx=NULL;*xx=0; }
-	if ( table->m_ds != 4  ) { char *xx=NULL;*xx=0; }
+	gbassert( table->m_ks == 18 );
+	gbassert( table->m_ds == 4  );
 
-	if ( m_wts && m_wts->m_ks != 12  ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_wts && m_wts->m_ks != 12  );
 	// ptr to term = 4 + score = 4 + ptr to sec = 4
-	if ( m_wts && m_wts->m_ds!=sizeof(TermDebugInfo)){char *xx=NULL;*xx=0;}
+	gbassert_false( m_wts && m_wts->m_ds!=sizeof(TermDebugInfo));
 
 	unsigned char *hc = (unsigned char *)getHopCount();
 	if ( ! hc || hc == (void *)-1 ) return (char *)hc;
@@ -28936,36 +28920,36 @@ char *XmlDoc::hashAll ( HashTableX *table ) {
 	// need this for hashing
 	HashTableX *cnt = getCountTable(); 
 	if ( ! cnt ) return (char *)cnt;
-	if ( cnt == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( cnt != (void *)-1 );
 	// and this
 	//Weights *we = getWeights();
 	//if ( ! we || we == (void *)-1 ) return (char *)we;
 	// and this
 	Links *links = getLinks();
 	if ( ! links ) return (char *)links;
-	if ( links == (Links *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( links != (Links *)-1 );
 	// and now this
 	//Synonyms *syn = getSynonyms();
 	//if ( ! syn || syn == (void *)-1 ) return (char *)syn;
 
 	char *wordSpamVec = getWordSpamVec();
 	if (!wordSpamVec) return (char *)wordSpamVec;
-	if (wordSpamVec==(void *)-1) {char *xx=NULL;*xx=0;}
+	gbassert(wordSpamVec!=(void *)-1);
 
 	char *fragVec = getFragVec();//m_fragBuf.getBufStart();
 	if ( ! fragVec ) return (char *)fragVec;
-	if ( fragVec == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( fragVec != (void *)-1 );
 
 	// why do we need this?
 	if ( m_wts ) {
 		uint8_t *lv = getLangVector();
 		if ( ! lv ) return (char *)lv;
-		if ( lv == (void *)-1 ) { char *xx=NULL;*xx=0; }
+		gbassert( lv != (void *)-1 );
 	}
 
 	TagRec *gr = getTagRec();
 	if ( ! gr ) return (char *)gr;
-	if ( gr == (void *)-1 ) {char *xx=NULL;*xx=0; }
+	gbassert( gr != (void *)-1 );
 
 	CollectionRec *cr = getCollRec();
 	if ( ! cr ) return NULL;
@@ -29289,8 +29273,8 @@ bool XmlDoc::appendNewMetaInfo ( SafeBuf *metaList , bool forDelete ) {
 	if ( ! ptr_metadata  ) return true;
 
 	XmlDoc **pod = getOldXmlDoc ( );
-	if ( ! pod ) { char *xx=NULL;*xx=0; }
-	if ( pod == (XmlDoc **)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( pod );
+	gbassert( pod != (XmlDoc **)-1 );
 	// this is non-NULL if it existed
 	XmlDoc *od = *pod;
 
@@ -29519,7 +29503,7 @@ SafeBuf *XmlDoc::getSpiderStatusDocMetaList2 ( SpiderReply *reply1 ) {
 	}
 
 	// sanity
-	if ( ! m_indexCodeValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_indexCodeValid );
 
 	// why isn't gbhopcount: being indexed consistently?
 	//if ( ! m_hopCountValid )  { char *xx=NULL;*xx=0; }
@@ -29913,7 +29897,7 @@ SafeBuf *XmlDoc::getSpiderStatusDocMetaList2 ( SpiderReply *reply1 ) {
 	// copy stuff from THIS so the spider reply "document" has the same
 	// header info stuff
 	int32_t hsize = (char *)&ptr_firstUrl - (char *)this;
-	if ( hsize > 2048 ) { char *xx=NULL;*xx=0; }
+	gbassert( hsize <= 2048 );
 	gbmemcpy ( xdhead , (char *)this , hsize );
 
 	// override spider time in case we had error to be consistent
@@ -29928,7 +29912,7 @@ SafeBuf *XmlDoc::getSpiderStatusDocMetaList2 ( SpiderReply *reply1 ) {
 	xd->m_contentType  = CT_STATUS;
 
 	int32_t fullsize = &m_dummyEnd - (char *)this;
-	if ( fullsize > 2048 ) { char *xx=NULL;*xx=0; }
+	gbassert( fullsize <= 2048 );
 
 	/*
 	// the ptr_* were all zero'd out, put the ones we want to keep back in
@@ -30640,15 +30624,15 @@ bool XmlDoc::hashLinks ( HashTableX *tt ) {
 bool XmlDoc::hashLinksForLinkdb ( HashTableX *dt ) {
 
 	// sanity check
-	if ( dt->m_ks != sizeof(key224_t) ) { char *xx=NULL;*xx=0; }
-	if ( dt->m_ds != 0                ) { char *xx=NULL;*xx=0; }
+	gbassert( dt->m_ks == sizeof(key224_t) );
+	gbassert( dt->m_ds == 0                );
 
 	// this will be different with our new site definitions
 	uint32_t linkerSiteHash32 = *getSiteHash32();
 
 	char siteRank = getSiteRank();
 
-	if ( ! m_linksValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_linksValid );
 
 	// we need to store this in the title rec for re-building
 	// the meta list from the title rec...
@@ -30658,8 +30642,7 @@ bool XmlDoc::hashLinksForLinkdb ( HashTableX *dt ) {
 	//TagRec **grv = *pgrv;
 
 	int32_t *linkSiteHashes = getLinkSiteHashes();
-	if ( ! linkSiteHashes || linkSiteHashes == (void *)-1 ){
-		char *xx=NULL;*xx=0;}
+	gbassert( linkSiteHashes && linkSiteHashes != (void *)-1 );
 
 	// convert siteNumInlinks into a score
 	//int32_t numSiteInlinks = *xd->getSiteNumInlinks();
@@ -30829,7 +30812,7 @@ bool XmlDoc::hashUrl ( HashTableX *tt ) { // , bool isStatusDoc ) {
 	//
 	// HASH ip:a.b.c.d
 	//
-	if ( ! m_ipValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_ipValid );
 	// copy it to save it
 	char ipbuf[64]; 
 	int32_t iplen = sprintf(ipbuf,"%s",iptoa(m_ip));
@@ -30849,7 +30832,7 @@ bool XmlDoc::hashUrl ( HashTableX *tt ) { // , bool isStatusDoc ) {
 
 
 	// . sanity check
-	if ( ! m_siteNumInlinksValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_siteNumInlinksValid );
 	// get the boost
 	//floatboost1=(float)getBoostFromSiteNumInlinks(m_siteNumInlinks)/100.0
 
@@ -30919,7 +30902,7 @@ bool XmlDoc::hashUrl ( HashTableX *tt ) { // , bool isStatusDoc ) {
 	// HASH gbhopcount:X
 	//
 	setStatus ( "hashing gbhopcount");
-	if ( ! m_hopCountValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_hopCountValid );
 	blen = sprintf(buf,"%" INT32 "",(int32_t)m_hopCount);
 	// update parms
 	hi.m_prefix    = "gbhopcount";
@@ -31094,7 +31077,7 @@ bool XmlDoc::hashUrl ( HashTableX *tt ) { // , bool isStatusDoc ) {
 	// skip if root
 	if ( fu->m_plen <= 1 ) add = false;
 	// sanity check
-	if ( ! m_linksValid ) { char *xx=NULL; *xx=0; }
+	gbassert( m_linksValid );
 	// . skip if we have no subdirectory outlinks
 	// . that way we do not confuse all the pages in dictionary.com or
 	//   wikipedia.org as subsites!!
@@ -31180,8 +31163,8 @@ bool XmlDoc::hashSections ( HashTableX *tt ) {
 
 	setStatus ( "hashing sections" );
 
-	if ( ! m_sectionsValid ) { char *xx=NULL;*xx=0; }
-	if ( ! m_siteValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_sectionsValid );
+	gbassert( m_siteValid );
 
 	Sections *ss = &m_sections;
 	
@@ -31283,8 +31266,8 @@ bool XmlDoc::hashIncomingLinkText ( HashTableX *tt               ,
 	// display this note in page parser
 	char *note = "hashing incoming link text";
 	// sanity
-	if ( ! m_linkInfo1Valid ) { char *xx=NULL;*xx=0; }
-	if ( ! m_linkInfo2Valid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_linkInfo1Valid );
+	gbassert( m_linkInfo2Valid );
 	// . finally hash in the linkText terms from the LinkInfo
 	// . the LinkInfo class has all the terms of hashed anchor text for us
 	// . if we're using an old TitleRec linkTermList is just a ptr to
@@ -31305,8 +31288,8 @@ bool XmlDoc::hashIncomingLinkText ( HashTableX *tt               ,
 	}
 
 	// sanity checks
-	if ( ! m_ipValid             ) { char *xx=NULL;*xx=0; }
-	if ( ! m_siteNumInlinksValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_ipValid             );
+	gbassert( m_siteNumInlinksValid );
 
 	//
 	// brought the following code in from LinkInfo.cpp
@@ -31479,7 +31462,7 @@ bool XmlDoc::hashRSSInfo ( HashTableX *tt ) {
 	setStatus ( "hashing rss info" );
 
 	uint8_t *ct = getContentType();
-	if ( ! ct || ct == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( ct && ct != (void *)-1 );
 
 	// . finally hash in the linkText terms from the LinkInfo
 	// . the LinkInfo class has all the terms of hashed anchor text for us
@@ -31519,7 +31502,7 @@ bool XmlDoc::hashRSSInfo ( HashTableX *tt ) {
 	char  c = 0;
 
 	// sanity check
-	if ( ! m_utf8ContentValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_utf8ContentValid );
 
 	bool hashIffUnique = true;
 	// but if we had no content because we were an mp3 or whatever, 
@@ -31668,7 +31651,7 @@ bool XmlDoc::hashRSSTerm ( HashTableX *tt , bool inRSS ) {
 //   given by "titleWeight" parm
 bool XmlDoc::hashTitle ( HashTableX *tt ) {
 	// sanity check
-	if ( m_hashedTitle ) { char *xx=NULL ; *xx=0; }
+	gbassert( ! m_hashedTitle );
 
 	setStatus ( "hashing title" );
 
@@ -31793,7 +31776,7 @@ bool XmlDoc::hashMetaKeywords ( HashTableX *tt ) {
 bool XmlDoc::hashMetaSummary ( HashTableX *tt ) {
 
 	// sanity check
-	if ( m_hashedMetas ) { char *xx=NULL ; *xx=0; }
+	gbassert( ! m_hashedMetas );
 
 	// this has been called, note it
 	m_hashedMetas = true;
@@ -32284,7 +32267,7 @@ bool XmlDoc::hashVectors ( HashTableX *tt ) {
 	*/
 
 	// hash the wikipedia docids we match
-	if ( ! m_wikiDocIdsValid   ) { char *xx=NULL;*xx=0; }
+	gbassert( m_wikiDocIdsValid   );
 	for ( int32_t i = 0 ; i < size_wikiDocIds/8 ; i++ ) {
 		blen = sprintf(buf,"%" UINT64 "",ptr_wikiDocIds[i]);
 		// convert to int32_t
@@ -32394,7 +32377,7 @@ bool XmlDoc::hashIsAdult ( HashTableX *tt ) {
 	char *ia = getIsAdult();
 	// this should not block or return error! should have been
 	// set in prepareToMakeTitleRec() before hashAll() was called!
-	if ( ! ia || ia == (void *)-1 ) {char *xx=NULL;*xx=0; }
+	gbassert( ia && ia != (void *)-1 );
 
 	// index gbisadult:1 if adult or gbisadult:0 if not
 	char *val;
@@ -32420,7 +32403,7 @@ bool XmlDoc::hashSubmitUrls ( HashTableX *tt ) {
 	setStatus ( "hashing submit urls" );
 
 	Url *baseUrl = getBaseUrl();
-	if ( ! baseUrl || baseUrl == (Url *)-1) { char*xx=NULL;*xx=0;}
+	gbassert( baseUrl && baseUrl != (Url *)-1);
 		
 	for ( int32_t i = 0 ; i < m_xml.getNumNodes() ; i++ ) {
 		// Find forms
@@ -32495,7 +32478,7 @@ uint8_t score32to8 ( uint32_t score ) {
 	// scale it into [126,0] (add .5 for rounding)
 	double scaled   = (logscore* 127.0) / s_maxscore  + .5;
 	// sanity check
-	if ( (unsigned char)scaled >= 128 ) { char *xx=NULL;*xx=0; }
+	gbassert( (unsigned char)scaled > 128 );
 	// . go into the 8 bit score now
 	// . set the hi bit so they know we took its log
 	unsigned char score8 = (unsigned char)scaled | 128;
@@ -32854,7 +32837,7 @@ void XmlDoc::set20 ( Msg20Request *req ) {
 void getMsg20ReplyWrapper ( void *state ) {
 	XmlDoc *THIS = (XmlDoc *)state;
 	// make sure has not been freed from under us!
-	if ( THIS->m_freed ) { char *xx=NULL;*xx=0;}
+	gbassert( ! THIS->m_freed );
 	// return if it blocked
 	if ( THIS->getMsg20Reply ( ) == (void *)-1 ) return;
 	// otherwise, all done, call the caller callback
@@ -32884,7 +32867,7 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 	}
 
 	// caller shouldhave the callback set
-	if ( ! m_callback1 && ! m_callback2 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! m_callback1 && ! m_callback2 );
 
 	//char safeStack[100000];
 	//safeStack[0] = 0;
@@ -32920,7 +32903,7 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 	if ( ! *otr ) { g_errno = ENOTFOUND; return NULL; }
 
 	// sanity
-	if ( *otr != m_oldTitleRec ) { char *xx=NULL;*xx=0; }
+	gbassert( *otr == m_oldTitleRec );
 
 	// what is this?
 	int32_t maxSize = 0;
@@ -32933,7 +32916,7 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 		bool status = set2( *otr, maxSize, cr->m_coll, NULL, 
 				    m_niceness);
 		// sanity check
-		if ( ! status && ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert_false( ! status && ! g_errno );
 		// if there was an error, g_errno should be set.
 		if ( ! status ) return NULL;
 		m_setTr = true;
@@ -33926,7 +33909,7 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 	//   the slow sections class, so i took it out
 	getPageSampleVector ();
 	// must not block or error out. sanity check
-	if ( ! m_pageSampleVecValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_pageSampleVecValid );
 	//st->m_v1.setPairHashes    ( ww , -1    , m_niceness );
 
 	// breathe
@@ -33948,7 +33931,7 @@ Msg20Reply *XmlDoc::getMsg20Reply ( ) {
 	// get it
 	getTagPairHashVector();
 	// must not block or error out. sanity check
-	if ( ! m_tagPairHashVecValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_tagPairHashVecValid );
 
 	// breathe
 	QUICKPOLL( m_niceness );
@@ -38182,11 +38165,6 @@ bool XmlDoc::printDoc ( SafeBuf *sb ) {
 	//
 	Sections *sections = getSections();
     gbassert( sections && sections != (Sections *)-1);
-    //SectionVotingTable *nsvt = getNewSectionVotingTable();
-	//if ( ! nsvt || nsvt == (void *)-1 ) {char*xx=NULL;*xx=0;}
-	//SectionVotingTable *osvt = getOldSectionVotingTable();
-	//if ( ! osvt || osvt == (void *)-1 ) {char*xx=NULL;*xx=0;}
-
 
 	// these are nice
 	//HashTableX *pt = dp->getPhoneTable();
@@ -38736,7 +38714,7 @@ bool XmlDoc::printMenu ( SafeBuf *sb ) {
 static void printDocForProCogWrapper ( void *state ) {
 	XmlDoc *THIS = (XmlDoc *)state;
 	// make sure has not been freed from under us!
-	if ( THIS->m_freed ) { char *xx=NULL;*xx=0;}
+	gbassert( THIS->m_freed );
 	// note it
 	THIS->setStatus ( "in print doc for pro cog wrapper" );
 	// get it
@@ -38847,13 +38825,6 @@ bool XmlDoc::printGeneralInfo ( SafeBuf *sb , HttpRequest *hr ) {
 
 	CollectionRec *cr = getCollRec();
 	if ( ! cr ) return true;
-
-	//char *ls = getIsLinkSpam();
-	//Links *links = getLinks();
-	// blocked?
-	//if ( links == (void *)-1 ) { char *xx=NULL;*xx=0;}//return false;
-	// error?
-	//if ( ! links ) return true;
 
 	// make it a URL
 	Url uu; uu.set ( fu , false );
@@ -38975,7 +38946,7 @@ bool XmlDoc::printGeneralInfo ( SafeBuf *sb , HttpRequest *hr ) {
 	
 	
 	// must always start with http i guess!
-	if ( strncmp ( fu , "http" , 4 ) ) { char *xx=NULL;*xx=0; }
+	gbassert_false( strncmp ( fu , "http" , 4 ) );
 
 	time_t ts = (time_t)m_firstIndexedDate;
 
@@ -39188,7 +39159,7 @@ bool XmlDoc::printGeneralInfo ( SafeBuf *sb , HttpRequest *hr ) {
 	if ( m_tagRecDataValid && m_version >= 118 ) {
 		ogr = getTagRec(); // &m_tagRec;
 		// sanity. should be set from titlerec, so no blocking!
-		if ( ! ogr || ogr == (void *)-1 ) { char *xx=NULL;*xx=0; }
+		gbassert( ogr && ogr != (void *)-1 );
 	}
 	if ( ogr && ! isXml ) ogr->printToBufAsHtml ( sb , "tag" );
 	else if ( ogr )       ogr->printToBufAsXml  ( sb  );
@@ -39329,7 +39300,7 @@ SafeBuf *XmlDoc::getInlineSectionVotingBuf ( ) {
 	SafeBuf *sb = &m_inlineSectionVotingBuf;
 
 	// store mime first then content
-	if ( ! m_utf8ContentValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_utf8ContentValid );
 	
 	// we no longer use this through a proxy, so take this out
 	//sb->safeMemcpy ( m_httpReply , mime->getMimeLen() );
@@ -39673,7 +39644,7 @@ bool XmlDoc::printTermList ( SafeBuf *sb , HttpRequest *hr ) {
 			       );
 	}
 
-	if ( ! m_langIdValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_langIdValid );
 
 	if ( ! isXml ) {
 		//printMenu ( sb );
@@ -40101,7 +40072,7 @@ char **XmlDoc::getRootTitleBuf ( ) {
 		srcSize = tag->getTagDataSize();
 		// no need to add to title rec since already in the tag so
 		// make sure we did not double add
-		if ( ptr_rootTitleBuf ) { char *xx=NULL;*xx=0; }
+		gbassert( ! ptr_rootTitleBuf );
 	}
 	else {
 		// . get the root doc
@@ -40168,13 +40139,13 @@ char **XmlDoc::getRootTitleBuf ( ) {
 		size_rootTitleBuf = 0;
 		m_rootTitleBufValid = true;
 		return (char **)&m_rootTitleBuf;
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 		//m_rootTitleBuf [ m_rootTitleBufSize - 1 ] = '\0';
 		//m_rootTitleBufSize++;
 	}
 
 	// sanity check - breach check
-	if ( m_rootTitleBufSize > ROOT_TITLE_BUF_MAX ) { char *xx=NULL;*xx=0;}
+	gbassert( m_rootTitleBufSize <= ROOT_TITLE_BUF_MAX );
 		
 	// serialize into our titlerec
 	ptr_rootTitleBuf  = m_rootTitleBuf;
@@ -40281,14 +40252,13 @@ char **XmlDoc::getFilteredRootTitleBuf ( ) {
 	// sanity check, must include the null ni the size
 	if ( m_filteredRootTitleBufSize > 0 &&
 	     m_filteredRootTitleBuf [ m_filteredRootTitleBufSize - 1 ] ) {
-		char *xx=NULL;*xx=0;
+	     gbassert(false);
 		//m_filteredRootTitleBuf [ m_filteredRootTitleBufSize-1]='\0';
 		//m_filteredRootTitleBufSize++;
 	}
 
 	// sanity check - breach check
-	if ( m_filteredRootTitleBufSize > ROOT_TITLE_BUF_MAX ) { 
-		char *xx=NULL;*xx=0;}
+	gbassert( m_filteredRootTitleBufSize <= ROOT_TITLE_BUF_MAX );
 		
 	m_filteredRootTitleBufValid = true;
 
@@ -40512,13 +40482,13 @@ char **XmlDoc::getTitleBuf ( ) {
 
 	// sanity
 	int32_t size = ptmp - tmp;
-	if ( size > ROOT_TITLE_BUF_MAX ) { char *xx=NULL;*xx=0; }
+	gbassert( size <= ROOT_TITLE_BUF_MAX );
 
 	gbmemcpy ( m_titleBuf , tmp , ptmp - tmp );
 	m_titleBufSize = size;
 	m_titleBufValid = true;
 	// ensure null terminated
-	if ( size > 0 && m_titleBuf[size-1] ) { char *xx=NULL;*xx=0; }
+	gbassert_false( size > 0 && m_titleBuf[size-1] );
 	//ptr_siteTitleBuf = m_siteTitleBuf;
 	//size_siteTitleBuf = m_siteTitleBufSize;
 	return (char **)&m_titleBuf;
@@ -40534,12 +40504,12 @@ SafeBuf *XmlDoc::getNewTagBuf ( ) {
 	setStatus ( "getting new tags");
 
 	int32_t *ic = getIndexCode();
-	if ( ic == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( ic != (void *)-1 );
 
 	// get our ip
 	int32_t *ip = getIp();
 	// this must not block to avoid re-computing "addme" above
-	if ( ip == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( ip != (void *)-1 );
 	if ( ! ip || ip == (int32_t *)-1) return (SafeBuf *)ip;
 
 	// . do not both if there is a problem
@@ -40562,7 +40532,7 @@ SafeBuf *XmlDoc::getNewTagBuf ( ) {
 	// get our site
 	char *mysite = getSite();
 	// this must not block to avoid re-computing "addme" above
-	if ( mysite == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( mysite != (void *)-1 );
 	if ( ! mysite || mysite == (char *)-1 ) return (SafeBuf *)mysite;
 
 	// age of tag in seconds
@@ -40908,7 +40878,7 @@ SafeBuf *XmlDoc::getNewTagBuf ( ) {
 		//  set of bit flags for address class:
 		if ( dt.isInTable ( &a->m_hash ) ) continue;
 		// sanity
-		if ( a->m_hash == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( a->m_hash != 0 );
 		// . serialize it
 		// . TODO: get rid of Address::addToTagRec() functions
 		char abuf[5000];
@@ -41164,7 +41134,7 @@ char *XmlDoc::getWordSpamVec ( ) {
 
 	// int16_tcut
 	int32_t sni = m_siteNumInlinks;
-	if ( ! m_siteNumInlinksValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_siteNumInlinksValid );
 
 	// set "m_maxPercent"
 	int32_t maxPercent = 6;
@@ -41217,7 +41187,7 @@ char *XmlDoc::getWordSpamVec ( ) {
 	char      *commonWords   = (char      *)p;  p += size * 1;
 
 	// sanity check
-	if ( p - tmp > need ) { char *xx=NULL;*xx=0; }
+	gbassert( p - tmp <= need );
 
 	// clear all our spam percentages for these words
 	memset ( spam , 0 , numWords );
@@ -41773,7 +41743,7 @@ bool getDiversityVec ( Words *words ,
 					      countTable ,
 					      1);//m_version );
 		// 0 to 1.0
-		if ( ww2 < 0 || ww2 > 1.0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( ww2 < 0 || ww2 > 1.0 );
 		// save the last phrase id
 		if ( nwp > 0 ) {
 			nexti        = i + nwp - 1;
@@ -41834,7 +41804,7 @@ bool getDiversityVec ( Words *words ,
 		char wrank = (char) ((ww[i] * ((float)MAXDIVERSITYRANK))/.55);
 		// sanity
 		if ( wrank > MAXDIVERSITYRANK ) wrank = MAXDIVERSITYRANK;
-		if ( wrank < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( wrank >= 0 );
 		//char prank = (char) ((pw[i] * 15.0) / 2.50);
 		// assign now
 		nww[i] = wrank;
@@ -41906,7 +41876,7 @@ char *XmlDoc::getFragVec ( ) {
 
 	for ( int32_t i = 0 ; i < nw ; i++ ) ww[i] = 1.0;
 
-	if ( ptr != buf + need ) { char *xx=NULL;*xx=0; }
+	gbassert( ptr == buf + need );
 
 	// make the mask
 	uint32_t mask = nb - 1;
@@ -41961,7 +41931,7 @@ char *XmlDoc::getFragVec ( ) {
 		// look up in the hash table
 		uint32_t n = h & mask;
 		// sanity breach check
-		if ( n >= nb ) { char *xx=NULL;*xx=0; } 
+		gbassert( n < nb );
 	loop:
 		// all done if empty
 		if ( ! hashes[n] ) {
@@ -42003,8 +41973,8 @@ char *XmlDoc::getFragVec ( ) {
 			int32_t j;
 			for ( j = start ; mc < max ; j++ ) {
 				// sanity
-				if ( j >= nw ) { char *xx=NULL;*xx=0; }
-				if ( j <  0 ) { char *xx=NULL;*xx=0; }
+				gbassert( j < nw );
+				gbassert( j >=  0 );
 				// skip if not an alnum word
 				if ( ! wids[j] ) continue;
 				// count it
@@ -42063,7 +42033,7 @@ char *XmlDoc::getFragVec ( ) {
 		goto loop;
 	}
 
-	if ( nw <= 0 ) { char *xx=NULL;*xx=0;}
+	gbassert( nw > 0 );
 
 	// make space
 	if ( ! m_fragBuf.reserve ( nw ) ) {
@@ -42088,7 +42058,7 @@ char *XmlDoc::getFragVec ( ) {
 	if ( buf != tmpBuf ) mfree ( buf , need , "WeightsSet3" );
 
 	// wtf?
-	if ( ! ff ) { char *xx=NULL;*xx=0; }
+	gbassert( ff );
 
 	return ff;
 }
@@ -42284,7 +42254,7 @@ void getWordToPhraseRatioWeights ( int64_t   pid1 , // pre phrase
 	// ensure we do not punish too hard
 	if ( *retww <= 0.0 ) *retww = 0.01;
 
-	if ( *retww > 1.0 ) { char *xx=NULL;*xx=0; }
+	gbassert( *retww <= 1.0 );
 
 	/*
 	if ( phrcountMax >= 0 ) {
@@ -42488,7 +42458,7 @@ bool XmlDoc::doInjectLoop ( ) {
 		char *link       = links->getLink ( m_i );
 		int32_t linkLen = links->getLinkLen ( m_i );
 		// temp term
-		if ( link[linkLen] ) { char *xx=NULL;*xx=0; }
+		gbassert( ! link[linkLen] );
 		// skip to next link to index
 		m_i++;
 		// skip injecting if its an internal bing/google outlink
@@ -42683,7 +42653,7 @@ bool XmlDoc::doInjectLoop ( ) {
 		// get it
 		XmlDoc *xd = m_xmlDocs[j];
 
-		if ( ! xd ) { char *xx=NULL;*xx=0; }
+		gbassert( xd );
 
 		// add www to it
 		Url lu;
@@ -42808,7 +42778,7 @@ void XmlDoc::doneInjecting ( XmlDoc *xd ) {
 		break;
 	}
 	// core if not found in our list, it must be there
-	if ( i >= MAX_XML_DOCS ) { char *xx=NULL;*xx=0; }
+	gbassert( i < MAX_XML_DOCS );
 	// free it up now!
 	m_used[i] = 0;
 	// free it up
@@ -43593,7 +43563,7 @@ SafeBuf *XmlDoc::getTermId32Buf() {
 		uint32_t tid32 = (uint32_t)(ti->m_termId64);
 		m_termId32Buf.pushLong(tid32);
 		// sanity
-		if ( last && tid32 <= last ) { char *xx=NULL;*xx=0; }
+		gbassert_false( last && tid32 <= last );
 		last = tid32;
 	}
 
@@ -43901,7 +43871,7 @@ bool XmlDoc::addUniqueWordsToBuf ( SafeBuf *termInfoBuf ,
 	//nodeid_t  *tids = ww->getTagIds   ();
 	uint8_t *langId = getLangId();
 	// this should have been set by parent caller
-	if ( ! langId || langId == (uint8_t *)-1 ) {char *xx=NULL;*xx=0; }
+	gbassert( langId && langId != (uint8_t *)-1 );
 	// store the langId here
 	uint8_t useLangId = *langId;
 	// default that to english i guess if unknown
@@ -44226,7 +44196,7 @@ bool XmlDoc::checkCachedb ( ) {
 		char recType = g_cachedb.getTypeFromKey(rec);
 		int32_t dataSize = m_cacheList.getCurrentDataSize();
 		// sanity. must at least have the cached date
-		if ( dataSize < 4 ) { char *xx=NULL;*xx=0; }
+		gbassert( dataSize >= 4 );
 		char *data = m_cacheList.getCurrentData ();
 		// in data, first int32_t is the cached time in utc
 		//int32_t cachedDate = *(int32_t *)data;
@@ -44627,7 +44597,7 @@ bool XmlDoc::storeMatchingQueriesIntoCachedb ( ) {
 	// not block or have errors
 	//SafeBuf *qpbuf = getMatchingQueriesScored();
 	//SafeBuf *qpbuf = &m_queryPtrs;
-	if ( ! m_matchingQueryBufValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_matchingQueryBufValid );
 
 	int32_t now = getTimeGlobal();
 
@@ -44685,10 +44655,10 @@ bool XmlDoc::storeMatchingQueriesIntoCachedb ( ) {
 	listBuf.pushLong   ( m_matchingQueryStringBuf.length() );
 	listBuf.safeMemcpy ( &m_matchingQueryStringBuf );
 
-	if ( listBuf.length() != need ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.length() == need );
 
 	// ensure list did not realloc, that would screw up everything!
-	if ( listBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.getBufStart() == orig );
 
 	key_t startKey = g_cachedb.makeStartKey ( uh32, ch32 );
 	key_t endKey   = g_cachedb.makeEndKey   ( uh32, ch32 );
@@ -44732,7 +44702,7 @@ bool XmlDoc::storeRelatedDocIdsIntoCachedb ( ) {
 
 	if ( ! m_writeToCachedb ) return true;
 
-	if ( ! 	m_queryPtrsWholeValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_queryPtrsWholeValid );
 
 	CollectionRec *cr = getCollRec();
 	if ( ! cr ) return true;
@@ -44745,8 +44715,8 @@ bool XmlDoc::storeRelatedDocIdsIntoCachedb ( ) {
 	// site rank, tags, etc.
 	if ( m_spideredTimeValid ) ch32 ^= m_spideredTime;
 
-	if ( ! m_relatedDocIdsWithTitlesValid ) { char *xx=NULL;*xx=0;}
-	if ( ! m_relatedTitleBufValid ) { char *xx=NULL;*xx=0;}
+	gbassert( m_relatedDocIdsWithTitlesValid );
+	gbassert( m_relatedTitleBufValid );
 
 	// 2. related docids 
 	int32_t need = 0;
@@ -44821,10 +44791,10 @@ bool XmlDoc::storeRelatedDocIdsIntoCachedb ( ) {
 		rd->ptr_rd_site = (char *)off;
 	}
 	*/
-	if ( listBuf.length() != need ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.length() == need );
 		
 	// ensure list did not realloc, that would screw up everything!
-	if ( listBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.getBufStart() == orig );
 
 	key_t startKey = g_cachedb.makeStartKey ( uh32, ch32 );
 	key_t endKey   = g_cachedb.makeEndKey   ( uh32, ch32 );
@@ -44881,7 +44851,7 @@ bool XmlDoc::storeRecommendedLinksBuf ( ) {
 	CollectionRec *cr = getCollRec();
 	if ( ! cr ) return true;
 
-	if ( ! m_recommendedLinksBufValid ) { char *xx=NULL;*xx=0;}
+	gbassert( m_recommendedLinksBufValid );
 
 	int32_t need = 0;
 	need += sizeof(key_t) + 4 + 4+4; // key + dataSize + timestamp + ver
@@ -44927,10 +44897,10 @@ bool XmlDoc::storeRecommendedLinksBuf ( ) {
 
 	listBuf.pushLong ( m_recommendedLinksBuf.length() );
 	listBuf.safeMemcpy ( &m_recommendedLinksBuf );
-	if ( listBuf.length() != need ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.length() == need );
 		
 	// ensure list did not realloc, that would screw up everything!
-	if ( listBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.getBufStart() == orig );
 
 	key_t startKey = g_cachedb.makeStartKey ( uh32, ch32 );
 	key_t endKey   = g_cachedb.makeEndKey   ( uh32, ch32 );
@@ -44976,7 +44946,7 @@ bool XmlDoc::storeRelatedQueriesIntoCachedb ( ) {
 
 	if ( ! m_writeToCachedb ) return true;
 
-	if ( ! m_relatedQueryBufValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_relatedQueryBufValid );
 
 	int32_t *ch32p = getContentHash32();
 	if ( ! ch32p ) return true;
@@ -45054,12 +45024,12 @@ bool XmlDoc::storeRelatedQueriesIntoCachedb ( ) {
 	//char *p5 = listBuf.getBuf();
 	//listBuf.safeMemcpy ( &m_relPtrs );
 	// sanity tests
-	if ( listBuf.length() != need ) { char *xx=NULL;*xx=0; }
-	if ( listBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.length() == need );
+	gbassert( listBuf.getBufStart() == orig );
 
 		
 	// ensure list did not realloc, that would screw up everything!
-	if ( listBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.getBufStart() == orig );
 
 	key_t startKey = g_cachedb.makeStartKey ( uh32, ch32 );
 	key_t endKey   = g_cachedb.makeEndKey   ( uh32, ch32 );
@@ -45103,7 +45073,7 @@ bool XmlDoc::storeWordPosInfoBufIntoCachedb ( ) {
 
 	if ( ! m_writeToCachedb ) return true;
 
-	if ( ! m_wordPosInfoBufValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_wordPosInfoBufValid );
 
 	int32_t *ch32p = getContentHash32();
 	if ( ! ch32p ) return true;
@@ -45167,7 +45137,7 @@ bool XmlDoc::storeWordPosInfoBufIntoCachedb ( ) {
 	char *p8 = listBuf.getBuf();
 	listBuf.safeMemcpy ( &m_wordPosInfoBuf );
 	char *p9 = listBuf.getBuf();
-	if ( listBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.getBufStart() == orig );
 	// WordPosInfo::m_term relative to html ptr_utf8Content!
 	for ( ; p8 < p9 ; p8 += sizeof(WordPosInfo) ) {
 		QUICKPOLL(m_niceness);
@@ -45181,10 +45151,10 @@ bool XmlDoc::storeWordPosInfoBufIntoCachedb ( ) {
 			off = -1;
 		wp->m_wordPtr = (char *)off;
 	}
-	if ( listBuf.length() != need ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.length() == need );
 		
 	// ensure list did not realloc, that would screw up everything!
-	if ( listBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.getBufStart() == orig );
 
 	key_t startKey = g_cachedb.makeStartKey ( uh32, ch32 );
 	key_t endKey   = g_cachedb.makeEndKey   ( uh32, ch32 );
@@ -45424,17 +45394,17 @@ bool XmlDoc::storeScoredInsertableTermsIntoCachedb ( ) {
 	p1 = listBuf.getBuf();
 	listBuf.safeMemcpy ( &m_insertableTermsBuf );
 	char *p1End = listBuf.getBuf();
-	if ( listBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.getBufStart() == orig );
 	// m_queryChangeBuf
 	listBuf.pushLong   ( m_queryChangeBuf.length() );
 	p2 = listBuf.getBuf();
 	listBuf.safeMemcpy ( &m_queryChangeBuf );
 	char *p2End = listBuf.getBuf();
-	if ( listBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.getBufStart() == orig );
 	// m_queryLogBuf
 	listBuf.pushLong   ( m_queryLogBuf.length() );
 	listBuf.safeMemcpy ( &m_queryLogBuf );
-	if ( listBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.getBufStart() == orig );
 	// m_itStrBuf referenced by InsertableTerm::m_termStr
 	//listBuf.pushLong   ( m_itStrBuf.length() );
 	//listBuf.safeMemcpy ( &m_itStrBuf );
@@ -45489,10 +45459,10 @@ bool XmlDoc::storeScoredInsertableTermsIntoCachedb ( ) {
 		wp->m_wordPtr = (char *)off;
 	}
 	*/
-	if ( listBuf.length() != need ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.length() == need );
 		
 	// ensure list did not realloc, that would screw up everything!
-	if ( listBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.getBufStart() == orig );
 
 	key_t startKey = g_cachedb.makeStartKey ( uh32, ch32 );
 	key_t endKey   = g_cachedb.makeEndKey   ( uh32, ch32 );
@@ -45914,14 +45884,13 @@ void XmlDoc::gotMsg3aReplyForFullQuery ( ) {
 	TopDocIds *td = (TopDocIds *)m_topDocIdsBuf.getBuf();
 	int32_t tdnum = m_topDocIdsBuf.length() / sizeof(TopDocIds);
 	m_topDocIdsBuf.incrementLength(sizeof(TopDocIds));
-	if ( m_topDocIdsBuf.length() > m_topDocIdsBuf.m_capacity ) {
-		char *xx=NULL;*xx=0; }
+	gbassert( m_topDocIdsBuf.length() <= m_topDocIdsBuf.m_capacity );
 
 	QueryLink *qks = (QueryLink *)m_matchingQueryBuf.getBufStart();
 	QueryLink *qk = &qks[queryNum];
 
 	// the relateddocidnum hack
-	if ( tdnum > 32000 ) { char *xx=NULL;*xx=0; }
+	gbassert( tdnum <= 32000 );
 	qk->m_relatedDocIdNum = tdnum;
 
 	// store reply info, like # docids, in the query ptr
@@ -46191,7 +46160,7 @@ SafeBuf *XmlDoc::getMatchingQueriesScoredForFullQuery ( ) {
 	char *qstr = qk->getQueryString(&m_matchingQueryStringBuf);
 
 	// sanity
-	if ( ! cr->m_coll || ! cr->m_coll[0] ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! cr->m_coll || ! cr->m_coll[0] );
 	// this is required for synonyms!
 	// TODO: use whatever language the query is!!!
 	uint8_t langId = langEnglish;
@@ -46386,9 +46355,8 @@ SafeBuf *XmlDoc::getRelatedDocIds ( ) {
 		//QueryLink *qk = &qks[queryNum];
 		// sanity
 		int32_t nd = td->m_numDocIds;
-		if( nd < 0) { char *xx=NULL;*xx=0; }
-		if( nd > (int32_t)NUM_RESULTS_FOR_RELATED_DOCIDS){
-			char *xx=NULL;*xx=0;}
+		gbassert( nd >= 0);
+		gbassert( nd <= (int32_t)NUM_RESULTS_FOR_RELATED_DOCIDS);
 		// get main url score for query
 		//float ourScore = qp->m_myScore;
 		// and the score of the top result
@@ -46574,7 +46542,7 @@ SafeBuf *XmlDoc::getRelatedDocIdsScored ( ) {
 			// not just the "top" 50 matching queries by score.
 			int32_t queryNum = *(int32_t *)p;
 			// sanity
-			if ( queryNum<0 ) {char *xx=NULL;*xx=0; }
+			gbassert( queryNum >= 0 );
 			p += 4;
 			// then docid of related docid that had this score
 			int64_t docId = *(int64_t *)p;
@@ -46805,7 +46773,7 @@ SafeBuf *XmlDoc::getRelatedDocIdsScored ( ) {
 	if ( m_numMsg4fRequests > m_numMsg4fReplies ) return (SafeBuf *)-1;
 
 	// how can they all be done? all errors!
-	if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+	gbassert( g_errno );
 
 	return NULL;
 }
@@ -47395,7 +47363,7 @@ bool XmlDoc::addTermsFromQuery ( char *qstr,
 				 bool isRelatedQuery ) {
 
 	// sanity
-	if ( hackqoff < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( hackqoff >= 0 );
 	// print query but bold-face the terms our doc has not
 	Query qq;
 	//SafeBuf *rqsb = &m_relatedQueryStringBuf;
@@ -48568,7 +48536,7 @@ SafeBuf *XmlDoc::getTermIdSortedPosdbListBuf ( ) {
 	if ( ! metaList || metaList==(void *)-1 ) return (SafeBuf *)metaList;
 
 	// sanity
-	if ( ! m_docIdValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_docIdValid );
 	
 	// make a tmp buf to hold posdb keys
 	//SafeBuf tmp;
@@ -48632,8 +48600,7 @@ SafeBuf *XmlDoc::getTermIdSortedPosdbListBuf ( ) {
 	// update tmp
 	m_sortedPosdbListBuf.incrementLength ( dst - start );
 	// sanity
-	if ( m_sortedPosdbListBuf.length() > m_metaListSize ) { 
-		char *xx=NULL;*xx=0; }
+	gbassert( m_sortedPosdbListBuf.length() <= m_metaListSize );
 
 
 	// point
@@ -48734,17 +48701,16 @@ SafeBuf *XmlDoc::getTermListBuf ( ) {
 		// get the key
 		char *key = p;
 		// must be full 18 byte keys!
-		if ( p[0] & 0x06 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( p[0] & 0x06 );
 		// skip it
 		p += sizeof(POSDBKEY);
 		// get key termid
 		int64_t termId = g_posdb.getTermId ( key );
 		// sanity
 		int64_t docId = g_posdb.getDocId ( key );
-		if ( docId != m_docId ) { char *xx=NULL;*xx=0; }
+		gbassert( docId == m_docId );
 		// sanity. is it sorted by termid?
-		if ( termId < lastTermId && lastTermId == -1 ) { 
-			char *xx=NULL;*xx=0; }
+		gbassert_false( termId < lastTermId && lastTermId == -1 );
 		// log it for debug
 		//if ( docId == 192304365235LL )
 		//	log("tlist: docid=%" INT64 " termId=%" INT64 " wpos=%" INT32 "",
@@ -48792,9 +48758,8 @@ SafeBuf *XmlDoc::getTermListBuf ( ) {
 	}
 
 	// sanity
-	if ( m_termListBuf.length() &&
-	     g_posdb.getDocId(m_termListBuf.getBufStart()+4) != m_docId ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( m_termListBuf.length() &&
+	     g_posdb.getDocId(m_termListBuf.getBufStart()+4) != m_docId );
 
 	m_termListBufValid = true;
 
@@ -48921,7 +48886,7 @@ SafeBuf *XmlDoc::getInsertableTerms ( ) {
 		ib->safeMemcpy(term,termSize);
 	}
 
-	if ( ib->length() > need ) { char *xx=NULL;*xx=0; }
+	gbassert( ib->length() <= need );
 
 	//m_numInsertableTerms = count;
 	
@@ -49185,7 +49150,7 @@ SafeBuf *XmlDoc::getScoredInsertableTerms ( ) {
 	// from seo.h
 	Msg95Request mr;
 
-	if ( ! m_docIdValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_docIdValid );
 
 	mr.m_docId = m_docId;
 	mr.m_docLangId = *langIdPtr;
@@ -49396,10 +49361,8 @@ bool XmlDoc::processMsg95Replies() {
 			qc->m_replyQueryOffset += ongoingOffset;
 			// if we have debug score info
 			if ( m_seoDebug >= 2 ) {
-				if ( qc->m_debugScoreInfoOffset < 0 ) {
-					char *xx=NULL;*xx=0; }
-				if ( qc->m_origScoreInfoOffset < 0 ) {
-					char *xx=NULL;*xx=0; }
+				gbassert( qc->m_debugScoreInfoOffset >= 0 );
+				gbassert( qc->m_origScoreInfoOffset >= 0 );
 				qc->m_debugScoreInfoOffset += 
 					ongoingDebugOffset;
 				qc->m_origScoreInfoOffset  += 
@@ -49420,7 +49383,7 @@ bool XmlDoc::processMsg95Replies() {
 		ongoingOrigOffset  += mr->size_origScoreInfoBuf;
 	}
 	// sanity. make sure doesn't grow since we reference it
-	if ( m_queryLogBuf.getBufStart() != orig ) { char *xx=NULL;*xx=0; }
+	gbassert( m_queryLogBuf.getBufStart() == orig );
 
 	// now sort the huge ptr buffer to QueryChanges first by:
 	// 1: QueryChange::m_termHash64
@@ -49457,7 +49420,7 @@ bool XmlDoc::processMsg95Replies() {
 		*(QueryChange **)p = (QueryChange *)ref;
 	}
 	// sanity test
-	if ( m_queryChangeBuf.getBufStart() != orig2 ) { char *xx=NULL;*xx=0;}
+	gbassert( m_queryChangeBuf.getBufStart() == orig2 );
 
 	// now we can free the replies since we stored the replies into
 	// m_queryLogBuf and m_queryChangeBuf for store*IntoCachedb()
@@ -49492,7 +49455,7 @@ bool XmlDoc::processMsg95Replies() {
 	// but the insertable terms are sorted by m_trafficSum.
 	// map a termHash64 to its corresponding first QueryChange.
 	HashTableX tit;
-	if ( ! m_insertableTermsBufValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_insertableTermsBufValid );
 	int32_t ni = m_insertableTermsBuf.length() / sizeof(InsertableTerm);
 	if ( ! tit.set ( 8,4, ni*4,NULL,0,false,m_niceness,"tittbl") )
 		return false;
@@ -49509,7 +49472,7 @@ bool XmlDoc::processMsg95Replies() {
 		lastHash64 = qc->m_termHash64;
 		// . map it in the hash table then
 		// . it should be pre-allocated!
-		if (!tit.addKey(&qc->m_termHash64,&qc)){char *xx=NULL;*xx=0;}
+		gbassert_false(!tit.addKey(&qc->m_termHash64,&qc));
 	}
 
 	// now scan the insertable terms and set their
@@ -49533,7 +49496,7 @@ bool XmlDoc::processMsg95Replies() {
 	}
 	
 	SafeBuf *wpib = getWordPosInfoBuf();
-	if ( ! wpib || wpib == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( wpib && wpib != (void *)-1 );
 	WordPosInfo *wpis = (WordPosInfo *)wpib->getBufStart();
 	int32_t nwpis = wpib->length() / sizeof(WordPosInfo);
 
@@ -49574,7 +49537,7 @@ void XmlDoc::setWordPosInfosTrafficGain ( InsertableTerm *it ) {
 	
 	// get the wordposinfobuf!
 	SafeBuf *wpib = getWordPosInfoBuf();
-	if ( ! wpib || wpib == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( wpib && wpib != (void *)-1 );
 	WordPosInfo *wpis = (WordPosInfo *)wpib->getBufStart();
 	int32_t nwpis = wpib->length() / sizeof(WordPosInfo);
 
@@ -49617,8 +49580,7 @@ void XmlDoc::setWordPosInfosTrafficGain ( InsertableTerm *it ) {
 			lastqc = NULL;
 		}
 		// sanity
-		if ( lastqc && lastqc->m_insertPos > qc->m_insertPos ) {
-			char *xx=NULL;*xx=0; }
+		gbassert( lastqc && lastqc->m_insertPos <= qc->m_insertPos );
 		// compute th traffic in advance from the rank changes
 		int32_t trafficGain = getTrafficGain( qc );
 		// checkpoint
@@ -49713,15 +49675,13 @@ double getTrafficPercent ( int32_t rank ) {
 		}
 		// sanity to make sure all in order
 		for ( int32_t i = 1 ; i < 1000 ; i++ ) {
-			if ( s_posClicks[i-1] < s_posClicks[i] ) {
-				char *xx=NULL;*xx=0; }
-			if ( s_posClicks[i] < 0 ) {
-				char *xx=NULL;*xx=0; }
+			gbassert( s_posClicks[i-1] >= s_posClicks[i] );
+			gbassert( s_posClicks[i] >= 0 );
 		}
 	}
 
 	if ( rank >= 1000 ) rank = 999;
-	if ( rank < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( rank >= 0 );
 
 	return s_posClicks[rank];
 }
@@ -49758,13 +49718,11 @@ int32_t XmlDoc::getTrafficGain ( QueryChange *qc ) {
 	int32_t trafficChange = (int32_t)((newp - oldp) * traffic);
 
 	// sanity. 
-	if ( qc->m_oldRank > qc->m_newRank && trafficChange < 0 ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( qc->m_oldRank > qc->m_newRank && trafficChange < 0 );
 	// ignore this sanity check if not ranked before. i.e. inserting
 	// a new missing term...
-	if ( qc->m_oldRank != -1 &&
-	     qc->m_oldRank < qc->m_newRank && trafficChange > 0 ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( qc->m_oldRank != -1 &&
+	     qc->m_oldRank < qc->m_newRank && trafficChange > 0 );
 
 	// return the change. it might be negative!
 	return trafficChange;
@@ -49781,10 +49739,10 @@ bool XmlDoc::printScoredInsertableTerms ( SafeBuf *sbuf ) {
 	// scan each term
 	SafeBuf *itBuf = getInsertableTerms();
 	// has to be there
-	if ( ! itBuf || itBuf == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( itBuf && itBuf != (void *)-1 );
 
 	SafeBuf *wpib = getWordPosInfoBuf();
-	if ( ! wpib || wpib == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( wpib && wpib != (void *)-1 );
 	WordPosInfo *wpis = (WordPosInfo *)wpib->getBufStart();
 	int32_t nwpis = wpib->length() / sizeof(WordPosInfo);
 
@@ -49979,7 +49937,7 @@ SafeBuf *XmlDoc::getWordPosSortedPosdbListBuf ( ) {
 	if ( ! metaList || metaList==(void *)-1 ) return (SafeBuf *)metaList;
 
 	// sanity
-	if ( ! m_docIdValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_docIdValid );
 	
 	// make a tmp buf to hold posdb keys
 	//SafeBuf tmp;
@@ -50038,8 +49996,7 @@ SafeBuf *XmlDoc::getWordPosSortedPosdbListBuf ( ) {
 	// update tmp
 	m_wpSortedPosdbListBuf.incrementLength ( dst - start );
 	// sanity
-	if ( m_wpSortedPosdbListBuf.length() > m_metaListSize ) { 
-		char *xx=NULL;*xx=0; }
+	gbassert( m_wpSortedPosdbListBuf.length() <= m_metaListSize );
 
 	// point
 	char *pbuf    = m_wpSortedPosdbListBuf.getBufStart();
@@ -50074,7 +50031,7 @@ SafeBuf *XmlDoc::getWordPosInfoBuf ( ) {
 
 	// it should be valid now from our logic in hashWords3() if
 	// m_doingSEO is set to true
-	char *xx=NULL; *xx=0;
+	gbassert(false);
 
 	// these are FULL 18-byte keys, no compression, sorted by word pos
 	SafeBuf *posdbBuf = getWordPosSortedPosdbListBuf ();
@@ -50103,9 +50060,9 @@ SafeBuf *XmlDoc::getWordPosInfoBuf ( ) {
 		// get the key
 		char *key = p;
 		// sanity
-		if ( g_posdb.getKeySize(p) != 18 ) { char *xx=NULL;*xx=0; }
+		gbassert( g_posdb.getKeySize(p) == 18 );
 		// skip del keys
-		if ( (p[0] & 0x01) == 0x00 ) { char *xx=NULL;*xx=0; }
+		gbassert( (p[0] & 0x01) != 0x00 );
 		// skip it
 		p += sizeof(POSDBKEY);
 		// get key termid
@@ -50143,7 +50100,7 @@ SafeBuf *XmlDoc::getWordPosInfoBuf ( ) {
 		if ( wp == lastWordPos ) continue;
 		// . i thought sorted by word position??
 		// . word position 0 is used by generic terms, like tags
-		if ( wp < lastWordPos ) { char *xx=NULL;*xx=0; }
+		gbassert( wp >= lastWordPos );
 		// additional position at the end of a sentence?
 		//if ( lastwp != wp && lastSentNum == sentNum ) 
 		//	// store it
@@ -50402,7 +50359,7 @@ SafeBuf *XmlDoc::getRecommendedLinksBuf ( ) {
 		m_recommendedLinkError = 0;
 	}
 
-	if ( ! m_relatedTitleBufValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_relatedTitleBufValid );
 
 	// if we are looking up the title/url of each docid in
 	// the m_recommendedLinksBuf now, go back there
@@ -50705,8 +50662,7 @@ SafeBuf *XmlDoc::getRecommendedLinksBuf ( ) {
 		ptrBuf.pushPtr ( ri );
 		p += sizeof(RecommendedLink);
 		// we have no title or url at this point...
-		if ( ri->getSize() != sizeof(RecommendedLink) ) { 
-			char *xx=NULL;*xx=0; }
+		gbassert( ri->getSize() == sizeof(RecommendedLink) );
 		numPtrs++;
 	}
 	// now sort!
@@ -50815,7 +50771,7 @@ SafeBuf *XmlDoc::lookupTitles ( ) {
 			break;
 		}
 		// sanity!
-		if ( i >= 100 ) { char *xx=NULL;*xx=0; }
+		gbassert( i < 100 );
 		// look it up
 		Msg20 *msg20 = &msg20s[i];
 		// make request
@@ -50903,7 +50859,7 @@ bool XmlDoc::gotLinkerTitle ( Msg20 *msg20 ) {
 	int32_t titleCursor = msg20->m_hack2;
 	RecommendedLink *rl = &rptrs[titleCursor];
 	// sanity
-	if ( titleCursor < 0 ) {char *xx=NULL;*xx=0;}
+	gbassert( titleCursor >= 0 );
 
 	// not found?
 	if ( g_errno ) {
@@ -50940,7 +50896,7 @@ bool XmlDoc::gotLinkerTitle ( Msg20 *msg20 ) {
 	rl->m_rl_firstIp  = reply->m_firstIp;
 
 	// sanity
-	if ( rl->m_rl_docId != reply->m_docId ) { char *xx=NULL;*xx=0; }
+	gbassert( rl->m_rl_docId == reply->m_docId );
 
 	char *title = reply->ptr_tbuf;
 	int32_t titleSize = reply->size_tbuf;
@@ -51238,10 +51194,10 @@ Msg25 *XmlDoc::getAllInlinks ( bool forSite ) {
 		// skip that
 		listBuf.incrementLength ( stored );
 		// sanity
-		if ( stored != replySize ) { char *xx=NULL;*xx=0; }
+		gbassert( stored == replySize );
 	}
 	// sanity
-	if ( listBuf.length() != need ) { char *xx=NULL;*xx=0; }
+	gbassert( listBuf.length() == need );
 
 
 	// make the list to add to cachedb
@@ -51297,8 +51253,8 @@ bool XmlDoc::setRelatedDocIdWeightAndRank ( RelatedDocId *rd ) {
 	// get our site hash
 	int32_t *shp = getSiteHash32();
 	if ( ! shp ) return false;
-	if ( shp == (int32_t *)-1 ) { char *xx=NULL;*xx=0; }
-	if ( ! m_siteHash32Valid ) { char *xx=NULL;*xx=0; }
+	gbassert( shp != (int32_t *)-1 );
+	gbassert( m_siteHash32Valid );
 	int32_t mainUrlSiteRank = getSiteRank();
 
 	// max queries
@@ -51334,7 +51290,7 @@ bool XmlDoc::setRelatedDocIdWeightAndRank ( RelatedDocId *rd ) {
 	p += nc * sizeof(HashTableX);
 
 	// sanity
-	if ( p != mem + need ) { char *xx=NULL;*xx=0; }
+	gbassert( p == mem + need );
 	// initialize the mem
 	for ( int32_t i = 0 ; i < nc ; i++ ) {
 		queryWeights[i] = 1.0;
@@ -51356,7 +51312,7 @@ bool XmlDoc::setRelatedDocIdWeightAndRank ( RelatedDocId *rd ) {
 	//Msg99Reply **qptrs=(Msg99Reply **)qpbuf->getBufStart();
 
 	SafeBuf *mq = getMatchingQueryBuf();
-	if ( mq == NULL || mq == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( mq != NULL && mq != (void *)-1 );
 	int32_t nks = mq->length() / sizeof(QueryLink);
 	QueryLink *qks = (QueryLink *)mq->getBufStart();
 
@@ -51385,8 +51341,7 @@ bool XmlDoc::setRelatedDocIdWeightAndRank ( RelatedDocId *rd ) {
 		else offset = -1;
 		// get #qn into there
 		//Msg99Reply *rp = qptrs[qn->m_queryNum];
-		if ( qn->m_queryNum < 0 || qn->m_queryNum >= nks ) {
-			char *xx=NULL;*xx=0; }
+		gbassert_false( qn->m_queryNum < 0 || qn->m_queryNum >= nks );
 		QueryLink *qk = &qks[qn->m_queryNum];
 		QueryLogEntry *qe ;
 		qe = qk->getQueryLogEntry(&m_matchingQueryStringBuf);
@@ -51414,7 +51369,7 @@ bool XmlDoc::setRelatedDocIdWeightAndRank ( RelatedDocId *rd ) {
 		int32_t tdnum = qk->m_relatedDocIdNum;
 		TopDocIds *tds = (TopDocIds *)m_topDocIdsBuf.getBufStart();
 		int32_t maxnum = m_topDocIdsBuf.length()/sizeof(TopDocIds);
-		if ( tdnum < 0 || tdnum >= maxnum ) { char *xx=NULL;*xx=0; }
+		gbassert_false( tdnum < 0 || tdnum >= maxnum );
 		TopDocIds *td = &tds[tdnum];
 
 		// assume none
@@ -51707,7 +51662,7 @@ bool XmlDoc::setRelatedDocIdWeightAndRank ( RelatedDocId *rd ) {
 			// are essentially ignored if not in quotes.
 			totalVec &= qpi->m_requiredBits;
 			// how many words do we match?
-			if ( sizeof(qvec_t) != 8 ) { char *xx=NULL;*xx=0; }
+			gbassert( sizeof(qvec_t) == 8 );
 			int32_t numSharedWithQueryi = getNumBitsOn64(totalVec);
 			// how many required bits does it have?
 			int32_t needi = getNumBitsOn64(qpi->m_requiredBits);
@@ -51737,7 +51692,7 @@ bool XmlDoc::setRelatedDocIdWeightAndRank ( RelatedDocId *rd ) {
 			// are essentially ignored if not in quotes.
 			totalVec &= qpj->m_requiredBits;
 			// how many words do we match?
-			if ( sizeof(qvec_t) != 8 ) { char *xx=NULL;*xx=0; }
+			gbassert( sizeof(qvec_t) == 8 );
 			int32_t numSharedWithQueryj = getNumBitsOn64(totalVec);
 			// how many required bits does it have?
 			int32_t needj = getNumBitsOn64(qpj->m_requiredBits);
@@ -51921,7 +51876,7 @@ bool XmlDoc::addRelatedDocIdInfo ( int64_t docId ,
 	int32_t firstOff = rd->m_firstCommonQueryNumOff;
 
 	// sanity
-	if ( firstOff == -1 && rd->m_numCommonQueries ) { char *xx=NULL;*xx=0;}
+	gbassert_false( firstOff == -1 && rd->m_numCommonQueries );
 
 	// assume no linked list
 	QueryNumLinkedNode *node = NULL;
@@ -52343,7 +52298,7 @@ SafeBuf *XmlDoc::getQueryLinkBuf(SafeBuf *docIdList, bool doMatchingQueries) {
 		}
 		*/
 		// sanity
-		if ( request.length() != need ) { char *xx=NULL;*xx=0; }
+		gbassert( request.length() == need );
 
 		// do not free it here, let udpserver free it
 		char *req     = request.getBufStart();
@@ -52360,7 +52315,7 @@ SafeBuf *XmlDoc::getQueryLinkBuf(SafeBuf *docIdList, bool doMatchingQueries) {
 		//m_msg20Buf.purge();
 
 		// must be host #0 for this next algo to work
-		if ( g_hostdb.m_hostId != 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( g_hostdb.m_hostId == 0 );
 		//
 		// send msg8e request to each host. skip if dead.
 		//
@@ -52374,7 +52329,7 @@ SafeBuf *XmlDoc::getQueryLinkBuf(SafeBuf *docIdList, bool doMatchingQueries) {
 			Host *host = g_hostdb.getHost(hosti);
 			// get hostid of host #i
 			int32_t hostId = host->m_hostId;
-			if ( hostId != hosti ) { char *xx=NULL;*xx=0; }
+			gbassert( hostId == hosti );
 			// count it
 			m_numMsg8eRequests++;
 			// skip if dead. i guess no queries from that guy. we 
@@ -52467,7 +52422,7 @@ SafeBuf *XmlDoc::getQueryLinkBuf(SafeBuf *docIdList, bool doMatchingQueries) {
 		// cast it
 		QueryLink *qk = (QueryLink *)bestPtr[i];
 		// sanity, if not list head core
-		if ( ! qk->m_isFirst ) { char *xx=NULL;*xx=0; }
+		gbassert( qk->m_isFirst );
 		// skip if score is not the current maximum
 		if ( qk->m_totalQueryImportance < maxScore ) continue;
 		// we got a new max!
@@ -52625,10 +52580,9 @@ Json *XmlDoc::getParsedJson ( ) {
 	if ( m_jpValid ) return &m_jp;
 
 	// core if not a json object
-	if ( m_contentTypeValid && m_contentType != CT_JSON &&
+	gbassert_false( m_contentTypeValid && m_contentType != CT_JSON &&
 	     // spider status docs are now really json
-	     m_contentType != CT_STATUS ) {
-		char *xx=NULL;*xx=0; }
+	     m_contentType != CT_STATUS );
 
 	// \0 terminated
 	char **pp = getUtf8Content();
@@ -52936,7 +52890,7 @@ char *XmlDoc::getDiffbotParentUrl( char *myUrl ) {
 bool XmlDoc::storeFacetValues ( char *qs , SafeBuf *sb , FacetValHash_t fvh ) {
 
 	// sanity
-	if ( ! m_contentTypeValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_contentTypeValid );
 
 	storeFacetValuesSite ( qs, sb, fvh );
 
@@ -52999,11 +52953,11 @@ bool XmlDoc::storeFacetValuesSections ( char *qs , SafeBuf *sb ,
 	// scan all sections
 	Sections *ss = getSections();
 	if ( ! ss ) return false;
-	if ( ss == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( ss != (void *)-1 );
 
 	Words *ww = getWords();
 	if ( ! ww ) return false;
-	if ( ww == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert( ww != (void *)-1 );
 	
 	int32_t siteHash32 = *getSiteHash32();
 
