@@ -10,7 +10,7 @@ class Abbr {
 public:
 	char *m_str;
 	// MUST it have a word after it????
-	char  m_hasWordAfter;
+	bool  m_hasWordAfter;
 };
 
 // . i shrunk this list a lot
@@ -241,14 +241,14 @@ bool isAbbr ( int64_t h , bool *hasWordAfter ) {
 			char      *sw    = s_abbrs99[i].m_str;
 			int64_t  swh   = hash64Lower_utf8 ( sw );
 			int32_t val = i + 1;
-			if ( ! t->addKey (&swh,&val) ) return false;
+			gbassert( t->addKey (&swh,&val) );
 		}
 		s_abbrInitialized = true;
 		// test it
 		int64_t st_h = hash64Lower_utf8("St");
 		gbassert( t->isInTable(&st_h) );
 		int32_t sc = s_abbrTable.getScore ( &st_h );
-		gbassert_false( sc >= n );
+        gbassert( sc < n );
 	} 
 	// get from table
 	int32_t sc = s_abbrTable.getScore ( &h );

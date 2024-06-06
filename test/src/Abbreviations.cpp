@@ -3,6 +3,8 @@
 
 #include "Mem.h"
 
+#include "Abbreviations.h"
+
 #include "catch_amalgamated.hpp"
 
 #include <iostream>
@@ -16,15 +18,20 @@ bool sendPageSEO(TcpSocket *s, HttpRequest *hr) {
         return false; }
 // ------------------------------------------
 
-unsigned int factorial( unsigned int number ) {
-    return number <= 1 ? number : factorial(number-1)*number;
+TEST_CASE( "isAbbr('lang') is an abbreviation and has no word after", "[isAbbr]" ) {
+    bool hasWordAfter = true;
+    REQUIRE( isAbbr( hash64Lower_utf8("lang"), &hasWordAfter ) == true );
+    REQUIRE( hasWordAfter == false );
 }
 
-TEST_CASE( "factorials are computed", "[factorial]" ) {
-    REQUIRE( factorial(10) == 3628800 );
-    REQUIRE( factorial(3) == 6 );
-    REQUIRE( factorial(2) == 2 );
-    REQUIRE( factorial(1) == 1 );
+TEST_CASE( "isAbbr('vs') is an abbreviation and has a word after", "[isAbbr]" ) {
+    bool hasWordAfter = false;
+    REQUIRE( isAbbr( hash64Lower_utf8("vs"), &hasWordAfter ) == true );
+    REQUIRE( hasWordAfter == true );
+}
+
+TEST_CASE( "isAbbr('xyz') is not an abbreviation", "[isAbbr]" ) {
+    REQUIRE( isAbbr( hash64Lower_utf8("xyz") ) == false );
 }
 
 int main( int argc, char* argv[] ) {
@@ -33,6 +40,7 @@ int main( int argc, char* argv[] ) {
   char stackPointTestAnchor;
   g_mem.setStackPointer( &stackPointTestAnchor );
   g_mem.m_memtablesize = 2048;
+  hashinit();
 
   int result = Catch::Session().run( argc, argv );
 
