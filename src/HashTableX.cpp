@@ -43,21 +43,21 @@ HashTableX::~HashTableX ( ) {
 }
 
 // returns false and sets errno on error
-bool HashTableX::set ( int32_t  ks              ,
-		       int32_t  ds              ,
-		       int32_t  initialNumTerms , 
-		       char *buf             , 
-		       int32_t  bufSize         ,
-		       bool  allowDups       ,
-		       int32_t  niceness        ,
-		       char *allocName       ,
+bool HashTableX::set (int32_t  keySize              ,
+                      int32_t  dataSize              ,
+                      int32_t  initialNumSlots ,
+                      char *buf             ,
+                      int32_t  bufSize         ,
+                      bool  allowDups       ,
+                      int32_t  niceness        ,
+                      const char *allocName       ,
 		       // in general you want keymagic to ensure your
 		       // keys are "random" for good hashing. it doesn't
 		       // really slow things down either.
 		       bool  useKeyMagic     ) {
 	reset();
-	m_ks = ks;
-	m_ds = ds;
+	m_ks = keySize;
+	m_ds = dataSize;
 	m_allowDups = allowDups;
 	m_niceness  = niceness;
 	m_needsSave = true;
@@ -67,20 +67,20 @@ bool HashTableX::set ( int32_t  ks              ,
 	//if ( initialNumTerms < 32 ) initialNumTerms = 32;
 	// sanity check. assume min keysize of 4 because we do *(int32_t *)key
 	// logic below!!
-	if ( ks <  4 ) { char *xx=NULL;*xx=0; }
-	if ( ds <  0 ) { char *xx=NULL;*xx=0; }
+	if (keySize < 4 ) { char *xx=NULL;*xx=0; }
+	if (dataSize < 0 ) { char *xx=NULL;*xx=0; }
 	// auto?
-	if ( initialNumTerms == -1 ) {
-		int32_t slotSize = ks + ds + 1;
-		initialNumTerms = bufSize / slotSize;
-		initialNumTerms /= 2; // fix it to not exceed bufSize
+	if (initialNumSlots == -1 ) {
+		int32_t slotSize = keySize + dataSize + 1;
+        initialNumSlots = bufSize / slotSize;
+        initialNumSlots /= 2; // fix it to not exceed bufSize
 	}
 	// set this
 	m_allocName = allocName;
 
 	m_useKeyMagic = useKeyMagic;
 
-	return setTableSize ( initialNumTerms , buf , bufSize );
+	return setTableSize (initialNumSlots , buf , bufSize );
 }
 
 // . call clean() to do a more careful reset
@@ -402,10 +402,7 @@ bool HashTableX::setTableSize ( int32_t oldn , char *buf , int32_t bufSize ) {
 	}
 
 	if ( startTime ) {
-		char *name ="";
-		if ( m_allocName ) name = m_allocName;
-		//if ( name && strcmp(name,"HashTableX")==0 )
-		//	log("hey");
+		const char *name = m_allocName ? m_allocName : "";
 		int64_t now = gettimeofdayInMilliseconds();
 		logf(LOG_DEBUG,"table: grewtable %s from %" INT32 " to %" INT32 " slots "
 		     "in %" INT64 " ms (this=0x%" PTRFMT ") (used=%" INT32 ")",  

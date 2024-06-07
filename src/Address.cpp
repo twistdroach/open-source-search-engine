@@ -256,7 +256,7 @@ public:
 };
 
 
-static char      *s_days[] = {
+static const char      *s_days[] = {
 	"sunday",
 	"monday",
 	"tuesday",
@@ -3770,7 +3770,7 @@ Place *Addresses::getAssociatedPlace ( int32_t i ) {
 // . array for setting s_lc hashtable
 // . these are words that can be lower case in a place name
 // . fixes "Santa Maria de la Paz Catholic Church" not being a place name
-static char      *s_lcWords[] = {
+static const char      *s_lcWords[] = {
         "de",
         "la",
 
@@ -5755,7 +5755,7 @@ bool Addresses::set2 ( ) {
 	// "meet the engineer at cisco"
 	// - does the at phrase modify "meet" or "engineer" ???
 	//
-	static char *s_jobs[] = {
+	static const char *s_jobs[] = {
 		"strategist",
 		"accountant",
 		// interim rector at St. Margaret's (www.st-margarets.org)

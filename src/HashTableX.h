@@ -11,15 +11,15 @@ class HashTableX {
 
  public:
 
-	bool set ( int32_t  keySize         ,
-		   int32_t  dataSize        ,
-		   int32_t  initialNumSlots , // = 0    ,
+	bool set (int32_t  keySize         ,
+              int32_t  dataSize        ,
+              int32_t  initialNumSlots , // = 0    ,
 		   char *buf             , // = NULL ,
 		   int32_t  bufSize         , // = 0    ,
 		   bool  allowDups       , // = false ,
 		   int32_t  niceness        , // = MAX_NICENESS ,
-		   char *allocName       ,
-		   bool  useKeyMagic = false );
+		   const char *allocName       ,
+              bool  useKeyMagic = false);
 
 	// key size is 0 if UNinitialized
 	bool isInitialized ( ) { return (m_ks != 0); };
@@ -514,7 +514,7 @@ class HashTableX {
 	// limits growing to this # of slots total
 	int64_t  m_maxSlots;
 
-	char *m_allocName;
+	const char *m_allocName;
 	
 	int32_t m_maskKeyOffset;
 
