@@ -585,7 +585,7 @@ bool LangList::tldInit() {
 }
 
 uint8_t LangList::catIdToLang(uint32_t catid) {
-	register uint32_t i;
+	uint32_t i;
 	for(i = 0; i < sizeof(s_langToCatId)/sizeof(uint32_t); i++) {
 		if(catid == (uint32_t)s_langToCatId[i]) return((uint8_t)i);
 	}

@@ -1,3 +1,6 @@
+#include <catch2/catch_session.hpp>
+#include <catch2/catch_test_macros.hpp>
+
 #include "TcpSocket.h"
 #include "HttpRequest.h"
 
@@ -5,7 +8,6 @@
 
 #include "Abbreviations.h"
 
-#include "catch_amalgamated.hpp"
 
 #include <iostream>
 

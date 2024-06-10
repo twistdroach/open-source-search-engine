@@ -4,7 +4,6 @@
 /catdb/
 /cachedb/
 *.dat
-*.txt
 *.conf.saving
 *.conf
 /diskusage
