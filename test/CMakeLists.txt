@@ -1,8 +1,12 @@
 find_package(Catch2 3 REQUIRED)
 include_directories( ${CMAKE_SOURCE_DIR}/src )
 
+include(Catch)
+
 add_executable(Abbreviations src/Abbreviations.cpp)
 target_link_libraries(Abbreviations PRIVATE Catch2::Catch2 osse)
-
-include(Catch)
 catch_discover_tests(Abbreviations)
+
+add_executable(test1 src/test1.cpp)
+target_link_libraries(test1 PRIVATE Catch2::Catch2 osse)
+catch_discover_tests(test1)
