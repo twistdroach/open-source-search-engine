@@ -8,6 +8,8 @@
 
 // . up to 32768 collections possible, MUST be signed
 // . a collnum_t of -1 is used by RdbCache to mean "no collection"
+#include "gbassert.h"
+
 #define collnum_t int16_t
 
 //typedef char bool
@@ -569,7 +571,7 @@ inline char KEYCMP ( char *k1, int32_t a, char *k2, int32_t b , char keySize ) {
 		     (*(uint64_t *)(k2+b*keySize+0)) ) return  1;
 		return 0;
 	}
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return 0;
 }
 
@@ -667,7 +669,7 @@ inline char KEYCMP ( char *k1, char *k2, char keySize ) {
 		     (*(uint64_t  *)(k2+0)) ) return  1;
 		return 0;
 	}
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return 0;
 }
 
@@ -763,7 +765,7 @@ inline char KEYCMPNEGEQ ( char *k1, char *k2, char keySize ) {
 		     (*(uint16_t *)(k2+0)) ) return  1;
 		return 0;
 	}
-	char *xx=NULL; *xx = 0;
+	gbassert(false);
 	return 0;
 }
 
@@ -799,7 +801,7 @@ inline char *KEYSTR ( void *vk , int32_t ks ) {
 
 inline uint16_t KEY0 ( char *k , int32_t ks ) {
 	if ( ks == 18 ) return *(uint16_t *)k;
-	else { char *xx=NULL;*xx=0; }
+	gbassert(false);
 	return 0;
 }
 
@@ -812,7 +814,7 @@ inline int64_t KEY1 ( char *k , char keySize ) {
 
 inline int64_t KEY2 ( char *k , char keySize ) {
 	if ( keySize == 18 ) return *(int64_t *)(k+10);
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return 0;
 }
 
@@ -861,8 +863,7 @@ inline void KEYSET ( char *k1 , char *k2 , char keySize ) {
 	//	*(int32_t *)(k1  ) = *(int32_t *)(k2  );
 	//	return;
 	//}
-	char *xx=NULL;*xx=0;
-	return;
+	gbassert(false);
 }
 
 inline char KEYNEG ( char *k , int32_t a , char keySize ) {
@@ -892,7 +893,7 @@ inline char KEYNEG ( char *k , int32_t a , char keySize ) {
 		if ( (k[a*8] & 0x01) == 0x00 ) return 1;
 		return 0;
 	}
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return 0;
 }
 
@@ -919,7 +920,7 @@ inline void KEYADD ( char *k , int32_t add , char keySize ) {
 	if ( keySize == 8  ) { *((uint64_t *)k) += (int32_t)1; return; }
 	if ( keySize == 24 ) { *((key192_t *)k) += (int32_t)1; return; }
 	if ( keySize == 28 ) { *((key224_t *)k) += (int32_t)1; return; }
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 }
 
 inline void KEYSUB ( char *k , int32_t add , char keySize ) {
@@ -927,7 +928,7 @@ inline void KEYSUB ( char *k , int32_t add , char keySize ) {
 	if ( keySize == 12 ) { *((key96_t  *)k) -= (int32_t)1; return; }
 	if ( keySize == 16 ) { *((key128_t *)k) -= (int32_t)1; return; }
 	if ( keySize == 28 ) { *((key224_t *)k) -= (int32_t)1; return; }
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 }
 
 inline void KEYOR ( char *k , int32_t opor ) {

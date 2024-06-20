@@ -6,6 +6,7 @@
 #define _HASHTABLEX_H_
 
 #include "SafeBuf.h"
+#include "gbassert.h"
 
 class HashTableX {
 
@@ -195,7 +196,7 @@ class HashTableX {
 		}
 		// crazy!
 		log("hash: table is full!");
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 		return true;
 	};
 
@@ -206,7 +207,7 @@ class HashTableX {
 		// return NULL if completely empty
 		if ( m_numSlots <= 0 ) return -1;
 		// sanity check
-		if ( m_ks != 18 ) { char *xx=NULL;*xx=0; }
+        gbassert(m_ks == 18);
 		// mask on termid bits i guess
 		//int32_t n = *((uint32_t *)(((char *)kp)+12));
 		// xor with word posand hashgroup ,etc
@@ -244,7 +245,7 @@ class HashTableX {
 		// return NULL if completely empty
 		if ( m_numSlots <= 0 ) return -1;
 		// sanity check
-		if ( m_ks != 4 ) { char *xx=NULL;*xx=0; }
+        gbassert(m_ks == 4);
 		int32_t n;
 		if ( ! m_useKeyMagic ) {
 			// mask on the lower 32 bits i guess
@@ -277,7 +278,7 @@ class HashTableX {
 		// return NULL if completely empty
 		if ( m_numSlots <= 0 ) return NULL;
 		// sanity check
-		if ( m_ks != 4 ) { char *xx=NULL;*xx=0; }
+        gbassert(m_ks == 4);
 		int32_t n;
 		if ( ! m_useKeyMagic ) {
 			// mask on the lower 32 bits i guess
@@ -311,7 +312,7 @@ class HashTableX {
 		// return NULL if completely empty
 		if ( m_numSlots <= 0 ) return NULL;
 		// sanity check
-		if ( m_ks != 8 ) { char *xx=NULL;*xx=0; }
+        gbassert(m_ks == 8);
 		int32_t n;
 		if ( ! m_useKeyMagic ) {
 			// mask on the lower 32 bits i guess
@@ -364,7 +365,7 @@ class HashTableX {
 		// return NULL if completely empty
 		if ( m_numSlots <= 0 ) return -1;
 		// sanity check
-		if ( m_ks != 8 ) { char *xx=NULL;*xx=0; }
+        gbassert(m_ks == 8);
 		int32_t n;
 		if ( ! m_useKeyMagic ) {
 			// mask on the lower 32 bits i guess

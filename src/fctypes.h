@@ -6,6 +6,7 @@
 #include <sys/time.h>  // gettimeofday()
 #include <math.h>      // floor()
 #include "Unicode.h"
+#include "gbassert.h"
 
 extern bool g_clockNeedsUpdate;
 
@@ -270,7 +271,7 @@ inline int32_t htob ( char s ) {
 }
 
 inline char btoh ( char s ) {
-	if ( s >= 16 ) { char *xx=NULL;*xx=0; }
+    gbassert(s < 16);
 	if ( s < 10 ) return s + '0';
 	return (s - 10) + 'a';
 }

@@ -55,7 +55,7 @@ class Xml {
 				int32_t tagNameLen) const; 
 	// some wrappers for it
 	int32_t     getNodeNum  ( char *tagName ) {
-		if ( ! tagName ) { char *xx=NULL;*xx=0; }
+        gbassert(tagName);
 		return getNodeNum ( 0,m_numNodes,tagName,strlen(tagName)); };
 	int32_t     getNodeNum  ( char *tagName , int32_t tagNameLen ) {
 		return getNodeNum ( 0,m_numNodes,tagName,tagNameLen); };
@@ -129,7 +129,7 @@ class Xml {
 	//bool  getBool     ( int32_t node, char *field, bool defaultBool );
 	//int32_t  getLong     ( int32_t node, char *field, int32_t defaultLong );
 	char *getString   ( int32_t node, char *field, int32_t *valueLen ) {
-		if ( node >= m_numNodes ) { char *xx=NULL;*xx=0; }
+        gbassert(node < m_numNodes);
 		return m_nodes[node].getFieldValue ( field , valueLen);}
 
 	// called by getTextForXmlTag() below

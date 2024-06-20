@@ -11,6 +11,7 @@
 #include <sys/mman.h>        // mlockall
 #include <netinet/in.h>      // for htonll
 #include "Conf.h"
+#include "gbassert.h"
 #include <new>
 
 extern bool g_inMemFunction;
@@ -61,7 +62,7 @@ void membitcpy1 ( void *dst, int32_t dstBits, void *src, int32_t srcBits, int32_
 void membitcpy2 ( void *dst, int32_t dstBits, void *src, int32_t srcBits, int32_t nb );
 
 inline int gbstrlen ( const char *s ) {
-	if ( ! s ) { char *xx=NULL;*xx=0; }
+    gbassert(s);
 	return strlen(s);
 };
 
@@ -185,7 +186,7 @@ void * operator new (size_t size) noexcept(false);
 #define malloc coreme 
 #define calloc coreme 
 #define realloc coreme 
-inline void *coreme ( int x ) { char *xx = NULL; *xx = 0; return NULL; }
+inline void *coreme ( int x ) { gbassert(false); return NULL; }
 
 int32_t getAllocSize(void *p);
 
@@ -266,13 +267,13 @@ inline int32_t getBitPosLL ( uint8_t *bit ) {
 		if ( bit[1] ) return getHighestLitBit ( bit[1] ) + 8;
 		if ( bit[2] ) return getHighestLitBit ( bit[2] ) + 16;
 		if ( bit[3] ) return getHighestLitBit ( bit[3] ) + 24;
-		char *xx=NULL;*xx=0; 
+		gbassert(false);
 	}
 	if ( bit[4] ) return getHighestLitBit ( bit[4] ) + 32;
 	if ( bit[5] ) return getHighestLitBit ( bit[5] ) + 40;
 	if ( bit[6] ) return getHighestLitBit ( bit[6] ) + 48;
 	if ( bit[7] ) return getHighestLitBit ( bit[7] ) + 56;
-	char *xx=NULL;*xx=0; 
+    gbassert(false);
 	return -1;
 }
 

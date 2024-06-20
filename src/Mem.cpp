@@ -299,7 +299,7 @@ pid_t s_pid = (pid_t) -1;
 
 void Mem::setPid() {
 	s_pid = getpid();
-	if(s_pid == -1 ) { log("monitor: bad s_pid"); char *xx=NULL;*xx=0; }
+    gbassert(s_pid != -1 /* bad s_pid */);
 }
 
 pid_t Mem::getPid() {
@@ -343,7 +343,7 @@ void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 	// sanity check
 	if ( g_inSigHandler ) {
 		log(LOG_LOGIC,"mem: In sig handler.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	if ( g_conf.m_logDebugMem )
 		log("mem: add %08" PTRFMT " %" INT32 " bytes (%" INT64 ") (%s)",
@@ -355,7 +355,7 @@ void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 	if ( g_conf.m_logDebugMem ) printBreeches(1);
 
 	// copy the magic character, iff not a new() call
-	if ( size == 0 ) { char *xx = NULL; *xx = 0; }
+    gbassert( size != 0 );
 	// sanity check
 	if ( size < 0 ) {
 		log("mem: addMem: Negative size.");
@@ -368,8 +368,7 @@ void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 		    "%08" PTRFMT " of size %" INT32 " "
 		    "which would wrap. Bad kernel.",
 		    (PTRTYPE)mem,(int32_t)size);
-		char *xx = NULL; 
-		*xx = 0;
+        gbassert(false);
 	}
 
 	// umsg00
@@ -399,7 +398,7 @@ void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 	if ( s_pid != -1 && getpid() != s_pid ) {
 		log("mem: addMem: Called from thread.");
 		sleep(50000);
-		char *xx = NULL; *xx = 0;
+        gbassert(false);
 	}
 
 	// if no label!
@@ -462,14 +461,14 @@ void Mem::addMem ( void *mem , int32_t size , const char *note , char isnew ) {
 			    ,s_labels[h*16+4]
 			    ,s_labels[h*16+5]
 			    );
-			char *xx = NULL; *xx = 0; //sleep(50000);
+            gbassert(false);
 		}
 		h++;
 		if ( h == m_memtablesize ) h = 0;
 		if ( --count == 0 ) {
 			log("mem: addMem: Mem table is full.");
 			printMem();
-			char *xx = NULL; *xx = 0; //sleep(50000);
+            gbassert(false);
 		}
 	}
 	// add to debug table
@@ -698,7 +697,7 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 	// sanity check
 	if ( g_inSigHandler ) {
 		log(LOG_LOGIC,"mem: In sig handler 2.");
-		char *xx = NULL; *xx = 0;
+        gbassert(false);
 	}
 	// debug msg (mdw)
 	if ( g_conf.m_logDebugMem )
@@ -721,7 +720,7 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 		log("mem: rmMem: Called from thread.");
 		sleep(50000);
 		// throw a bogus sig so we crash
-		char *xx=NULL;*xx=0;
+        gbassert(false);
 	}
 	// . hash by first hashing "mem" to mix it up some
 	// . balance the mallocs/frees
@@ -745,8 +744,7 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 		// . no, we should core otherwise it can result in some
 		//   pretty hard to track down bugs later.
 #ifndef _VALGRIND_
-		char *xx = NULL;
-		*xx = 0;
+        gbassert(false);
 #endif
 		return false;
 	}
@@ -755,7 +753,7 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 	// set our size
 	if ( size == -1 ) size = s_sizes[h];
 	// must be legit now
-	if ( size <= 0 ) { char *xx=NULL;*xx=0; }
+    gbassert(size > 0);
 	// . bitch is sizes don't match
 	// . delete operator does not provide a size now (it's -1)
 	if ( s_sizes[h] != size ) {
@@ -767,8 +765,7 @@ bool Mem::rmMem  ( void *mem , int32_t size , const char *note ) {
 			goto keepgoing;
 		}
 #ifndef _VALGRIND_
-		char *xx = NULL;
-		*xx = 0;
+        gbassert(false);
 #endif
 		return false;
 	}
@@ -838,8 +835,8 @@ int32_t Mem::validate ( ) {
 		count++;
 	}
 	// see if it matches
-	if ( total != m_used ) { char *xx=NULL;*xx=0; }
-	if ( count != m_numAllocated ) { char *xx=NULL;*xx=0; }
+    gbassert(total == m_used);
+    gbassert(count == m_numAllocated);
 	return 1;
 }
 
@@ -972,7 +969,7 @@ int Mem::printBreech ( int32_t i , char core ) {
 	if ( flag == 0 ) return 1;
 
 	// need this
-	if ( ! bp ) { char *xx=NULL;*xx=0; }
+    gbassert(bp);
 
 	/*
 	//
@@ -1003,7 +1000,7 @@ int Mem::printBreech ( int32_t i , char core ) {
 	}
 	*/
 
-	if ( flag && core ) { char *xx = NULL; *xx = 0; }
+    gbassert_false(flag && core);
 	return 1;
 }
 
@@ -1100,7 +1097,7 @@ void *Mem::gbmalloc ( int size , const char *note ) {
 	if ( size < 0 ) {
 		g_errno = EBADENGINEER;
 		log("mem: malloc(%i): Bad value.", size );
-		char *xx = NULL; *xx = 0;
+        gbassert(false);
 		return NULL;
 	}
 
@@ -1244,7 +1241,7 @@ void *Mem::gbrealloc ( void *ptr , int oldSize , int newSize ,
 	// do nothing if size is same
 	if ( oldSize == newSize ) return ptr;
 	// crazy?
-	if ( newSize < 0 ) { char *xx=NULL;*xx=0; }
+    gbassert(newSize >= 0);
 	// if newSize is 0...
 	if ( newSize == 0 ) { 
 		//mfree ( ptr , oldSize , note );
@@ -1389,7 +1386,6 @@ void Mem::gbfree ( void *ptr , int size , const char *note ) {
 		//log(LOG_LOGIC,"mem: FIXME!!!");
 		// return for now so procog does not core all the time!
 		return;
-		//char *xx = NULL; *xx = 0;
 	}
 
 	bool isnew = s_isnew[slot];
@@ -1921,12 +1917,12 @@ void *getElecMem ( int32_t size ) {
 	char *p = returnMem - leftover;
 	// we are now on a page boundary, so we can protect this mem
 	// after we "free" it below
-	if ( p < realMem ) { char *xx=NULL;*xx=0; }
+    gbassert(p >= realMem);
 	// store mem ptrs before protecting
 	*(char **)(returnMem- sizeof(char *)  ) = realMem;
 	*(char **)(returnMem- sizeof(char *)*2) = realMemEnd;
 	// sanity
-	if ( returnMem - sizeof(char *)*2 < realMem ) { char *xx=NULL;*xx=0; }
+    gbassert(returnMem - sizeof(char *)*2 >= realMem);
 	//log("protect3 0x%" PTRFMT "\n",(PTRTYPE)protMem);
 	// protect that after we wrote our ptr
 	if ( mprotect ( protMem , MEMPAGESIZE , PROT_NONE) < 0 )
@@ -1969,7 +1965,7 @@ void freeElecMem ( void *fakeMem ) {
 	int32_t h = g_mem.getMemSlot ( cp );
 	if ( h < 0 ) { 
 		log("mem: unbalanced free ptr");
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 	char *label    = &s_labels[((uint32_t)h)*16];
 	int32_t  fakeSize =  s_sizes[h];
@@ -2002,15 +1998,15 @@ void freeElecMem ( void *fakeMem ) {
 	// get end point
 	char *protEnd = realMemEnd - ((PTRTYPE)realMemEnd % MEMPAGESIZE);
 	// sanity
-	if ( protMem < realMem ) { char *xx=NULL;*xx=0; }
-	if ( protMem - realMem > (int32_t)MEMPAGESIZE) { char *xx=NULL;*xx=0; }
+    gbassert(protMem >= realMem);
+    gbassert( protMem - realMem <= (int32_t)MEMPAGESIZE);
 	//log("protect1 0x%" PTRFMT "\n",(PTRTYPE)protMem);
 	// before adding it into the ring, protect it
 	if ( mprotect ( protMem , protEnd-protMem, PROT_NONE) < 0 )
 		log("mem: mprotect2 failed: %s",mstrerror(errno));
 
 	// add our freed memory to the freed ring
-	if ( s_cursor > s_cursorEnd ) { char *xx=NULL;*xx=0; }
+    gbassert(s_cursor <= s_cursorEnd);
 
 	// to avoid losing free info by eating our own tail
 	if ( s_cursor == s_freeCursor && s_looped ) {
