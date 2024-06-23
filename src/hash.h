@@ -6,6 +6,7 @@
 #define _HASH_H_
 
 #include "Unicode.h"
+#include "gbassert.h"
 
 #include <cstdint>
 
@@ -202,7 +203,7 @@ inline uint64_t hash64Lower_utf8 ( const char *p, int32_t len, uint64_t startHas
 		char tmp[4];
 		char ncs = utf8Encode ( y , tmp );
 		// sanity check
-		if ( ncs > 4 ) { char *xx=NULL;*xx=0; }
+        gbassert(ncs <= 4);
 		// i've seen this happen for 4 byte char =
 		// -16,-112,-51,-125  which has x=66371 and y=66371
 		// but utf8Encode() returned 0!
@@ -252,7 +253,7 @@ inline uint64_t hash64Lower_utf8_nospaces ( const char *p, int32_t len  ) {
 		char tmp[4];
 		char ncs = utf8Encode ( y , tmp );
 		// sanity check
-		if ( ncs > 4 ) { char *xx=NULL;*xx=0; }
+        gbassert(ncs <= 4);
 		// i've seen this happen for 4 byte char =
 		// -16,-112,-51,-125  which has x=66371 and y=66371
 		// but utf8Encode() returned 0!
@@ -314,7 +315,7 @@ inline uint64_t hash64Lower_utf8_cont ( const char *p,
 		char tmp[4];
 		char ncs = utf8Encode ( y , tmp );
 		// sanity check
-		if ( ncs > 4 ) { char *xx=NULL;*xx=0; }
+        gbassert(ncs <= 4);
 		// i've seen this happen for 4 byte char =
 		// -16,-112,-51,-125  which has x=66371 and y=66371
 		// but utf8Encode() returned 0!
@@ -400,7 +401,7 @@ inline uint64_t hash64Lower_utf8 ( const char *p ) {
 		char tmp[4];
 		char ncs = utf8Encode ( y , (char *)tmp );
 		// sanity check
-		if ( ncs > 4 ) { char *xx=NULL;*xx=0; }
+        gbassert(ncs <= 4);
 		// i've seen this happen for 4 byte char =
 		// -16,-112,-51,-125  which has x=66371 and y=66371
 		// but utf8Encode() returned 0!

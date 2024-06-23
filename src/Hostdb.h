@@ -17,6 +17,7 @@
 //#include "../../rsa/rsa.h"        // public_key private_key vint32_t (seals)
 //#include "Conf.h"       // for getting m_groupId/m_groupMask
 #include "Xml.h" // host file in xml
+#include "gbassert.h"
 
 // the default mattster udp port (also re-defined in conf/Conf.cpp) TODO: unify
 //#define DEFAULTPORT  55
@@ -522,9 +523,9 @@ class Hostdb {
 
 	// . like above but just gets one host
 	// Host *getHost ( int32_t hostId ) { return m_groups[hostId]; };
-	Host *getHost ( int32_t hostId ) { 
-		if ( hostId < 0 ) { char *xx=NULL;*xx=0; }
-		return m_hostPtrs[hostId]; 
+	Host *getHost ( int32_t hostId ) {
+        gbassert(hostId >= 0);
+		return m_hostPtrs[hostId];
 	};
 
 	Host *getSpare ( int32_t spareId ) {

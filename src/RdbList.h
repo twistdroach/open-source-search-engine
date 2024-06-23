@@ -3,6 +3,8 @@
 #ifndef _RDBLIST_H_
 #define _RDBLIST_H_
 
+#include "gbassert.h"
+
 /**
  *
  * Core of the storage, this implements a list of <key><dataSize><data>.
@@ -114,12 +116,12 @@ class RdbList {
 	void set ( char *startKey , char *endKey );
 
 	void setStartKey ( key_t startKey ){
-	  if ( m_ks!=12 ) { char *xx=NULL;*xx=0;}
+      gbassert(m_ks == 12);
 	  KEYSET(m_startKey,(char *)&startKey,12);
 	  //*((key_t *)m_startKey) = startKey; };
 	};
 	void setEndKey   ( key_t endKey   ){
-	  if ( m_ks!=12 ) { char *xx=NULL;*xx=0;}
+      gbassert(m_ks == 12);
 	  KEYSET(m_endKey,(char *)&endKey,12);
 	  //*(key_t *)m_endKey   = endKey  ; };
 	};
@@ -145,7 +147,7 @@ class RdbList {
 	void  getEndKey          ( char *k ) { KEYSET(k,m_endKey  ,m_ks);};
 
 	void  getLastKey         ( char *k ) { 
-		if ( ! m_lastKeyIsValid ) { char *xx=NULL;*xx=0; }
+        gbassert(m_lastKeyIsValid);
 		KEYSET(k,getLastKey(),m_ks);};
 
 	// will scan through each record if record size is variable

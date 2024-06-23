@@ -121,21 +121,6 @@ class Datedb {
 
 //#ifdef SPLIT_INDEXDB
 
-	// for terms like gbdom:xyz.com that only reside in one group and
-	// are not split by docid into multiple groups. reduces disk seeks
-	// while spidering, cuz we use such terms for deduping and for
-	// doing quotas.
-	// ---> IS THIS RIGHT???? MDW
-	uint32_t getNoSplitGroupId ( key128_t *k ) {
-		char *xx=NULL;*xx=0; 
-		return 0;
-		// wtf is this? still being used?
-		//return (((uint32_t *)k)[3]) & g_hostdb.m_groupMask;
-		//uint32_t bgid = getBaseGroupId(k);
-		//return g_indexdb.getSplitGroupId(bgid,0);
-		//return bgid;
-	}
-
 	//uint32_t getBaseGroupId ( key128_t *k ) {
 	//	return (((uint32_t *)k)[3]) & g_hostdb.m_groupMask;
 	//}

@@ -12,6 +12,7 @@
 #define MAX_COLL_LEN  64
 
 #include "ip.h"      // atoip ( s,len)
+#include "gbassert.h"
 
 char *getPathFast  ( char *url );
 char *getFilenameFast ( char *url , int32_t *filenameLen ) ;
@@ -49,11 +50,11 @@ public:
 	void set ( Url *url , bool addWWW );
 
 	void set    ( char *s ) { 
-		if ( ! s ) { char *xx=NULL;*xx=0; }
+        gbassert(s);
 		return set ( s , strlen(s) ); }
 
 	void set ( Url *baseUrl , char *s ) {
-		if ( ! s ) { char *xx=NULL;*xx=0; }
+        gbassert(s);
 		set ( baseUrl , s , strlen(s) ); }
 
 	// . "s" must be an ENCODED url

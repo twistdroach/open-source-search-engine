@@ -14,6 +14,7 @@
 
 #include "BigFile.h"
 #include "RdbList.h"
+#include "gbassert.h"
 
 // . this can be increased to provide greater disk coverage but it will 
 //   increase delays because each seek will have to read more
@@ -230,11 +231,7 @@ class RdbMap {
 	};
 	//void setKey               ( int32_t page , key_t &k ) { 
 	void setKey ( int32_t page , char *k ) { 
-		//#ifdef GBSANITYCHECK
-		if ( page >= m_maxNumPages ) {
-			char *xx = NULL; *xx = 0;
-			log(LOG_LOGIC,"RdbMap::setKey: bad engineer");return; }
-		//#endif
+        gbassert(page < m_maxNumPages);
 		//m_keys[page/PAGES_PER_SEG][page%PAGES_PER_SEG] = k; };
 		KEYSET(&m_keys[page/PAGES_PER_SEG][(page%PAGES_PER_SEG)*m_ks],
 		       k,m_ks);

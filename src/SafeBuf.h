@@ -4,6 +4,7 @@
 //#include "Mem.h"
 //#include "Unicode.h"
 #include "gb-include.h"
+#include "gbassert.h"
 
 /**
  * Safe Char Buffer, or mutable Strings.
@@ -64,7 +65,8 @@ public:
 	int32_t getLength() { return m_length; }
 	int32_t getBufUsed() { return m_length; }
 	void print() { 
-	  if ( write(1,m_buf,m_length) != m_length) { char*xx=NULL;*xx=0;}; }
+	  gbassert( write(1,m_buf,m_length) == m_length);
+    }
 
 	// . returns bytes written to file, 0 is acceptable if m_length == 0
 	// . returns -1 on error and sets g_errno

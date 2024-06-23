@@ -3,6 +3,7 @@
 #include "Datedb.h"
 #include "Clusterdb.h"
 #include "Threads.h"
+#include "gbassert.h"
 
 // a global class extern'd in .h file
 Datedb g_datedb;
@@ -22,12 +23,12 @@ bool Datedb::init ( ) {
 	int64_t docId =  247788576824LL;
 	key128_t k = makeKey ( termId,date,score,docId,false);
 	// parse it up to test
-	if ( g_datedb.getDate  (&k) != date   ) { char *xx=NULL;*xx=0; }
-	if ( g_indexdb.getScore((char *)&k) != score  ) { char *xx=NULL;*xx=0;}
-	if ( g_datedb.getDocId (&k) != docId  ) { char *xx=NULL;*xx=0; }
+    gbassert( g_datedb.getDate  (&k) == date   );
+    gbassert( g_indexdb.getScore((char *)&k) == score  );
+	gbassert( g_datedb.getDocId (&k) == docId  );
 	int64_t rt = g_datedb.getTermId(&k);
-	if ( g_datedb.getTermId(&k) != termId ) { char *xx=NULL;*xx=0; }
-	if ( rt                     != termId ) { char *xx=NULL;*xx=0; }
+	gbassert( g_datedb.getTermId(&k) == termId );
+	gbassert( rt                     == termId );
 	// . what's max # of tree nodes?
 	// . each rec in tree is only 1 key (16 bytes)
 	// . but has 12 bytes of tree overhead (m_left/m_right/m_parents)
