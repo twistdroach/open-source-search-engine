@@ -22,8 +22,8 @@ add_executable(gb src/main.cpp)
 target_link_libraries(gb osse)
 
 install(TARGETS gb DESTINATION .)
-install(DIRECTORY ucdata antiword-dir html DESTINATION .)
-set(INSTALL_FILES 
+set(INSTALL_DIRS ucdata antiword-dir html)
+set(INSTALL_FILES
   catcountry.dat badcattable.dat antiword pdftohtml pstotext 
   gb.pem bmptopnm giftopnm jpegtopnm libjpeg.so.62 libnetpbm.so.10
   libpng12.so.0 libtiff.so.4 LICENSE pngtopnm pnmscale ppmtojpeg 
@@ -31,7 +31,11 @@ set(INSTALL_FILES
   wiktionary-buf.txt wiktionary-lang.txt wiktionary-syns.dat
   sitelinks.txt unifiedDict.txt
 )
+install(DIRECTORY ${INSTALL_DIRS} DESTINATION .)
 install(FILES ${INSTALL_FILES} DESTINATION .)
+
+file(COPY ${INSTALL_DIRS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${INSTALL_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 include(CTest)
 add_subdirectory(test)
