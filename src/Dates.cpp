@@ -1357,6 +1357,7 @@ sections. -- todo -- might be an alignment issue... check out later
 #include "HashTableX.h"
 #include "XmlDoc.h"
 #include "Abbreviations.h" // isAbbr()
+#include "gbassert.h"
 
 #define HD_NEW_YEARS_DAY  1
 #define HD_MARTIN_DAY     2
@@ -1742,12 +1743,12 @@ void Dates::reset ( ) {
 // returns NULL with g_errno set on error
 Date *Dates::getMem ( int32_t need ) {
 	// sanity check. once we overflow, forget it! you should stop!
-	if ( m_overflowed ) { char *xx=NULL;*xx=0; }
+    gbassert(!m_overflowed);
 	// just use multiple pools
 	if ( m_current + need <= m_currentEnd ) 
 		return (Date *)m_current;
 	// sanity check
-	if ( need > POOLSIZE ) { char *xx=NULL;*xx=0; }
+    gbassert(need <= POOLSIZE);
 	// sanity
 	if ( m_numPools+1 > MAX_POOLS ) { 
 		// this error means a static limit was reached so we can't
@@ -1759,7 +1760,6 @@ Date *Dates::getMem ( int32_t need ) {
 		//if ( m_url ) u = m_url;
 		log("dates: pools overflowed");
 		return NULL;
-		//char *xx=NULL;*xx=0;
 	}
 	// make a new pool
 	char *pool = (char *)mmalloc ( POOLSIZE ,"datemempool" );
@@ -1777,7 +1777,7 @@ Date *Dates::getMem ( int32_t need ) {
 Date *Dates::addDate ( datetype_t dt, dateflags_t df,int32_t a, int32_t b, int32_t num){
 
 	// make sure we got an acceptable range of word #'s
-	if ( b <= a && b != 0 && a>=0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( b <= a && b != 0 && a>=0 );
 	// assume up to 100 Date::m_ptrs[]
 	int32_t need = sizeof(Date) + 100 * 4;
 	// point to the new mem
@@ -1831,13 +1831,9 @@ Date *Dates::addDate ( datetype_t dt, dateflags_t df,int32_t a, int32_t b, int32
 		m_maxDatePtrs = newMax;
 	}
 
-	//if ( m_numDatePtrs  >= MAX_DATE_PTRS ) {char *xx=NULL;*xx=0;}
-	
-	// sanity check - must be from somewhere
-	//if ( ! ( df & DF_FROM_BODY ) && ! ( df & DF_FROM_URL ) ) {
-	//if ( df == 0 ) {char *xx=NULL;*xx=0; }
+
 	// sanity check
-	if ( dt == 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( dt != 0 );
 	// this are not simple
 	dateflags_t ct = 
 		DT_RANGE_ANY |
@@ -1858,7 +1854,7 @@ Date *Dates::addDate ( datetype_t dt, dateflags_t df,int32_t a, int32_t b, int32
 	// inc used mem
 	m_current += sizeof(Date);
 
-	if ( dt == DT_MONTH && (num > 12 || num < 1) ) { char *xx=NULL;*xx=0; }
+	gbassert_false( dt == DT_MONTH && (num > 12 || num < 1) );
 
 	if ( dt == DT_MONTH  && num == m_urlMonth )
 		df |= DF_MATCHESURLMONTH;
@@ -1962,7 +1958,7 @@ Date *Dates::addDate ( datetype_t dt, dateflags_t df,int32_t a, int32_t b, int32
 		//DD->m_minDow = num;
 		//DD->m_maxDow = num;
 		// turn on the dow bit
-		if ( num >= 8 ) { char *xx=NULL;*xx=0; }
+        gbassert(num < 8);
 		DD->m_dowBits |= (1<<(num-1));
 	}
 
@@ -2011,8 +2007,7 @@ Date *Dates::addDate ( datetype_t dt, dateflags_t df,int32_t a, int32_t b, int32
 	//}
 
 	// sanity check. do not allow anyone to use 0!
-	if ( num == 0 && ! ( dt & ct ) && dt != DT_TOD ) {//&&dt != DT_MOD ) { 
-		char *xx=NULL;*xx=0; }
+	gbassert_false( num == 0 && ! ( dt & ct ) && dt != DT_TOD );
 
 	// set DD->m_tagHash if we should
 	if ( a < 0 ) return DD;
@@ -2047,9 +2042,9 @@ int32_t Dates::getDateNum ( Date *di ) {
 void Date::addPtr ( Date *ptr , int32_t i , class Dates *parent ) {
 
 	// sanity check - do not overflow
-	if ( m_numPtrs >= 100 ) { char *xx=NULL;*xx=0; }
+	gbassert( m_numPtrs < 100 );
 	// get his index
-	if ( parent->m_datePtrs[i] != ptr ) { char *xx=NULL;*xx=0; }
+	gbassert( parent->m_datePtrs[i] == ptr );
 
 	// avoid "Friday [[]] Friday"
 	//if ( ptr->m_type == DT_DOW &&
@@ -2071,21 +2066,10 @@ void Date::addPtr ( Date *ptr , int32_t i , class Dates *parent ) {
 	// preserve all original dates and create a new Date for telescoping w/
 	else if ( m_numPtrs == 0 ) {
 		// sanity -- shouldn't we call addDate() to realloc?
-		if ( parent->m_numDatePtrs >= parent->m_maxDatePtrs ) {
-			char *xx=NULL;*xx=0; }
+		gbassert( parent->m_numDatePtrs < parent->m_maxDatePtrs );
 		parent->m_datePtrs[parent->m_numDatePtrs] = this;
 		parent->m_numDatePtrs++;
 	}
-
-	// sanity check
-	//if ( m_numPtrs == 0 && m_type ) { char *xx=NULL;*xx=0; }
-	// sanity check - must be one of these in order to add ptrs
-	//if ( !(m_flags&(DF_RANGE|DF_LIST|DF_COMPOUND|DF_TELESCOPE))) {
-	//	char *xx=NULL;*xx=0;}
-	// sanity check - type must be consistent in lists and ranges
-	//if (!(m_flags & (DF_COMPOUND|DF_TELESCOPE))&&
-	//    m_numPtrs>=1&&ptr->m_type!= m_type ) { 
-	//	char *xx=NULL;*xx=0; }
 
 	// update word range to be all inclusive for now
 	if ( m_numPtrs == 0 ) {
@@ -2099,9 +2083,6 @@ void Date::addPtr ( Date *ptr , int32_t i , class Dates *parent ) {
 
 	if ( ptr->m_a > m_maxa ) m_maxa = ptr->m_a;
 	if ( ptr->m_a < m_mina ) m_mina = ptr->m_a;
-
-	// get crazy stuff out
-	//if ( m_b - m_a > 50 ) { char *xx=NULL;*xx=0; }
 
 	// ptr hash
 	if ( m_numPtrs == 0 ) m_ptrHash = (uint32_t)(PTRTYPE)ptr;
@@ -2173,35 +2154,22 @@ void Date::addPtr ( Date *ptr , int32_t i , class Dates *parent ) {
 	// propagate the new flags bits as well
 	m_flags5 |= ptr->m_flags5;
 
-	/*
-	// set m_tagHash if we should
-	if ( m_a >= 0 ) { // m_type && ( m_flags & DF_FROM_BODY ) ) {
-		// get section
-		Section *ss = parent->m_sections->m_sectionPtrs[m_a];
-		// int16_tcut
-		m_tagHash = ss->m_tagHash;
-		// panic - no, parent section has no taghash
-		//if ( m_tagHash == 0 || m_tagHash ==-1) {char *xx=NULL;*xx=0;}
-	}
-	*/
-
 	// inherit section and taghash and hardsec from first ptr that has it
 	if ( ! m_section && ptr->m_section ) {
 		m_section     = ptr->m_section;
 		m_hardSection = ptr->m_hardSection;
 		m_tagHash     = ptr->m_section->m_tagHash;
 		m_turkTagHash= ptr->m_section->m_turkTagHash32;
-		if ( ! m_section     ) { char *xx=NULL;*xx=0; }
+		gbassert( m_section     );
 		// no! i've seen a text only doc that actually has NO hard
 		// sections, so let NULL imply that the hard section is the
 		// root section...
-		//if ( ! m_hardSection ) { char *xx=NULL;*xx=0; }
-		if ( ! m_tagHash     ) { char *xx=NULL;*xx=0; }
-		if ( ! m_turkTagHash     ) { char *xx=NULL;*xx=0; }
+		gbassert( m_tagHash     );
+		gbassert( m_turkTagHash     );
 	}
 
 
-	if ( ! (m_flags & DF_FROM_BODY) && m_a >= 0 ) {char *xx=NULL;*xx=0;}
+	gbassert_false( ! (m_flags & DF_FROM_BODY) && m_a >= 0 );
 
 	// first ptr sets DF_STORE_HOURS 
 	if ( m_numPtrs == 1 && ( ptr->m_flags & DF_STORE_HOURS ) )
@@ -2402,8 +2370,6 @@ bool Dates::setPart1 ( //char       *u        ,
 	//reset();
 	// if empty, set to NULL
 	if ( cct && cct->getNumSlotsUsed() == 0 ) cct = NULL;
-	// must have been called
-	//if ( ! m_calledParseDates ) { char *xx=NULL;*xx=0; }
 	// save
 	m_coll     = coll;
 	m_url      = url;
@@ -2418,14 +2384,6 @@ bool Dates::setPart1 ( //char       *u        ,
 	g_dp2 = m_datePtrs;
 
 	m_contentType = ctype;
-
-	// sanity. parseDates() should have set this when XmlDoc
-	// called it explicitly before calling setPart1(). 
-	// well now it no longer needs to call it explicitly since
-	// xmldoc calls getAddresses() before setting the implied
-	// sections. and getAddresses() calls getSimpleDates() which calls
-	// this function, setPart1() which will call parseDates() below.
-	//if ( m_nw != words->m_numWords ) { char *xx=NULL; *xx=0; }
 
 	// . get the current time in utc
 	// . NO! to ensure the "qatest123" collection re-injects docs exactly
@@ -2601,7 +2559,7 @@ bool Dates::setPart1 ( //char       *u        ,
 	if ( m_numDatePtrs <= 0 ) return true;
 
 	// sanity check - must be set from parseDates()
-	if ( h_open == 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( h_open != 0 );
 
 	//
 	// now since we no longer set Date::m_section and m_hardSection
@@ -2782,8 +2740,6 @@ bool Dates::setPart1 ( //char       *u        ,
 		// scan up until sentence section
 		for ( ; sd ; sd = sd->m_parent )
 			if ( sd->m_flags & SEC_SENTENCE ) break;
-		// crazy! we should have been our own sentence at least
-		//if ( ! sd ) { char *xx=NULL;*xx=0; }
 		// no, not if javascript. in Sections.cpp it does not
 		// call addSentenceSections() if it is javascript content
 		// because it is too crazy!
@@ -2978,13 +2934,13 @@ bool Dates::setPart1 ( //char       *u        ,
 		// skip if not in body (i.e. from url)
 		if ( ! (di->m_flags & DF_FROM_BODY) ) continue;
 		// how did this happen?
-		if ( di->m_a < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( di->m_a >= 0 );
 		// telescope up until we hit the sentence section
 		Section *ss = m_sections->m_sectionPtrs[di->m_a];
 		for ( ; ss ; ss = ss->m_parent ) 
 			if ( ss->m_flags & SEC_SENTENCE ) break;
 		// must have it
-		if ( ! ss ) { char *xx=NULL;*xx=0; }
+		gbassert( ss );
 		// scan for words
 		if ( isTicketDate ( ss->m_a, ss->m_b, m_wids, m_bits ,
 				    m_niceness ) )
@@ -3090,16 +3046,9 @@ bool Dates::setPart1 ( //char       *u        ,
 			if ( ! si->m_headColSection ) continue;
 			// sanity check
 			if ( ! si->m_headRowSection ){continue;}
-			if ( ! si->m_headRowSection ){char*xx=NULL;*xx=0;}
+			gbassert( si->m_headRowSection );
 			// got it
 			di->m_tableCell = si;
-			//di->m_headColSection = si->m_headColSection;
-			//di->m_headRowSection = si->m_headRowSection;
-			// must have a rolc/olnum set too!
-			//if ( si->m_colNum == 0 ) { char *xx=NULL;*xx=0; }
-			//if ( si->m_rowNum == 0 ) { char *xx=NULL;*xx=0; }
-			//di->m_colNum = si->m_colNum;
-			//di->m_rowNum = si->m_rowNum;
 			// go to next date
 			break;
 		}
@@ -3184,13 +3133,11 @@ bool Dates::setPart1 ( //char       *u        ,
 			continue;
 		}
 		// sanity check
-		if ( di->m_a < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( di->m_a >= 0 );
 		// get section
 		//Section *sp = m_sections->m_sectionPtrs[di->m_a];
 		// int16_tcut
 		//int32_t tagHash = sp->m_tagHash;
-		// panic
-		//if ( tagHash == 0 || tagHash == -1 ) { char *xx=NULL;*xx=0; }
 		// save it
 		//di->m_tagHash = tagHash;
 		// get tag hash
@@ -3229,11 +3176,11 @@ bool Dates::setPart1 ( //char       *u        ,
 		// look in the occurrence table
 		int32_t slot = tht.getSlot ( &di->m_tagHash );
 		// must be there
-		if ( slot < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( slot >= 0 );
 		// get occ num
 		int32_t numOccurences = *(int32_t *)tht.getValueFromSlot ( slot );
 		// sanity check
-		if ( numOccurences <= 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( numOccurences > 0 );
 		// 1 means unique
 		if ( numOccurences == 0 ) di->m_flags |= DF_UNIQUETAGHASH;
 	}
@@ -3257,14 +3204,13 @@ bool Dates::setPart1 ( //char       *u        ,
 		int32_t *s2 = od->getPageSampleVector();
 
 		// sanity check
-		if ( ! s1 || ! s2 || s1 == (void *)-1 || s2 == (void *)-1 ) {
-			char *xx=NULL;*xx=0; }
+		gbassert_false( ! s1 || ! s2 || s1 == (void *)-1 || s2 == (void *)-1 );
 
 		// otherwise, estimate a pub date.
 		int32_t t1 = od->m_spideredTime;
 		int32_t t2 = nd->m_spideredTime;
 		// this is strange
-		if ( t1 == -1 ) { char *xx=NULL;*xx=0; }
+		gbassert( t1 != -1 );
 		// bisection method
 		int32_t t3 = t1 + ( (t2 - t1) / 2);
 		// get how similar they are from 0 to 100
@@ -3302,7 +3248,6 @@ bool Dates::setPart1 ( //char       *u        ,
 	if ( elapsed < 0 ) { 
 		log("date: CRAZY! elasped=%" INT32 "<0",elapsed);
 		elapsed = 0;
-		//char *xx=NULL;*xx=0; }
 	}
 	// get the same date table now
 	for ( int32_t i = 0 ; i < m_numDatePtrs ; i++ ) {
@@ -4614,7 +4559,7 @@ bool Dates::parseDates ( Words *w , dateflags_t defFlags , Bits *bits ,
 					      &isMilitary);
 			// error? g_errno should be set then
 			if ( tod == -1 ) {
-				if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+				gbassert( g_errno );
 				return false;
 			}
 			// add it and continue scan if it was a tod
@@ -4746,7 +4691,7 @@ bool Dates::parseDates ( Words *w , dateflags_t defFlags , Bits *bits ,
 			char *tpos = &wptrs[ri2][1];
 			if ( *tpos != 'T' ) tpos = &wptrs[ri2][2];
 			// must be there - sanity check
-			if ( *tpos != 'T' ) { char *xx=NULL;*xx=0; }
+			gbassert( *tpos == 'T' );
 			// and hour
 			int32_t hour = atol(tpos+1);
 			// after <day>T<hour>:<minute>:<second>
@@ -5156,13 +5101,13 @@ bool Dates::parseDates ( Words *w , dateflags_t defFlags , Bits *bits ,
 			int32_t ccc = (leftNum / 100) * 100;
 			int32_t rightYear = num + ccc;
 			// sanity check
-			if ( num >= rightYear ) { char *xx=NULL;*xx=0; }
+			gbassert( num < rightYear );
 			// sanity
-			if ( m_numDatePtrs <= 0 ) { char *xx=NULL;*xx=0; }
+			gbassert( m_numDatePtrs > 0 );
 			// get last date year
 			Date *di = m_datePtrs[m_numDatePtrs-1];
 			// sanity
-			if ( di->m_type != DT_YEAR ) { char *xx=NULL;*xx=0; }
+			gbassert( di->m_type == DT_YEAR );
 			// use this now
 			int32_t ni = m_numDatePtrs-1;
 			int32_t nj = m_numDatePtrs;
@@ -7294,7 +7239,7 @@ bool Dates::parseDates ( Words *w , dateflags_t defFlags , Bits *bits ,
 		if ( ! forsure ) continue;
 		//if ( forsure ) mask |= D_IS_IN_DATE;
 		// sanity check
-		if ( di->m_a < 0 || di->m_a > di->m_b ) { char *xx=NULL;*xx=0;}
+		gbassert_false( di->m_a < 0 || di->m_a > di->m_b );
 		// . set those words bits
 		// . assume [a,b) interval (half open)
 		for ( int32_t k = di->m_a ; k < di->m_b ; k++ )
@@ -7474,7 +7419,7 @@ bool isTicketDate ( int32_t a , int32_t b , int64_t *wids , Bits *bits ,
 		    int32_t niceness ) {
 
 	// sanity check
-	if ( bits && ! bits->m_inLinkBitsSet ) { char *xx=NULL;*xx=0; }
+	gbassert_false( bits && ! bits->m_inLinkBitsSet );
 	// int16_tcut
 	wbit_t *bb = NULL; 
 	if ( bits ) bb = bits->m_bits;
@@ -7653,7 +7598,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 	if ( m_words->m_numWords == 0 ) return true;
 
 	// make sure implied sections were added
-	if ( ! m_sections->m_addedImpliedSections ) { char *xx=NULL;*xx=0; }
+	gbassert( m_sections->m_addedImpliedSections );
 
 	// 
 	// . set SF_RECURRING_DOW based on table headers
@@ -8367,7 +8312,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 		// skip if none
 		if ( ! di ) continue;
 		// this is for telescoping which we have not done yet!
-		if ( di->m_hasType & DT_TELESCOPE ) { char *xx=NULL;*xx=0; }
+		gbassert_false( di->m_hasType & DT_TELESCOPE );
 		// ignore if fuzzy though! ht is used to find possible headers
 		// for a date
 		if ( di->m_flags & DF_FUZZY ) continue;
@@ -8482,7 +8427,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 			// breathe
 			QUICKPOLL(m_niceness);
 			// TODO: make this scalable!!!!!!!!!
-			if ( ! ht.addKey(&si,&i)){char *xx=NULL;*xx=0;};
+			gbassert( ht.addKey(&si,&i));
 			// . store hours can telescope out
 			// . this hurts graffiti.org since we end up 
 			//   telescoping out event dates that are just
@@ -9030,7 +8975,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 				Date *dp = m_datePtrs[pn];
 				// if this is NULL now then it got absorbed
 				// in this for loop ???
-				if ( ! dp ) { char *xx=NULL;*xx=0; }
+				gbassert( dp );
 				// skip if me
 				if ( dp == di ) continue;
 				// skip if already incorporated
@@ -9089,7 +9034,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 				// do we know the result?
 				if ( dp->m_norepeatKey == key && key ) {
 					ret = dp->m_norepeatResult;
-					if ( ret == -1 ) {char *xx=NULL;*xx=0;}
+					gbassert( ret != -1 );
 				}
 				else {
 				// this should replace the logic i commented
@@ -9124,7 +9069,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 				// error? return false with g_errno set
 				if ( ret == -1 ) {
 					// sanity check
-					if ( ! g_errno ) {char *xx=NULL;*xx=0;}
+					gbassert( g_errno );
 					return false;
 				}
 				// . fix southgatehouse.com which needs 9pm
@@ -9336,7 +9281,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 		// are we in the clear?
 		if ( ! remove ) {
 			// sanity
-			if ( DD->m_ptrHash == 0 ) { char *xx=NULL;*xx=0; }
+			gbassert( DD->m_ptrHash != 0 );
 			// add to combo table
 			if ( ! comboTable.addKey(&DD->m_ptrHash)) return false;
 			// if had multiple headers, try this same di again!
@@ -9533,7 +9478,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 			// use directly now
 			h2 = lastGood->m_tmph;
 			// must be there
-			if ( h2 == 0 ) { char *xx=NULL;*xx=0;}
+			gbassert( h2 != 0 );
 			// and it is not being deduped below because
 			// of the headercount logic, which i am not 100% sure
 			// i understand! so set it as a dup here.
@@ -9606,7 +9551,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 			// skip if us
 			if ( val == di ) continue;
 			// sanity check
-			if ( val->m_tmph != key ) { char *xx=NULL;*xx=0; }
+			gbassert( val->m_tmph == key );
 			// we can have a single date duping with a multi-date
 			// if one of the dates in the multi-date was a weak
 			// dow and we reverted it to just the hash of one of
@@ -9784,7 +9729,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 
 
 	// sanity check
-	if ( ! m_nd->m_spideredTimeValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_nd->m_spideredTimeValid );
 	// int16_tcut
 	//Sections *ss = m_sections;
 	/*
@@ -10365,11 +10310,10 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 		    ,(uint32_t)m_pubDate);
 		// ignore it now
 		m_pubDate = -1;
-		//char *xx=NULL;*xx=0;
 	}
 
 	// when this doc was spidered
-	if ( ! m_nd->m_spideredTimeValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_nd->m_spideredTimeValid );
 
 	// no future pub dates allowed
 	//int32_t nowGlobal = getTimeGlobal();
@@ -10381,7 +10325,6 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 		log("build: pub date in future utc u=%s !",u);
 		// ignore it now
 		m_pubDate = -1;
-		//char *xx=NULL;*xx=0;
 	}
 	
 	///////////////////////
@@ -10464,7 +10407,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 			dh32 = hash32h ( dh32 , (int32_t)dj->m_type );
 		}
 		// sanity
-		if ( dh32 == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( dh32 != 0 );
 		// store it
 		di->m_dateTypeAndTagHash32 = dh32;
 	}
@@ -10972,7 +10915,7 @@ int32_t Dates::isCompatible ( Date *di ,
 	     di2->m_tableSec == dp2->m_tableSec &&
 	     (di2->m_tableSec->m_flags & SEC_HASDATEHEADERROW) ) {
 		// sanity
-		if ( ! m_dateBitsValid ) { char *xx=NULL;*xx=0; }
+		gbassert( m_dateBitsValid );
 		// useful
 		datetype_t myBits = di2->m_dateBits;
 		// make di2 into table cell
@@ -11627,7 +11570,7 @@ int32_t Dates::isCompatible ( Date *di ,
 	int32_t ret = isCompatible2 ( s1 , s2 , true );
 	// return -1 on error with g_errno set
 	if ( ret == -1 ) { 
-		if ( ! g_errno ) { char *xx=NULL;*xx=0;}
+		gbassert( g_errno );
 		return -1;
 	}
 	if ( ret ==  0 ) return  0;
@@ -12540,7 +12483,7 @@ int32_t Dates::isCompatible2 ( Section *s1 , Section *s2 , bool useXors ) {
 			int32_t h = *(int32_t *)sft->getValueFromSlot(slot1);
 			// add to table, just the key
 			if ( ! cmp1.addKey ( &h ) ) {
-				if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+				gbassert( g_errno );
 				return -1;
 			}
 		}
@@ -12569,14 +12512,14 @@ int32_t Dates::isCompatible2 ( Section *s1 , Section *s2 , bool useXors ) {
 			// if this same guy is in last1, that is bad
 			if ( cmp1.isInTable(&h) ) {
 				// sanity check
-				if ( compat ) { char *xx=NULL;*xx=0;}
+				gbassert( ! compat );
 				return 0;
 			}
 		}
 	}
 
 	// sanity check
-	if ( ! compat ) { char *xx=NULL;*xx=0; }
+	gbassert( compat );
 	return 1;
 }
 
@@ -12628,7 +12571,7 @@ HashTableX *Dates::getSubfieldTable ( ) {
 		// skip if has no text itself
 		if ( sk->m_flags & SEC_NOTEXT ) continue;
 		// how is this?
-		if ( sk->m_contentHash64 == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( sk->m_contentHash64 != 0 );
 		// get the tag id the delimits section if any
 		//int32_t a = sk->m_a;
 		// might not be there
@@ -12638,14 +12581,12 @@ HashTableX *Dates::getSubfieldTable ( ) {
 		// hash tag id and its content hash together
 		int32_t h = sk->m_contentHash64 ^ sk->m_tagHash;
 		// 0 is bad
-		if ( h == 0 ) { char *xx=NULL;*xx=0; }
-		// debug point
-		//if ( h == -508009735 ) { char *xx=NULL;*xx=0; }
+		gbassert( h != 0 );
 		// just one section now
 		if ( ! m_sft.addKey ( &sk , &h ) ) return NULL;
 
 		// sanity
-		if ( ! sk ) { char *xx=NULL;*xx=0; }
+		gbassert( sk );
 		// find duplicated subfields
 		if ( ! dt.addTerm32 ( &h ) ) return NULL;
 		// map hash to section as well now for new loop below
@@ -12696,16 +12637,14 @@ HashTableX *Dates::getSubfieldTable ( ) {
 		// skip word if not good
 		if ( k < kmin ) continue;
 		// 0 is bad
-		if ( h == 0 ) { char *xx=NULL;*xx=0; }
-		// debug point
-		//if ( h == -508009735 ) { char *xx=NULL;*xx=0; }
+		gbassert( h != 0 );
 		// get section
 		Section *sk = m_sections->m_sectionPtrs[i];
 		// just one section now
 		if ( ! m_sft.addKey ( &sk , &h ) ) return NULL;
 
 		// sanity
-		if ( ! sk ) { char *xx=NULL;*xx=0; }
+		gbassert( sk );
 		// find duplicated subfields
 		if ( ! dt.addTerm32 ( &h ) ) return NULL;
 		// map hash to section as well now for new loop below
@@ -12757,7 +12696,7 @@ HashTableX *Dates::getSubfieldTable ( ) {
 	// make it int32_t aligned for speed in checking intersections of
 	// two different bitBufs in m_bitTable
 	char bitBuf[MAXBYTES];
-	if ( numLongs*4 > MAXBYTES ) { char *xx=NULL;*xx=0; }
+	gbassert( numLongs*4 <= MAXBYTES );
 	memset(bitBuf,0,numLongs*4);
 	// init this now
 	if ( ! m_bitTable.set(4,numLongs*4,256,NULL,0,false,m_niceness,
@@ -12779,7 +12718,7 @@ HashTableX *Dates::getSubfieldTable ( ) {
 		// now what sections have that hash?
 		int32_t slot = hts.getSlot(h);
 		// must be there! dup table, dt, says so!
-		if ( slot < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( slot >= 0 );
 		// scan all sections that had this field name and make sure
 		// their bit table entry has the bit for this field name
 		for ( ; slot >= 0 ; slot = hts.getNextSlot(slot,h) ) {
@@ -12788,7 +12727,7 @@ HashTableX *Dates::getSubfieldTable ( ) {
 			// get that section ptr
 			Section **skp = (Section **)hts.getValueFromSlot(slot);
 			// must be valid
-			if ( ! skp || ! *skp ) { char *xx=NULL;*xx=0;}
+			gbassert_false( ! skp || ! *skp );
 			// get his bit array from the section ptr
 			char *bits = (char *)m_bitTable.getValue(skp);
 			// if not there add it
@@ -12799,7 +12738,7 @@ HashTableX *Dates::getSubfieldTable ( ) {
 				// get it
 				bits = (char *)m_bitTable.getValue(skp);
 				// must be there now since we added it
-				if ( ! bits ) { char *xx=NULL;*xx=0; }
+				gbassert( bits );
 			}
 			// make a bitvec for this
 			int32_t byteOff = bitNum / 8;
@@ -12837,7 +12776,7 @@ HashTableX *Dates::getSubfieldTable ( ) {
 				// get it
 				pbits = (char *)m_bitTable.getValue(&sp);
 				// must be there now since we added it
-				if ( ! pbits ) { char *xx=NULL;*xx=0; }
+				gbassert( pbits );
 				// re-get this since hashtable might have
 				// and moved all the data around
 				bits = (char *)m_bitTable.getValue(&si);
@@ -13084,7 +13023,7 @@ void Dates::setTODXors ( ) {
 		// try this now
 		uint64_t h = di->m_dateHash64;
 		// make sure not zero
-		if ( h == 0LL ) { char *xx=NULL;*xx=0; }
+		gbassert( h != 0LL );
 		// set section::todxor
 		Section *sp = di->m_section; 
 		// telescope up!
@@ -13598,7 +13537,7 @@ bool Dates::addRanges ( Words *words , bool allowOpenEndedRanges ) {
 			// sanity. i can equal "a"... i've seen that
 			// for some asian language page.
 			// http://www.zoneuse.com/
-			if ( min > di->m_a ) { char *xx=NULL;*xx=0; }
+			gbassert( min <= di->m_a );
 			// are we an age range?
 			bool age = false;
 			// scan before us and remain in sentence and after
@@ -13674,8 +13613,8 @@ bool Dates::addRanges ( Words *words , bool allowOpenEndedRanges ) {
 			if ( DD ) {
 				int32_t dow1 = di->m_num;
 				int32_t dow2 = dj->m_num;
-				if ( dow1 < 0 ) { char *xx=NULL;*xx=0; }
-				if ( dow2 < 0 ) { char *xx=NULL;*xx=0; }
+				gbassert( dow1 >= 0 );
+				gbassert( dow2 >= 0 );
 				// fix "Tuesday through Sunday"
 				//if ( minDow > maxDow ) {
 				//	int32_t tt = minDow;
@@ -13696,10 +13635,9 @@ bool Dates::addRanges ( Words *words , bool allowOpenEndedRanges ) {
 							continue;
 					}
 					// sanity check
-					if ( i >= 8 ) { char *xx=NULL;*xx=0;}
+					gbassert( i < 8 );
 					DD->m_dowBits |= (1<<(i-1));
 				}
-				//if(minDow > maxDow ) { char *xx=NULL;*xx=0;}
 			}
 		}
 		else if ( di->m_type == DT_TOD ) {
@@ -13811,8 +13749,6 @@ bool Dates::addRanges ( Words *words , bool allowOpenEndedRanges ) {
 		DD->addPtr ( di , i , this );
 		DD->addPtr ( dj , j , this );
 
-		// sanity check
-		//if ( di->m_num == dj->m_num ) { char *xx=NULL;*xx=0; }
 		// force start back since first call to addPtr() sets it
 		DD->m_a = pre;
 	}
@@ -14371,7 +14307,7 @@ bool Dates::addLists ( Words *words , bool ignoreBreakingTags ) {
 		// must have at least TWO things to be a list
 		if ( np <= 1 ) continue;
 		// sanity check
-		if ( DD->m_numPtrs > 100 ) { char *xx=NULL;*xx=0; }
+		gbassert( DD->m_numPtrs <= 100 );
 		// advance i over the list we just made
 		i = j - 1;
 	}
@@ -15057,7 +14993,7 @@ uint64_t Dates::getDateHash2 ( Date *di , Date *orig ) {
 	// holidays
 	if ( dt == DT_ALL_HOLIDAYS ) return hash64h(dt,di->m_num);
 	// wtf?
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return 0;
 }
 
@@ -15140,7 +15076,7 @@ Date **Dates::getDateElements ( Date *di , int32_t *ne ) {
 	// set that
 	di->m_numFlatPtrs = *ne;
 	// must be > 0 
-	if ( *ne <= 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( *ne > 0 );
 	// point to the buffer
 	Date **p = (Date **)(m_cbuf.getBufStart() + startOffset);
 	// sort it by Date::m_a so Events::makeEventDisplay2() works right
@@ -15448,19 +15384,19 @@ char *s_dnames[8] = {
 };
 
 char *getDOWName ( int32_t dow ) {
-	if ( dow < 0 || dow > 6 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( dow < 0 || dow > 6 );
 	return s_dnames[dow];
 }
 
 char *getMonthName ( int32_t month ) {
-	if ( month < 0 || month > 11 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( month < 0 || month > 11 );
 	return s_mnames[month];
 }
 
 
 bool printDOW ( SafeBuf *sb , Date *dp ) {
 	int32_t mi = dp->m_dow;
-	if ( mi <= 0 || mi >= 8 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( mi <= 0 || mi >= 8 );
 	char *ev = NULL;
 	// get the full date
 	Date *full = dp;
@@ -15685,7 +15621,7 @@ static bool printMonthDayRange ( SafeBuf *sb ,
 	char useDST;
 	char tz = ev->m_address->getTimeZone(&useDST);
 	// sanity
-	if ( tz >= 25 ) { char *xx=NULL;*xx=0; }
+	gbassert( tz < 25 );
 	// apply that to the time
 	ttt1 += 3600 * tz;
 	// now we also deal with DST too!
@@ -15896,7 +15832,7 @@ bool Date::printTextNorm2 ( SafeBuf *sb , Words *words , bool inHtml ,
 		char useDST;
 		char tz = ev->m_address->getTimeZone(&useDST);
 		// sanity
-		if ( tz >= 25 ) { char *xx=NULL;*xx=0; }
+		gbassert( tz < 25 );
 		// apply that to the time
 		ttt1 += 3600 * tz;
 		// now we also deal with DST too!
@@ -16301,11 +16237,6 @@ bool printDateElement ( Date *dp , SafeBuf *sb , Words *words ,
 			prefix = " after ";
 	}
 
-	//else if ( dp->m_type == DT_TOD ) {
-	//	log("hey");
-	//	//char *xx=NULL;*xx=0; 
-	//}
-
 	// could be a compound that is then part of a list!
 	
 
@@ -16359,7 +16290,7 @@ bool printDateElement ( Date *dp , SafeBuf *sb , Words *words ,
 	// a month? make it full name
 	if ( dp->m_type == DT_MONTH ) {
 		int32_t mi = dp->m_month;
-		if ( mi < 0 || mi >= 13 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( mi < 0 || mi >= 13 );
 		if ( dp->m_suppFlags & SF_MID )
 			if ( ! sb->safePrintf("mid-") )
 				return false;
@@ -16419,7 +16350,7 @@ bool printDateElement ( Date *dp , SafeBuf *sb , Words *words ,
 			if ( !sb->safePrintf("Weekdays")) 
 				return false;
 		}
-		else { char *xx=NULL;*xx=0; }
+		else { gbassert(false); }
 	}
 	// what is this???? summers, weekends...
 	else {
@@ -17419,12 +17350,12 @@ int32_t Dates::parseTimeOfDay3 ( Words     *w             ,
 		// return -1 with g_errno set on error
 		if ( tznw < 0 ) return -1;
 		// sanity
-		if ( tznw >= 25 ) { char *xx=NULL;*xx=0; }
+		gbassert( tznw < 25 );
 	}
 	// advance i over timezone, if we had one
 	if ( *tzPtr ) {
 		// sanity check
-		if ( tznw <= 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( tznw > 0 );
 		// . update this too now!
 		// . tznw should be like 1 or 3, etc.
 		// . watch out for 9-5 EST, do not update end of "9" to EST
@@ -17436,9 +17367,9 @@ int32_t Dates::parseTimeOfDay3 ( Words     *w             ,
 	// make it
 	int32_t seconds = hour * 3600 + minute * 60;
 	// sanity check
-	if ( seconds < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( seconds >= 0 );
 	// sanity check
-	if ( seconds > 25*3600 ) { char *xx=NULL;*xx=0; }
+	gbassert( seconds <= 25*3600 );
 
 	if ( isAM || isPM || isMil ) *hadAMPM = true;
 	else                         *hadAMPM = false;
@@ -18252,14 +18183,13 @@ bool initDateTypes ( ) {
 		// set words
 		Words tmp; 
 		// niceness is 0!
-		if ( ! tmp.setxi ( dv->m_str,localBuf,localBufSize,0)){
-			char *xx=NULL;*xx=0;}
+		gbassert( tmp.setxi ( dv->m_str,localBuf,localBufSize,0));
 		// get wids
 		int64_t *kwids = tmp.m_wordIds;
 		// first word hash is the key
 		int64_t h = kwids[0];
 		// must be valid
-		if ( ! h ) { char *xx=NULL;*xx=0; }
+		gbassert( h );
 		// reset wid count
 		dv->m_numWids = 0;
 		// loop over words
@@ -18268,8 +18198,7 @@ bool initDateTypes ( ) {
 			if ( ! kwids[k] ) 
 				continue;
 			// sanity
-			if ( dv->m_numWids >= MAX_WIDS ) {
-				char *xx=NULL;*xx=0; }
+			gbassert( dv->m_numWids < MAX_WIDS );
 			// set initial hash
 			dv->m_wids[(int32_t)dv->m_numWids] = kwids[k];
 			// inc it
@@ -18280,11 +18209,10 @@ bool initDateTypes ( ) {
 		//int32_t      len = gbstrlen(dv->m_str);
 		//uint64_t  h   = hash64Lower_utf8(dv->m_str,len);
 		// sanity check
-		if ( dv->m_val ==  0 ) { char *xx=NULL;*xx=0; }
-		if ( dv->m_val < -30 ) { char *xx=NULL;*xx=0; }
+		gbassert( dv->m_val !=  0 );
+		gbassert( dv->m_val >= -30 );
 		// add should always be success since we are pre-alloc
-		if ( ! s_dvt.addKey(&h,&dv)  ){
-			char*xx=NULL;*xx=0;}
+		gbassert( s_dvt.addKey(&h,&dv)  );
 	}
 	return true;
 }
@@ -18292,7 +18220,7 @@ bool initDateTypes ( ) {
 
 bool isMonth ( int64_t wid ) {
 	// sanity check
-	if ( ! s_init98 ) { char *xx=NULL;*xx=0; }
+	gbassert( s_init98 );
 	// get slot
 	int32_t slot = s_dvt.getSlot64 ( &wid );
 	// none? no date type then
@@ -18308,7 +18236,7 @@ bool isMonth ( int64_t wid ) {
 // used by Sections::addSentences()
 bool isDateType ( int64_t *pwid ) {
 	// sanity check
-	if ( ! s_init98 ) { initDateTypes(); } // char *xx=NULL;*xx=0; }
+	if ( ! s_init98 ) { initDateTypes(); }
 	// get slot
 	int32_t slot = s_dvt.getSlot64 ( pwid );
 	// none? no date type then
@@ -22997,8 +22925,7 @@ char getMonth ( int64_t wid ) {
 			int32_t      mlen = gbstrlen(m);
 			uint64_t  h    = hash64Lower_utf8(m,mlen);
 			// add should always be success since we are pre-alloc
-			if ( ! s_mt.addKey(&h,&months[i].value)){
-				char*xx=NULL;*xx=0;}
+			gbassert( s_mt.addKey(&h,&months[i].value));
 		}
 		// do not repeat this
 		s_init12 = true;
@@ -23028,8 +22955,8 @@ bool Dates::getIntervals2 ( Date *dp ,
 			    Words *words ) {
 
 	// sanity
-	if ( timeZone < -13 || timeZone > 13 ) { char *xx=NULL;*xx=0; }
-	if ( useDST != 0 && useDST != 1      ) { char *xx=NULL;*xx=0; }
+	gbassert_false( timeZone < -13 || timeZone > 13 );
+	gbassert_false( useDST != 0 && useDST != 1      );
 
 	// set it i guess
 	if ( ! m_words ) m_words = words;
@@ -23091,7 +23018,7 @@ bool Dates::getIntervals2 ( Date *dp ,
 	//   people usually put a year in the date
 	if ( (dp->m_flags & DF_ASSUMED_YEAR) ) { //dp->m_minPubDate > 0 ) {
 		// wtf?
-		if ( dp->m_minStartFocus == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( dp->m_minStartFocus != 0 );
 		// a simple interval
 		Interval simple[1];
 		//simple[0].m_a = dp->m_minPubDate;
@@ -23120,7 +23047,7 @@ bool Dates::getIntervals2 ( Date *dp ,
 		// int16_tcut
 		Date *cd = closeDates[i];
 		// sanity check
-		if ( ! ( cd->m_flags & DF_CLOSE_DATE )){char *xx=NULL;*xx=0; }
+		gbassert( cd->m_flags & DF_CLOSE_DATE );
 		// fill this up
 		Interval int2 [ MAX_INTERVALS + 1 ];
 		// subtract them!
@@ -23220,8 +23147,8 @@ bool Dates::getIntervals2 ( Date *dp ,
 			// . retInt[i].m_b is >= ystart but the 10am part
 			//   is from the previous day. so it spans the years
 			//   so i added retInt[i].m_b <= ystart here
-			if ( retInt[i].m_a <  ystart &&
-			     retInt[i].m_b <= ystart ) { char *xx=NULL;*xx=0;}
+			gbassert_false( retInt[i].m_a <  ystart &&
+			     retInt[i].m_b <= ystart );
 			// convert to UTC
 			retInt[i].m_a -= tzoff;
 			// convert the a point (in UTC!)
@@ -23313,9 +23240,9 @@ char s_numDaysInMonth [] = {31,28,31,30,31,30,31, 31,30,31,30,31};
 // month = 0 to 11. 0=jan 1=feb ...
 int32_t getNumDaysInMonth ( int32_t month , int32_t year ) {
 	// sanity. month is 0 to 11, not 1 to 12
-	if ( month >= 12 ) { char *xx=NULL;*xx=0; }
+	gbassert( month < 12 );
 	// sanity more. year is like 1900+
-	if ( year < 100 ) { char  *xx=NULL;*xx=0; }
+	gbassert( year >= 100 );
 	// get days in month
 	int32_t nd = s_numDaysInMonth[month];
 	// are we a leap year?
@@ -23406,7 +23333,7 @@ int32_t Dates::addIntervalsB ( Date       *di     ,
 	// . "2008 - 2010" (simple range)
 	if ( di->m_type & DT_RANGE_ANY ) {
 		// must have just two ptrs to make a range
-		if ( di->m_numPtrs != 2 ) { char *xx=NULL;*xx=0; }
+		gbassert( di->m_numPtrs == 2 );
 		// add in the associated intervals for this complex date
 		// into either int1 or int2, if int1 is occupied
 		ni1 = addIntervals ( di->m_ptrs[0], 0, int1 , depth+1, orig);
@@ -23463,7 +23390,7 @@ int32_t Dates::addIntervalsB ( Date       *di     ,
 			// nuke this whole thing rather than core
 			return 0;
 			// ignore the bogus end time then
-			char *xx=NULL;*xx=0; }
+			gbassert(false); }
 		// set this
 		bool simple = (di->m_ptrs[0]->m_type & simpleFlags);
 		// if no TOD use the simple algo
@@ -23519,7 +23446,6 @@ int32_t Dates::addIntervalsB ( Date       *di     ,
 				// so let's just give up on such things
 				log("dates: bad date intersection for %s",u);
 				return 0;
-				//char*xx=NULL;*xx=0; }
 			}
 			ni3++;
 		}
@@ -23566,7 +23492,7 @@ int32_t Dates::addIntervalsB ( Date       *di     ,
 		dcount++;
 
 		// sanity check -- these must be empty at this point
-		if ( ni2 || ni3 ) { char *xx=NULL; *xx=0; }
+		gbassert_false( ni2 || ni3 );
 
 		// add in the associated intervals for this complex date
 		// into either int1 or int2, if int1 is occupied
@@ -23641,7 +23567,7 @@ int32_t Dates::addIntervalsB ( Date       *di     ,
 	// int16_tcut
 	int32_t num = di->m_num;
 	// sanity check
-	if ( num < 0 ) { char*xx=NULL;*xx=0; }
+	gbassert( num >= 0 );
 
 	datetype_t dt = di->m_type;
 
@@ -24370,11 +24296,11 @@ time_t getYearMonthStart ( int32_t y , int32_t m ) {
 
 time_t getDOWStart ( int32_t y , int32_t m, int32_t dowArg, int32_t count ) {
 	// count starts at 1 (first monday of the month, etc.)
-	if ( count < 1 ) { char *xx=NULL;*xx=0; }
-	if ( count > 5 ) { char *xx=NULL;*xx=0; }
+	gbassert( count >= 1 );
+	gbassert( count <= 5 );
 	// sunday=1, saturday=7
-	if ( dowArg < 1 ) { char *xx=NULL;*xx=0; }
-	if ( dowArg > 7 ) { char *xx=NULL;*xx=0; }
+	gbassert( dowArg >= 1 );
+	gbassert( dowArg <= 7 );
 
 	// start in seconds since epoch for this year month
 	int32_t start = getYearMonthStart ( y , m );
@@ -24384,7 +24310,7 @@ time_t getDOWStart ( int32_t y , int32_t m, int32_t dowArg, int32_t count ) {
 	// . epoch is a time_t of 0
 	int32_t delta = start - 3*24*3600;
 	// sanity check
-	if ( delta < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( delta >= 0 );
 	// div by seconds in day to get what day of the week it is
 	// for the first of this month on this year
 	int32_t dow = (delta / (24*3600)) % 7;
@@ -24418,7 +24344,7 @@ int32_t getYear ( time_t t ) {
 bool Dates::addInterval ( int32_t a , int32_t b , Interval *int3 , int32_t *ni3 ,
 			  int32_t depth , bool useDayShift ) {
 	// limit it
-	if ( *ni3 >= MAX_INTERVALS ) { char *xx=NULL;*xx=0; }
+	gbassert( *ni3 < MAX_INTERVALS );
 
 	// fix "mondays 10pm - 2am"
 	if ( useDayShift ) {
@@ -24439,10 +24365,10 @@ bool Dates::addInterval ( int32_t a , int32_t b , Interval *int3 , int32_t *ni3 
 	ii->m_a = a;
 	ii->m_b = b;
 	// sanity check
-	if ( a > b ) { char *xx=NULL;*xx=0; }
+	gbassert( a <= b );
 
 	// maintain order, and can not overlap
-	if ( *ni3 > 0 && int3[*ni3-1].m_b > a ) { char *xx=NULL;*xx=0; }
+	gbassert_false( *ni3 > 0 && int3[*ni3-1].m_b > a );
 
 	*ni3 = *ni3 + 1;
 
@@ -24593,15 +24519,13 @@ int32_t Dates::intersect2 ( Interval *int1 ,
 				*A = a;
 				*B = ii->m_b;
 			}
-			else { char *xx=NULL;*xx=0; }
+			else { gbassert(false); }
 			// dedup
 			if ( dt.isInTable ( key ) ) continue;
 			// add it
 			if ( ! dt.addKey ( key ) ) return -1;
 			// add it
 			if ( ! addInterval(*A,*B,int3,&ni3,depth) ) return -1;
-			// sanity check
-			//char *xx=NULL;*xx=0; 
 		}
 		}
 	}
@@ -24625,9 +24549,9 @@ int32_t Dates::intersect3 ( Interval *int1 ,
 	char *u = ""; if ( m_url ) u = m_url->getUrl();
 
 	// sanity check
-	if ( ni1 > MAX_INTERVALS ) { char *xx=NULL;*xx=0; }
-	if ( ni2 > MAX_INTERVALS ) { char *xx=NULL;*xx=0; }
-	if ( unionOp && subtractint2 ) { char *xx=NULL;*xx=0; }
+	gbassert( ni1 <= MAX_INTERVALS );
+	gbassert( ni2 <= MAX_INTERVALS );
+	gbassert_false( unionOp && subtractint2 );
 
 #ifdef _DLOG_	
 	// log it for debug
@@ -24657,7 +24581,6 @@ int32_t Dates::intersect3 ( Interval *int1 ,
 	// MAX_INTERVALS. so put checks for that here:
 	logf(LOG_DEBUG,"dates: potential overflow for "
 	     "%s . returning 0.", u );
-	//{ char *xx=NULL;*xx=0;}
 	return 0;
 
 	// the merge loop
@@ -24666,9 +24589,6 @@ int32_t Dates::intersect3 ( Interval *int1 ,
 	// stop on overflow
 	if ( p3 + 1 > p3max ) {
 		goto overflow;
-		//return 0;
-		//char *xx=NULL;*xx=0;
-		//return p3-int3;
 	}
 	if ( p1 >= p1end ) {
 		//gbmemcpy ( p3 , p2 , (p2end - p2) * sizeof(Interval)  );
@@ -24986,7 +24906,7 @@ void Dates::setEventBrotherBits ( ) {
 	// are implied sections valid? they should be because we need them
 	// for santafeplayhouse.org whose event dates span two sentences
 	// and are only together in a tight implied section.
-	if ( ! m_sections->m_addedImpliedSections ) { char *xx=NULL;*xx=0; }
+	gbassert( m_sections->m_addedImpliedSections );
 
 	////////////////////////
 	//
@@ -25055,8 +24975,8 @@ void Dates::setEventBrotherBits ( ) {
 	}
 
 	// sanity
-	if ( m_sections->m_lastSection->m_next ) { char *xx=NULL;*xx=0; }
-	if ( ! s_init42 ) { char *xx=NULL;*xx=0; } // h_details, h_more
+	gbassert( ! m_sections->m_lastSection->m_next );
+	gbassert( s_init42 );
 	// 
 	// similar to above, we have issues with the last link like
 	// "(more)" is being combined into the previous sentence! so
@@ -25583,7 +25503,7 @@ void Dates::setStoreHours ( bool telescopesOnly ) {
 		// initial dates xor in "sd"
 		int32_t todXor = sp->m_todXor;
 		// can't be zero - we contain the store hours
-		if ( ! todXor ) continue;//{ char *xx=NULL;*xx=0; }
+		if ( ! todXor ) continue;
 		// keep setting up as int32_t as datexor remains unchanged
 		for ( ; sp ; sp = sp->m_parent ) {
 			// breathe
@@ -25696,7 +25616,7 @@ void Dates::setStoreHours ( bool telescopesOnly ) {
 		// "The spring..." the date can span those two sentences
 		// "before. The spring" and cause fd to be -1. like for
 		// thealcoholenthusiast.com...
-		if ( fd < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( fd >= 0 );
 		// assume good
 		bool       good = true;
 		// is it an open-ended tod range like "before 1pm"?
@@ -25801,7 +25721,7 @@ void Dates::setStoreHours ( bool telescopesOnly ) {
 			int32_t min = dk->m_minTod;
 			int32_t max = dk->m_maxTod;
 			if ( min < 0   ) continue;
-			if ( min > max ) { char *xx=NULL;*xx=0; }
+			gbassert( min <= max );
 			// this will be zero if not a tod range
 			numSecondsOpen += numDow * (max - min);
 			// disallow "Every Sunday before 1pm" by 
@@ -25920,7 +25840,7 @@ void Dates::setStoreHours ( bool telescopesOnly ) {
 		// initial dates xor in "sd"
 		int32_t todXor = sd->m_todXor;
 		// can't be zero - we contain the store hours
-		if ( ! todXor ) { char *xx=NULL;*xx=0; }
+		gbassert( todXor );
 		// keep setting up as int32_t as datexor remains unchanged
 		for ( ; sp ; sp = sp->m_parent ) {
 			// breathe
@@ -25974,7 +25894,7 @@ void Dates::setStoreHours ( bool telescopesOnly ) {
 		// if no sentence we must be in javascript
 		if ( m_contentType == CT_JS && ! sd ) continue;
 		// sanity check otherwise
-		if ( ! sd ) { char *xx=NULL;*xx=0; }
+		gbassert( sd );
 		// in a table? get the cell section then
 		Section *cell = di->m_tableCell;
 		// . detects "kitchen hours" etc. basically any "sub hours"
@@ -26238,14 +26158,14 @@ int32_t Dates::calculateYearBasedOnDOW ( int32_t minYear, int32_t maxYear, Date 
 	if ( numDow != 1 ) return 0;
 	int32_t month = di->m_month;
 	// sanity check for month, 1 to 12 are legit
-	if ( month <= 0 || month >= 13 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( month <= 0 || month >= 13 );
 	int32_t day   = di->m_minDayNum;
 	// between 1 and 31 sanity check
-	if ( day < 1 || day > 31 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( day < 1 || day > 31 );
 	// bit #0 to x
 	int32_t dow = getHighestLitBit((unsigned char)(di->m_dowBits));
 	// between 0 and 6
-	if ( dow >= 7 ) { char *xx=NULL;*xx=0; }
+	gbassert( dow < 7 );
 
 	// . Jan 1, 2000 fell on a saturday (leap year)
 	// . Jan 1, 2001 fell on a monday
@@ -26272,7 +26192,7 @@ int32_t Dates::calculateYearBasedOnDOW ( int32_t minYear, int32_t maxYear, Date 
 	// wrap it up
 	if ( dow < 0 ) dow += 7;
 	// between 0 and 6
-	if ( dow >= 7 ) { char *xx=NULL;*xx=0; }
+	gbassert( dow < 7 );
 	// jan 1 2008 was a tuesday  = 2
 	// jan 1 2000 was a saturday = 6
 	int32_t jan1dow = 6;
