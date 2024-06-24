@@ -4,7 +4,6 @@
 
 #include "HashTableT.h"
 #include "Msg20.h"
-#include "Sanity.h"
 #include "fctypes.h"
 
 class Msg40;
