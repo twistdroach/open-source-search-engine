@@ -8,6 +8,8 @@
 #include "SafeBuf.h"
 #include "Mem.h"
 
+#include <array>
+
 // keep these down to save memory
 //#define MAX_QUERY_LEN   8000 // url:XXX can be quite long! (MAX_URL_LEN)
 //#define MAX_QUERY_LEN 3200
@@ -362,10 +364,10 @@ class QueryWord {
 	SafeBuf m_synWordBuf;
 
 
-	int32_t  m_facetRangeIntA   [MAX_FACET_RANGES];
-	int32_t  m_facetRangeIntB   [MAX_FACET_RANGES];
-	float m_facetRangeFloatA [MAX_FACET_RANGES];
-	float m_facetRangeFloatB [MAX_FACET_RANGES];
+    std::array <int32_t, MAX_FACET_RANGES> m_facetRangeIntA;
+    std::array <int32_t, MAX_FACET_RANGES> m_facetRangeIntB;
+    std::array <float, MAX_FACET_RANGES> m_facetRangeFloatA;
+    std::array <float, MAX_FACET_RANGES> m_facetRangeFloatB;
 	int32_t  m_numFacetRanges;
 
 
@@ -422,10 +424,10 @@ class QueryWord {
 	    m_float = {};
 	    m_int = {};
 	    m_synWordBuf = {};
-	    m_facetRangeIntA   [MAX_FACET_RANGES] = {};
-	    m_facetRangeIntB   [MAX_FACET_RANGES] = {};
-	    m_facetRangeFloatA [MAX_FACET_RANGES] = {};
-	    m_facetRangeFloatB [MAX_FACET_RANGES] = {};
+	    m_facetRangeIntA = {};
+	    m_facetRangeIntB = {};
+	    m_facetRangeFloatA = {};
+	    m_facetRangeFloatB = {};
 	    m_numFacetRanges = {};
 	    m_expressionPtr = {};
 	}
