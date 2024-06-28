@@ -11,6 +11,7 @@ add_compile_definitions(PTHREADS _REENTRANT_ _CHECK_FORMAT_STRING_)
 add_compile_options(-Wall -Wno-write-strings -Wstrict-aliasing=0 -Wno-uninitialized)
 add_compile_options(-Wno-unused-but-set-variable -Wno-misleading-indentation)
 #add_compile_options(-Wall -Wextra -Wpedantic)
+add_link_options(-rdynamic -export-dynamic)
 
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
