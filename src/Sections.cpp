@@ -390,7 +390,7 @@ bool Sections::set ( Words     *w                       ,
 			// count it raw
 			alnumCount++;
 			// must be in a section at this point
-			if ( ! current ) { char *xx=NULL;*xx=0; }
+			gbassert( current );
 			// . hash it up for our content hash
 			// . this only hashes words DIRECTLY in a 
 			//   section because we can have a large menu
@@ -419,7 +419,7 @@ bool Sections::set ( Words     *w                       ,
 			// inc it
 			m_numSections++;
 			// sanity check - breach check
-			if ( m_numSections > max ) { char *xx=NULL;*xx=0; }
+            gbassert( m_numSections <= max );
 			// set our parent
 			sn->m_parent = current;
 			// need to keep a word range that the section covers
@@ -445,7 +445,7 @@ bool Sections::set ( Words     *w                       ,
 			// inc it
 			m_numSections++;
 			// sanity check - breach check
-			if ( m_numSections > max ) { char *xx=NULL;*xx=0; }
+            gbassert( m_numSections <= max );
 			// set our parent
 			sn->m_parent = current;
 			// need to keep a word range that the section covers
@@ -690,7 +690,7 @@ bool Sections::set ( Words     *w                       ,
 			//int32_t xn = *(secNumPtr-1);
 			int32_t xn = spp->m_secNum;
 			// sanity
-			if ( xn<0 || xn>=m_numSections ) {char*xx=NULL;*xx=0;}
+			gbassert_false( xn<0 || xn>=m_numSections );
 			// get it
 			Section *sn = &m_sections[xn];
 
@@ -703,9 +703,6 @@ bool Sections::set ( Words     *w                       ,
 			// otherwise we end up with overlapping section since
 			// this tag ALSO starts a section!!
 			if ( gotBackTag == 2 ) sn->m_b = i;
-
-			// sanity check
-			//if ( sn->m_b <= sn->m_a ) { char *xx=NULL;*xx=0;}
 
 			/*
 			// if our parent got closed before "sn" closed because
@@ -725,8 +722,6 @@ bool Sections::set ( Words     *w                       ,
 			     sn->m_parent->m_b >= 0 ) 
 				sn->m_b = sn->m_parent->m_b;
 			
-			// sanity check
-			if ( sn->m_b <= sn->m_a ) { char *xx=NULL;*xx=0;}
 			*/
 
 			// if our parent got closed before "sn" closed because
@@ -740,7 +735,7 @@ bool Sections::set ( Words     *w                       ,
 				// skip if this parent is still open
 				if ( ps->m_b <= 0 ) continue;
 				// parent must have closed before us
-				if ( ps->m_b > sn->m_b ) {char *xx=NULL;*xx=0;}
+				gbassert( ps->m_b <= sn->m_b );
 				// we had no matching tag, or it was unbalanced
 				// but i do not know which...!
 				sn->m_flags |= SEC_OPEN_ENDED;
@@ -749,8 +744,7 @@ bool Sections::set ( Words     *w                       ,
 				// our TXF_MATCHED bit should still be set
 				// for spp->m_flags, so try to match ANOTHER
 				// front tag with this back tag now
-				if ( ! ( spp->m_flags & TXF_MATCHED ) ) {
-					char *xx=NULL;*xx=0; }
+				gbassert( spp->m_flags & TXF_MATCHED );
 				// ok, try to match this back tag with another
 				// front tag on the stack, because the front
 				// tag we had selected got cut int16_t because
@@ -759,7 +753,7 @@ bool Sections::set ( Words     *w                       ,
 			}
    
 			// sanity check
-			if ( sn->m_b <= sn->m_a ) { char *xx=NULL;*xx=0;}
+			gbassert( sn->m_b > sn->m_a );
 
 			// mark the section as unbalanced
 			if ( spp != (stackPtr - 1) )
@@ -935,7 +929,7 @@ bool Sections::set ( Words     *w                       ,
 		// inc it
 		m_numSections++;
 		// sanity check - breach check
-		if ( m_numSections > max ) { char *xx=NULL;*xx=0; }
+		gbassert( m_numSections <= max );
 		
 		// . check the last tagId we encountered for this
 		//   current section.
@@ -1096,7 +1090,7 @@ bool Sections::set ( Words     *w                       ,
 		// skip if no parent
 		if ( ! sp ) continue;
 		// parent must start before us
-		if ( sp->m_a > si->m_a ) { char *xx=NULL;*xx=0; }
+		gbassert( sp->m_a <= si->m_a );
 		// . does parent contain our first word?
 		// . it need not fully contain our last word!!!
 		if ( sp->m_a <= si->m_a && sp->m_b > si->m_a ) continue;
@@ -1160,8 +1154,6 @@ bool Sections::set ( Words     *w                       ,
 			// hash it in
 			xh ^= g_hashtab[cnt++][(unsigned char )*p];
 		}
-		// sanity check
-		//if ( ! xh ) { char *xx=NULL;*xx=0; }
 		// if it is a string of the same chars it can be 0
 		if ( ! xh ) xh = 1;
 		// store that
@@ -1179,7 +1171,7 @@ bool Sections::set ( Words     *w                       ,
 		// get its parent
 		Section *ps = si->m_parent;
 		// if parent is open-ended panic!
-		if ( ps && ps->m_b < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( ps && ps->m_b < 0 );
 
 		// if our parent got constrained from under us, we need
 		// to telescope to a new parent
@@ -1212,7 +1204,7 @@ bool Sections::set ( Words     *w                       ,
 			if ( ! tid1 ) continue;
 		}
 		// must be there to be open ended
-		if ( ! tid1 ) { char *xx=NULL;*xx=0; }
+		gbassert( tid1 );
 		// flag it for later
 		//si->m_flags |= SEC_CONSTRAINED;
 		// NOW, see if within that parent there is actually another
@@ -1260,13 +1252,13 @@ bool Sections::set ( Words     *w                       ,
 		// get it
 		Section *si = &m_sections[i];
 		// skip if we are still open-ended
-		if ( si->m_b < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( si->m_b >= 0 );
 		// get parent
 		Section *sp = si->m_parent;
 		// skip if null
 		if ( ! sp ) continue;
 		// skip if parent still open ended
-		if ( sp->m_b < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( sp->m_b >= 0 );
 		// subloop it
 	doagain2:
 		// skip if no parent
@@ -1277,7 +1269,7 @@ bool Sections::set ( Words     *w                       ,
 		// if parent is open ended, then it is ok for now
 		if ( sp->m_a <= si->m_a && sp->m_b == -1 ) continue;
 		// if parent is open ended, then it is ok for now
-		if ( sp->m_b == -1 ) { char *xx=NULL;*xx=0; }
+		gbassert( sp->m_b != -1 );
 		// get grandparent
 		sp = sp->m_parent;
 		// set
@@ -1311,8 +1303,6 @@ bool Sections::set ( Words     *w                       ,
 		// its first word #
 		for ( ; next && i == next->m_a ; ) {
 			dstack[ns++] = next;
-			// sanity check
-			//if ( next->m_a == next->m_b ) { char *xx=NULL;*xx=0;}
 			// set our current section to this now
 			current = next;
 			// get next section for setting "next"
@@ -1330,8 +1320,8 @@ bool Sections::set ( Words     *w                       ,
 		// map each word to a section that contains it at least
 		for ( int32_t i = 0 ; i < m_nw ; i++ ) {
 			Section *si = m_sectionPtrs[i];
-			if ( si->m_a >  i ) { char *xx=NULL;*xx=0; }
-			if ( si->m_b <= i ) { char *xx=NULL;*xx=0; }
+			gbassert( si->m_a <=  i );
+			gbassert( si->m_b > i );
 		}
 	}
 
@@ -1447,10 +1437,10 @@ bool Sections::set ( Words     *w                       ,
 			}
 		}
 		// should not have either of these yet!
-		if ( sn->m_flags & SEC_FAKE     ) { char *xx=NULL;*xx=0; }
-		if ( sn->m_flags & SEC_SENTENCE ) { char *xx=NULL;*xx=0; }
+		gbassert_false( sn->m_flags & SEC_FAKE     );
+		gbassert_false( sn->m_flags & SEC_SENTENCE );
 		// sanity check
-		if ( mtid == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( mtid != 0 );
 		// . set the base hash, usually just tid
 		// . usually base hash is zero but if it is a br tag
 		//   we set it to something special to indicate the number
@@ -1462,7 +1452,6 @@ bool Sections::set ( Words     *w                       ,
 		if ( sn->m_baseHash == 0 ) { 
 			// fix core on gk21
 			sn->m_baseHash = 2;
-			//char *xx=NULL;*xx=0; }
 		}
 		// set this now too WHY? should already be set!!! was
 		// causing the root section to become a title section
@@ -1642,7 +1631,7 @@ bool Sections::set ( Words     *w                       ,
 		// skip if nothing special
 		if ( ! mf ) continue;
 		// sanity
-		if ( ni >= 1000 ) { char *xx=NULL;*xx=0; }
+		gbassert( ni < 1000 );
 		// otherwise, store on stack
 		istack[ni] = si->m_b;
 		iflags[ni] = mf;
@@ -2015,7 +2004,7 @@ bool Sections::set ( Words     *w                       ,
 		QUICKPOLL ( m_niceness );
 		// sanity check
 		int64_t sc64 = sn->m_sentenceContentHash64;
-		if ( ! sc64 ) { char *xx=NULL;*xx=0; }
+		gbassert( sc64 );
 		// propagate it upwards
 		Section *p = sn;
 		// TODO: because we use XOR for speed we might end up with
@@ -2034,7 +2023,7 @@ bool Sections::set ( Words     *w                       ,
 		QUICKPOLL ( m_niceness );
 		// sanity check
 		int64_t sc64 = sn->m_sentenceContentHash64;
-		if ( ! sc64 ) { char *xx=NULL;*xx=0; }
+		gbassert( sc64 );
 		// propagate it upwards
 		Section *p = sn->m_parent;
 		// parent of sentence always gets it i guess
@@ -2083,7 +2072,7 @@ bool Sections::set ( Words     *w                       ,
 		// so we contain the range [a,b), typical half-open interval
 		sn->m_alnumPosB = alnumCount2;
 		// sanity check
-		if ( sn->m_alnumPosA == sn->m_alnumPosB ){char *xx=NULL;*xx=0;}
+		gbassert( sn->m_alnumPosA != sn->m_alnumPosB );
 
 		// propagate through parents
 		Section *si = sn->m_parent;
@@ -2247,12 +2236,12 @@ bool Sections::set ( Words     *w                       ,
 		// get slot for it
 		int32_t numKids = vote & 0xffffffff;
 		// must be at least 1 i guess
-		if ( numKids < 1 && i > 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( numKids < 1 && i > 0 );
 		// how many siblings do we have total?
 		sn->m_numOccurences = numKids;
 		// sanity check
-		if ( sn->m_a < 0    ) { char *xx=NULL;*xx=0; }
-		if ( sn->m_b > m_nw ) { char *xx=NULL;*xx=0; }
+		gbassert( sn->m_a >= 0    );
+		gbassert( sn->m_b <= m_nw );
 		//
 		// !!!!!!!!!!!!!!!! HEART OF SECTIONS !!!!!!!!!!!!!!!!
 		//
@@ -2526,7 +2515,7 @@ bool Sections::addImpliedSections ( Addresses *aa ) {
 		// skip if compound, list, range, telescope
 		if ( di->m_numPtrs != 0 ) continue;
 		// sanity check
-		if ( di->m_a < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( di->m_a >= 0 );
 		// int16_tcut
 		datetype_t dt = di->m_hasType;
 		// need a DOW, DOM or TOD
@@ -3967,7 +3956,7 @@ void initGenericTable ( int32_t niceness ) {
 		char      *w    = s_ignore[i];
 		int32_t       wlen = gbstrlen ( w );
 		int64_t  h    = hash64Lower_utf8 ( w , wlen );
-		if ( ! s_igt.addKey (&h) ) { char *xx=NULL;*xx=0; }
+		gbassert( s_igt.addKey (&h) );
 	}
 }
 
@@ -4654,7 +4643,7 @@ bool Sections::setSentFlagsPart2 ( ) {
 		char needChar = '-';
 		bool over     = false;
 		// word # senta must be alnum!
-		if ( ! m_wids[senta] ) { char *xx=NULL;*xx=0; }
+		gbassert( m_wids[senta] );
 		// start our backwards scan right before the first word
 		for ( int32_t i = senta - 1; i >= 0 ; i-- ) {
 			// breathe
@@ -5810,7 +5799,7 @@ bool Sections::setSentFlagsPart2 ( ) {
 		// fix for sentences
 		if ( ch64 == 0 ) ch64 = si->m_sentenceContentHash64;
 		// must be there
-		if ( ! ch64 ) { char *xx=NULL;*xx=0; }
+		gbassert( ch64 );
 		// combine the tag hash with the content hash #2 because
 		// a lot of times it is repeated in like a different tag like
 		// the title tag
@@ -5836,8 +5825,8 @@ bool Sections::setSentFlagsPart2 ( ) {
 		//int32_t f = a; for ( ; ! m_wids[f] && f < b ; f++ );
 		int32_t f = si->m_senta;//si->m_firstWordPos;
 		int32_t L = si->m_sentb;//si->m_lastWordPos;
-		if ( f < 0 ) { char *xx=NULL;*xx=0; }
-		if ( L < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( f >= 0 );
+		gbassert( L >= 0 );
 		// single word?
 		bool single = (f == (L-1));
 		/*
@@ -6069,7 +6058,7 @@ bool Sections::setSentFlagsPart2 ( ) {
 	if ( ! s_init9 ) initPlaceIndicatorTable();
 
 
-	if ( ! m_alnumPosValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_alnumPosValid );
 
 	/////////////////////////////
 	//
@@ -6194,7 +6183,7 @@ bool Sections::setSentFlagsPart2 ( ) {
 		si->m_sentFlags |= SENT_OBVIOUS_PLACE;
 	}
 
-	if ( ! m_alnumPosValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_alnumPosValid );
 
 	//
 	// set SENT_EVENT_ENDING
@@ -7588,7 +7577,7 @@ int32_t hasTitleWords ( sentflags_t sflags ,
 				h ^=  wi[j];
 			}
 			// wtf?
-			if ( h == 0LL ) { char *xx=NULL;*xx=0; }
+			gbassert( h != 0LL );
 			// . store hash of all words, value is ptr to it
 			// . put all exact matches into sw1 and the substring
 			//   matches into sw2
@@ -8040,7 +8029,7 @@ void Sections::setSentPrettyFlag ( Section *si ) {
 		h_link  = hash64n("link");
 	}
 
-	if ( ! m_alnumPosValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_alnumPosValid );
 
 	// assume not pretty
 	bool pretty = false;
@@ -8723,7 +8712,7 @@ float computeSimilarity2 ( int32_t   *vec0 ,
 		// and score of what we matched
 		int32_t *val = (int32_t *)ht.getValueFromSlot ( slot );
 		// sanity check. does "vec1" have dups in it? shouldn't...
-		if ( *val == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( *val != 0 );
 		// we get the min
 		int32_t minScore ;
 		if ( *val < score ) minScore = *val;
@@ -8765,7 +8754,7 @@ float computeSimilarity2 ( int32_t   *vec0 ,
 	// . subtract the vector components that matched a query term
 	float percent = 100 * (float)matchScore / (float)totalScore;
 	// sanity
-	if ( percent > 100 ) { char *xx=NULL;*xx=0; }
+	gbassert( percent <= 100 );
 
 	if ( ! labelTable ) return percent;
 
@@ -8820,7 +8809,7 @@ int32_t Sections::getDelimScore ( Section *bro ,
 	// get the containing section
 	Section *container = bro->m_parent;
 	// sanity check... should all be brothers (same parent)
-	if ( delim->m_parent != container ) { char *xx=NULL;*xx=0; }
+	gbassert( delim->m_parent == container );
 
 	// the head section of a particular partition's section
 	Section *currDelim = bro;
@@ -8906,7 +8895,7 @@ int32_t Sections::getDelimScore ( Section *bro ,
 		// . check this out
 		// . don't return 0 because we make a vector of these hashes
 		//   and computeSimilarity() assumes vectors are NULL term'd
-		if ( bro && h == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( bro && h == 0 );
 
 		// once we hit the delimeter we stop ignoring
 		if ( h == dh ) ignoreAbove = false;
@@ -9017,11 +9006,11 @@ int32_t Sections::getDelimScore ( Section *bro ,
 				// add score
 				pscore[*pnum] = *(int32_t *)(&vht.m_vals[i*4]);
 				// sanity
-				if ( pscore[*pnum] <= 0){char *xx=NULL;*xx=0;}
+				gbassert( pscore[*pnum] > 0);
 				// inc component count
 				*pnum = *pnum + 1;
 				// how is this?
-				if(*pnum>=MAX_COMPONENTS){char *xx=NULL;*xx=0;}
+				gbassert(*pnum < MAX_COMPONENTS);
 			}
 			// null temrinate
 			pvec[*pnum] = 0;
@@ -9383,7 +9372,7 @@ char *getSentBitLabel ( sentflags_t sf ) {
 	if ( sf == SENT_BADEVENTSTART ) return "badeventstart";
 	if ( sf == SENT_MENU_SENTENCE ) return "menusentence";
 	if ( sf == SENT_PRETTY ) return "pretty";
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return NULL;
 }
 
@@ -9422,7 +9411,7 @@ char *getSecBitLabel ( sec_t sf ) {
 	if ( sf == SEC_HAS_DOW   ) return "hasdow";
 	if ( sf == SEC_HAS_MONTH ) return "hasmonth";
 	if ( sf == SEC_HAS_DOM   ) return "hasdom";
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return NULL;
 }
 
@@ -9446,7 +9435,7 @@ bool addLabel ( HashTableX *labelTable ,
 	char *ptr = (char *)labelTable->getValue (&key);
 	if ( ptr ) {
 		// compare sanity check
-		if ( strcmp(ptr,label) ) { char *xx=NULL;*xx=0; }
+		gbassert_false( strcmp(ptr,label) );
 		return true;
 	}
 
@@ -9457,7 +9446,7 @@ bool addLabel ( HashTableX *labelTable ,
 		if ( strcmp(v,label) ) continue;
 		int32_t k1 = *(int32_t *)labelTable->getKeyFromSlot(i);
 		log("sec: key=%" INT32 " oldk=%" INT32 "",key,k1);
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 
 	// add it otherwise
@@ -9515,7 +9504,7 @@ bool Sections::hashSentBits (Section    *sx         ,
 		else    
 			sprintf ( sbuf,"%s", str );
 		// make sure X chars or less
-		if ( strlen(sbuf)>= MAXLABELSIZE-1) { char *xx=NULL;*xx=0; }
+		gbassert( strlen(sbuf) < MAXLABELSIZE-1 );
 		// store
 		if ( ! addLabel(labelTable,key,sbuf ) ) return false;
 	}
@@ -9543,7 +9532,7 @@ bool Sections::hashSentBits (Section    *sx         ,
 		else    
 			sprintf ( sbuf,"%s", str );
 		// make sure X chars or less
-		if ( strlen(sbuf)>= MAXLABELSIZE-1) { char *xx=NULL;*xx=0; }
+		gbassert( strlen(sbuf) < MAXLABELSIZE-1);
 		// store
 		if ( ! addLabel(labelTable,key,sbuf ) ) return false;
 	}
@@ -9569,7 +9558,7 @@ bool Sections::hashSentBits (Section    *sx         ,
 		if ( modLabel ) sprintf ( sbuf,"%s%s", modLabel,str);
 		else            sprintf ( sbuf,"%s", str );
 		// make sure X chars or less
-		if ( strlen(sbuf)>= MAXLABELSIZE-1) { char *xx=NULL;*xx=0; }
+		gbassert( strlen(sbuf) > MAXLABELSIZE-1);
 		// store
 		if ( ! addLabel(labelTable,key,sbuf ) ) return false;
 	}		
@@ -9621,7 +9610,7 @@ bool Sections::hashSentPairs (Section    *sx ,
 			// store in buffer
 			sprintf ( sbuf , "%s*", str );
 			// make sure X chars or less
-			if(strlen(sbuf)>=MAXLABELSIZE-1){char *xx=NULL;*xx=0;}
+			gbassert(strlen(sbuf) < MAXLABELSIZE-1);
 		}
 		// hash sentenceb with that mod
 		if ( ! hashSentBits ( sb, vht,container,mod,labelTable,sbuf)) 
@@ -9646,7 +9635,7 @@ bool Sections::hashSentPairs (Section    *sx ,
 			// store in buffer
 			sprintf ( sbuf , "%s*", str );
 			// make sure X chars or less
-			if(strlen(sbuf)>=MAXLABELSIZE-1){char *xx=NULL;*xx=0;}
+			gbassert(strlen(sbuf) < MAXLABELSIZE-1);
 		}
 		// hash sentenceb with that mod
 		if ( ! hashSentBits ( sb, vht, container,mod,labelTable,sbuf)) 
@@ -9782,7 +9771,7 @@ int32_t Sections::getDelimHash ( char method , Section *bro , Section *head ) {
 		int32_t a = bro->m_firstWordPos;
 		int32_t b = bro->m_lastWordPos;
 		// sanity check
-		if ( a < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( a >= 0 );
 		// scan
 		for ( int32_t i = a ; i <= b ; i++ ) {
 			// breathe
@@ -9912,7 +9901,7 @@ int32_t Sections::getDelimHash ( char method , Section *bro , Section *head ) {
 		int32_t a = bro->m_firstWordPos;
 		int32_t b = bro->m_lastWordPos;
 		// sanity check
-		if ( a < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( a >= 0 );
 		// scan
 		for ( int32_t i = a ; i <= b ; i++ ) {
 			// breathe
@@ -9981,7 +9970,7 @@ int32_t Sections::getDelimHash ( char method , Section *bro , Section *head ) {
 		int32_t a = bro->m_firstWordPos;
 		int32_t b = bro->m_lastWordPos;
 		// sanity check
-		if ( a < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( a >= 0 );
 		// scan
 		for ( int32_t i = a ; i <= b ; i++ ) {
 			// breathe
@@ -10083,7 +10072,7 @@ int32_t Sections::getDelimHash ( char method , Section *bro , Section *head ) {
 		return 444333;
 	}
 	*/
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return 0;
 }
 			
@@ -10856,10 +10845,10 @@ bool Sections::addSentenceSections ( ) {
 				// check
 				if ( adda < 0 ) break;
 				// how can this happen?
-				if ( m_wids[adda] ) { char *xx=NULL;*xx=0; }
+				gbassert_false( m_wids[adda] );
 			}
 			// sanity
-			if ( adda < 0 ) { char *xx=NULL;*xx=0; }
+			gbassert( adda >= 0 );
 
 			// backup addb over any punct we don't need that
 			//if ( addb > 0 && addb < m_nw && 
@@ -10920,10 +10909,10 @@ bool Sections::addSentenceSections ( ) {
 				// stop if addb 
 				if ( addb >= m_nw ) break;
 				// how can this happen?
-				if ( m_wids[addb] ) { char *xx=NULL;*xx=0; }
+				gbassert_false( m_wids[addb] );
 			}
 			// sanity
-			if ( addb >= m_nw ) { char *xx=NULL;*xx=0; }
+			gbassert( addb < m_nw );
 
 			// ok, now add the split sentence
 			Section *is =insertSubSection(parent,adda,addb+1,bh);
@@ -11228,7 +11217,7 @@ Section *Sections::insertSubSection ( Section *parentArg , int32_t a , int32_t b
 	if ( ! si ) {
 		// skip this until we figure it out
 		m_numSections--;
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 		return NULL;
 		sk->m_next = m_rootSection;//m_rootSection;
 		sk->m_prev = NULL;
@@ -11636,7 +11625,7 @@ bool Sections::splitSections ( char *delimeter , int32_t dh ) {
 		// breathe
 		QUICKPOLL ( m_niceness );
 		// sanity check
-		if ( i < saved ) { char *xx=NULL;*xx=0; }
+		gbassert( i >= saved );
 		// a quicky
 		if ( ! isDelimeter ( i , delimeter , &delimEnd ) ) continue;
 		// get section it is in
@@ -11663,7 +11652,7 @@ bool Sections::splitSections ( char *delimeter , int32_t dh ) {
 		// what section # is section "sn"?
 		int32_t offset = sn - m_sections;
 		// sanity check
-		if ( &m_sections[offset] != sn ) { char *xx=NULL;*xx=0; }
+		gbassert( &m_sections[offset] == sn );
 		// point to the section after "sn"
 		//int32_t xx = offset + 1;
 		// point to words in the new section
@@ -11686,7 +11675,7 @@ bool Sections::splitSections ( char *delimeter , int32_t dh ) {
 
 	subloop:
 		// sanity check
-		if ( m_numSections >= m_maxNumSections) {char *xx=NULL;*xx=0;}
+		gbassert( m_numSections < m_maxNumSections);
 		//
 		// try this now
 		//
@@ -11706,7 +11695,7 @@ bool Sections::splitSections ( char *delimeter , int32_t dh ) {
 		// the base hash (delimeter hash) hack
 		sk->m_baseHash = dh;
 		// sanity check
-		if ( start == i ) { char *xx=NULL;*xx=0; }
+		gbassert( start != i );
 		// flag it as an <hr> section
 		sk->m_flags     = sn->m_flags | SEC_FAKE;
 		// but take out unbalanced!
@@ -11908,7 +11897,7 @@ bool Sections::addVotes ( SectionVotingTable *nsvt , uint32_t tagPairHash ) {
 		// breathe
 		QUICKPOLL ( m_niceness );
 		// sanity check
-		if ( ! sn->m_sentenceContentHash64 ) { char *xx=NULL;*xx=0; }
+		gbassert( sn->m_sentenceContentHash64 );
 		// add the tag hash too!
 		if ( ! nsvt->addVote3 ( sn->m_turkTagHash32   ,
 					SV_TURKTAGHASH        , 
@@ -11983,7 +11972,7 @@ bool SectionVotingTable::addListOfVotes ( RdbList *list,
 		if ( d == myDocId ) continue;
 		// sanity
 		int64_t sh48 = g_datedb.getTermId ( key );
-		if ( sh48 != lastsh48 && lastsh48 ) { char *xx=NULL;*xx=0;}
+		gbassert_false( sh48 != lastsh48 && lastsh48 );
 		lastsh48 = sh48;
 
 		// now for every docid we index one sectiondb key with a 
@@ -11997,7 +11986,7 @@ bool SectionVotingTable::addListOfVotes ( RdbList *list,
 			m_totalSiteVoters++;
 			//log("sect: got site voter");
 			// sanity check - make sure only one per docid
-			if ( d == lastDocId ) { char *xx=NULL;*xx=0; }
+			gbassert( d != lastDocId );
 			lastDocId = d;
 			continue;
 		}
@@ -12156,21 +12145,15 @@ void Sections::setNextBrotherPtrs ( bool setContainer ) {
 		// give up?
 		if ( ! sj || sj->m_parent != si->m_parent ) continue;
 		// sanity check
-		if ( sj->m_a < si->m_b && 
-		     sj->m_tagId != TAG_TC &&
-		     si->m_tagId != TAG_TC ) {
-			char *xx=NULL;*xx=0; }
+		gbassert_false( sj->m_a < si->m_b && sj->m_tagId != TAG_TC && si->m_tagId != TAG_TC );
 		// set brother
 		si->m_nextBrother = sj;
 		// set his prev then
 		sj->m_prevBrother = si;
 		// sanity check
-		if ( sj->m_parent != si->m_parent ) { char *xx=NULL;*xx=0; }
+		gbassert( sj->m_parent == si->m_parent );
 		// sanity check
-		if ( sj->m_a < si->m_b &&
-		     sj->m_tagId != TAG_TC &&
-		     si->m_tagId != TAG_TC ) { 
-			char *xx=NULL;*xx=0; }
+		gbassert_false( sj->m_a < si->m_b && sj->m_tagId != TAG_TC && si->m_tagId != TAG_TC );
 		// do more?
 		if ( ! setContainer ) continue;
 		// telescope this
@@ -12250,7 +12233,7 @@ bool SectionVotingTable::addVote3 ( int32_t        turkTagHash ,
 	//vk |= sectionType;
 
 	// sanity
-	if ( sectionType < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert( sectionType >= 0 );
 
 	// print out for debug
 	//log("section: adding vote #%" INT32 ") th=%" UINT32 "-%" INT32 "",
@@ -12378,7 +12361,7 @@ float SectionVotingTable::getNumSampled ( int32_t turkTagHash, int32_t sectionTy
 	//   time the tagHash or contentHash occurs on the page.
 	//if ( nsv ) numSampled++;
 	// sanity check
-	if ( numSampled <= 0.0 ) { char *xx=NULL;*xx=0; }
+	gbassert( numSampled > 0.0 );
 	// normalize
 	return numSampled;
 }
@@ -12468,10 +12451,10 @@ bool SectionVotingTable::hash ( int64_t docId ,
 	//}
 
 	// sanity check
-	if ( dt->m_ks != sizeof(key128_t)    ) { char *xx=NULL;*xx=0; }
-	if ( dt->m_ds != sizeof(SectionVote) ) { char *xx=NULL;*xx=0; }
+	gbassert( dt->m_ks == sizeof(key128_t)    );
+	gbassert( dt->m_ds == sizeof(SectionVote) );
 	// sanity check
-	if ( getKeySizeFromRdbId ( RDB_SECTIONDB ) != 16 ){char*xx=NULL;*xx=0;}
+	gbassert( getKeySizeFromRdbId ( RDB_SECTIONDB ) == 16 );
 	// if we did not have enough voters from our site with our same
 	// page layout, then wait in line. when we get enough such voters
 	// we will be respidered quickly theoretically.
@@ -12516,8 +12499,8 @@ bool SectionVotingTable::hash ( int64_t docId ,
 		int32_t sectionType = vk >> 32;
 		//int32_t sectionType = vk & 0xffffffff;
 		// sanity check
-		if ( sectionType > 255 ) { char *xx=NULL;*xx=0; }
-		if ( sectionType < 0   ) { char *xx=NULL;*xx=0; }
+		gbassert( sectionType <= 255 );
+		gbassert( sectionType >= 0   );
 		// and tagHash from key
 		uint32_t secHash32 = vk & 0xffffffff;
 		// check for "what"
@@ -12534,12 +12517,12 @@ bool SectionVotingTable::hash ( int64_t docId ,
 		// the data of the record is just the SectionVote
 		SectionVote *sv = (SectionVote *)m_svt.getValueFromSlot(i);
 		// sanity check. this is reserved for line waiters i guess
-		if ( sv->m_numSampled == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( sv->m_numSampled != 0 );
 		// sanity check
 		uint64_t sh = g_datedb.getTermId(&k);
-		if ( sh != termId ) { char *xx=NULL;*xx=0; }
+		gbassert( sh == termId );
 		int64_t d = g_datedb.getDocId(&k);
-		if ( d != docId   ) { char *xx=NULL;*xx=0; }
+		gbassert( d == docId   );
 		// this returns false and sets g_errno on error
 		if ( ! dt->addKey ( &k , sv ) ) return false;
 		// log this for now! last hash is the date format hash!
@@ -13413,7 +13396,7 @@ void Sections::printFlags ( SafeBuf *sbuf , Section *sn , bool justEvents ) {
 			sbuf->safePrintf("<b>impliedsec</b> ");
 		//else if ( sn->m_baseHash == BH_IMPLIED_LIST )
 		//	sbuf->safePrintf("<b>impliedLIST</b> ");
-		else { char *xx=NULL;*xx=0; }
+		else { gbassert(false); }
 	}
 
 	if ( f & SEC_SPLIT_SENT )
@@ -13509,7 +13492,7 @@ char *getSectionTypeAsStr ( int32_t sectionType ) {
 	if ( sectionType == SV_PAST_DATE         ) return "pastdate";
 	if ( sectionType == SV_SITE_VOTER        ) return "sitevoter";
 	// sanity check
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return "unknown";
 }
 /*
@@ -14356,7 +14339,7 @@ void Sections::setHeader ( int32_t r , Section *first , sec_t flag ) {
 	}
 
 	// strange?
-	if ( ! sr ) { char *xx=NULL;*xx=0; }
+	gbassert( sr );
 	// scan until outside biggest
 	int32_t lastb = biggest->m_b;
 	// . make sure sr does not contain any list in it
@@ -14668,7 +14651,7 @@ void Sections::setTagHashes ( ) {
 		int64_t bh = (int64_t)sn->m_baseHash;
 		//int64_t fh = sn->m_tagId;
 		// sanity check
-		if ( bh == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( bh != 0 );
 		// if no parent, use initial values
 		if ( ! sn->m_parent ) {
 			sn->m_depth   = 0;
@@ -14677,11 +14660,11 @@ void Sections::setTagHashes ( ) {
 			//sn->m_turkTagHash32 = bh;
 			//sn->m_formatHash = fh;
 			// sanity check
-			if ( bh == 0 ) { char *xx=NULL;*xx=0; }
+			gbassert( bh != 0 );
 			continue;
 		}
 		// sanity check
-		if ( sn->m_parent->m_tagHash == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert( sn->m_parent->m_tagHash != 0 );
 
 		// . update the cumulative front tag hash
 		// . do not include hyperlinks as part of the cumulative hash!
@@ -15288,8 +15271,8 @@ bool Sections::print2 ( SafeBuf *sbuf ,
 		QUICKPOLL ( m_niceness );
 		// get section
 		Section *sn = m_sectionPtrs[i];
-		if ( sn->m_a >  i ) { char *xx=NULL;*xx=0; }
-		if ( sn->m_b <= i ) { char *xx=NULL;*xx=0; }
+		gbassert( sn->m_a <=  i );
+		gbassert( sn->m_b > i );
 	}
 
 
@@ -15398,7 +15381,7 @@ bool Sections::print2 ( SafeBuf *sbuf ,
 		int32_t a = sn->m_a;
 		int32_t b = sn->m_b;
 		// -1 means an unclosed tag!! should no longer be the case
-		if ( b == -1 ) { char *xx=NULL;*xx=0; }//b=m_words->m_numWords;
+		gbassert( b != -1 );
 		sbuf->safePrintf("</nobr></td>");
 
 		sbuf->safePrintf("<td>&nbsp;</td>");
@@ -15899,15 +15882,13 @@ bool Sections::verifySections ( ) {
 	// make sure we map each word to a section that contains it at least
 	for ( int32_t i = 0 ; i < m_nw ; i++ ) {
 		Section *si = m_sectionPtrs[i];
-		if ( si->m_a >  i ) { char *xx=NULL;*xx=0; }
-		if ( si->m_b <= i ) { char *xx=NULL;*xx=0; }
+		gbassert( si->m_a <=  i );
+		gbassert( si->m_b > i );
 		// must have checksum
-		if ( m_wids[i] && si->m_contentHash64==0){char *xx=NULL;*xx=0;}
+		gbassert_false( m_wids[i] && si->m_contentHash64==0);
 		// must have this set if 0
-		if ( ! si->m_contentHash64 && !(si->m_flags & SEC_NOTEXT)) {
-			char *xx=NULL;*xx=0;}
-		if (   si->m_contentHash64 &&  (si->m_flags & SEC_NOTEXT)) {
-			char *xx=NULL;*xx=0;}
+		gbassert_false( ! si->m_contentHash64 && !(si->m_flags & SEC_NOTEXT));
+		gbassert_false(   si->m_contentHash64 &&  (si->m_flags & SEC_NOTEXT));
 	}
 
 	for ( Section *sn = m_rootSection ; sn ; sn = sn->m_next ) 
@@ -15927,8 +15908,8 @@ bool Sections::verifySections ( ) {
 		// skip if no parent
 		if ( ! sp ) continue;
 		// make sure parent fully contains
-		if ( sp->m_a > sn->m_a ) { char *xx=NULL;*xx=0; }
-		if ( sp->m_b < sn->m_b ) { char *xx=NULL;*xx=0; }
+		gbassert( sp->m_a <= sn->m_a );
+		gbassert( sp->m_b >= sn->m_b );
 		// breathe
 		QUICKPOLL ( m_niceness );
 		// and make sure every grandparent fully contains us too!
@@ -15939,7 +15920,7 @@ bool Sections::verifySections ( ) {
 	// sanity check
 	for ( int32_t i = 0 ; i < m_numSections ; i++ ) {
 		Section *sn = &m_sections[i];
-		if ( sn->m_a >= sn->m_b ) { char *xx=NULL;*xx=0; }
+		gbassert( sn->m_a < sn->m_b );
 	}
 
 	// sanity check, make sure each section is contained by the
@@ -15981,15 +15962,15 @@ bool Sections::verifySections ( ) {
 				if ( ps == si ) break;
 			// must have had us
 			if ( ps ) continue;
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 	}
 	
 	// make sure we map each word to a section that contains it at least
 	for ( int32_t i = 0 ; i < m_nw ; i++ ) {
 		Section *si = m_sectionPtrs[i];
-		if ( si->m_a >  i ) { char *xx=NULL;*xx=0; }
-		if ( si->m_b <= i ) { char *xx=NULL;*xx=0; }
+		gbassert( si->m_a <=  i );
+		gbassert( si->m_b > i );
 	}
 
 	return true;
@@ -16503,7 +16484,7 @@ bool Sections::setRegistrationBits ( ) {
 		// that should be good enough...
 		sk = lastsk;
 		// sanity check
-		if ( ! sk ) { char *xx=NULL;*xx=0; }
+		gbassert( sk );
 
 
 		// int16_tcut
@@ -16777,7 +16758,7 @@ uint32_t getSectionContentTagHash3 ( Section *sn ) {
 // use that crap as titles.
 bool Sections::setFormTableBits ( ) {
 
-	if ( ! m_alnumPosValid ) { char *xx=NULL;*xx=0; }
+	gbassert( m_alnumPosValid );
 
 	sec_t sdf = SEC_HAS_DOM|SEC_HAS_MONTH|SEC_HAS_DOW|SEC_HAS_TOD;
 	// scan all sentences
@@ -16851,7 +16832,7 @@ bool Sections::setFormTableBits ( ) {
 // just loop over Addresses::m_sortedPlaces
 void Sections::setAddrXors ( Addresses *aa ) {
 	// sanity check
-	if ( ! aa->m_sortedValid ) { char *xx=NULL;*xx=0; }
+	gbassert( aa->m_sortedValid );
 	// loop over the places, sorted by Place::m_a
 	int32_t np = aa->m_numSorted;
 	for ( int32_t i = 0 ; i < np ; i++ ) {
@@ -16881,9 +16862,7 @@ void Sections::setAddrXors ( Addresses *aa ) {
 			// sanity check
 			//if ( ! ad->m_adm1Bits ||
 			//     ! ad->m_cityHash ) {
-			if ( ! ad->m_cityId32 ) {
-				//! ad->m_adm1->m_cid  ) {
-				char *xx=NULL;*xx=0; }
+			gbassert( ad->m_cityId32 );
 		}
 		// get first section containing place #i
 		Section *sp = m_sectionPtrs[p->m_a];
@@ -17117,7 +17096,7 @@ bool Sections::setTableHeaderBits ( Section *ts ) {
 			// . store hash of all words, value is ptr to it
 			// . put all exact matches into ti1 and the substring
 			//   matches into ti2
-			if ( ! s_ft.addKey ( &h , &s ) ) {char *xx=NULL;*xx=0;}
+			gbassert( s_ft.addKey ( &h , &s ) );
 		}
 	}
 
