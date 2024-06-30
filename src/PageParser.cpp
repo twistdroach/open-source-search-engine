@@ -471,6 +471,15 @@ bool sendPageParser2 ( TcpSocket   *s ,
 	// just print the page if no url given
 	if ( ! st->m_u || ! st->m_u[0] ) return processLoop ( st );
 
+    /* If the url does not start with http or https, SpiderRequest::isCorrupt() will return true
+     * without setting g_errno which then caused an assert. */
+    bool isValid = (bool)strstr(st->m_u,"http://") || (bool)strstr(st->m_u,"https://");
+    if ( !isValid ) {
+        xbuf->safePrintf("<br><br><b>Error: url must start with 'http://' or https://</b>");
+        st->m_u = NULL;
+        return processLoop ( st );
+    }
+
 
 	XmlDoc *xd = &st->m_xd;
 	// set this up
