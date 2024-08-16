@@ -7,6 +7,8 @@
 #include "sort.h"
 #include "Users.h"
 
+#include "inja.hpp"
+
 static int defaultSort    ( const void *i1, const void *i2 );
 static int pingSort1      ( const void *i1, const void *i2 );
 static int pingSort2      ( const void *i1, const void *i2 );
@@ -148,9 +150,12 @@ skipReplaceHost:
 			  cs);
 	}
 
+    inja::json j;
+    j["title"] = "test";
 	// print host table
 	if ( format == FORMAT_HTML )
-		sb.safePrintf ( 
+		sb.safePrintf (
+                inja::render("This is a {{title}}<br>"
 			       "<table %s>"
 			       "<tr><td colspan=%s><center>"
 			       //"<font size=+1>"
@@ -268,7 +273,7 @@ skipReplaceHost:
 			       //"<td><b>inSync</td>",
 			       //"<td>avg roundtrip</td>"
 			       //"<td>std. dev.</td></tr>"
-			       "<td><b>note</b></td>",
+			       "<td><b>note</b></td>", j).c_str(),
 			       TABLE_STYLE ,
 			       colspan    ,
 

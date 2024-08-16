@@ -17,13 +17,13 @@ This does not build on ARM and does not work correctly on modern versions of Mac
 
 ## Debian or Ubuntu
 ```
-sudo apt-get install make g++ libssl-dev libz-dev
+sudo apt-get install make g++ libssl-dev libz-dev cmake
 ```
 
 ## RedHat or AlmaLinux
 I haven't tried this lately...
 ```
-sudo yum install gcc-c++ openssl-devel
+sudo yum install gcc-c++ openssl-devel cmake
 ```
 
 # Issues & Pull Requests
@@ -32,3 +32,7 @@ Should be filed at https://github.com/twistdroach/open-source-search-engine
 # Documentation
 There are various docs located in the html directory.  The FAQ & developer.html are particularly interesting.
 
+# External
+These are external libraries used by OSSE:
+ * [Inja template engine](https://github.com/pantor/inja)
+ * [JSON for Modern C++](https://github.com/nlohmann/json)

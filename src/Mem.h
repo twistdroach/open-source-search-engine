@@ -183,10 +183,13 @@ inline bool relabel   ( void *ptr , int32_t size , const char *note ) {
 void operator delete ( void *p ) throw();
 void * operator new (size_t size) noexcept(false);
 // you MUST call mmalloc, mcalloc and mrealloc!!
-#define malloc coreme 
-#define calloc coreme 
-#define realloc coreme 
+#define malloc coreme
+#define calloc coreme
+#define realloc coreme
 inline void *coreme ( int x ) { gbassert(false); return NULL; }
+namespace std {
+inline void *coreme ( int x ) { raise(SIGSEGV); return NULL; }
+}
 
 int32_t getAllocSize(void *p);
 

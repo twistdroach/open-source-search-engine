@@ -21,6 +21,7 @@ find_package(ZLIB REQUIRED)
 find_package(Iconv REQUIRED)
 
 add_library(osse STATIC ${SRC_FILES})
+target_include_directories(osse PRIVATE extern)
 target_link_libraries(osse OpenSSL::SSL ZLIB::ZLIB Iconv::Iconv)
 
 add_executable(gb src/main.cpp)
