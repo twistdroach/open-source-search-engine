@@ -12,22 +12,46 @@ If you wish to preserve data between runs, you can:
 docker run -p 8000:8000 -it --rm -v $(pwd)/data:/var/gigablast/data0 moldybits/open-source-search-engine
 ```
 
+# Major changes in this fork
+* cleanup! - Moved sources that are actually used into `src` dir.  Everything else has been stuffed in the `junkdrawer` dir.
+* More cleanup - formatting, removing TONS of commented code, fixing some segfaults.  This is ongoing...
+* I have replaced the original `Makefile` with CMake.  This now installs the correct files required so you can execute `./gb` in the `build` directory and run a test server there without it borking your source dir.
+* Stubbed out some testing functionality for building tests if this ever gets cleaned up enough to start making "real" changes.
+
 # Building
 This does not build on ARM and does not work correctly on modern versions of MacOS, though it looks like there once was support at one point in time.
 
-## Debian or Ubuntu
+### Install Catch2
 ```
-sudo apt-get install make g++ libssl-dev libz-dev
+git clone https://github.com/catchorg/Catch2.git
+cd Catch2
+cmake -Bbuild -H. -DBUILD_TESTING=OFF
+sudo cmake --build build/ --target install
 ```
 
-## RedHat or AlmaLinux
-I haven't tried this lately...
+### Debian or Ubuntu
 ```
-sudo yum install gcc-c++ openssl-devel
+sudo apt-get install make g++ libssl-dev libz-dev cmake
+```
+
+### RedHat or AlmaLinux
+Last tried with AlmaLinux 9
+```
+sudo yum install gcc-c++ openssl-devel libz-devel cmake
+```
+
+### Build
+```
+cd open-source-search-engine
+cmake -Bbuild
+cmake --build build/
 ```
 
 # Issues & Pull Requests
 Should be filed at https://github.com/twistdroach/open-source-search-engine
+
+# Testing
+Tests can be put in the tests directory.  I have written a few simple examples just to make sure it (mostly) works.
 
 # Documentation
 There are various docs located in the html directory.  The FAQ & developer.html are particularly interesting.
