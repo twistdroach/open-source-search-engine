@@ -20,7 +20,6 @@ static int errorsSort     ( const void *i1, const void *i2 );
 static int tryagainSort   ( const void *i1, const void *i2 );
 static int dgramsToSort   ( const void *i1, const void *i2 );
 static int dgramsFromSort ( const void *i1, const void *i2 );
-//static int loadAvgSort    ( const void *i1, const void *i2 );
 static int memUsedSort    ( const void *i1, const void *i2 );
 static int cpuUsageSort   ( const void *i1, const void *i2 );
 static int diskUsageSort  ( const void *i1, const void *i2 );
@@ -34,15 +33,11 @@ int32_t generatePingMsg( Host *h, int64_t nowms, char *buffer );
 bool sendPageHosts ( TcpSocket *s , HttpRequest *r ) {
 	// don't allow pages bigger than 128k in cache
 	char  buf [ 64*1024 ];
-	//char *p    = buf;
-	//char *pend = buf + 64*1024;
 	SafeBuf sb(buf, 64*1024);
 
 
 	// XML OR JSON
 	 char format = r->getReplyFormat();
-	// if ( format == FORMAT_XML || format == FORMAT_JSON )
-	// 	return sendPageHostsInXmlOrJson( s , r );
 
 
 	// check for a sort request
@@ -97,7 +92,6 @@ bool sendPageHosts ( TcpSocket *s , HttpRequest *r ) {
 		if ( syncHost == -1 ) goto skipReplaceHost;
 		// call sync
 		g_hostdb.syncHost(syncHost, false);
-		//g_syncdb.syncHost ( syncHost );
 	}
 	if ( syncHost == 2 ) {
 		// get the host id to sync
@@ -105,7 +99,6 @@ bool sendPageHosts ( TcpSocket *s , HttpRequest *r ) {
 		if ( syncHost == -1 ) goto skipReplaceHost;
 		// call sync
 		g_hostdb.syncHost(syncHost, true);
-		//g_syncdb.syncHost ( syncHost );
 	}
 
 skipReplaceHost:
@@ -116,24 +109,8 @@ skipReplaceHost:
 			      "content=\"%" INT32 "\"\\>", 
 			      refreshRate);
 
-	// ignore
-	//char *username = g_users.getUsername ( r );
-	//char *password = NULL;
-	//User *user = NULL;
-	//if ( username ) user = g_users.getUser (username );
-	//if ( user     ) password = user->m_password;
-	//if ( ! password ) password = "";
-	//if ( ! username ) username = "";
-
-	// print standard header
-	// 	char *pp    = sb.getBuf();
-	// 	char *ppend = sb.getBufEnd();
-	// 	if ( pp ) {
 	if ( format == FORMAT_HTML ) g_pages.printAdminTop ( &sb , s , r );
-	//	sb.incrementLength ( pp - sb.getBuf() );
-	//	}
 	char *colspan = "30";
-	//char *shotcol = "";
 	char shotcol[1024];
 	shotcol[0] = '\0';
 	char *cs = coll;
@@ -153,84 +130,21 @@ skipReplaceHost:
 		sb.safePrintf ( 
 			       "<table %s>"
 			       "<tr><td colspan=%s><center>"
-			       //"<font size=+1>"
 			       "<b>Hosts "
 			       "(<a href=\"/admin/hosts?c=%s&sort=%" INT32 "&resetstats=1\">"
 			       "reset)</a></b>"
-			       //"</font>"
-			       "</td></tr>" 
+			       "</td></tr>"
 			       "<tr bgcolor=#%s>"
 			       "<td><a href=\"/admin/hosts?c=%s&sort=0\">"
-
 			       "<b>hostId</b></a></td>"
 			       "<td><b>host ip</b></td>"
 			       "<td><b>shard</b></td>"
 			       "<td><b>mirror</b></td>" // mirror # within the shard
-
-			       // i don't remember the last time i used this, so let's
-			       // just comment it out to save space
-			       //"<td><b>group mask</td>"
-
-			       //"<td><b>ip1</td>"
-			       //"<td><b>ip2</td>"
-			       //"<td><b>udp port</td>"
-
-			       // this is now more or less obsolete
-			       //"<td><b>priority udp port</td>"
-
-			       //"<td><b>dns client port</td>"
 			       "<td><b>http port</b></td>"
-
-			       // this is now obsolete since ide channel is. it was used
-			       // so that only the guy with the token could merge,
-			       // and it made sure that only one merge per ide channel
-			       // and per group was going on at any one time for performance
-			       // reasons.
-			       //"<td><b>token group</td>"
-
-			       //"<td><b>best switch id</td>"
-			       //"<td><b>actual switch id</td>"
-			       //"<td><b>switch id</td>"
-
-			       // this is now fairly obsolete
-			       //"<td><b>ide channel</td>"
-
-			       //"<td><b>HD temps (C)</b></td>"
 			       "<td><b>GB version</b></td>"
-
-			       //"<td><b>resends sent</td>"
-			       //"<td><b>errors recvd</td>"
 			       "<td><b>try agains sent</b></td>"
-
 			       "<td><a href=\"/admin/hosts?c=%s&sort=3\">"
 			       "<b>dgrams resent</b></a></td>"
-
-			       /*
-
-				 MDW: take out for adding new stuff
-
-			       "<td><a href=\"/admin/hosts?c=%s&sort=4\">"
-			       "<b>errors recvd</a></td>"
-			       "<td><a href=\"/admin/hosts?c=%s&sort=5\">"
-			       "<b>ETRY AGAINS recvd</a></td>"
-
-			       "<td><a href=\"/admin/hosts?c=%s&sort=6\">"
-			       "<b>dgrams to</a></td>"
-			       "<td><a href=\"/admin/hosts?c=%s&sort=7\">"
-			       "<b>dgrams from</a></td>"
-			       */
-
-			       // "<td><a href=\"/admin/hosts?c=%s&sort=18\">"
-			       // "<b>corrupts</a></td>"
-			       // "<td><a href=\"/admin/hosts?c=%s&sort=19\">"
-			       // "<b># ooms</a></td>"
-			       // "<td><a href=\"/admin/hosts?c=%s&sort=20\">"
-			       // "<b>socks closed</a></td>"
-
-
-			       //"<td><a href=\"/admin/hosts?c=%s&sort=8\">"
-			       //"<b>loadavg</a></td>"
-
 
 			       "<td><a href=\"/admin/hosts?c=%s&sort=13\">"
 			       "<b>avg split time</b></a></td>"
@@ -260,14 +174,10 @@ skipReplaceHost:
 			       "<td><a href=\"/admin/hosts?c=%s&sort=11\">"
 			       "<b>ping1 age</b></a></td>"
 
-			       //"<td><b>ip1</td>"
 			       "<td><a href=\"/admin/hosts?c=%s&sort=1\">"
 			       "<b>ping1</b></a></td>"
 
 			       "%s"// "<td><b>ip2</td>"
-			       //"<td><b>inSync</td>",
-			       //"<td>avg roundtrip</td>"
-			       //"<td>std. dev.</td></tr>"
 			       "<td><b>note</b></td>",
 			       TABLE_STYLE ,
 			       colspan    ,
@@ -319,7 +229,6 @@ skipReplaceHost:
 	case 5: gbsort ( hostSort, nh, sizeof(int32_t), tryagainSort   ); break;
 	case 6: gbsort ( hostSort, nh, sizeof(int32_t), dgramsToSort   ); break;
 	case 7: gbsort ( hostSort, nh, sizeof(int32_t), dgramsFromSort ); break;
-	//case 8: gbsort ( hostSort, nh, sizeof(int32_t), loadAvgSort    ); break;
 	case 9: gbsort ( hostSort, nh, sizeof(int32_t), memUsedSort    ); break;
 	case 10:gbsort ( hostSort, nh, sizeof(int32_t), cpuUsageSort   ); break;
 	case 11:gbsort ( hostSort, nh, sizeof(int32_t), pingAgeSort    ); break;
@@ -331,15 +240,6 @@ skipReplaceHost:
 	case 17:gbsort ( hostSort, nh, sizeof(int32_t), diskUsageSort   ); break;
 
 	}
-
-	// we are the only one that uses these flags, so set them now
-	/*
-	static char s_properSet = 0;
-	if ( ! s_properSet ) {
-		s_properSet = 1;
-		g_hostdb.setOnProperSwitchFlags();
-	}
-	*/
 
 	if ( format == FORMAT_XML ) {
 		sb.safePrintf("<response>\n");
@@ -364,7 +264,7 @@ skipReplaceHost:
 		int32_t i = hostSort[si];
 		// get the ith host (hostId)
 		Host *h = g_hostdb.getHost ( i );
-		char *vbuf = h->m_pingInfo.m_gbVersionStr;//gbVersionStrBuf;
+		char *vbuf = h->m_pingInfo.m_gbVersionStr;
 		int32_t vhash32 = hash32n ( vbuf );
 		if ( vhash32 == majorityHash32 ) lastCount++;
 		else lastCount--;
@@ -373,16 +273,13 @@ skipReplaceHost:
 
 
 	// print it
-	//int32_t ng = g_hostdb.getNumGroups();
 	for ( int32_t si = 0 ; si < nh ; si++ ) {
 		int32_t i = hostSort[si];
 		// get the ith host (hostId)
 		Host *h = g_hostdb.getHost ( i );
 		// get avg/stdDev msg roundtrip times in ms for ith host
-		//int32_t avg , stdDev;
-		//g_hostdb.getTimes ( i , &avg , &stdDev );
-                char ptr[256];
-                int32_t pingAge = generatePingMsg(h, nowmsLocal, ptr);
+        char ptr[256];
+        int32_t pingAge = generatePingMsg(h, nowmsLocal, ptr);
 		char pms[64];
 		if ( h->m_pingMax < 0 ) sprintf(pms,"???");
 		else                    sprintf(pms,"%" INT32 "ms",h->m_pingMax);
@@ -400,22 +297,7 @@ skipReplaceHost:
 		strcpy(ipbuf1,iptoa(h->m_ip));
 		strcpy(ipbuf2,iptoa(h->m_ipShotgun));
 
-		/*
-		char  hdbuf[128];
-		char *hp = hdbuf;
-		for ( int32_t k = 0 ; k < 4 ; k++ ) {
-			int32_t temp = h->m_hdtemps[k];
-			if ( temp > 50 && format == FORMAT_HTML )
-				hp += sprintf(hp,"<font color=red><b>%" INT32 ""
-					      "</b></font>",
-					      temp);
-			else
-				hp += sprintf(hp,"%" INT32 "",temp);
-			if ( k < 3 ) *hp++ = '/';
-			*hp = '\0';
-		}
-		*/
-		char *vbuf = h->m_pingInfo.m_gbVersionStr;//m_gbVersionStrBuf;
+		char *vbuf = h->m_pingInfo.m_gbVersionStr;
 		// get hash
 		int32_t vhash32 = hash32n ( vbuf );
 		char *vbuf1 = "";
@@ -424,18 +306,6 @@ skipReplaceHost:
 			vbuf1 = "<font color=red><b>";
 			vbuf2 = "</font></b>";
 		}
-
-		//int32_t switchGroup = 0;
-		//if ( g_hostdb.m_indexSplits > 1 )
-		//	switchGroup = h->m_group%g_hostdb.m_indexSplits;
-
-		// the switch id match
-		//char tmpN[256];
-		//if ( ! h->m_onProperSwitch )
-		//	sprintf(tmpN, "<font color=#ff0000><b>%" INT32 "</b></font>",
-		//		(int32_t)h->m_switchId);
-		//else
-		//	sprintf(tmpN, "%" INT32 "", (int32_t)h->m_switchId);
 
 		// host can have 2 ip addresses, get the one most
 		// similar to that of the requester
@@ -469,11 +339,8 @@ skipReplaceHost:
 		if ( h->m_splitsDone ) 
 			splitTime = h->m_splitTimes / h->m_splitsDone;
 
-		//char flagString[32];
 		char tmpfb[64];
 		SafeBuf fb(tmpfb,64);
-		//char *fs = flagString;
-		//*fs = '\0';
 
 		// does its hosts.conf file disagree with ours?
 		if ( h->m_pingInfo.m_hostsConfCRC &&
@@ -681,17 +548,10 @@ skipReplaceHost:
 			sb.safePrintf("\t\t<dnsPort>%" INT32 "</dnsPort>\n",
 				      (int32_t)h->m_dnsClientPort);
 
-			//sb.safePrintf("\t\t<hdTemp>%s</hdTemp>\n",hdbuf);
 			sb.safePrintf("\t\t<gbVersion>%s</gbVersion>\n",vbuf);
 
 			sb.safePrintf("\t\t<resends>%" INT32 "</resends>\n",
 				      h->m_pingInfo.m_totalResends);
-
-			/*
-			  MDW: take out for new stuff
-			sb.safePrintf("\t\t<errorReplies>%" INT32 "</errorReplies>\n",
-				      h->m_errorReplies);
-			*/
 
 			sb.safePrintf("\t\t<errorTryAgains>%" INT32 ""
 				      "</errorTryAgains>\n",
@@ -704,13 +564,6 @@ skipReplaceHost:
 			sb.safePrintf("\t\t<tcpSocketsInUse>%" INT32 ""
 				      "</tcpSocketsInUse>\n",
 				      h->m_pingInfo.m_tcpSocketsInUse);
-
-			/*
-			sb.safePrintf("\t\t<dgramsTo>%"INT64"</dgramsTo>\n",
-				      h->m_dgramsTo);
-			sb.safePrintf("\t\t<dgramsFrom>%"INT64"</dgramsFrom>\n",
-				      h->m_dgramsFrom);
-			*/
 
 			sb.safePrintf("\t\t<numCorruptDiskReads>%" INT32 ""
 				      "</numCorruptDiskReads>\n"
@@ -725,7 +578,6 @@ skipReplaceHost:
 			sb.safePrintf("\t\t<numOutstandingSpiders>%" INT32 ""
 				      "</numOutstandingSpiders>\n"
 				      ,h->m_pingInfo.m_currentSpiders );
-
 
 			sb.safePrintf("\t\t<splitTime>%" INT32 "</splitTime>\n",
 				      splitTime);
@@ -805,30 +657,17 @@ skipReplaceHost:
 			sb.safePrintf("\t\t\"dnsPort\":%" INT32 ",\n",
 				      (int32_t)h->m_dnsClientPort);
 
-			//sb.safePrintf("\t\t\"hdTemp\":\"%s\",\n",hdbuf);
 			sb.safePrintf("\t\t\"gbVersion\":\"%s\",\n",vbuf);
 
 			sb.safePrintf("\t\t\"resends\":%" INT32 ",\n",
 				      h->m_pingInfo.m_totalResends);
 
-			/*
-			sb.safePrintf("\t\t\"errorReplies\":%" INT32 ",\n",
-				      h->m_errorReplies);
-			*/
 			sb.safePrintf("\t\t\"errorTryAgains\":%" INT32 ",\n",
 				      h->m_pingInfo.m_etryagains);
 			sb.safePrintf("\t\t\"udpSlotsInUse\":%" INT32 ",\n",
 				      h->m_pingInfo.m_udpSlotsInUseIncoming);
 			sb.safePrintf("\t\t\"tcpSocketsInUse\":%" INT32 ",\n",
 				      h->m_pingInfo.m_tcpSocketsInUse);
-
-			/*
-			sb.safePrintf("\t\t\"dgramsTo\":%"INT64",\n",
-				      h->m_dgramsTo);
-			sb.safePrintf("\t\t\"dgramsFrom\":%"INT64",\n",
-				      h->m_dgramsFrom);
-			*/
-
 
 			sb.safePrintf("\t\t\"numCorruptDiskReads\":%" INT32 ",\n"
 				      ,h->m_pingInfo.m_numCorruptDiskReads);
@@ -840,7 +679,6 @@ skipReplaceHost:
 			sb.safePrintf("\t\t\"numOutstandingSpiders\":%" INT32 ""
 				      ",\n"
 				      ,h->m_pingInfo.m_currentSpiders );
-
 
 			sb.safePrintf("\t\t\"splitTime\":%" INT32 ",\n",
 				      splitTime);
@@ -881,8 +719,6 @@ skipReplaceHost:
 			sb.safePrintf("\t\t\"query\":\"%" INT32 "\"\n",
 						  (int32_t)h->m_queryEnabled );
 
-
-            
 			sb.safePrintf("\t},\n");
 
 			continue;
@@ -903,17 +739,8 @@ skipReplaceHost:
 
 			  "<td>%" INT32 "</td>" // group
 			  "<td>%" INT32 "</td>" // stripe
-			  //"<td>0x%08"XINT32"</td>" // group mask
 
-			  //"<td>%s</td>" // ip1
-			  //"<td>%s</td>" // ip2
-			  //"<td>%hi</td>" // port
-			  //"<td>%hi</td>" // client port
 			  "<td>%hi</td>" // http port
-			  //"<td>%" INT32 "</td>" // token group num
-			  //"<td>%" INT32 "</td>" // switch group
-			  //"<td>%s</td>" // tmpN
-			  //"<td>%" INT32 "</td>" // ide channel
 
 			  // hd temps
 			  // no, this is gb version now
@@ -922,19 +749,8 @@ skipReplaceHost:
 			  // resends
 			  "<td>%" INT32 "</td>"
 
-			  // error replies
-			  //"<td>%" INT32 "</td>"
-
 			  // etryagains
 			  "<td>%" INT32 "</td>"
-
-			  // # dgrams sent to
-			  //"<td>%"INT64"</td>"
-			  // # dgrams recvd from
-			  //"<td>%"INT64"</td>"
-
-			  // loadavg
-			  //"<td>%.2f</td>"
 
 			  // split time
 			  "<td>%" INT32 "</td>"
@@ -965,8 +781,6 @@ skipReplaceHost:
 
 			  // ping
 			  "<td>%s</td>"
-			  //"<td>%s</td>"
-			  //"<td>%" INT32 "ms</td>"
 			  "<td nowrap=1>%s</td>"
 			  "</tr>" , 
 			  bg,//LIGHT_BLUE ,
@@ -976,43 +790,28 @@ skipReplaceHost:
 			  h->m_hostname,
 			  (int32_t)h->m_shardNum,//group,
 			  h->m_stripe,
-			  // group mask is not looked at a lot and is
-			  // really only for indexdb and a few other rdbs
-			  //g_hostdb.makeGroupId(i,ng) ,
-			  //ipbuf1,
-			  //ipbuf2,
-			  //h->m_port , 
-			  //h->m_dnsClientPort ,
 			  h->m_httpPort ,
-			  //h->m_tokenGroupNum,
-			  //switchGroup ,
-			  //tmpN,
-			  //h->m_ideChannel,
 			  vbuf1,
-			  vbuf,//hdbuf,
+			  vbuf,
 			  vbuf2,
 
 			  h->m_pingInfo.m_totalResends,
 
 
-			  // h->m_errorReplies,
 			  h->m_pingInfo.m_etryagains,
-			  // h->m_dgramsTo,
-			  // h->m_dgramsFrom,
 
-			  //h->m_loadAvg, // double
 			  splitTime,
 			  h->m_splitsDone,
 
-			  fb.getBufStart(),//flagString,
+			  fb.getBufStart(),
 
 			  h->m_pingInfo.m_slowDiskReads,
 			  h->m_pingInfo.m_totalDocsIndexed,
 
 			  fontTagFront,
-			  h->m_pingInfo.m_percentMemUsed, // float
+			  h->m_pingInfo.m_percentMemUsed,
 			  fontTagBack,
-			  cpu, // float
+			  cpu,
 			  diskUsageMsg,
 
 			  // ping max
@@ -1020,11 +819,7 @@ skipReplaceHost:
 			  // ping age
 			  pingAge,
 
-			  //avg , 
-			  //stdDev,
-			  //ping,
 			  ptr ,
-			  //ptr2 ,
 			  h->m_note );
 	}
 
@@ -1061,24 +856,14 @@ skipReplaceHost:
 		sb.safePrintf ( 
 					   "<table %s>"
 					   "<tr class=hdrow><td colspan=10><center>"
-					   //"<font size=+1>"
 					   "<b>Spares</b>"
-					   //"</font>"
-					   "</td></tr>" 
+					   "</td></tr>"
 					   "<tr bgcolor=#%s>"
 					   "<td><b>spareId</td>"
 					   "<td><b>host name</td>"
 					   "<td><b>ip1</td>"
 					   "<td><b>ip2</td>"
-					   //"<td><b>udp port</td>"
-					   //"<td><b>priority udp port</td>"
-					   //"<td><b>dns client port</td>"
 					   "<td><b>http port</td>"
-					   //"<td><b>switch id</td>"
-
-					   // this is now fairly obsolete
-					   //"<td><b>ide channel</td>"
-
 					   "<td><b>note</td>",
 					   TABLE_STYLE,
 					   DARK_BLUE  );
@@ -1099,12 +884,7 @@ skipReplaceHost:
 						   "<td>%s</td>"
 						   "<td>%s</td>"
 						   "<td>%s</td>"
-						   //"<td>%hi</td>"
-						   //"<td>%hi</td>" // priority udp port
-						   //"<td>%hi</td>"
 						   "<td>%hi</td>"
-						   //"<td>%i</td>" // switch id
-						   //"<td>%" INT32 "</td>" // ide channel
 						   "<td>%s</td>"
 						   "</tr>" , 
 						   LIGHT_BLUE,
@@ -1112,128 +892,11 @@ skipReplaceHost:
 						   h->m_hostname,
 						   ipbuf1,
 						   ipbuf2,
-						   //h->m_port , 
-						   //h->m_port2 , 
-						   //h->m_dnsClientPort ,
 						   h->m_httpPort ,
-						   //h->m_switchId,
-						   //h->m_ideChannel ,
 						   h->m_note );
 		}
 		sb.safePrintf ( "</table><br>" );
 	}
-
-
-
-	/*
-	// print proxy hosts table
-	sb.safePrintf ( 
-		  "<table %s>"
-		  "<tr class=hdrow><td colspan=12><center>"
-		  //"<font size=+1>"
-		  "<b>Proxies</b>"
-		  //"</font>"
-		  "</td></tr>" 
-		  "<tr bgcolor=#%s>"
-		  "<td><b>proxyId</b></td>"
-		  "<td><b>type</b></td>"
-		  "<td><b>host name</b></td>"
-		  "<td><b>ip1</b></td>"
-		  "<td><b>ip2</b></td>"
-		  //"<td><b>udp port</td>"
-
-		  //"<td><b>priority udp port</td>"
-
-		  //"<td><b>dns client port</td>"
-		  "<td><b>http port</b></td>"
-		  //"<td><b>switch id</td>"
-                  "<td><b>max ping1</b></td>"
-                  "<td><b>ping1 age</b></td>"
-                  "<td><b>ping1</b></td>"
-		  //"<td><b>ping2</b></td>"
-		  // this is now fairly obsolete
-		  //"<td><b>ide channel</td>"
-
-		  "<td><b>note</td>",
-		  TABLE_STYLE,
-		  DARK_BLUE 
-			);
-	for ( int32_t i = 0; i < g_hostdb.m_numProxyHosts; i++ ) {
-		// get the ith host (hostId)
-		Host *h = g_hostdb.getProxy ( i );
-
-                char ptr[256];
-                int32_t pingAge = generatePingMsg(h, nowmsLocal, ptr);
-
-		char ipbuf1[64];
-		char ipbuf2[64];
-		strcpy(ipbuf1,iptoa(h->m_ip));
-		strcpy(ipbuf2,iptoa(h->m_ipShotgun));
-
-		// host can have 2 ip addresses, get the one most
-		// similar to that of the requester
-		int32_t eip = g_hostdb.getBestIp ( h , s->m_ip );
-		char ipbuf3[64];
-		strcpy(ipbuf3,iptoa(eip));
-
-
-		char pms[64];
-		if ( h->m_pingMax < 0 ) sprintf(pms,"???");
-		else                    sprintf(pms,"%" INT32 "ms",h->m_pingMax);
-		// the sync status ascii-ized
-
-		char *type = "proxy";
-		if ( h->m_type == HT_QCPROXY ) type = "qcproxy";
-		if ( h->m_type == HT_SCPROXY ) type = "scproxy";
-
-		// print it
-		sb.safePrintf (
-			  "<tr bgcolor=#%s>"
-
-			  "<td><a href=\"http://%s:%hi/admin/hosts?"
-			  ""
-			  "c=%s\">"
-			  "%" INT32 "</a></td>"
-
-			  "<td>%s</td>"
-			  "<td>%s</td>"
-			  "<td>%s</td>"
-			  "<td>%s</td>"
-			  //"<td>%hi</td>"
-			  //"<td>%hi</td>" // priority udp port
-			  //"<td>%hi</td>"
-			  "<td>%hi</td>"
-			  //"<td>%i</td>" // switch id
-			  "<td>%s</td>" // ping max
-			  "<td>%" INT32 "ms</td>" // ping age
-			  "<td>%s</td>" // ping
-			  //"<td>%" INT32 "</td>" // ide channel
-			  "<td>%s </td>"
-			  "</tr>" , 
-
-			  LIGHT_BLUE,
-			  ipbuf3,
-			  h->m_httpPort,
-			  cs,
-			  i , 
-
-			  type,
-			  h->m_hostname,
-			  ipbuf1,
-			  ipbuf2,
-			  //h->m_port , 
-			  //h->m_port2 , 
-			  //h->m_dnsClientPort ,
-			  h->m_httpPort ,
-			  //h->m_switchId,
-			  pms,
-                          pingAge,
-                          ptr,
-			  //h->m_ideChannel ,
-			  h->m_note );
-	}
-	sb.safePrintf ( "</table><br><br>" );
-	*/
 
 	sb.safePrintf(
 		      "<style>"
@@ -1246,10 +909,8 @@ skipReplaceHost:
 	sb.safePrintf ( 
 		  "<table %s>"
 		  "<tr class=hdrow><td colspan=10><center>"
-		  //"<font size=+1>"
 		  "<b>Key</b>"
-		  //"</font>"
-		  "</td></tr>" 
+		  "</td></tr>"
 
 		  "<tr class=poo>"
 		  "<td>host ip</td>"
@@ -1273,51 +934,6 @@ skipReplaceHost:
 		  "</td>"
 		  "</tr>\n"
 
-		  /*
-		  "<tr class=poo>"
-		  "<td>ip2</td>"
-		  "<td>The secondary IP address of the host."
-		  "</td>"
-		  "</tr>\n"
-
-		  "<tr class=poo>"
-		  "<td>udp port</td>"
-		  "<td>The UDP port the host uses to send and receive "
-		  "datagrams."
-		  "</td>"
-		  "</tr>\n"
-
-		  "<tr class=poo>"
-		  "<td>dns client port</td>"
-		  "<td>The UDP port used to send and receive dns traffic with."
-		  "</td>"
-		  "</tr>\n"
-
-		  "<tr class=poo>"
-		  "<td>http port</td>"
-		  "<td>The port you can connect a browser to."
-		  "</td>"
-		  "</tr>\n"
-
-		  "<tr class=poo>"
-		  "<td>best switch id</td>"
-		  "<td>The host prefers to be on this switch because it "
-		  "needs to send a lot of data to other hosts on this switch. "
-		  "Therefore, ideally, the best switch id should match the "
-		  "actual switch id for optimal performance."
-		  "</td>"
-		  "</tr>\n"
-		  */
-
-		  /*
-		  "<tr class=poo>"
-		  "<td>switch id</td>"
-		  "<td>Hosts that share the same switch id are "
-		  "physically on the same switch."
-		  "</td>"
-		  "</tr>\n"
-		  */
-
 		  "<tr class=poo>"
 		  "<td>dgrams resent</td>"
 		  "<td>How many datagrams have had to be resent to a host "
@@ -1326,15 +942,6 @@ skipReplaceHost:
 		  "the host was reset."
 		  "</td>"
 		  "</tr>\n"
-
-		  /*
-		  "<tr class=poo>"
-		  "<td>errors recvd</td>"
-		  "<td>How many errors were received from a host in response "
-		  "to a request to retrieve or insert data."
-		  "</td>"
-		  "</tr>\n"
-		  */
 
 		  "<tr class=poo>"
 		  "<td>try agains sent</td>"
@@ -1349,26 +956,6 @@ skipReplaceHost:
 		  "bottleneck the entire cluster."
 		  "</td>"
 		  "</tr>\n"
-
-		  /*
-		  "<tr class=poo>"
-		  "<td>dgrams to</td>"
-		  "<td>How many datagrams were sent to the host from the "
-		  "selected host since startup. Includes ACK datagrams. This "
-		  "can actually be higher than the number of dgrams read "
-		  "when the selected host is the same as the host in the "
-		  "table because of resends. Gigablast will resend datagrams "
-		  "that are not promptly ACKknowledged."
-		  "</td>"
-		  "</tr>\n"
-
-		  "<tr class=poo>"
-		  "<td>dgrams from</td>"
-		  "<td>How many datagrams were received from the host by the "
-		  "selected host since startup. Includes ACK datagrams."
-		  "</td>"
-		  "</tr>\n"
-		  */
 
 		  "<tr class=poo>"
 		  "<td>avg split time</td>"
@@ -1407,13 +994,6 @@ skipReplaceHost:
 		  "</td>"
 		  "</tr>\n"
 
-		  //"<tr class=poo>"
-		  //"<td>loadavg</td>"
-		  //"<td>1-minute sliding-window load average from "
-		  //"/proc/loadavg."
-		  //"</td>"
-		  //"</tr>\n"
-
 		  "<tr class=poo>"
 		  "<td>mem used</td>"
 		  "<td>Percentage of memory currently used."
@@ -1451,16 +1031,6 @@ skipReplaceHost:
 		  "<td>Ping time to this host on the primary network."
 		  "</td>"
 		  "</tr>\n"
-
-		  /*
-		  "<tr class=poo>"
-		  "<td>ping2</td>"
-		  "<td>Ping time to this host on the seconday/shotgun "
-		  "network. This column is not visible if the shotgun "
-		  "network is not enabled in the master controls."
-		  "</td>"
-		  "</tr>\n"
-		  */
 
 		  "<tr class=poo>"
 		  "<td>M (status flag)</td>"
@@ -1557,13 +1127,7 @@ skipReplaceHost:
 
 	sb.safePrintf ( "</table><br></form><br>" );
 
-	//p = g_pages.printAdminBottom ( p , pend );
 
-	// calculate buffer length
-	//int32_t bufLen = p - buf;
-	// . send this page
-	// . encapsulates in html header and tail
-	// . make a Mime
 	return g_httpServer.sendDynamicPage ( s , (char*) sb.getBufStart() ,
 						  sb.length() );
 }
@@ -1625,8 +1189,8 @@ int32_t generatePingMsg( Host *h, int64_t nowms, char *buf ) {
 int defaultSort   ( const void *i1, const void *i2 ) {
 	Host *h1 = g_hostdb.getHost ( *(int32_t*)i1 );
 	Host *h2 = g_hostdb.getHost ( *(int32_t*)i2 );
-	PingInfo *p1 = &h1->m_pingInfo;
-	PingInfo *p2 = &h2->m_pingInfo;
+	PingInfo const *p1 = &h1->m_pingInfo;
+	PingInfo const *p2 = &h2->m_pingInfo;
 	// float up to the top if the host is reporting kernel errors
 	// even if the ping is normal
 	if ( p1->m_kernelErrors  > 0 && p2->m_kernelErrors <= 0 ) return -1;
@@ -1691,8 +1255,6 @@ int slowDiskSort    ( const void *i1, const void *i2 ) {
 int pingAgeSort    ( const void *i1, const void *i2 ) {
 	Host *h1 = g_hostdb.getHost ( *(int32_t*)i1 );
 	Host *h2 = g_hostdb.getHost ( *(int32_t*)i2 );
-	//PingInfo *p1 = &h1->m_pingInfo;
-	//PingInfo *p2 = &h2->m_pingInfo;
 	if ( h1->m_lastPing > h2->m_lastPing ) return -1;
 	if ( h1->m_lastPing < h2->m_lastPing ) return  1;
 	return 0;
@@ -1763,16 +1325,6 @@ int dgramsFromSort ( const void *i1, const void *i2 ) {
 	return 0;
 }
 
-/*
-int loadAvgSort ( const void *i1, const void *i2 ) {
-	Host *h1 = g_hostdb.getHost ( *(int32_t*)i1 );
-	Host *h2 = g_hostdb.getHost ( *(int32_t*)i2 );
-	if ( h1->m_loadAvg > h2->m_loadAvg ) return -1;
-	if ( h1->m_loadAvg < h2->m_loadAvg ) return  1;
-	return 0;
-}
-*/
-
 int memUsedSort ( const void *i1, const void *i2 ) {
 	Host *h1 = g_hostdb.getHost ( *(int32_t*)i1 );
 	Host *h2 = g_hostdb.getHost ( *(int32_t*)i2 );
@@ -1802,6 +1354,3 @@ int diskUsageSort ( const void *i1, const void *i2 ) {
 	if ( p1->m_diskUsage < p2->m_diskUsage ) return  1;
 	return 0;
 }
-
-//bool sendPageHostsInXmlOrJson ( TcpSocket *s , HttpRequest *r ) {
-//}
