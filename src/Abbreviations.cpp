@@ -7,16 +7,17 @@
 #include "Threads.h"
 
 #include <array>
+#include <string_view>
 
 struct Abbr {
-	char *m_str;
+	std::string_view m_str;
 	// MUST it have a word after it????
 	bool  m_hasWordAfter;
 };
 
 // . i shrunk this list a lot
 // . see backups for the hold list
-static const std::array<Abbr, 190> s_abbrs99 = {{
+constexpr std::array<Abbr, 190> s_abbrs99 = {{
 	{"hghway",false},//highway
 	{"hway",false},//highway
 	{"hwy",false},//highway
@@ -227,15 +228,14 @@ bool isAbbr ( int64_t h , bool *hasWordAfter ) {
 		// int16_tcut
 		HashTableX *t = &s_abbrTable;
 		// set up the hash table
-		int32_t n = ((int32_t)sizeof(s_abbrs99))/ ((int32_t)sizeof(Abbr));
+		int32_t n = static_cast<int32_t>(s_abbrs99.size());
 		if ( ! t->set ( 8,4,n*4, nullptr,0,false,MAX_NICENESS,"abbrtbl"))
 			return log("build: Could not init abbrev table.");
 		// now add in all the stop words
-		for ( int32_t i = 0 ; i < n ; i++ ) {
-			const char *sw    = s_abbrs99[i].m_str;
-			int64_t swh       = hash64Lower_utf8 ( sw );
-			int32_t val = i + 1;
-			gbassert( t->addKey (&swh,&val) );
+		for (const auto &abbr : s_abbrs99) {
+			int64_t hash = hash64Lower_utf8(abbr.m_str.data());
+			int32_t val = static_cast<int32_t>(&abbr - &s_abbrs99[0]) + 1;
+			gbassert(t->addKey(&hash, &val));
 		}
 		s_abbrInitialized = true;
 		// test it
@@ -243,11 +243,12 @@ bool isAbbr ( int64_t h , bool *hasWordAfter ) {
 		gbassert( t->isInTable(&st_h) );
 		int32_t sc = s_abbrTable.getScore ( &st_h );
         gbassert( sc < n );
-	} 
-	// get from table
-	int32_t sc = s_abbrTable.getScore ( &h );
-	if ( sc <= 0 ) return false;
-	if ( hasWordAfter ) *hasWordAfter = s_abbrs99[sc-1].m_hasWordAfter;
+	}
+
+	int32_t sc = s_abbrTable.getScore(&h);
+	if (sc <= 0) return false;
+
+	if (hasWordAfter) *hasWordAfter = s_abbrs99[sc - 1].m_hasWordAfter;
 	return true;
 }		
 
