@@ -14,3 +14,7 @@ catch_discover_tests(test1)
 add_executable(Linkdb src/Linkdb.cpp)
 target_link_libraries(Linkdb PRIVATE Catch2::Catch2 osse)
 catch_discover_tests(Linkdb)
+
+add_executable(HashTableX src/HashTableXTest.cpp)
+target_link_libraries(HashTableX PRIVATE Catch2::Catch2 osse)
+catch_discover_tests(HashTableX)
