@@ -11,10 +11,10 @@ void languageToString ( unsigned char langId , char *buf ) {
 static char *s_nativeLangStrings[] = {
 	"unknown",
 	"english",
-	"français",
-	"español",
-	"русcкий",
-	"t�rk�e", // not sure...
+	"franÃ§ais",
+	"espaÃ±ol",
+	"ÑÑÑcÐºÐ¸Ð¹",
+	"türkçe", // not sure...
 	"japanese", // don't know yet
 	"chinese traditional", // don't know yet
 	"chinese simplified", // don't know yet
@@ -25,7 +25,7 @@ static char *s_nativeLangStrings[] = {
 	"suomi",
 	"svenska",
 	"norsk",
-	"português",
+	"portuguÃªs",
 	"vietnamese", // don't know yet
 	"arabic", // don't know yet
 	"hebrew", // don't know yet

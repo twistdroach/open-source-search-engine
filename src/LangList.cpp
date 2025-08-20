@@ -55,7 +55,7 @@ static TldInfo s_tldInfo[] = {
 	  "slovenian,romani", 0xffffffff },
 { "au", "Australia", "australia", 0xffffffff },
 { "aw", "Aruba", "unknown", 0xffffffff },
-{ "ax", "Åland", "unknown", 0xffffffff },
+{ "ax", "Ãland", "unknown", 0xffffffff },
 { "az", "Azerbaijan", "azerbaijani", 0xffffffff },
 { "ba", "Bosnia and Herzegovina", "bosnian,croatian,serbian", 0xffffffff },
 { "bb", "Barbados", "english", 0xffffffff },
@@ -85,7 +85,7 @@ static TldInfo s_tldInfo[] = {
 { "cg", "Republic of the Congo", "french,lingala,munukutuba", 0xffffffff },
 { "ch", "Switzerland (Confoederatio Helvetica)", "french,german,italian,"
 	  "romansh", 0xffffffff },
-{ "ci", "C�´te d'Ivoire", "french", 0xffffffff },
+{ "ci", "CÃÂ´te d'Ivoire", "french", 0xffffffff },
 { "ck", "Cook Islands", "unknown", 0xffffffff },
 { "cl", "Chile", "spanish", 0xffffffff },
 { "cm", "Cameroon", "english,french", 0xffffffff },
@@ -110,7 +110,7 @@ static TldInfo s_tldInfo[] = {
 { "ee", "Estonia", "estonian", 0xffffffff },
 { "eg", "Egypt", "arabic", 0xffffffff },
 { "er", "Eritrea", "arabic,english,tigrinya", 0xffffffff },
-{ "es", "Spain (Espa�±a)", "basque,catalan,galician,occitan,"
+{ "es", "Spain (EspaÃÂ±a)", "basque,catalan,galician,occitan,"
 	  "spanish", 0xffffffff },
 { "et", "Ethiopia", "amharic", 0xffffffff },
 { "eu", "European Union", "unknown", 0xffffffff },
@@ -123,7 +123,7 @@ static TldInfo s_tldInfo[] = {
 { "fr", "France", "french,tahitian", 0xffffffff },
 { "ga", "Gabon", "french", 0xffffffff },
 { "gb", "United Kingdom (Great Britain)", "english,cornish,"
-	  "dg�¨rn�©siais,english,french,irish,j�¨rriais,"
+	  "dgÃÂ¨rnÃÂ©siais,english,french,irish,jÃÂ¨rriais,"
 	  "pitcairnese,scots,scottish gaelic,welsh", 0xffffffff },
 { "gd", "Grenada", "english", 0xffffffff },
 { "ge", "Georgia", "abkhaz,georgian,ossetic,russian", 0xffffffff },
@@ -151,7 +151,7 @@ static TldInfo s_tldInfo[] = {
 { "ht", "Haiti", "french,haitian creole", 0xffffffff },
 { "hu", "Hungary", "hungarian", 0xffffffff },
 { "id", "Indonesia", "balinese,javanese,indonesian,sundanese", 0xffffffff },
-{ "ie", "Ireland (Éire)", "unknown", 0xffffffff },
+{ "ie", "Ireland (Ãire)", "unknown", 0xffffffff },
 { "il", "Israel", "arabic,hebrew", 0xffffffff },
 { "im", "Isle of Man", "unknown", 0xffffffff },
 { "in", "India", "assamese,bengala,bodo,dogri,english,gujarati,hindi,kannada,"
@@ -169,7 +169,7 @@ static TldInfo s_tldInfo[] = {
 { "ir", "Iran", "persian", 0xffffffff },
 { "is", "Iceland (Island)", "icelandic", 0xffffffff },
 { "it", "Italy", "italian",
-	  //"albanian,catalan,croatian,franco-proven�§al,french,"
+	  //"albanian,catalan,croatian,franco-provenÃÂ§al,french,"
 	  //	  "friulian,german,greek,italian,ladin,occitan,sardinian,slovenian", 
 	  0xffffffff },
 { "je", "Jersey", "unknown", 0xffffffff },
@@ -248,9 +248,9 @@ static TldInfo s_tldInfo[] = {
 { "ps", "Palestinian territories", "unknown", 0xffffffff },
 { "pt", "Portugal", "portuguese,mirandese", 0xffffffff },
 { "pw", "Palau", "english,palauan,japanese", 0xffffffff },
-{ "py", "Paraguay", "guaran�­,spanish", 0xffffffff },
+{ "py", "Paraguay", "guaranÃÂ­,spanish", 0xffffffff },
 { "qa", "Qatar", "arabic", 0xffffffff },
-{ "re", "R�©union", "unknown", 0xffffffff },
+{ "re", "RÃÂ©union", "unknown", 0xffffffff },
 { "ro", "Romania", "arabic", 0xffffffff },
 { "ru", "Russia", "abaza,adyghe,agul,altay,avar,bashkir,"
 	  "buryat,chechen,chukchi,chuvash,dargin,dolgan,"
@@ -263,7 +263,7 @@ static TldInfo s_tldInfo[] = {
 { "sb", "Solomon Islands", "english", 0xffffffff },
 { "sc", "Seychelles", "english,french,seselwa", 0xffffffff },
 { "sd", "Sudan", "arabic,english", 0xffffffff },
-{ "se", "Sweden", "swedish,finnish,me�¤nkieli,romani,sami,"
+{ "se", "Sweden", "swedish,finnish,meÃÂ¤nkieli,romani,sami,"
 	  "yiddish", 0xffffffff },
 { "sg", "Singapore", "english,malay,mandarin,tamil", 0xffffffff },
 { "sh", "Saint Helena", "unknown", 0xffffffff },
@@ -276,7 +276,7 @@ static TldInfo s_tldInfo[] = {
 	  "serer-sine,wolof", 0xffffffff },
 { "so", "Somalia", "french", 0xffffffff },
 { "sr", "Suriname", "dutch", 0xffffffff },
-{ "st", "S�£o Tom�© and Pr�­ncipe", "portuguese", 
+{ "st", "SÃÂ£o TomÃÂ© and PrÃÂ­ncipe", "portuguese", 
 	  0xffffffff },
 { "su", "former Soviet Union", "unknown", 0xffffffff },
 { "sv", "El Salvador", "spanish", 0xffffffff },
@@ -301,8 +301,8 @@ static TldInfo s_tldInfo[] = {
 { "tz", "Tanzania", "english,swahili", 0xffffffff },
 { "ua", "Ukraine", "ukrainian", 0xffffffff },
 { "ug", "Uganda", "english,swahili", 0xffffffff },
-{ "uk", "United Kingdom", "british,cornish,dg�¨rn�©siais,"
-	  "irish,j�¨rriais,pitcairnese,scots,scottish gaelic,"
+{ "uk", "United Kingdom", "british,cornish,dgÃÂ¨rnÃÂ©siais,"
+	  "irish,jÃÂ¨rriais,pitcairnese,scots,scottish gaelic,"
 	  "welsh", 0xffffffff },
 { "um", "United States Minor Outlying Islands", "english,carolinian,chamorro,"
 	  "hawaiian,samoan,spanish", 0xffffffff },

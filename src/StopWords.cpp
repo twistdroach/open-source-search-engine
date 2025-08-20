@@ -364,7 +364,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	"til",		// to/at/for/until/against/by/of/into,
 	//"er",		// present
 	//"som",		// who,
-	"pÂ",		// on/upon/in/on/at/to/after/of/with/for,
+	"p√•",		// on/upon/in/on/at/to/after/of/with/for,
 	//"de",		// they
 	//"med",		// with/by/in,
 	//"han",		// he
@@ -407,8 +407,8 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"blev",		// past
 	//"kunne",	// could
 	//"ind",		// in
-	//"nÂr",	// when
-	//"vÊre",	// present
+	//"n√•r",	// when
+	//"v√¶re",	// present
 	//"dog",	// however/yet/after
 	//"noget",	// something
 	//"ville",	// would
@@ -421,7 +421,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"end",	// than
 	//"dette",	// this
 	//"mit",	// my/mine
-	//"ogsÂ",		// also
+	//"ogs√•",		// also
 	//"ogsa",		// also
 	//"under",	// under/beneath/below/during,
 	//"have",		// have
@@ -445,11 +445,11 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"ad",		// by/through
 	//"bliver",	// present
 	//"hendes",	// her/hers
-	//"vÊret",	// be
+	//"v√¶ret",	// be
 	//"vaeret",	// be
 	"thi",		// for
 	//"jer",		// you
-	//"sÂdan",	// such,
+	//"s√•dan",	// such,
 
 	// dutch stop words
 	"de",		// the
@@ -578,7 +578,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"ma",		// my
 	//"mais",		// but
 	//"me",		// me
-	//"mÍme",		// same;
+	//"m√™me",		// same;
 	//"mes",		// me
 	//"moi",		// me
 	//"mon",		// my
@@ -648,7 +648,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"dem",		// 
 	//"die",		// 
 	"das",		// 
-	//"daﬂ",		// that
+	//"da√ü",		// that
 	"derselbe",	// the
 	"derselben",	// 
 	"denselben",	// 
@@ -703,7 +703,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"euren",	// 
 	//"eurer",	// 
 	//"eures",	// 
-	"f¸r",		// for
+	"f√ºr",		// for
 	//"gegen",	// towards
 	//"gewesen",	// p.p.
 	//"hab",		// have
@@ -748,8 +748,8 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"keinen",	// 
 	//"keiner",	// 
 	//"keines",	// 
-	//"kˆnnen",	// can
-	//"kˆnnte",	// could
+	//"k√∂nnen",	// can
+	//"k√∂nnte",	// could
 	//"machen",	// do
 	//"man",		// one
 	//"manche",	// some,
@@ -797,7 +797,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"sollte",	// should
 	//"sondern",	// but
 	//"sonst",	// else
-	//"¸ber",		// over
+	//"√ºber",		// over
 	//"um",		// about,
 	//"und",		// and
 	//"uns",		// us
@@ -811,7 +811,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"vom",		// von
 	"von",		// from
 	//"vor",		// before
-	//"w‰hrend",	// while
+	//"w√§hrend",	// while
 //		"war",		// was
 	//"waren",	// were
 	//"warst",	// wast
@@ -836,8 +836,8 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"wo",		// where
 	//"wollen",	// want
 	//"wollte",	// wanted
-	//"w¸rde",	// would
-	//"w¸rden",	// would
+	//"w√ºrde",	// would
+	//"w√ºrden",	// would
 	"zu",		// to
 	"zum",		// zu
 	"zur",		// zu
@@ -940,7 +940,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"ma",		// but
 	"ed",		// and
 	//"se",		// if
-	//"perchÈ",	// why,
+	//"perch√©",	// why,
 	//"anche",	// also
 //		"come",		// how
 	//"dov",		// where
@@ -949,7 +949,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"chi",		// who
 	//"cui",		// whom
 	//"non",		// not
-	//"pi˘",		// more
+	//"pi√π",		// more
 	//"quale",	// who,
 	//"quanto",	// how
 	//"quanti",	// 
@@ -984,7 +984,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	"til",		// to
 	//"er",		// is
 	//"som",		// who/that
-	"pÂ",		// on
+	"p√•",		// on
 	//"de",		// they
 	//"med",		// with
 	//"han",		// he
@@ -992,7 +992,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"ikke",		// not
 	//"inte",		// not
 	//"der",		// there
-	//"sÂ",		// so
+	//"s√•",		// so
 	//"var",		// was
 	//"meg",		// me
 	//"seg",		// you
@@ -1007,7 +1007,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"hade",		// had
 	//"hu",		// she
 	//"hun",		// she
-	//"nÂ",		// now
+	//"n√•",		// now
 	//"over",		// over
 	//"da",		// when/as
 	//"ved",		// by/know
@@ -1026,7 +1026,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"hva",		// what
 	//"skal",		// shall/must
 	//"selv",		// self
-	//"sj¯l",		// self
+	//"sj√∏l",		// self
 	//"her",		// here
 	//"alle",		// all
 	//"vil",		// will
@@ -1036,8 +1036,8 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"blitt",	// have
 	//"kunne",	// could
 	//"inn",		// in
-	//"nÂr",		// when
-	//"vÊre",		// be
+	//"n√•r",		// when
+	//"v√¶re",		// be
 	//"kom",		// come
 	//"noen",		// some
 	//"noe",		// some
@@ -1058,7 +1058,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"sine",		// hers/his
 	//"sitt",		// hers/his
 	//"mot",		// against
-	"Â",		// to
+	"√•",		// to
 	//"meget",	// much
 	//"hvorfor",	// why
 	//"sia",		// since
@@ -1076,18 +1076,18 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"samme",	// same
 	//"hvilken",	// which
 	//"hvilke",	// which
-	//"sÂnn",		// such
+	//"s√•nn",		// such
 	//"inni",		// inside/within
 	//"mellom",	// between
-	//"vÂr",		// our
+	//"v√•r",		// our
 	//"hver",		// each
 	//"hvem",		// who
 	//"vors",		// us/ours
 	//"dere",		// their
 	//"deres",	// theirs
 	//"hvis",		// whose
-	//"bÂde",		// both
-	//"bÂe",		// both
+	//"b√•de",		// both
+	//"b√•e",		// both
 	//"begge",	// both
 	//"siden",	// since
 	//"dykk",		// your
@@ -1097,7 +1097,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"deires",	// theirs
 	//"deim",		// them
 	//"di",		// your
-	//"dÂ",		// as/when
+	//"d√•",		// as/when
 	"eg",		// I
 	"ein",		// a/an
 	"ei",		// a/an
@@ -1105,7 +1105,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	"eitt",		// a/an
 	"elles",	// or
 	//"honom",	// he
-	"hjÂ",		// at
+	"hj√•",		// at
 	//"ho",		// she
 	//"hoe",		// she
 	//"henne",	// her
@@ -1152,9 +1152,9 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"varte",	// became
 	//"vart",		// became
 	//"er",		// am
-	"vÊre",		// to
+	"v√¶re",		// to
 	//"var",		// was
-	"Â",		// on
+	"√•",		// on
 
 
 	// portuguese stop words
@@ -1169,7 +1169,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"um",		// a
 	"para",		// for
 	"com",		// with
-	//"n„o",		// not,
+	//"n√£o",		// not,
 	"uma",		// a
 	//"os",		// the;
 	//"no",		// em  "hurts us too much in queries"
@@ -1184,20 +1184,20 @@ static const char *s_queryStopWordsUnknown[] = {
 	"ao",		// a
 	//"ele",		// he
 	"das",		// de
-	//"‡",		// a
+	//"√†",		// a
 	//"seu",		// his
 	//"sua",		// her
 	//"ou",		// or
 	//"quando",	// when
 	//"muito",	// much
 	"nos",		// em
-	//"j·",		// already,
+	//"j√°",		// already,
 	//"eu",		// I
-	//"tambÈm",	// also
-	//"sÛ",		// only,
+	//"tamb√©m",	// also
+	//"s√≥",		// only,
 	//"pelo",		// per
 	//"pela",		// per
-	//"atÈ",		// up
+	//"at√©",		// up
 	//"isso",		// that
 	//"ela",		// he
 	//"entre",	// between
@@ -1211,19 +1211,19 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"me",		// me
 	//"esse",		// that
 	//"eles",		// they
-	//"vocÍ",		// you
+	//"voc√™",		// you
 	//"essa",		// that
 	"num",		// em
 	//"nem",		// nor
 	//"suas",		// her
 	//"meu",		// my
-	"‡s",		// a
+	"√†s",		// a
 	//"minha",	// my
 	"numa",		// em
 	//"pelos",	// per
 	//"elas",		// they
 	//"qual",		// which
-	//"nÛs",		// we
+	//"n√≥s",		// we
 	"lhe",		// to
 	//"deles",	// of them
 	//"essas",	// those
@@ -1233,7 +1233,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	"dele",		// of
 	//"tu",		// thou
 	//"te",		// thee
-	//"vocÍs",	// you
+	//"voc√™s",	// you
 	//"vos",		// you
 	"lhes",		// to
 	//"meus",		// my
@@ -1258,188 +1258,188 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"isto",		// this
 	//"aquilo",	// that
 	//"estou",	// 
-	//"est·",		// 
+	//"est√°",		// 
 	//"estamos",	// 
-	//"est„o",	// 
+	//"est√£o",	// 
 	//"estive",	// 
 	//"esteve",	// 
 	//"estivemos",	// 
 	//"estiveram",	// 
 	//"estava",	// 
-	//"est·vamos",	// 
+	//"est√°vamos",	// 
 	//"estavam",	// 
 	//"estivera",	// 
-	//"estivÈramos",	// 
+	//"estiv√©ramos",	// 
 	//"esteja",	// 
 	//"estejamos",	// 
 	//"estejam",	// 
 	//"estivesse",	// 
-	//"estivÈssemos",	// 
+	//"estiv√©ssemos",	// 
 	//"estivessem",	// 
 	//"estiver",	// 
 	//"estivermos",	// 
 	//"estiverem",	// 
 
 	// russian stop words
-	"…",		// and
-	"◊",		// in/into
-	"◊œ",		// alternative
-	//"Œ≈",		// not
-	//"ﬁ‘œ",		// what/that
-	//"œŒ",		// he
-	"Œ¡",		// on/onto
-	"—",		// i
-	"”",		// from
-	"”œ",		// alternative
-	//"À¡À",		// how
-	//"¡",		// milder
-	"‘œ",		// conjunction
-	//"◊”≈",		// all
-	//"œŒ¡",		// she
-	//"‘¡À",		// so,
-	//"≈«œ",		// him
-	//"Œœ",		// but
-	//"ƒ¡",		// yes/and
-	//"‘Ÿ",		// thou
-	"À",		// towards,
-	"’",		// around,
-	//"÷≈",		// intensifier
-	//"◊Ÿ",		// you
-	//"⁄¡",		// beyond,
-	//"¬Ÿ",		// conditional/subj.
-	//"–œ",		// up
-	//"‘œÃÿÀœ",	// only
-	//"≈≈",		// her
-	"ÕŒ≈",		// to
-	"¬ŸÃœ",		// it
-	//"◊œ‘",		// here
-	//"œ‘",		// away
-	//"Õ≈Œ—",		// me
-	//"≈›≈",		// still,
-	//"Œ≈‘",		// no,
-	"œ",		// about
-	//"…⁄",		// out
-	"≈Õ’",		// to
-	//"‘≈–≈“ÿ",	// now
-	//"Àœ«ƒ¡",	// when
-	//"ƒ¡÷≈",		// even
-	//"Œ’",		// so,
-	//"◊ƒ“’«",	// suddenly
-	//"Ã…",		// interrogative
-	//"≈”Ã…",		// if
-	//"’÷≈",		// already,
-	"…Ã…",		// or
-	//"Œ…",		// neither
-	"¬Ÿ‘ÿ",		// to
-	//"¬ŸÃ",		// he
-	//"Œ≈«œ",		// prepositional
-	//"ƒœ",		// up
-	//"◊¡”",		// you
-	//"Œ…¬’ƒÿ",	// indef.
-	//"œ–—‘ÿ",	// again
-	//"’÷",		// already,
-	"◊¡Õ",		// to
-	//"”À¡⁄¡Ã",	// he
-	//"◊≈ƒÿ",		// particle
-	//"‘¡Õ",		// there
-	//"–œ‘œÕ",	// then
-	//"”≈¬—",		// oneself
-	//"Œ…ﬁ≈«œ",	// nothing
-	"≈ ",		// to
-	//"Õœ÷≈‘",	// usually
-	//"œŒ…",		// they
-	//"‘’‘",		// here
-	//"«ƒ≈",		// where
-	//"≈”‘ÿ",		// there
-	//"Œ¡ƒœ",		// got
-	//"Œ≈ ",		// prepositional
-	"ƒÃ—",		// for
-	//"ÕŸ",		// we
-	//"‘≈¬—",		// thee
-	//"…»",		// them,
-	//"ﬁ≈Õ",		// than
-	//"¬ŸÃ¡",		// she
-	//"”¡Õ",		// self
-	"ﬁ‘œ¬",		// in
-	//"¬≈⁄",		// without
-	//"¬’ƒ‘œ",	// as
-	//"ﬁ≈Ãœ◊≈À",	// man,
-	//"ﬁ≈«œ",		// genitive
-	//"“¡⁄",		// once
-	//"‘œ÷≈",		// also
-	"”≈¬≈",		// to
-	//"–œƒ",		// beneath
-	//"÷…⁄Œÿ",	// life
-	//"¬’ƒ≈‘",	// will
-	//"÷",		// int16_t
-	//"‘œ«ƒ¡",	// then
-	//"À‘œ",		// who
-	//"‹‘œ‘",		// this
-	//"«œ◊œ“…Ã",	// was
-	//"‘œ«œ",		// genitive
-	"–œ‘œÕ’",	// for
-	//"‹‘œ«œ",	// genitive
-	//"À¡Àœ ",	// which
-	//"”œ◊”≈Õ",	// altogether
-	//"Œ…Õ",		// prepositional
-	//"⁄ƒ≈”ÿ",	// here
-	//"‹‘œÕ",		// prepositional
-	//"œƒ…Œ",		// one
-	//"–œﬁ‘…",	// almost
-	//"Õœ ",		// my
-	//"‘≈Õ",		// instrumental/dative
-	//"ﬁ‘œ¬Ÿ",	// full
-	//"Œ≈≈",		// her
-	"À¡÷≈‘”—",	// it
-	//"”≈ ﬁ¡”",	// now
-	//"¬ŸÃ…",		// they
-	//"À’ƒ¡",		// where
-	//"⁄¡ﬁ≈Õ",	// why
-	"”À¡⁄¡‘ÿ",	// to
-	//"◊”≈»",		// all
-	//"Œ…Àœ«ƒ¡",	// never
-	//"”≈«œƒŒ—",	// today
-	//"Õœ÷Œœ",	// possible,
-	"–“…",		// by
-	//"Œ¡ÀœŒ≈√",	// finally
-	//"ƒ◊¡",		// two
-	//"œ¬",		// alternative
-	//"ƒ“’«œ ",	// another
-	//"»œ‘ÿ",		// even
-	//"–œ”Ã≈",	// after
-	//"Œ¡ƒ",		// above
-	//"¬œÃÿ€≈",	// more
-	//"‘œ‘",		// that
-	//"ﬁ≈“≈⁄",	// across,
-	//"‹‘…",		// these
-	//"Œ¡”",		// us
-	//"–“œ",		// about
-	"◊”≈«œ",	// in
-	//"Œ…»",		// prepositional
-	//"À¡À¡—",	// which,
-	//"ÕŒœ«œ",	// lots
-	//"“¡⁄◊≈",	// interrogative
-	//"”À¡⁄¡Ã¡",	// she
-	//"‘“…",		// three
-	//"‹‘’",		// this,
-	//"Õœ—",		// my,
-	//"◊–“œﬁ≈Õ",	// moreover,
-	//"»œ“œ€œ",	// good
-	//"”◊œ¿",		// ones
-	//"‹‘œ ",		// oblique
-	"–≈“≈ƒ",	// in
-	//"…Œœ«ƒ¡",	// sometimes
-	//"Ã’ﬁ€≈",	// better
-	"ﬁ’‘ÿ",		// a
-	//"‘œÕ",		// preposn.
-	//"Œ≈Ãÿ⁄—",	// one
-	//"‘¡Àœ ",	// such
-	"…Õ",		// to
-	//"¬œÃ≈≈",	// more
-	//"◊”≈«ƒ¡",	// always
-	"ÀœŒ≈ﬁŒœ",	// of
-	//"◊”¿",		// acc.
-	//"Õ≈÷ƒ’",	// between
+	"√â",		// and
+	"√ó",		// in/into
+	"√ó√è",		// alternative
+	//"√é√Ö",		// not
+	//"√û√î√è",		// what/that
+	//"√è√é",		// he
+	"√é√Å",		// on/onto
+	"√ë",		// i
+	"√ì",		// from
+	"√ì√è",		// alternative
+	//"√ã√Å√ã",		// how
+	//"√Å",		// milder
+	"√î√è",		// conjunction
+	//"√ó√ì√Ö",		// all
+	//"√è√é√Å",		// she
+	//"√î√Å√ã",		// so,
+	//"√Ö√á√è",		// him
+	//"√é√è",		// but
+	//"√Ñ√Å",		// yes/and
+	//"√î√ô",		// thou
+	"√ã",		// towards,
+	"√ï",		// around,
+	//"√ñ√Ö",		// intensifier
+	//"√ó√ô",		// you
+	//"√ö√Å",		// beyond,
+	//"√Ç√ô",		// conditional/subj.
+	//"√ê√è",		// up
+	//"√î√è√å√ò√ã√è",	// only
+	//"√Ö√Ö",		// her
+	"√ç√é√Ö",		// to
+	"√Ç√ô√å√è",		// it
+	//"√ó√è√î",		// here
+	//"√è√î",		// away
+	//"√ç√Ö√é√ë",		// me
+	//"√Ö√ù√Ö",		// still,
+	//"√é√Ö√î",		// no,
+	"√è",		// about
+	//"√â√ö",		// out
+	"√Ö√ç√ï",		// to
+	//"√î√Ö√ê√Ö√í√ò",	// now
+	//"√ã√è√á√Ñ√Å",	// when
+	//"√Ñ√Å√ñ√Ö",		// even
+	//"√é√ï",		// so,
+	//"√ó√Ñ√í√ï√á",	// suddenly
+	//"√å√â",		// interrogative
+	//"√Ö√ì√å√â",		// if
+	//"√ï√ñ√Ö",		// already,
+	"√â√å√â",		// or
+	//"√é√â",		// neither
+	"√Ç√ô√î√ò",		// to
+	//"√Ç√ô√å",		// he
+	//"√é√Ö√á√è",		// prepositional
+	//"√Ñ√è",		// up
+	//"√ó√Å√ì",		// you
+	//"√é√â√Ç√ï√Ñ√ò",	// indef.
+	//"√è√ê√ë√î√ò",	// again
+	//"√ï√ñ",		// already,
+	"√ó√Å√ç",		// to
+	//"√ì√ã√Å√ö√Å√å",	// he
+	//"√ó√Ö√Ñ√ò",		// particle
+	//"√î√Å√ç",		// there
+	//"√ê√è√î√è√ç",	// then
+	//"√ì√Ö√Ç√ë",		// oneself
+	//"√é√â√û√Ö√á√è",	// nothing
+	"√Ö√ä",		// to
+	//"√ç√è√ñ√Ö√î",	// usually
+	//"√è√é√â",		// they
+	//"√î√ï√î",		// here
+	//"√á√Ñ√Ö",		// where
+	//"√Ö√ì√î√ò",		// there
+	//"√é√Å√Ñ√è",		// got
+	//"√é√Ö√ä",		// prepositional
+	"√Ñ√å√ë",		// for
+	//"√ç√ô",		// we
+	//"√î√Ö√Ç√ë",		// thee
+	//"√â√à",		// them,
+	//"√û√Ö√ç",		// than
+	//"√Ç√ô√å√Å",		// she
+	//"√ì√Å√ç",		// self
+	"√û√î√è√Ç",		// in
+	//"√Ç√Ö√ö",		// without
+	//"√Ç√ï√Ñ√î√è",	// as
+	//"√û√Ö√å√è√ó√Ö√ã",	// man,
+	//"√û√Ö√á√è",		// genitive
+	//"√í√Å√ö",		// once
+	//"√î√è√ñ√Ö",		// also
+	"√ì√Ö√Ç√Ö",		// to
+	//"√ê√è√Ñ",		// beneath
+	//"√ñ√â√ö√é√ò",	// life
+	//"√Ç√ï√Ñ√Ö√î",	// will
+	//"√ñ",		// int16_t
+	//"√î√è√á√Ñ√Å",	// then
+	//"√ã√î√è",		// who
+	//"√ú√î√è√î",		// this
+	//"√á√è√ó√è√í√â√å",	// was
+	//"√î√è√á√è",		// genitive
+	"√ê√è√î√è√ç√ï",	// for
+	//"√ú√î√è√á√è",	// genitive
+	//"√ã√Å√ã√è√ä",	// which
+	//"√ì√è√ó√ì√Ö√ç",	// altogether
+	//"√é√â√ç",		// prepositional
+	//"√ö√Ñ√Ö√ì√ò",	// here
+	//"√ú√î√è√ç",		// prepositional
+	//"√è√Ñ√â√é",		// one
+	//"√ê√è√û√î√â",	// almost
+	//"√ç√è√ä",		// my
+	//"√î√Ö√ç",		// instrumental/dative
+	//"√û√î√è√Ç√ô",	// full
+	//"√é√Ö√Ö",		// her
+	"√ã√Å√ñ√Ö√î√ì√ë",	// it
+	//"√ì√Ö√ä√û√Å√ì",	// now
+	//"√Ç√ô√å√â",		// they
+	//"√ã√ï√Ñ√Å",		// where
+	//"√ö√Å√û√Ö√ç",	// why
+	"√ì√ã√Å√ö√Å√î√ò",	// to
+	//"√ó√ì√Ö√à",		// all
+	//"√é√â√ã√è√á√Ñ√Å",	// never
+	//"√ì√Ö√á√è√Ñ√é√ë",	// today
+	//"√ç√è√ñ√é√è",	// possible,
+	"√ê√í√â",		// by
+	//"√é√Å√ã√è√é√Ö√É",	// finally
+	//"√Ñ√ó√Å",		// two
+	//"√è√Ç",		// alternative
+	//"√Ñ√í√ï√á√è√ä",	// another
+	//"√à√è√î√ò",		// even
+	//"√ê√è√ì√å√Ö",	// after
+	//"√é√Å√Ñ",		// above
+	//"√Ç√è√å√ò√õ√Ö",	// more
+	//"√î√è√î",		// that
+	//"√û√Ö√í√Ö√ö",	// across,
+	//"√ú√î√â",		// these
+	//"√é√Å√ì",		// us
+	//"√ê√í√è",		// about
+	"√ó√ì√Ö√á√è",	// in
+	//"√é√â√à",		// prepositional
+	//"√ã√Å√ã√Å√ë",	// which,
+	//"√ç√é√è√á√è",	// lots
+	//"√í√Å√ö√ó√Ö",	// interrogative
+	//"√ì√ã√Å√ö√Å√å√Å",	// she
+	//"√î√í√â",		// three
+	//"√ú√î√ï",		// this,
+	//"√ç√è√ë",		// my,
+	//"√ó√ê√í√è√û√Ö√ç",	// moreover,
+	//"√à√è√í√è√õ√è",	// good
+	//"√ì√ó√è√Ä",		// ones
+	//"√ú√î√è√ä",		// oblique
+	"√ê√Ö√í√Ö√Ñ",	// in
+	//"√â√é√è√á√Ñ√Å",	// sometimes
+	//"√å√ï√û√õ√Ö",	// better
+	"√û√ï√î√ò",		// a
+	//"√î√è√ç",		// preposn.
+	//"√é√Ö√å√ò√ö√ë",	// one
+	//"√î√Å√ã√è√ä",	// such
+	"√â√ç",		// to
+	//"√Ç√è√å√Ö√Ö",	// more
+	//"√ó√ì√Ö√á√Ñ√Å",	// always
+	"√ã√è√é√Ö√û√é√è",	// of
+	//"√ó√ì√Ä",		// acc.
+	//"√ç√Ö√ñ√Ñ√ï",	// between
 
 	// spanish stop words
 	"de",		// from,
@@ -1463,14 +1463,14 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"al",		// a
 	//"lo",		// him
 	//"como",		// how
-	//"m·s",		// more
+	//"m√°s",		// more
 	//"pero",		// pero
 	//"sus",		// su
 	"le",		// to
 	//"ya",		// already
 	"o",		// or
 	//"este",		// this
-	//"sÌ",		// himself
+	//"s√≠",		// himself
 	//"porque",	// because
 	//"esta",		// this
 	//"entre",	// between
@@ -1478,7 +1478,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"muy",		// very
 	//"sin",		// without
 	//"sobre",	// on
-	//"tambiÈn",	// also
+	//"tambi√©n",	// also
 	//"me",		// me
 	//"hasta",	// until
 	//"hay",		// there
@@ -1500,16 +1500,16 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"ellos",	// they
 	"e",		// and
 	//"esto",		// this
-	//"mÌ",		// me
+	//"m√≠",		// me
 	//"antes",	// before
 	//"algunos",	// some
-	//"quÈ",		// what?
+	//"qu√©",		// what?
 	"unos",		// a
 	"yo",		// I
 	//"otro",		// other
 	//"otras",	// other
 	//"otra",		// other
-	//"Èl",		// he
+	//"√©l",		// he
 	//"tanto",	// so
 	//"esa",		// that
 	//"estos",	// these
@@ -1527,7 +1527,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"nosotros",	// we
 	//"mi",		// me
 	//"mis",		// mi
-	//"t˙",		// thou
+	//"t√∫",		// thou
 	//"te",		// thee
 	//"ti",		// thee
 	//"tu",		// thy
@@ -1537,10 +1537,10 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"vosostros",	// you
 	//"vosostras",	// you
 	//"os",		// you
-	//"mÌo",		// mine
-	//"mÌa",		// 
-	//"mÌos",		// 
-	//"mÌas",		// 
+	//"m√≠o",		// mine
+	//"m√≠a",		// 
+	//"m√≠os",		// 
+	//"m√≠as",		// 
 	//"tuyo",		// thine
 	//"tuya",		// 
 	//"tuyos",	// 
@@ -1560,30 +1560,30 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"esos",		// those
 	//"esas",		// those
 	//"estoy",	// 
-	//"est·s",	// 
-	//"est·",		// 
+	//"est√°s",	// 
+	//"est√°",		// 
 	//"estamos",	// 
-	//"est·is",	// 
-	//"est·n",	// 
-	//"estÈ",		// 
-	//"estÈs",	// 
+	//"est√°is",	// 
+	//"est√°n",	// 
+	//"est√©",		// 
+	//"est√©s",	// 
 	//"estemos",	// 
-	//"estÈis",	// 
-	//"estÈn",	// 
-	//"estarÈ",	// 
-	//"estar·s",	// 
-	//"estar·",	// 
+	//"est√©is",	// 
+	//"est√©n",	// 
+	//"estar√©",	// 
+	//"estar√°s",	// 
+	//"estar√°",	// 
 	//"estaremos",	// 
-	//"estarÈis",	// 
-	//"estar·n",	// 
-	//"estarÌa",	// 
-	//"estarÌas",	// 
-	//"estarÌamos",	// 
-	//"estarÌais",	// 
-	//"estarÌan",	// 
+	//"estar√©is",	// 
+	//"estar√°n",	// 
+	//"estar√≠a",	// 
+	//"estar√≠as",	// 
+	//"estar√≠amos",	// 
+	//"estar√≠ais",	// 
+	//"estar√≠an",	// 
 	//"estaba",	// 
 	//"estabas",	// 
-	//"est·bamos",	// 
+	//"est√°bamos",	// 
 	//"estabais",	// 
 	//"estaban",	// 
 	//"estuve",	// 
@@ -1594,12 +1594,12 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"estuvieron",	// 
 	//"estuviera",	// 
 	//"estuvieras",	// 
-	//"estuviÈramos",	// 
+	//"estuvi√©ramos",	// 
 	//"estuvierais",	// 
 	//"estuvieran",	// 
 	//"estuviese",	// 
 	//"estuvieses",	// 
-	//"estuviÈsemos",	// 
+	//"estuvi√©semos",	// 
 	//"estuvieseis",	// 
 	//"estuviesen",	// 
 	//"estando",	// 
@@ -1619,15 +1619,15 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"hon",		// she
 	//"som",		// who,
 	//"han",		// he
-	"pÂ",		// on
+	"p√•",		// on
 	//"den",		// it,
 	//"med",		// with
 	//"var",		// where,
 	//"sig",		// him(self)
-	//"fˆr",		// for (valgrind does not like, bad utf8?)
-	//"sÂ",		// so
+	//"f√∂r",		// for (valgrind does not like, bad utf8?)
+	//"s√•",		// so
 	"till",		// to
-	"‰r",		// is
+	"√§r",		// is
 	//"men",		// but
 	"ett",		// a
 	//"om",		// if;
@@ -1638,7 +1638,7 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"mig",		// me
 	//"du",		// you
 	//"henne",	// her
-	//"dÂ",		// then,
+	//"d√•",		// then,
 	//"sin",		// his
 	//"nu",		// now
 	//"har",		// have
@@ -1647,42 +1647,42 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"honom",	// him
 	//"skulle",	// 'sake'
 	//"hennes",	// her
-	//"d‰r",		// there
+	//"d√§r",		// there
 	//"min",		// my
 	//"man",		// one
 	//"ej",		// nor
 	"vid",		// at,
 	//"kunde",	// could
-	//"nÂgot",	// some
-	"frÂn",		// from,
+	//"n√•got",	// some
+	"fr√•n",		// from,
 	//"ut",		// out
-	//"n‰r",		// when
+	//"n√§r",		// when
 	//"efter",	// after,
 	//"upp",		// up
 	//"vi",		// we
 	//"dem",		// them
 	//"vara",		// be
 	//"vad",		// what
-	//"ˆver",		// over
-	//"‰n",		// than
+	//"√∂ver",		// over
+	//"√§n",		// than
 	//"dig",		// you
 	//"kan",		// can
 	//"sina",		// his
-	//"h‰r",		// here
+	//"h√§r",		// here
 	//"ha",		// have
 	//"mot",		// towards
 	//"alla",		// all
 	//"under",	// under
-	//"nÂgon",	// some
+	//"n√•gon",	// some
 	"eller",	// or
 	//"allt",		// all
 	//"mycket",	// much
 	//"sedan",	// since
 	//"ju",		// why
 	//"denna",	// this/that
-	//"sj‰lv",	// myself,
+	//"sj√§lv",	// myself,
 	//"detta",	// this/that
-	"Ât",		// to
+	"√•t",		// to
 	//"utan",		// without
 	//"varit",	// was
 	//"hur",		// how
@@ -1694,33 +1694,33 @@ static const char *s_queryStopWordsUnknown[] = {
 	//"oss",		// us
 	//"din",		// thy
 	//"dessa",	// these/those
-	//"nÂgra",	// some
+	//"n√•gra",	// some
 	//"deras",	// their
 	"blir",		// from
 	//"mina",		// my
 	"samma",	// (the)
 	//"vilken",	// who,
 	//"er",		// you,
-	//"sÂdan",	// such
-	//"vÂr",		// our
+	//"s√•dan",	// such
+	//"v√•r",		// our
 	"blivit", 	// from
 	//"dess",		// its
 	//"inom",		// within
 	//"mellan",	// between
-	//"sÂdant",	// such
-	//"varfˆr",	// why (valgrind does not like, bad utf8?)
+	//"s√•dant",	// such
+	//"varf√∂r",	// why (valgrind does not like, bad utf8?)
 	//"varje",	// each
 	//"vilka",	// who,
 	//"ditt",		// thy
 	//"vem",		// who
 	//"vilket",	// who,
 	//"sitta",	// his
-	//"sÂdana",	// such
+	//"s√•dana",	// such
 	//"vart",		// each
 	//"dina",		// thy
 	//"vars",		// whose
-	//"vÂrt",		// our
-	//"vÂra",		// our
+	//"v√•rt",		// our
+	//"v√•ra",		// our
 	//"ert",		// your
 	//"era",		// your
 	//"vilkas",	// whose
@@ -1818,7 +1818,7 @@ static const char *s_queryStopWordsGerman[] = {
 	"dem",		// 
 	"die",		// 
 	"das",		// 
-	//"daﬂ",		// that
+	//"da√ü",		// that
 	"derselbe",	// the
 	"derselben",	// 
 	"denselben",	// 
@@ -1873,7 +1873,7 @@ static const char *s_queryStopWordsGerman[] = {
 	//"euren",	// 
 	//"eurer",	// 
 	//"eures",	// 
-	"f¸r",		// for
+	"f√ºr",		// for
 	//"gegen",	// towards
 	//"gewesen",	// p.p.
 	//"hab",		// have
@@ -1918,8 +1918,8 @@ static const char *s_queryStopWordsGerman[] = {
 	//"keinen",	// 
 	//"keiner",	// 
 	//"keines",	// 
-	//"kˆnnen",	// can
-	//"kˆnnte",	// could
+	//"k√∂nnen",	// can
+	//"k√∂nnte",	// could
 	//"machen",	// do
 	//"man",		// one
 	//"manche",	// some,
@@ -1967,7 +1967,7 @@ static const char *s_queryStopWordsGerman[] = {
 	//"sollte",	// should
 	//"sondern",	// but
 	//"sonst",	// else
-	"¸ber",		// over
+	"√ºber",		// over
 	//"um",		// about,
 	"und",		// and
 	//"uns",		// us
@@ -1981,7 +1981,7 @@ static const char *s_queryStopWordsGerman[] = {
 	//"vom",		// von
 	"von",		// from
 	//"vor",		// before
-	//"w‰hrend",	// while
+	//"w√§hrend",	// while
 	//"war",		// was
 	//"waren",	// were
 	//"warst",	// wast
@@ -2006,8 +2006,8 @@ static const char *s_queryStopWordsGerman[] = {
 	//"wo",		// where
 	//"wollen",	// want
 	//"wollte",	// wanted
-	//"w¸rde",	// would
-	//"w¸rden",	// would
+	//"w√ºrde",	// would
+	//"w√ºrden",	// would
 	"zu",		// to
 	"zum",		// zu
 	"zur",	// zu
@@ -2046,8 +2046,8 @@ bool isQueryStopWord ( char *s , int32_t len , int64_t h , int32_t langId ) {
 // 			int64_t  swh   = hash64Lower ( sw , swlen );
 // 			s_queryStopWordTable.addTerm (swh,i+1,i+1,true);
 // 			// . add w/o accent marks too!
-// 			// . skip "f¸r" though because fur is an eng. word
-// 			//if ( *sw=='f' && *(sw+1)=='¸' &&
+// 			// . skip "f√ºr" though because fur is an eng. word
+// 			//if ( *sw=='f' && *(sw+1)=='√º' &&
 // 			//     *(sw+2)=='r' && swlen == 3 ) continue;
 // 			//swh   = hash64AsciiLower ( sw , swlen );
 // 			//s_queryStopWordTable.addTerm (swh,i+1,i+1,true);
@@ -2495,7 +2495,7 @@ static const char      *s_commonWords[] = {
 	"til",		// to/at/for/until/against/by/of/into,
 	"er",		// present
 	"som",		// who,
-	"pÂ",		// on/upon/in/on/at/to/after/of/with/for,
+	"p√•",		// on/upon/in/on/at/to/after/of/with/for,
 	"de",		// they
 	"med",		// with/by/in,
 	"han",		// he
@@ -2538,8 +2538,8 @@ static const char      *s_commonWords[] = {
 	"blev",		// past
 	"kunne",	// could
 	"ind",		// in
-	"nÂr",	// when
-	"vÊre",	// present
+	"n√•r",	// when
+	"v√¶re",	// present
 	"dog",	// however/yet/after
 	"noget",	// something
 	"ville",	// would
@@ -2552,7 +2552,7 @@ static const char      *s_commonWords[] = {
 	"end",	// than
 	"dette",	// this
 	"mit",	// my/mine
-	"ogsÂ",		// also
+	"ogs√•",		// also
 	"ogsa",		// also
 	"under",	// under/beneath/below/during,
 	"have",		// have
@@ -2576,11 +2576,11 @@ static const char      *s_commonWords[] = {
 	"ad",		// by/through
 	"bliver",	// present
 	"hendes",	// her/hers
-	"vÊret",	// be
+	"v√¶ret",	// be
 	"vaeret",	// be
 	"thi",		// for
 	"jer",		// you
-	"sÂdan",	// such,
+	"s√•dan",	// such,
 
 	// dutch stop words
 	"de",		// the
@@ -2708,7 +2708,7 @@ static const char      *s_commonWords[] = {
 	"ma",		// my
 	"mais",		// but
 	"me",		// me
-	"mÍme",		// same;
+	"m√™me",		// same;
 	"mes",		// me
 	"moi",		// me
 	"mon",		// my
@@ -2778,7 +2778,7 @@ static const char      *s_commonWords[] = {
 	"dem",		// 
 	"die",		// 
 	"das",		// 
-	"daﬂ",		// that
+	"da√ü",		// that
 	"derselbe",	// the
 	"derselben",	// 
 	"denselben",	// 
@@ -2833,7 +2833,7 @@ static const char      *s_commonWords[] = {
 	"euren",	// 
 	"eurer",	// 
 	"eures",	// 
-	"f¸r",		// for
+	"f√ºr",		// for
 	"gegen",	// towards
 	"gewesen",	// p.p.
 	"hab",		// have
@@ -2878,8 +2878,8 @@ static const char      *s_commonWords[] = {
 	"keinen",	// 
 	"keiner",	// 
 	"keines",	// 
-	"kˆnnen",	// can
-	"kˆnnte",	// could
+	"k√∂nnen",	// can
+	"k√∂nnte",	// could
 	"machen",	// do
 	"man",		// one
 	"manche",	// some,
@@ -2927,7 +2927,7 @@ static const char      *s_commonWords[] = {
 	"sollte",	// should
 	"sondern",	// but
 	"sonst",	// else
-	"¸ber",		// over
+	"√ºber",		// over
 	"um",		// about,
 	"und",		// and
 	"uns",		// us
@@ -2941,7 +2941,7 @@ static const char      *s_commonWords[] = {
 	"vom",		// von
 	"von",		// from
 	"vor",		// before
-	"w‰hrend",	// while
+	"w√§hrend",	// while
 //		"war",		// was
 	"waren",	// were
 	"warst",	// wast
@@ -2966,8 +2966,8 @@ static const char      *s_commonWords[] = {
 	"wo",		// where
 	"wollen",	// want
 	"wollte",	// wanted
-	"w¸rde",	// would
-	"w¸rden",	// would
+	"w√ºrde",	// would
+	"w√ºrden",	// would
 	"zu",		// to
 	"zum",		// zu
 	"zur",		// zu
@@ -3070,7 +3070,7 @@ static const char      *s_commonWords[] = {
 	"ma",		// but
 	"ed",		// and
 	"se",		// if
-	"perchÈ",	// why,
+	"perch√©",	// why,
 	"anche",	// also
 //		"come",		// how
 	"dov",		// where
@@ -3079,7 +3079,7 @@ static const char      *s_commonWords[] = {
 	"chi",		// who
 	"cui",		// whom
 	"non",		// not
-	"pi˘",		// more
+	"pi√π",		// more
 	"quale",	// who,
 	"quanto",	// how
 	"quanti",	// 
@@ -3114,7 +3114,7 @@ static const char      *s_commonWords[] = {
 	"til",		// to
 	"er",		// is
 	"som",		// who/that
-	"pÂ",		// on
+	"p√•",		// on
 	"de",		// they
 	"med",		// with
 	"han",		// he
@@ -3122,7 +3122,7 @@ static const char      *s_commonWords[] = {
 	"ikke",		// not
 	"inte",		// not
 	"der",		// there
-	"sÂ",		// so
+	"s√•",		// so
 	"var",		// was
 	"meg",		// me
 	"seg",		// you
@@ -3137,7 +3137,7 @@ static const char      *s_commonWords[] = {
 	"hade",		// had
 	"hu",		// she
 	"hun",		// she
-	"nÂ",		// now
+	"n√•",		// now
 	"over",		// over
 	"da",		// when/as
 	"ved",		// by/know
@@ -3156,7 +3156,7 @@ static const char      *s_commonWords[] = {
 	"hva",		// what
 	"skal",		// shall/must
 	"selv",		// self
-	"sj¯l",		// self
+	"sj√∏l",		// self
 	"her",		// here
 	"alle",		// all
 	"vil",		// will
@@ -3166,8 +3166,8 @@ static const char      *s_commonWords[] = {
 	"blitt",	// have
 	"kunne",	// could
 	"inn",		// in
-	"nÂr",		// when
-	"vÊre",		// be
+	"n√•r",		// when
+	"v√¶re",		// be
 	"kom",		// come
 	"noen",		// some
 	"noe",		// some
@@ -3188,7 +3188,7 @@ static const char      *s_commonWords[] = {
 	"sine",		// hers/his
 	"sitt",		// hers/his
 	"mot",		// against
-	"Â",		// to
+	"√•",		// to
 	"meget",	// much
 	"hvorfor",	// why
 	"sia",		// since
@@ -3206,18 +3206,18 @@ static const char      *s_commonWords[] = {
 	"samme",	// same
 	"hvilken",	// which
 	"hvilke",	// which
-	"sÂnn",		// such
+	"s√•nn",		// such
 	"inni",		// inside/within
 	"mellom",	// between
-	"vÂr",		// our
+	"v√•r",		// our
 	"hver",		// each
 	"hvem",		// who
 	"vors",		// us/ours
 	"dere",		// their
 	"deres",	// theirs
 	"hvis",		// whose
-	"bÂde",		// both
-	"bÂe",		// both
+	"b√•de",		// both
+	"b√•e",		// both
 	"begge",	// both
 	"siden",	// since
 	"dykk",		// your
@@ -3227,7 +3227,7 @@ static const char      *s_commonWords[] = {
 	"deires",	// theirs
 	"deim",		// them
 	"di",		// your
-	"dÂ",		// as/when
+	"d√•",		// as/when
 	"eg",		// I
 	"ein",		// a/an
 	"ei",		// a/an
@@ -3235,7 +3235,7 @@ static const char      *s_commonWords[] = {
 	"eitt",		// a/an
 	"elles",	// or
 	"honom",	// he
-	"hjÂ",		// at
+	"hj√•",		// at
 	"ho",		// she
 	"hoe",		// she
 	"henne",	// her
@@ -3282,9 +3282,9 @@ static const char      *s_commonWords[] = {
 	"varte",	// became
 	"vart",		// became
 	"er",		// am
-	"vÊre",		// to
+	"v√¶re",		// to
 	"var",		// was
-	"Â",		// on
+	"√•",		// on
 
 
 	// portuguese stop words
@@ -3299,7 +3299,7 @@ static const char      *s_commonWords[] = {
 	"um",		// a
 	"para",		// for
 	//"com",		// with
-	"n„o",		// not,
+	"n√£o",		// not,
 	"uma",		// a
 	"os",		// the;
 	"no",		// em
@@ -3314,20 +3314,20 @@ static const char      *s_commonWords[] = {
 	"ao",		// a
 	"ele",		// he
 	"das",		// de
-	//"‡",		// a
+	//"√†",		// a
 	"seu",		// his
 	"sua",		// her
 	"ou",		// or
 	"quando",	// when
 	"muito",	// much
 	"nos",		// em
-	"j·",		// already,
+	"j√°",		// already,
 	"eu",		// I
-	"tambÈm",	// also
-	"sÛ",		// only,
+	"tamb√©m",	// also
+	"s√≥",		// only,
 	"pelo",		// per
 	"pela",		// per
-	"atÈ",		// up
+	"at√©",		// up
 	"isso",		// that
 	"ela",		// he
 	"entre",	// between
@@ -3341,19 +3341,19 @@ static const char      *s_commonWords[] = {
 	"me",		// me
 	"esse",		// that
 	"eles",		// they
-	"vocÍ",		// you
+	"voc√™",		// you
 	"essa",		// that
 	"num",		// em
 	"nem",		// nor
 	"suas",		// her
 	"meu",		// my
-	"‡s",		// a
+	"√†s",		// a
 	"minha",	// my
 	"numa",		// em
 	"pelos",	// per
 	"elas",		// they
 	"qual",		// which
-	"nÛs",		// we
+	"n√≥s",		// we
 	"lhe",		// to
 	"deles",	// of them
 	"essas",	// those
@@ -3363,7 +3363,7 @@ static const char      *s_commonWords[] = {
 	"dele",		// of
 	"tu",		// thou
 	"te",		// thee
-	"vocÍs",	// you
+	"voc√™s",	// you
 	"vos",		// you
 	"lhes",		// to
 	"meus",		// my
@@ -3388,188 +3388,188 @@ static const char      *s_commonWords[] = {
 	"isto",		// this
 	"aquilo",	// that
 	"estou",	// 
-	"est·",		// 
+	"est√°",		// 
 	"estamos",	// 
-	"est„o",	// 
+	"est√£o",	// 
 	"estive",	// 
 	"esteve",	// 
 	"estivemos",	// 
 	"estiveram",	// 
 	"estava",	// 
-	"est·vamos",	// 
+	"est√°vamos",	// 
 	"estavam",	// 
 	"estivera",	// 
-	"estivÈramos",	// 
+	"estiv√©ramos",	// 
 	"esteja",	// 
 	"estejamos",	// 
 	"estejam",	// 
 	"estivesse",	// 
-	"estivÈssemos",	// 
+	"estiv√©ssemos",	// 
 	"estivessem",	// 
 	"estiver",	// 
 	"estivermos",	// 
 	"estiverem",	// 
 
 	// russian stop words
-	"…",		// and
-	"◊",		// in/into
-	"◊œ",		// alternative
-	"Œ≈",		// not
-	"ﬁ‘œ",		// what/that
-	"œŒ",		// he
-	"Œ¡",		// on/onto
-	"—",		// i
-	"”",		// from
-	"”œ",		// alternative
-	"À¡À",		// how
-	"¡",		// milder
-	"‘œ",		// conjunction
-	"◊”≈",		// all
-	"œŒ¡",		// she
-	"‘¡À",		// so,
-	"≈«œ",		// him
-	"Œœ",		// but
-	"ƒ¡",		// yes/and
-	"‘Ÿ",		// thou
-	"À",		// towards,
-	"’",		// around,
-	"÷≈",		// intensifier
-	"◊Ÿ",		// you
-	"⁄¡",		// beyond,
-	"¬Ÿ",		// conditional/subj.
-	"–œ",		// up
-	"‘œÃÿÀœ",	// only
-	"≈≈",		// her
-	"ÕŒ≈",		// to
-	"¬ŸÃœ",		// it
-	"◊œ‘",		// here
-	"œ‘",		// away
-	"Õ≈Œ—",		// me
-	"≈›≈",		// still,
-	"Œ≈‘",		// no,
-	"œ",		// about
-	"…⁄",		// out
-	"≈Õ’",		// to
-	"‘≈–≈“ÿ",	// now
-	"Àœ«ƒ¡",	// when
-	"ƒ¡÷≈",		// even
-	"Œ’",		// so,
-	"◊ƒ“’«",	// suddenly
-	"Ã…",		// interrogative
-	"≈”Ã…",		// if
-	"’÷≈",		// already,
-	"…Ã…",		// or
-	"Œ…",		// neither
-	"¬Ÿ‘ÿ",		// to
-	"¬ŸÃ",		// he
-	"Œ≈«œ",		// prepositional
-	"ƒœ",		// up
-	"◊¡”",		// you
-	"Œ…¬’ƒÿ",	// indef.
-	"œ–—‘ÿ",	// again
-	"’÷",		// already,
-	"◊¡Õ",		// to
-	"”À¡⁄¡Ã",	// he
-	"◊≈ƒÿ",		// particle
-	"‘¡Õ",		// there
-	"–œ‘œÕ",	// then
-	"”≈¬—",		// oneself
-	"Œ…ﬁ≈«œ",	// nothing
-	"≈ ",		// to
-	"Õœ÷≈‘",	// usually
-	"œŒ…",		// they
-	"‘’‘",		// here
-	"«ƒ≈",		// where
-	"≈”‘ÿ",		// there
-	"Œ¡ƒœ",		// got
-	"Œ≈ ",		// prepositional
-	"ƒÃ—",		// for
-	"ÕŸ",		// we
-	"‘≈¬—",		// thee
-	"…»",		// them,
-	"ﬁ≈Õ",		// than
-	"¬ŸÃ¡",		// she
-	"”¡Õ",		// self
-	"ﬁ‘œ¬",		// in
-	"¬≈⁄",		// without
-	"¬’ƒ‘œ",	// as
-	"ﬁ≈Ãœ◊≈À",	// man,
-	"ﬁ≈«œ",		// genitive
-	"“¡⁄",		// once
-	"‘œ÷≈",		// also
-	"”≈¬≈",		// to
-	"–œƒ",		// beneath
-	"÷…⁄Œÿ",	// life
-	"¬’ƒ≈‘",	// will
-	"÷",		// int16_t
-	"‘œ«ƒ¡",	// then
-	"À‘œ",		// who
-	"‹‘œ‘",		// this
-	"«œ◊œ“…Ã",	// was
-	"‘œ«œ",		// genitive
-	"–œ‘œÕ’",	// for
-	"‹‘œ«œ",	// genitive
-	"À¡Àœ ",	// which
-	"”œ◊”≈Õ",	// altogether
-	"Œ…Õ",		// prepositional
-	"⁄ƒ≈”ÿ",	// here
-	"‹‘œÕ",		// prepositional
-	"œƒ…Œ",		// one
-	"–œﬁ‘…",	// almost
-	"Õœ ",		// my
-	"‘≈Õ",		// instrumental/dative
-	"ﬁ‘œ¬Ÿ",	// full
-	"Œ≈≈",		// her
-	"À¡÷≈‘”—",	// it
-	"”≈ ﬁ¡”",	// now
-	"¬ŸÃ…",		// they
-	"À’ƒ¡",		// where
-	"⁄¡ﬁ≈Õ",	// why
-	"”À¡⁄¡‘ÿ",	// to
-	"◊”≈»",		// all
-	"Œ…Àœ«ƒ¡",	// never
-	"”≈«œƒŒ—",	// today
-	"Õœ÷Œœ",	// possible,
-	"–“…",		// by
-	"Œ¡ÀœŒ≈√",	// finally
-	"ƒ◊¡",		// two
-	"œ¬",		// alternative
-	"ƒ“’«œ ",	// another
-	"»œ‘ÿ",		// even
-	"–œ”Ã≈",	// after
-	"Œ¡ƒ",		// above
-	"¬œÃÿ€≈",	// more
-	"‘œ‘",		// that
-	"ﬁ≈“≈⁄",	// across,
-	"‹‘…",		// these
-	"Œ¡”",		// us
-	"–“œ",		// about
-	"◊”≈«œ",	// in
-	"Œ…»",		// prepositional
-	"À¡À¡—",	// which,
-	"ÕŒœ«œ",	// lots
-	"“¡⁄◊≈",	// interrogative
-	"”À¡⁄¡Ã¡",	// she
-	"‘“…",		// three
-	"‹‘’",		// this,
-	"Õœ—",		// my,
-	"◊–“œﬁ≈Õ",	// moreover,
-	"»œ“œ€œ",	// good
-	"”◊œ¿",		// ones
-	"‹‘œ ",		// oblique
-	"–≈“≈ƒ",	// in
-	"…Œœ«ƒ¡",	// sometimes
-	"Ã’ﬁ€≈",	// better
-	"ﬁ’‘ÿ",		// a
-	"‘œÕ",		// preposn.
-	"Œ≈Ãÿ⁄—",	// one
-	"‘¡Àœ ",	// such
-	"…Õ",		// to
-	"¬œÃ≈≈",	// more
-	"◊”≈«ƒ¡",	// always
-	"ÀœŒ≈ﬁŒœ",	// of
-	"◊”¿",		// acc.
-	"Õ≈÷ƒ’",	// between
+	"√â",		// and
+	"√ó",		// in/into
+	"√ó√è",		// alternative
+	"√é√Ö",		// not
+	"√û√î√è",		// what/that
+	"√è√é",		// he
+	"√é√Å",		// on/onto
+	"√ë",		// i
+	"√ì",		// from
+	"√ì√è",		// alternative
+	"√ã√Å√ã",		// how
+	"√Å",		// milder
+	"√î√è",		// conjunction
+	"√ó√ì√Ö",		// all
+	"√è√é√Å",		// she
+	"√î√Å√ã",		// so,
+	"√Ö√á√è",		// him
+	"√é√è",		// but
+	"√Ñ√Å",		// yes/and
+	"√î√ô",		// thou
+	"√ã",		// towards,
+	"√ï",		// around,
+	"√ñ√Ö",		// intensifier
+	"√ó√ô",		// you
+	"√ö√Å",		// beyond,
+	"√Ç√ô",		// conditional/subj.
+	"√ê√è",		// up
+	"√î√è√å√ò√ã√è",	// only
+	"√Ö√Ö",		// her
+	"√ç√é√Ö",		// to
+	"√Ç√ô√å√è",		// it
+	"√ó√è√î",		// here
+	"√è√î",		// away
+	"√ç√Ö√é√ë",		// me
+	"√Ö√ù√Ö",		// still,
+	"√é√Ö√î",		// no,
+	"√è",		// about
+	"√â√ö",		// out
+	"√Ö√ç√ï",		// to
+	"√î√Ö√ê√Ö√í√ò",	// now
+	"√ã√è√á√Ñ√Å",	// when
+	"√Ñ√Å√ñ√Ö",		// even
+	"√é√ï",		// so,
+	"√ó√Ñ√í√ï√á",	// suddenly
+	"√å√â",		// interrogative
+	"√Ö√ì√å√â",		// if
+	"√ï√ñ√Ö",		// already,
+	"√â√å√â",		// or
+	"√é√â",		// neither
+	"√Ç√ô√î√ò",		// to
+	"√Ç√ô√å",		// he
+	"√é√Ö√á√è",		// prepositional
+	"√Ñ√è",		// up
+	"√ó√Å√ì",		// you
+	"√é√â√Ç√ï√Ñ√ò",	// indef.
+	"√è√ê√ë√î√ò",	// again
+	"√ï√ñ",		// already,
+	"√ó√Å√ç",		// to
+	"√ì√ã√Å√ö√Å√å",	// he
+	"√ó√Ö√Ñ√ò",		// particle
+	"√î√Å√ç",		// there
+	"√ê√è√î√è√ç",	// then
+	"√ì√Ö√Ç√ë",		// oneself
+	"√é√â√û√Ö√á√è",	// nothing
+	"√Ö√ä",		// to
+	"√ç√è√ñ√Ö√î",	// usually
+	"√è√é√â",		// they
+	"√î√ï√î",		// here
+	"√á√Ñ√Ö",		// where
+	"√Ö√ì√î√ò",		// there
+	"√é√Å√Ñ√è",		// got
+	"√é√Ö√ä",		// prepositional
+	"√Ñ√å√ë",		// for
+	"√ç√ô",		// we
+	"√î√Ö√Ç√ë",		// thee
+	"√â√à",		// them,
+	"√û√Ö√ç",		// than
+	"√Ç√ô√å√Å",		// she
+	"√ì√Å√ç",		// self
+	"√û√î√è√Ç",		// in
+	"√Ç√Ö√ö",		// without
+	"√Ç√ï√Ñ√î√è",	// as
+	"√û√Ö√å√è√ó√Ö√ã",	// man,
+	"√û√Ö√á√è",		// genitive
+	"√í√Å√ö",		// once
+	"√î√è√ñ√Ö",		// also
+	"√ì√Ö√Ç√Ö",		// to
+	"√ê√è√Ñ",		// beneath
+	"√ñ√â√ö√é√ò",	// life
+	"√Ç√ï√Ñ√Ö√î",	// will
+	"√ñ",		// int16_t
+	"√î√è√á√Ñ√Å",	// then
+	"√ã√î√è",		// who
+	"√ú√î√è√î",		// this
+	"√á√è√ó√è√í√â√å",	// was
+	"√î√è√á√è",		// genitive
+	"√ê√è√î√è√ç√ï",	// for
+	"√ú√î√è√á√è",	// genitive
+	"√ã√Å√ã√è√ä",	// which
+	"√ì√è√ó√ì√Ö√ç",	// altogether
+	"√é√â√ç",		// prepositional
+	"√ö√Ñ√Ö√ì√ò",	// here
+	"√ú√î√è√ç",		// prepositional
+	"√è√Ñ√â√é",		// one
+	"√ê√è√û√î√â",	// almost
+	"√ç√è√ä",		// my
+	"√î√Ö√ç",		// instrumental/dative
+	"√û√î√è√Ç√ô",	// full
+	"√é√Ö√Ö",		// her
+	"√ã√Å√ñ√Ö√î√ì√ë",	// it
+	"√ì√Ö√ä√û√Å√ì",	// now
+	"√Ç√ô√å√â",		// they
+	"√ã√ï√Ñ√Å",		// where
+	"√ö√Å√û√Ö√ç",	// why
+	"√ì√ã√Å√ö√Å√î√ò",	// to
+	"√ó√ì√Ö√à",		// all
+	"√é√â√ã√è√á√Ñ√Å",	// never
+	"√ì√Ö√á√è√Ñ√é√ë",	// today
+	"√ç√è√ñ√é√è",	// possible,
+	"√ê√í√â",		// by
+	"√é√Å√ã√è√é√Ö√É",	// finally
+	"√Ñ√ó√Å",		// two
+	"√è√Ç",		// alternative
+	"√Ñ√í√ï√á√è√ä",	// another
+	"√à√è√î√ò",		// even
+	"√ê√è√ì√å√Ö",	// after
+	"√é√Å√Ñ",		// above
+	"√Ç√è√å√ò√õ√Ö",	// more
+	"√î√è√î",		// that
+	"√û√Ö√í√Ö√ö",	// across,
+	"√ú√î√â",		// these
+	"√é√Å√ì",		// us
+	"√ê√í√è",		// about
+	"√ó√ì√Ö√á√è",	// in
+	"√é√â√à",		// prepositional
+	"√ã√Å√ã√Å√ë",	// which,
+	"√ç√é√è√á√è",	// lots
+	"√í√Å√ö√ó√Ö",	// interrogative
+	"√ì√ã√Å√ö√Å√å√Å",	// she
+	"√î√í√â",		// three
+	"√ú√î√ï",		// this,
+	"√ç√è√ë",		// my,
+	"√ó√ê√í√è√û√Ö√ç",	// moreover,
+	"√à√è√í√è√õ√è",	// good
+	"√ì√ó√è√Ä",		// ones
+	"√ú√î√è√ä",		// oblique
+	"√ê√Ö√í√Ö√Ñ",	// in
+	"√â√é√è√á√Ñ√Å",	// sometimes
+	"√å√ï√û√õ√Ö",	// better
+	"√û√ï√î√ò",		// a
+	"√î√è√ç",		// preposn.
+	"√é√Ö√å√ò√ö√ë",	// one
+	"√î√Å√ã√è√ä",	// such
+	"√â√ç",		// to
+	"√Ç√è√å√Ö√Ö",	// more
+	"√ó√ì√Ö√á√Ñ√Å",	// always
+	"√ã√è√é√Ö√û√é√è",	// of
+	"√ó√ì√Ä",		// acc.
+	"√ç√Ö√ñ√Ñ√ï",	// between
 
 	// spanish stop words
 	"de",		// from,
@@ -3593,14 +3593,14 @@ static const char      *s_commonWords[] = {
 	"al",		// a
 	"lo",		// him
 	"como",		// how
-	"m·s",		// more
+	"m√°s",		// more
 	"pero",		// pero
 	"sus",		// su
 	"le",		// to
 	"ya",		// already
 	"o",		// or
 	"este",		// this
-	"sÌ",		// himself
+	"s√≠",		// himself
 	"porque",	// because
 	"esta",		// this
 	"entre",	// between
@@ -3608,7 +3608,7 @@ static const char      *s_commonWords[] = {
 	"muy",		// very
 	"sin",		// without
 	"sobre",	// on
-	"tambiÈn",	// also
+	"tambi√©n",	// also
 	"me",		// me
 	"hasta",	// until
 	"hay",		// there
@@ -3630,16 +3630,16 @@ static const char      *s_commonWords[] = {
 	"ellos",	// they
 	"e",		// and
 	"esto",		// this
-	"mÌ",		// me
+	"m√≠",		// me
 	"antes",	// before
 	"algunos",	// some
-	"quÈ",		// what?
+	"qu√©",		// what?
 	"unos",		// a
 	"yo",		// I
 	"otro",		// other
 	"otras",	// other
 	"otra",		// other
-	"Èl",		// he
+	"√©l",		// he
 	"tanto",	// so
 	"esa",		// that
 	"estos",	// these
@@ -3657,7 +3657,7 @@ static const char      *s_commonWords[] = {
 	"nosotros",	// we
 	"mi",		// me
 	"mis",		// mi
-	"t˙",		// thou
+	"t√∫",		// thou
 	"te",		// thee
 	"ti",		// thee
 	"tu",		// thy
@@ -3667,10 +3667,10 @@ static const char      *s_commonWords[] = {
 	"vosostros",	// you
 	"vosostras",	// you
 	"os",		// you
-	"mÌo",		// mine
-	"mÌa",		// 
-	"mÌos",		// 
-	"mÌas",		// 
+	"m√≠o",		// mine
+	"m√≠a",		// 
+	"m√≠os",		// 
+	"m√≠as",		// 
 	"tuyo",		// thine
 	"tuya",		// 
 	"tuyos",	// 
@@ -3690,30 +3690,30 @@ static const char      *s_commonWords[] = {
 	"esos",		// those
 	"esas",		// those
 	"estoy",	// 
-	"est·s",	// 
-	"est·",		// 
+	"est√°s",	// 
+	"est√°",		// 
 	"estamos",	// 
-	"est·is",	// 
-	"est·n",	// 
-	"estÈ",		// 
-	"estÈs",	// 
+	"est√°is",	// 
+	"est√°n",	// 
+	"est√©",		// 
+	"est√©s",	// 
 	"estemos",	// 
-	"estÈis",	// 
-	"estÈn",	// 
-	"estarÈ",	// 
-	"estar·s",	// 
-	"estar·",	// 
+	"est√©is",	// 
+	"est√©n",	// 
+	"estar√©",	// 
+	"estar√°s",	// 
+	"estar√°",	// 
 	"estaremos",	// 
-	"estarÈis",	// 
-	"estar·n",	// 
-	"estarÌa",	// 
-	"estarÌas",	// 
-	"estarÌamos",	// 
-	"estarÌais",	// 
-	"estarÌan",	// 
+	"estar√©is",	// 
+	"estar√°n",	// 
+	"estar√≠a",	// 
+	"estar√≠as",	// 
+	"estar√≠amos",	// 
+	"estar√≠ais",	// 
+	"estar√≠an",	// 
 	"estaba",	// 
 	"estabas",	// 
-	"est·bamos",	// 
+	"est√°bamos",	// 
 	"estabais",	// 
 	"estaban",	// 
 	"estuve",	// 
@@ -3724,12 +3724,12 @@ static const char      *s_commonWords[] = {
 	"estuvieron",	// 
 	"estuviera",	// 
 	"estuvieras",	// 
-	"estuviÈramos",	// 
+	"estuvi√©ramos",	// 
 	"estuvierais",	// 
 	"estuvieran",	// 
 	"estuviese",	// 
 	"estuvieses",	// 
-	"estuviÈsemos",	// 
+	"estuvi√©semos",	// 
 	"estuvieseis",	// 
 	"estuviesen",	// 
 	"estando",	// 
@@ -3749,15 +3749,15 @@ static const char      *s_commonWords[] = {
 	"hon",		// she
 	"som",		// who,
 	"han",		// he
-	"pÂ",		// on
+	"p√•",		// on
 	"den",		// it,
 	"med",		// with
 	"var",		// where,
 	"sig",		// him(self)
-	//"fˆr",		// for
-	"sÂ",		// so
+	//"f√∂r",		// for
+	"s√•",		// so
 	"till",		// to
-	"‰r",		// is
+	"√§r",		// is
 	"men",		// but
 	"ett",		// a
 	"om",		// if;
@@ -3768,7 +3768,7 @@ static const char      *s_commonWords[] = {
 	"mig",		// me
 	"du",		// you
 	"henne",	// her
-	"dÂ",		// then,
+	"d√•",		// then,
 	"sin",		// his
 	"nu",		// now
 	"har",		// have
@@ -3777,42 +3777,42 @@ static const char      *s_commonWords[] = {
 	"honom",	// him
 	"skulle",	// 'sake'
 	"hennes",	// her
-	"d‰r",		// there
+	"d√§r",		// there
 	"min",		// my
 	"man",		// one
 	"ej",		// nor
 	"vid",		// at,
 	"kunde",	// could
-	"nÂgot",	// some
-	"frÂn",		// from,
+	"n√•got",	// some
+	"fr√•n",		// from,
 	"ut",		// out
-	"n‰r",		// when
+	"n√§r",		// when
 	"efter",	// after,
 	"upp",		// up
 	"vi",		// we
 	"dem",		// them
 	"vara",		// be
 	"vad",		// what
-	"ˆver",		// over
-	"‰n",		// than
+	"√∂ver",		// over
+	"√§n",		// than
 	"dig",		// you
 	"kan",		// can
 	"sina",		// his
-	"h‰r",		// here
+	"h√§r",		// here
 	"ha",		// have
 	"mot",		// towards
 	"alla",		// all
 	"under",	// under
-	"nÂgon",	// some
+	"n√•gon",	// some
 	"eller",	// or
 	"allt",		// all
 	"mycket",	// much
 	"sedan",	// since
 	"ju",		// why
 	"denna",	// this/that
-	"sj‰lv",	// myself,
+	"sj√§lv",	// myself,
 	"detta",	// this/that
-	"Ât",		// to
+	"√•t",		// to
 	"utan",		// without
 	"varit",	// was
 	"hur",		// how
@@ -3824,33 +3824,33 @@ static const char      *s_commonWords[] = {
 	"oss",		// us
 	"din",		// thy
 	"dessa",	// these/those
-	"nÂgra",	// some
+	"n√•gra",	// some
 	"deras",	// their
 	"blir",		// from
 	"mina",		// my
 	"samma",	// (the)
 	"vilken",	// who,
 	"er",		// you,
-	"sÂdan",	// such
-	"vÂr",		// our
+	"s√•dan",	// such
+	"v√•r",		// our
 	"blivit",	// from
 	"dess",		// its
 	"inom",		// within
 	"mellan",	// between
-	"sÂdant",	// such
-	//"varfˆr",	// why
+	"s√•dant",	// such
+	//"varf√∂r",	// why
 	"varje",	// each
 	"vilka",	// who,
 	"ditt",		// thy
 	"vem",		// who
 	"vilket",	// who,
 	"sitta",	// his
-	"sÂdana",	// such
+	"s√•dana",	// such
 	"vart",		// each
 	"dina",		// thy
 	"vars",		// whose
-	"vÂrt",		// our
-	"vÂra",		// our
+	"v√•rt",		// our
+	"v√•ra",		// our
 	"ert",		// your
 	"era",		// your
 	"vilkas",	// whose
@@ -3901,8 +3901,8 @@ int32_t isCommonWord ( int64_t h ) {
 			if ( ! s_commonWordTable.addTerm ( &swh,i+1 ) )
 				return false;
 			// . add w/o accent marks too!
-			// . skip "f¸r" though because fur is an eng. word
-			//if ( *sw=='f' && *(sw+1)=='¸' &&
+			// . skip "f√ºr" though because fur is an eng. word
+			//if ( *sw=='f' && *(sw+1)=='√º' &&
 			//     *(sw+2)=='r' && swlen == 3 ) continue;
 			//swh   = hash64AsciiLower ( sw , swlen );
 			//s_commonWordTable.addTerm (swh,i+1,i+1,true);
@@ -4361,8 +4361,8 @@ int32_t isCommonQueryWordInEnglish ( int64_t h64 ) {
 			if ( ! s_commonQueryWordTable.addTerm ( &swh64,i+1 ) )
 				return false;
 			// . add w/o accent marks too!
-			// . skip "f¸r" though because fur is an eng. word
-			//if ( *sw=='f' && *(sw+1)=='¸' &&
+			// . skip "f√ºr" though because fur is an eng. word
+			//if ( *sw=='f' && *(sw+1)=='√º' &&
 			//     *(sw+2)=='r' && swlen == 3 ) continue;
 			//swh   = hash64AsciiLower ( sw , swlen );
 			//s_commonQueryWordTable.addTerm (swh,i+1,i+1,true);
