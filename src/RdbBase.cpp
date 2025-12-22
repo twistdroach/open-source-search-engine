@@ -128,7 +128,7 @@ bool RdbBase::init ( char  *dir            ,
 	// reset all
 	reset();
 	// sanity
-	if ( ! dir ) { char *xx=NULL;*xx=0; }
+	gbassert(dir);
 	// set all our contained classes
 	//m_dir.set ( dir );
 	// set all our contained classes
@@ -150,7 +150,7 @@ bool RdbBase::init ( char  *dir            ,
 	if ( rdb->m_isCollectionLess ) {
 		if ( collnum != (collnum_t) 0 ) {
 			log("db: collnum not zero for catdb.");
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		// make a special "cat" dir for it if we need to
 		sprintf ( tmp , "%s%s" , dir , dbname );
@@ -170,7 +170,7 @@ bool RdbBase::init ( char  *dir            ,
 		// sanity check, ensure we're zero
 		if ( collnum != (collnum_t) 0 ) {
 			log("db: collnum not zero for catdb.");
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		// make a special "cat" dir for it if we need to
 		sprintf ( tmp , "%scat" , dir );
@@ -186,7 +186,7 @@ bool RdbBase::init ( char  *dir            ,
 		// sanity check, statsdb should always be zero
 		if ( collnum != (collnum_t) 0 ) {
 			log ( "db: collnum not zero for statsdb." );
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		// make a special "stats" dir for it if necessary
 		sprintf ( tmp , "%sstats" , dir );
@@ -202,7 +202,7 @@ bool RdbBase::init ( char  *dir            ,
 		// sanity check, accessdb should always be zero
 		if ( collnum != (collnum_t) 0 ) {
 			log ( "db: collnum not zero for accessdb." );
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		// make a special "stats" dir for it if necessary
 		sprintf ( tmp , "%saccess" , dir );
@@ -218,7 +218,7 @@ bool RdbBase::init ( char  *dir            ,
 		// sanity check, statsdb should always be zero
 		if ( collnum != (collnum_t) 0 ) {
 			log ( "db: collnum not zero for syncdb." );
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		// make a special "stats" dir for it if necessary
 		sprintf ( tmp , "%ssyncdb" , dir );
@@ -371,7 +371,7 @@ bool RdbBase::init ( char  *dir            ,
 	}
 
 	// sanity check
-	if ( m_pc && m_pc->m_diskPageSize!=m_pageSize) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_pc && m_pc->m_diskPageSize!=m_pageSize);
 	// now fill up the page cache
 	// preload:
 	if ( ! preloadDiskPageCache ) return true;
@@ -669,7 +669,7 @@ bool RdbBase::setFiles ( ) {
 		// replace that first file then
 		m_didRepair = true;
 		return true;
-		//char *xx=NULL; *xx=0;
+		//gbassert(false);
 	}
 
 
@@ -759,7 +759,7 @@ int32_t RdbBase::addFile ( int32_t id , bool isNew , int32_t mergeNum ,
 		mdelete ( f , sizeof(BigFile),"RdbBFile");
 		delete (f); 
 		return -1;
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 
 
@@ -778,7 +778,7 @@ int32_t RdbBase::addFile ( int32_t id , bool isNew , int32_t mergeNum ,
 	// reinstate the memory limit
 	g_conf.m_maxMem = mm;
 	// sanity check
-	if ( id2 < 0 && m_isTitledb ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( id2 < 0 && m_isTitledb );
 
 	CollectionRec *cr = NULL;
 
@@ -960,8 +960,7 @@ int32_t RdbBase::getAvailId2 ( ) {
 	int32_t i;
 	for ( i = 0 ; i < m_numFiles ; i++ ) {
 		// sanity check
-		if ( m_fileIds2[i] < 0 || m_fileIds2[i] >= MAX_RDB_FILES ) {
-			char *xx = NULL; *xx = 0; }
+		gbassert_false( m_fileIds2[i] < 0 || m_fileIds2[i] >= MAX_RDB_FILES );
 		// flag it as used
 		f [ m_fileIds2[i] ] = 1;
 	}
@@ -1062,22 +1061,22 @@ bool RdbBase::incorporateMerge ( ) {
 	if ( tp > m_numPos ) {
 		log(LOG_INFO,"merge: %s gained %" INT64 " positives.",
 		     m_dbname , tp - m_numPos );
-			//char *xx = NULL; *xx = 0;
+			//gbassert(false);
 	}
 	if ( tp < m_numPos - m_numNeg ) {
 		log(LOG_INFO,"merge: %s: lost %" INT64 " positives",
 		     m_dbname , m_numPos - tp );
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 	}
 	if ( tn > m_numNeg ) {
 		log(LOG_INFO,"merge: %s: gained %" INT64 " negatives.",
 		     m_dbname , tn - m_numNeg );
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 	}
 	if ( tn < m_numNeg - m_numPos ) {
 		log(LOG_INFO,"merge: %s: lost %" INT64 " negatives.",
 		     m_dbname , m_numNeg - tn );
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 	}
 
 	// assume no unlinks blocked
@@ -1097,7 +1096,7 @@ bool RdbBase::incorporateMerge ( ) {
 		    "size for %s. Map says it should be %" INT64 " bytes but it "
 		    "is %" INT64 " bytes.", 
 		    m_files[x]->getFilename(), fs2 , fs );
-		if ( fs2-fs > 12 || fs-fs2 > 12 ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( fs2-fs > 12 || fs-fs2 > 12 );
 		// now print the exception
 		log("build: continuing since difference is less than 12 "
 		    "bytes. Most likely a discrepancy caused by a power "
@@ -1199,7 +1198,7 @@ void RdbBase::doneWrapper2 ( ) {
 	if ( fs != fs2 ) {
 		log("build: Map file size does not agree with actual file "
 		    "size");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 
 	if ( ! m_isTitledb ) {
@@ -1270,9 +1269,8 @@ void RdbBase::doneWrapper4 ( ) {
 	}
 	if ( wait ) {
 		log("db: waiting for read thread to exit on unlinked file");
-		if (!g_loop.registerSleepCallback(100,this,
-						  checkThreadsAgainWrapper)){
-			char *xx=NULL;*xx=0; }
+		gbassert(g_loop.registerSleepCallback(100,this,
+						  checkThreadsAgainWrapper));
 		return;
 	}
 
@@ -1286,7 +1284,7 @@ void RdbBase::doneWrapper4 ( ) {
 	buryFiles ( a , b );
 	// sanity check
 	if ( m_numFilesToMerge != (b-a) ) {
-		log(LOG_LOGIC,"db: Bury oops."); char *xx = NULL; *xx = 0; }
+		log(LOG_LOGIC,"db: Bury oops."); gbassert(false); }
 	// we no longer have a merge file
 	m_hasMergeFile = false;
 	// now unset m_mergeUrgent if we're close to our limit
@@ -1406,7 +1404,7 @@ bool RdbBase::attemptMerge ( int32_t niceness, bool forceMergeAll, bool doLog ,
 		return false;
 	}
 
-	if (   niceness == 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false(   niceness == 0 );
 
 	if ( forceMergeAll ) m_nextMergeForced = true;
 
@@ -1575,7 +1573,7 @@ bool RdbBase::attemptMerge ( int32_t niceness, bool forceMergeAll, bool doLog ,
 		    "CollectionRec.h.",
 		    m_minToMerge,m_dbname);
 		//m_minToMerge = 2;
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	// mdw: comment this out to reduce log spam when we have 800 colls!
 	// print it
@@ -1874,7 +1872,7 @@ void RdbBase::gotTokenForMerge ( ) {
 		// if titledb we got a "-023" part now
 		if ( m_isTitledb ) {
 			id2 = atol2 ( s , 3 );
-			if ( id2 < 0 ) { char *xx = NULL; *xx =0; }
+			gbassert_false( id2 < 0 );
 			s += 4;
 		}
 		// get the "003" part
@@ -1905,7 +1903,7 @@ void RdbBase::gotTokenForMerge ( ) {
 				    "were deleted because they were "
 				    "exhausted and had no recs to offer."
 				    ,n,m_numFiles);
-				//char *xx=NULL;*xx=0;
+				//gbassert(false);
 				break;
 			}
 			if ( ! m_files[i] ) {
@@ -2085,7 +2083,7 @@ void RdbBase::gotTokenForMerge ( ) {
 		// sanity check
 		if ( ratio < 0.0 ) {
 			logf(LOG_LOGIC,"merge: ratio is negative %.02f",ratio);
-			char *xx = NULL; *xx = 0; 
+			gbassert(false); 
 		}
 		// the adjusted ratio
 		double adjratio = ratio;
@@ -2260,7 +2258,7 @@ void RdbBase::gotTokenForMerge ( ) {
 	//char rdbId = getIdFromRdb ( m_rdb );
 
 	// sanity check
-	if ( m_niceness == 0 ) { char *xx=NULL;*xx=0 ; }
+	gbassert_false( m_niceness == 0 );
 
 	// . start the merge
 	// . returns false if blocked, true otherwise & sets g_errno

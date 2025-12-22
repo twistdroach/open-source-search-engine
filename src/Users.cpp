@@ -528,7 +528,7 @@ void Users::setDatum ( char *data, int32_t column, User *user, bool hasStar){
 		else {
 			log(LOG_DEBUG,"Users Invalid tagname - %s for user %s", data,
 					user->m_username );
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 		}
 		//}
 		break;

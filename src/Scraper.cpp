@@ -164,7 +164,7 @@ void Scraper::gotPhrase ( ) {
 		uf="http://www.google.com/blogsearch?num=50&q=%s&scoring=d"
 			"&filter=0";
 	// sanity check
-	else { char *xx=NULL;*xx=0; }
+	else { gbassert(false); }
 
 	// make the url we will download
 	sprintf ( buf , uf , qe );

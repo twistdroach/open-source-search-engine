@@ -582,7 +582,7 @@ public:
 	int32_t getPubDate ( ) {
 		return m_pubDate;
 		//if ( ! m_best ) return -1;
-		//if ( m_best->m_timestamp <= 0 ) {char*xx=NULL;*xx=0;}
+		//if ( m_best->m_timestamp <= 0 ) {gbassert(false);}
 		//return m_best->m_timestamp;
 	};
 

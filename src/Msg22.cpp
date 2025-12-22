@@ -79,22 +79,22 @@ bool Msg22::getTitleRec ( Msg22Request  *r              ,
 
 	m_availDocId = 0;
 	// sanity
-	if ( getAvailDocIdOnly && justCheckTfndb ) { char *xx=NULL;*xx=0; }
-	if ( getAvailDocIdOnly && url            ) { char *xx=NULL;*xx=0; }
+	gbassert_false( getAvailDocIdOnly && justCheckTfndb );
+	gbassert_false( getAvailDocIdOnly && url            );
 
 	//if ( url ) log(LOG_DEBUG,"build: getting TitleRec for %s",url);
 	// sanity checks
-	if ( url    && docId!=0LL ) { char *xx=NULL;*xx=0; }
-	if ( url    && !url[0]    ) { char *xx=NULL;*xx=0; }
-	if ( docId!=0LL && url    ) { char *xx=NULL;*xx=0; }
-	if ( ! coll               ) { char *xx=NULL;*xx=0; }
-	if ( ! callback           ) { char *xx=NULL;*xx=0; }
-	if ( r->m_inUse           ) { char *xx=NULL;*xx=0; }
-	if ( m_outstanding        ) { char *xx = NULL;*xx=0; }
+	gbassert_false( url    && docId!=0LL );
+	gbassert_false( url    && !url[0]    );
+	gbassert_false( docId!=0LL && url    );
+	gbassert(coll);
+	gbassert(callback);
+	gbassert_false( r->m_inUse           );
+	gbassert_false( m_outstanding        );
 	// sanity check
 	if ( ! justCheckTfndb && ! getAvailDocIdOnly ) {
-		if ( ! titleRecPtrPtr  ) { char *xx=NULL;*xx=0; }
-		if ( ! titleRecSizePtr ) { char *xx=NULL;*xx=0; }
+		gbassert(titleRecPtrPtr);
+		gbassert(titleRecSizePtr);
 	}
 
 	// remember, caller want us to set this
@@ -155,7 +155,7 @@ bool Msg22::getTitleRec ( Msg22Request  *r              ,
 	int32_t hostNum = (docId & DOCID_MASK) / sectionWidth;
 	int32_t numHosts = g_hostdb.getNumHostsPerShard();
 	Host *hosts = g_hostdb.getGroup ( groupId );
-	if ( hostNum >= numHosts ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( hostNum >= numHosts );
 	firstHostId = hosts [ hostNum ].m_hostId ;
 	*/
 	
@@ -282,7 +282,7 @@ void Msg22::gotReply ( ) {
 
 	// sanity check. must either be an empty reply indicating nothing
 	// available or an 8 byte reply above!
-	if ( m_r->m_getAvailDocIdOnly ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_r->m_getAvailDocIdOnly );
 
 	// otherwise, it was found
 	m_found = true;
@@ -377,7 +377,7 @@ void handleRequest22 ( UdpSlot *slot , int32_t netnice ) {
        QUICKPOLL ( r->m_niceness);
 
        // sanity check
-       if ( r->m_collnum < 0 ) { char *xx=NULL;*xx=0; }
+       gbassert_false( r->m_collnum < 0 );
 
 
        // make the state now
@@ -424,7 +424,7 @@ void handleRequest22 ( UdpSlot *slot , int32_t netnice ) {
 	       int64_t d1 = g_titledb.getFirstProbableDocId ( pd );
 	       int64_t d2 = g_titledb.getLastProbableDocId  ( pd );
 	       // sanity - bad url with bad subdomain?
-	       if ( pd < d1 || pd > d2 ) { char *xx=NULL;*xx=0; }
+	       gbassert_false( pd < d1 || pd > d2 );
 	       // make sure we get a decent sample in titledb then in 
 	       // case the docid we wanted is not available
 	       st->m_docId1 = d1;
@@ -453,7 +453,7 @@ void handleRequest22 ( UdpSlot *slot , int32_t netnice ) {
 	       int64_t d1 = g_titledb.getFirstProbableDocId ( pd );
 	       int64_t d2 = g_titledb.getLastProbableDocId  ( pd );
 	       // sanity - bad url with bad subdomain?
-	       if ( pd < d1 || pd > d2 ) { char *xx=NULL;*xx=0; }
+	       gbassert_false( pd < d1 || pd > d2 );
 	       // there are no del bits in tfndb
 	       //uk1 = g_tfndb.makeMinKey ( d1 );
 	       //uk2 = g_tfndb.makeMaxKey ( d2 );
@@ -485,7 +485,7 @@ void handleRequest22 ( UdpSlot *slot , int32_t netnice ) {
 		       // now we can get RdbBase
 		       st->m_tfn2 = base->m_fileIds2[0];
 		       // sanity check
-		       if ( st->m_tfn2 < 0 ) { char *xx = NULL; *xx = 0; }
+		       gbassert_false( st->m_tfn2 < 0 );
 	       }
        }
 
@@ -509,7 +509,7 @@ void handleRequest22 ( UdpSlot *slot , int32_t netnice ) {
 		       // get it
 		       int64_t uh48 = g_titledb.getUrlHash48(&k);
 		       // sanity check
-		       if ( st->m_uh48 == 0 ) { char *xx=NULL;*xx=0; }
+		       gbassert_false( st->m_uh48 == 0 );
 		       // we must match this exactly
 		       if ( uh48 != st->m_uh48 ) continue;
 	       }
@@ -535,7 +535,7 @@ void handleRequest22 ( UdpSlot *slot , int32_t netnice ) {
 	       char *data     = tt->getData     ( n );
 	       int32_t  dataSize = tt->getDataSize ( n );
 	       // weird!
-	       if ( dataSize == 0 ) { char *xx=NULL;*xx=0; }
+	       gbassert_false( dataSize == 0 );
 	       // send the whole rec back
 	       int32_t need = 12 + 4 + dataSize;
 	       // will this copy it? not!
@@ -641,7 +641,7 @@ void gotUrlListWrapper ( void *state , RdbList *list , Msg5 *msg5 ) {
 	if ( r->m_url[0] ) {
 		pd = g_titledb.getProbableDocId(r->m_url);
 		// sanity
-		if ( pd != st->m_pd ) { char *xx=NULL;*xx=0; }
+		gbassert_false( pd != st->m_pd );
 	}
 
 	// . these are both meant to be available docids
@@ -652,7 +652,7 @@ void gotUrlListWrapper ( void *state , RdbList *list , Msg5 *msg5 ) {
 
 	int32_t tfn = -1;
 	// sanity check. make sure did not load from tfndb if did not need to
-	if ( ! ulist->isExhausted() && st->m_tfn2 >= 0 ) {char *xx=NULL;*xx=0;}
+	gbassert_false( ! ulist->isExhausted() && st->m_tfn2 >= 0 );
 	// if only one titledb file and none in memory use it
 	if ( st->m_tfn2 >= 0 ) tfn = st->m_tfn2;
 
@@ -688,7 +688,7 @@ void gotUrlListWrapper ( void *state , RdbList *list , Msg5 *msg5 ) {
 	}
 
 	// sanity check. 255 used to mean in spiderdb or in tree
-	if ( tfn >= 255 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( tfn >= 255 );
 
 
 	// maybe no available docid if we breached our range
@@ -729,7 +729,7 @@ void gotUrlListWrapper ( void *state , RdbList *list , Msg5 *msg5 ) {
 		log("spider: Docid %" INT64 " collided. %s Changing "
 		    "to %" INT64 ".", r->m_docId , r->m_url , ad );
 		// debug this for now
-		//char *xx=NULL;*xx=0; 
+		//gbassert(false); 
 	}
 
 	// remember it
@@ -750,7 +750,7 @@ void gotUrlListWrapper ( void *state , RdbList *list , Msg5 *msg5 ) {
 	}
 
 	// sanity
-	if ( tfn < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( tfn < 0 );
 
 	// breathe
 	QUICKPOLL ( r->m_niceness );
@@ -845,7 +845,7 @@ void gotTitleList ( void *state , RdbList *list , Msg5 *msg5 ) {
 	hadError:
 		log("db: Had error getting title record from titledb: %s.",
 		    mstrerror(g_errno));
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert(g_errno);
 		us->sendErrorReply ( st->m_slot , g_errno ); 
 		mdelete ( st , sizeof(State22) , "Msg22" );
 		delete ( st ); 
@@ -867,7 +867,7 @@ void gotTitleList ( void *state , RdbList *list , Msg5 *msg5 ) {
 			goto hadError;
 		}
 		// sanity
-		//if ( pd != st->m_pd ) { char *xx=NULL;*xx=0; }
+		//if ( pd != st->m_pd ) { gbassert(false); }
 	}
 
 	// the probable docid is the PREFERRED docid in this case
@@ -909,7 +909,7 @@ void gotTitleList ( void *state , RdbList *list , Msg5 *msg5 ) {
 			// sanity check. MDW: looks like we allow 0 to
 			// be a valid hash. so let this through. i've seen
 			// it core here before.
-			//if ( st->m_uh48 == 0 ) { char *xx=NULL;*xx=0; }
+			//if ( st->m_uh48 == 0 ) { gbassert(false); }
 			// make sure our available docids are available!
 			if ( dd == ad1 ) ad1++;
 			if ( dd == ad2 ) ad2++;
@@ -973,7 +973,7 @@ void gotTitleList ( void *state , RdbList *list , Msg5 *msg5 ) {
 	// if "docId" was unmatched that should be the preferred available
 	// docid then...
 	//if(! docIdWasFound && r->m_getAvailDocIdOnly && ad != r->m_docId ) { 
-	//	char *xx=NULL;*xx=0; }
+	//	gbassert(false); }
 	// remember it. this might be zero if none exist!
 	st->m_availDocId = ad;
 	// note it

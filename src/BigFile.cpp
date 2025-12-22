@@ -185,8 +185,7 @@ bool BigFile::addPart ( int32_t n ) {
 	// . n's come in NOT necessarily in order!!!
 	int32_t need = (n+1) * sizeof(File *);
 	// capacity must be length always for this
-	if ( m_filePtrsBuf.getCapacity() != m_filePtrsBuf.getLength() ) {
-		char *xx=NULL;*xx=0;}
+	gbassert_false( m_filePtrsBuf.getCapacity() != m_filePtrsBuf.getLength() );
 
 	// init using tiny buf to save a malloc for small files
 	if ( m_filePtrsBuf.getCapacity() == 0 ) {
@@ -215,7 +214,7 @@ bool BigFile::addPart ( int32_t n ) {
 	//File *f = filesPtrs[n];
 	// sanity to ensure we do not breach the buffer
 	//char *fend = ((char *)f) + sizeof(File);
-	//if ( fend > m_fileBuf.getBuf() ) { char *xx=NULL;*xx=0; }
+	//if ( fend > m_fileBuf.getBuf() ) { gbassert(false); }
 
 	// we have to call constructor ourself then
 	//f->constructor();
@@ -226,7 +225,7 @@ bool BigFile::addPart ( int32_t n ) {
 		f = (File *)m_littleBuf;
 		if ( LITTLEBUFSIZE < sizeof(File) ) {
 			log("file: littlebufsize too small.");
-			char *xx=NULL;*xx=0; 
+			gbassert(false); 
 		}
 		f->constructor();
 	}
@@ -318,7 +317,7 @@ void BigFile::makeFilename_r ( char *baseFilename    ,
 	// int32_t dirLen = gbstrlen(dir);
 	// int32_t baseLen = gbstrlen(baseFilename);
 	// int32_t need = dirLen + 1 + baseLen + 1;
-	// if ( need < bufSize ) { char *xx=NULL;*xx=0; }
+	// if ( need < bufSize ) { gbassert(false); }
 	//static char s[1024];
 	// if ( (n % 2) == 0 || ! m_stripeDir[0] ) 
 	// 	sprintf ( buf, "%s/%s",   dir      , baseFilename );
@@ -327,13 +326,13 @@ void BigFile::makeFilename_r ( char *baseFilename    ,
 		r = snprintf ( buf, bufSize, "%s/%s",dir,baseFilename);
 		if ( r < bufSize ) return;
 		// truncation is bad
-		char *xx=NULL; *xx=0;
+		gbassert(false);
 	}
 	// return if it fit into "buf"
 	r = snprintf ( buf, bufSize, "%s/%s.part%" INT32 ,dir,baseFilename,n);
 	if ( r < bufSize ) return;
 	// truncation is bad
-	char *xx=NULL; *xx=0;
+	gbassert(false);
 }
 
 //int BigFile::getfdByOffset ( int64_t offset ) {
@@ -523,7 +522,7 @@ bool BigFile::readwrite ( void         *buf      ,
 		    "< 0. filename=%s/%s. dumping core. try deleting "
 		    "the .map file for it and restarting.",offset,
 		    m_dir.getBufStart(),m_baseFilename.getBufStart());
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	// if we're not blocking use a fake fstate
 	FileState tmp;
@@ -551,7 +550,7 @@ bool BigFile::readwrite ( void         *buf      ,
 		fstate->m_bytesDone = size;
 		fstate->m_bytesToGo = size;
 		// sanity
-		if ( m_vfd == -1 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_vfd == -1 );
 		//log("getting pages off=%" INT64 " size=%" INT32 "",offset,size);
 		// now we pass in a ptr to the buf ptr, because if buf is NULL
 		// this will allocate one for us if it has some pages in the
@@ -579,7 +578,7 @@ bool BigFile::readwrite ( void         *buf      ,
 	*/
 	// sanity check. if you set hitDisk to false, you must allow
 	// us to check the page cache! silly bean!
-	if ( ! allowPageCache && ! hitDisk ) { char*xx=NULL;*xx=0; }
+	gbassert_false( ! allowPageCache && ! hitDisk );
 	//if ( m_pc && m_pc->m_isOverriden )
 	//	log ( LOG_INFO, "bigfile: HITTING DISK!! %" INT32 "",
 	//			(int32_t)allowPageCache );
@@ -715,7 +714,7 @@ bool BigFile::readwrite ( void         *buf      ,
 		}
 	}
 	// sanity check
-	if ( ! callback ) { char *xx = NULL; *xx = 0; }
+	gbassert(callback);
 	// NOW we return on error because if we already have 5000 disk threads
 	// queued up, what is the point in blocking ourselves off? that makes
 	// us look like a dead host and very unresponsive. As int32_t as this
@@ -1279,7 +1278,7 @@ bool readwrite_r ( FileState *fstate , ThreadEntry *t ) {
 	// rand segv test (test how new cloned children handle it
 	//if ( g_threads.amThread() && (rand() % 10) == 1 ) { 
 	//	log("FORCING SEG FAULT");
-	//	char *xx = NULL; *xx = 0; 
+	//	gbassert(false); 
 	//}
 	// translate offset to a filenum and offset
 	int32_t filenum     = offset / MAX_PART_SIZE;

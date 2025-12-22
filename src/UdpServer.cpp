@@ -230,7 +230,7 @@ bool UdpServer::init ( uint16_t port, UdpProtocol *proto, int32_t niceness,
 	// save this
 	m_isDns = isDns;
 	// we now alloc so we don't blow up stack
-	if ( m_slots ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( m_slots );
 	//if ( maxSlots > MAX_UDP_SLOTS ) maxSlots = MAX_UDP_SLOTS;
 	if ( maxSlots < 100           ) maxSlots = 100;
 	m_slots =(UdpSlot *)mmalloc(maxSlots*sizeof(UdpSlot),"UdpServer");
@@ -301,9 +301,8 @@ bool UdpServer::init ( uint16_t port, UdpProtocol *proto, int32_t niceness,
 	// maintain a ptr to the protocol
 	m_proto   = proto;
 	// sanity test so we can peek at the rdbid in a msg0 request
-	if( ! m_isDns &&
-	    RDBIDOFFSET +1 > m_proto->getMaxPeekSize() ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( ! m_isDns &&
+	    RDBIDOFFSET +1 > m_proto->getMaxPeekSize() );
 	// set the main process id
 	if ( s_pid == 0 ) s_pid = getpid();
 	// remember our level of niceness
@@ -495,10 +494,9 @@ bool UdpServer::sendRequest ( char     *msg          ,
 			      int32_t      niceness     ,
 			      int32_t      maxResends   ) {
 	// sanity check
-	if ( ! m_handlers[msgType] && this == &g_udpServer &&
+	gbassert_false( ! m_handlers[msgType] && this == &g_udpServer &&
 	     // proxy forwards the msg10 to a host in the cluster
-	     ! g_proxy.isProxy() ) { 
-		char *xx = NULL; *xx = 0; }
+	     ! g_proxy.isProxy() );
 	// NULLify slot if any
 	if ( retslot ) *retslot = NULL;
 	// if shutting down return an error
@@ -512,7 +510,7 @@ bool UdpServer::sendRequest ( char     *msg          ,
 		log(LOG_LOGIC,"udp: sendrequest: Timeout is negative. "
 		    "Making 9999999.");
 		timeout = 9999999;
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 	// if we're hot request size is limited
 	if ( this == &g_udpServer2  && msgSize > TMPBUFSIZE ) {
@@ -543,10 +541,10 @@ bool UdpServer::sendRequest ( char     *msg          ,
 	if ( h && ip && ip != (uint32_t)-1 && h->m_ip != ip &&
 	     h->m_ipShotgun != ip && ip != 0x0100007f ) { // "127.0.0.1"
 		log(LOG_LOGIC,"udp: provided hostid does not match ip");
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 	// ok, we are probably sending a dns request to a dns server...
-	//if ( ! h ) { char *xx = NULL; *xx = 0; }
+	//if ( ! h ) { gbassert(false); }
 	// always use the primary ip for making the key, 
 	// do not use the shotgun ip. because we can be getting packets
 	// from either ip for the same transaction.
@@ -604,7 +602,7 @@ bool UdpServer::sendRequest ( char     *msg          ,
 			   "sending req: %s",mstrerror(g_errno));
 	}
 
-	if ( slot->m_next3 || slot->m_prev3 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( slot->m_next3 || slot->m_prev3 );
 	// set this
 	slot->m_maxResends = maxResends;
 	// keep sending dgrams until we have no more or hit ACK_WINDOW limit
@@ -641,7 +639,7 @@ void UdpServer::sendErrorReply ( UdpSlot *slot     ,
 	// bitch if it is 0
 	if ( errnum == 0 ) {
 		log(LOG_LOGIC,"udp: sendErrorReply: errnum is 0.");
-		char *xx = NULL; *xx = 0; 
+		gbassert(false); 
 	}
 	// clear g_errno in case it was set
 	g_errno = 0;
@@ -1063,7 +1061,7 @@ bool UdpServer::registerHandler ( unsigned char msgType ,
 	// we now support types 0x00 to 0xff
 	//if ( msgType >= 0x40 ) {
 	//	log(LOG_LOGIC,"udp: msg type must be <= 0x3f.");
-	//	char *xx = NULL; *xx = 0;
+	//	gbassert(false);
 	//}
 	m_handlers     [ msgType ] = handler; 
 	m_isHandlerHot [ msgType ] = isHandlerHot;
@@ -1270,7 +1268,7 @@ int32_t UdpServer::readSock_ass ( UdpSlot **slotPtr , int64_t now ) {
 		if ( flipped ) interruptsOn();
 		if ( g_errno == EAGAIN || g_errno == 0 ) { 
 			// if ( s_ss++ == 100 ) {
-			// 	log("foo");char *xx=NULL;*xx=0; }
+			// 	log("foo");gbassert(false); }
 			// log("udp: EAGAIN");
 			g_errno = 0; return 0; }
 		if ( g_errno == EILSEQ ) { 
@@ -1350,7 +1348,7 @@ int32_t UdpServer::readSock_ass ( UdpSlot **slotPtr , int64_t now ) {
 	//   the ip address of the hosts2.conf host
 	//if ( h && h->m_hostdb != &g_hostdb ) h = NULL;
 	// probably a reply from a dns server?
-	//if ( ! h ) { char *xx = NULL; *xx = 0; }
+	//if ( ! h ) { gbassert(false); }
 	// always use the primary ip for making the key, 
 	// do not use the shotgun ip. because we can be getting packets
 	// from either ip for the same transaction. h can be NULL if the packet
@@ -1412,7 +1410,7 @@ int32_t UdpServer::readSock_ass ( UdpSlot **slotPtr , int64_t now ) {
 				    (uint16_t)ntohs(from.sin_port),
 				    key.n1,key.n0);
 			// tmp debug
-			//char *xx = NULL; *xx = 0;
+			//gbassert(false);
 			//return 1;
 			goto discard;
 		}
@@ -1722,7 +1720,7 @@ int32_t UdpServer::readSock_ass ( UdpSlot **slotPtr , int64_t now ) {
 		slot->m_ip = ip;
 	}
 
-	//if ( ! slot->m_host ) { char *xx = NULL; *xx = 0;}
+	//if ( ! slot->m_host ) { gbassert(false);}
 	status   = slot->readDatagramOrAck(m_sock,peek,peekSize,now,&discard,
 					   &readSize);
 
@@ -1907,7 +1905,7 @@ void UdpServer::resume ( ) {
 	// can't be called from signal handler!
 	if ( g_inSigHandler ) return;
 	// sanity check
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	// debug msg
 	if ( g_conf.m_logDebugUdp ) 
 		log(LOG_DEBUG,"udp: RESUMING UDPSERVER.");
@@ -2372,7 +2370,7 @@ bool UdpServer::makeCallback_ass ( UdpSlot *slot ) {
 			start = gettimeofdayInMillisecondsLocal();
 
 		// sanity check for double callbacks
-		if ( slot->m_calledCallback ) { char *xx=NULL;*xx=0; }
+		gbassert_false( slot->m_calledCallback );
 
 		// now we got a reply or an g_errno so call the callback
 		//if (g_conf.m_profilingEnabled){
@@ -2386,12 +2384,12 @@ bool UdpServer::makeCallback_ass ( UdpSlot *slot ) {
 			    "nice=%" INT32 "",(int32_t)slot->m_msgType,slot->m_niceness);
 
 		// sanity check -- avoid double calls
-		if ( slot->m_calledCallback ) { char *xx=NULL;*xx=0; }
+		gbassert_false( slot->m_calledCallback );
 
 		slot->m_calledCallback++;
 
 		// sanity check -- avoid double calls
-		if ( slot->m_calledCallback != 1 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( slot->m_calledCallback != 1 );
 
 		// . sanity check - if in a high niceness callback, we should
 		//   only be calling niceness 0 callbacks here
@@ -2400,15 +2398,13 @@ bool UdpServer::makeCallback_ass ( UdpSlot *slot ) {
 		//   fd with niceness 0, and it in turn can call niceness 1
 		//   udp slots
 		//if(g_niceness==0 && slot->m_niceness && g_errno!=ECANCELLED){
-		//	char *xx=NULL;*xx=0;}
+		//	gbassert(false);}
 
 		// sanity check. has this slot been excised from linked list?
-		if ( slot->m_prev2 && slot->m_prev2->m_next2 != slot ) {
-			char *xx=NULL;*xx=0; }
+		gbassert_false( slot->m_prev2 && slot->m_prev2->m_next2 != slot );
 
 		// sanity check. has this slot been excised from linked list?
-		if ( slot->m_prev2 && slot->m_prev2->m_next2 != slot ) {
-			char *xx=NULL;*xx=0; }
+		gbassert_false( slot->m_prev2 && slot->m_prev2->m_next2 != slot );
 
 		// save niceness
 		saved = g_niceness;
@@ -2621,7 +2617,7 @@ bool UdpServer::makeCallback_ass ( UdpSlot *slot ) {
 	now = gettimeofdayInMillisecondsLocal();
 	delta = now - slot->m_queuedTime;
 	// sanity check
-	if ( slot->m_queuedTime == -1 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( slot->m_queuedTime == -1 );
 	n = slot->m_niceness;
 	if ( n < 0 ) n = 0;
 	if ( n > 1 ) n = 1;
@@ -2660,7 +2656,7 @@ bool UdpServer::makeCallback_ass ( UdpSlot *slot ) {
 	//   only be calling niceness 0 callbacks here.
 	// . no, because udpserver uses niceness 0 on its fd, and that will
 	//   call niceness 1 slots here
-	//if ( g_niceness==0 && slot->m_niceness ) { char *xx=NULL;*xx=0;}
+	//if ( g_niceness==0 && slot->m_niceness ) { gbassert(false);}
 
 	// save niceness
 	saved = g_niceness;
@@ -2692,12 +2688,12 @@ bool UdpServer::makeCallback_ass ( UdpSlot *slot ) {
 		// flag it so Loop.cpp does not re-nice quickpoll niceness
 		g_inHandler = true;
 		// sanity
-		if ( slot->m_calledHandler ) { char *xx=NULL;*xx=0; }
+		gbassert_false( slot->m_calledHandler );
 		// set this here now so it doesn't get its niceness converted
 		// then it re-enters the same handler here but in a quickpoll!
 		slot->m_calledHandler = true;
 		// sanity so msg0.cpp hack works
-		if ( slot->m_niceness == 99 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( slot->m_niceness == 99 );
 		// . this is the niceness of the server, not the slot
 		// . NO, now it is the slot's niceness. that makes sense.
 		m_handlers [ slot->m_msgType ] ( slot , slot->m_niceness ) ;
@@ -3120,7 +3116,7 @@ void UdpServer::destroySlot ( UdpSlot *slot ) {
 	// return if no slot
 	if ( ! slot ) return;
 	// core if we should
-	if ( slot->m_coreOnDestroy ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( slot->m_coreOnDestroy );
 	// if we're deleting a slot that was an incoming request then
 	// decrement m_requestsInWaiting (exclude pings)
 	if ( ! slot->m_callback && slot->m_msgType != 0x11 ) {
@@ -3470,7 +3466,7 @@ void UdpServer::freeUdpSlot_ass ( UdpSlot *slot ) {
 	// sanity check
 	if ( ! m_ptrs[i] ) {
 		log(LOG_LOGIC,"udp: freeUdpSlot_ass: Not in hash table.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	if ( g_conf.m_logDebugUdp )
 		log(LOG_DEBUG,"udp: freeUdpSlot_ass: Freeing slot "
@@ -3552,7 +3548,7 @@ void UdpServer::replaceHost ( Host *oldHost, Host *newHost ) {
 		if ( ! m_ptrs[i] ) {
 			log(LOG_LOGIC,"udp: replaceHost: Slot not in hash "
 				      "table.");
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		if ( g_conf.m_logDebugUdp )
 			log(LOG_DEBUG,

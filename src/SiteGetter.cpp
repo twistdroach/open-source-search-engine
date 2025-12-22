@@ -169,7 +169,7 @@ bool SiteGetter::getSite ( char   *url      ,
 		m_sitePathDepth = m_oldSitePathDepth;
 		// . now set the site with m_sitePathDepth
 		// . sanity check, should not block since m_state is NULL
-		if ( ! setSite () ) { char *xx=NULL;*xx=0; }
+		gbassert(setSite ());
 		// we did not block
 		return true;
 	}
@@ -185,7 +185,7 @@ bool SiteGetter::getSite ( char   *url      ,
 		//   as the site
 		m_sitePathDepth = -1;
 		// sanity check, should not block since m_state is NULL
-		if ( ! setSite () ) { char *xx=NULL;*xx=0; }
+		gbassert(setSite ());
 		// we did not block
 		return true;
 	}
@@ -213,7 +213,7 @@ bool SiteGetter::getSite ( char   *url      ,
 		g_errno = EBADURL;
 		return true;
 		// don't let bad input from pageparser core us!
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 
 	// how many can we do? false = countFilename?
@@ -441,7 +441,7 @@ bool SiteGetter::setSite ( ) {
 		// get the data, including terminating \0
 		gbmemcpy ( m_site , tag->getTagData() , m_siteLen + 1 );
 		// sanity check - must include the \0
-		if (m_site[m_siteLen]!= '\0') {char*xx=NULL;*xx=0;}
+		gbassert_false(m_site[m_siteLen]!= '\0');
 		// all done
 		return true;
 	}
@@ -528,7 +528,7 @@ bool SiteGetter::setSite ( ) {
 	sprintf ( buf , "%"INT32"",m_sitePathDepth);
 
 	// sanity check
-	if ( m_timestamp == 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_timestamp == 0 );
 
 	// . now update tagdb with the new date and path depth
 	// . this might be -1, which is nice because it gives us a timestamp

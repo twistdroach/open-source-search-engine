@@ -354,7 +354,7 @@ bool TopTree::addNode ( TopNode *t , int32_t tnn ) {
 	// do not even try to add if ridiculous count for this domain
 	if ( m_domCount[domHash] >= m_ridiculousMax ) {
 		// sanity check
-		//if ( min < 0 ) { char *xx=NULL; *xx=0; }
+		//if ( min < 0 ) { gbassert(false); }
 		// if we are lesser or dup of min, just don't add!
 		if ( k <= *((key_t *)m_t2.getKey(min)) ) return false;
 		// . add ourselves. use 0 for collnum.
@@ -365,12 +365,12 @@ bool TopTree::addNode ( TopNode *t , int32_t tnn ) {
 		// the next node before the current min will be the next min
 		int32_t next = m_t2.getNextNode(min);
 		// sanity check
-		//if ( next < 0 ) { char *xx=NULL;*xx=0; }
+		//if ( next < 0 ) { gbassert(false); }
 		// sanity check
 		//key_t *kp1 = (key_t *)m_t2.getKey(min);
-		//if ( (kp1->n1) >>24 != domHash ) {char*xx=NULL;*xx=0;}
+		//if ( (kp1->n1) >>24 != domHash ) {gbassert(false);}
 		//key_t *kp2 = (key_t *)m_t2.getKey(next);
-		//if ( (kp2->n1) >>24 != domHash ) {char*xx=NULL;*xx=0;}
+		//if ( (kp2->n1) >>24 != domHash ) {gbassert(false);}
 		// the new min is the "next" of the old min
 		m_domMinNode[domHash] = next;
 		// get his "node number" in the top tree, "nn" so we can
@@ -391,7 +391,7 @@ bool TopTree::addNode ( TopNode *t , int32_t tnn ) {
 		// sanity check
 		//if ( min > 0 ) {
 		//	key_t *kp1 = (key_t *)m_t2.getKey(min);
-		//	if ( (kp1->n1) >>24 != domHash ) {char*xx=NULL;*xx=0;}
+		//	if ( (kp1->n1) >>24 != domHash ) {gbassert(false);}
 		//}
 		// are we the new min? if so, assign it
 		if ( min == -1 || k < *((key_t *)m_t2.getKey(min)) )
@@ -401,7 +401,7 @@ bool TopTree::addNode ( TopNode *t , int32_t tnn ) {
 	if ( m_doSiteClustering ) {
 		// update the dataPtr so every node in m_t2 has a reference
 		// to the equivalent node in this top tree
-		if ( n < 0 || n > m_t2.m_numNodes ) { char *xx=NULL;*xx=0; }
+		gbassert_false( n < 0 || n > m_t2.m_numNodes );
 		m_t2.m_data[n] = (char *)(PTRTYPE)tnn;
 	}
 
@@ -447,9 +447,9 @@ bool TopTree::addNode ( TopNode *t , int32_t tnn ) {
 		// he becomes the new empty node
 		int32_t tn = m_lowNode;
 		// sanity check
-		if ( tn < 0 ) { char *xx=NULL; *xx=0; }
+		gbassert_false( tn < 0 );
 		// sanity check
-		//if ( getNext(tn) == -1 ) { char *xx=NULL;*xx=0; }
+		//if ( getNext(tn) == -1 ) { gbassert(false); }
 		// get the min node
 		TopNode *t = &m_nodes[tn];
 		// get its docid ptr
@@ -482,10 +482,13 @@ bool TopTree::addNode ( TopNode *t , int32_t tnn ) {
 		// get the node from t2
 		int32_t min = m_t2.getNode ( 0 , (char *)&k );
 		// sanity check. LEAVE THIS HERE!
-		if ( min < 0 ) { break; char *xx=NULL; *xx=0; }
+		if ( min < 0 ) {
+			gbassert_false( min < 0 );
+			break;
+		}
 		// sanity check
 		//key_t *kp1 = (key_t *)m_t2.getKey(min);
-		//if ( (kp1->n1) >>24 != domHash2 ) {char*xx=NULL;*xx=0;}
+		//if ( (kp1->n1) >>24 != domHash2 ) {gbassert(false);}
 		// get next node from t2
 		int32_t next = m_t2.getNextNode ( min );
 		// delete from m_t2
@@ -499,15 +502,15 @@ bool TopTree::addNode ( TopNode *t , int32_t tnn ) {
 			// sanity check
 			//if ( next > 0 ) {
 			//key_t *kp2 = (key_t *)m_t2.getKey(next);
-			//if ( (kp2->n1) >>24 == domHash2 ) {char*xx=NULL;*xx=0;}
+			//if ( (kp2->n1) >>24 == domHash2 ) {gbassert(false);}
 			//}
 			continue;
 		}
 		// sanity check
-		//if ( next < 0 ) { char *xx=NULL;*xx=0; }
+		//if ( next < 0 ) { gbassert(false); }
 		// sanity check
 		//key_t *kp2 = (key_t *)m_t2.getKey(next);
-		//if ( (kp2->n1) >>24 != domHash2 ) {char*xx=NULL;*xx=0;}
+		//if ( (kp2->n1) >>24 != domHash2 ) {gbassert(false);}
 		// the new min is the "next" of the old min
 		m_domMinNode[domHash2] = next;
 		//logf(LOG_DEBUG,"deleting %" INT32 "",on);
@@ -520,11 +523,11 @@ bool TopTree::addNode ( TopNode *t , int32_t tnn ) {
 // . used to remove the last node and replace it with a higher scorer
 void TopTree::deleteNode ( int32_t i , uint8_t domHash ) {
 	// sanity check
-	if ( PARENT(i) == -2 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( PARENT(i) == -2 );
 	// get node
 	//TopNode *t = &m_nodes[i];
 	// debug
-	//if ( ! checkTree ( false ) ) { char *xx = NULL; *xx = 0; }
+	//if ( ! checkTree ( false ) ) { gbassert(false); }
 	//if ( i == 262 )
 	//	log("HEY");
 
@@ -535,7 +538,7 @@ void TopTree::deleteNode ( int32_t i , uint8_t domHash ) {
 			log("toptree: toptree delete error node #%" INT32 " "
 			    "domHash=%" INT32 " because next node is -1 numnodes=%" INT32 "",
 			    i,(int32_t)domHash,m_numUsedNodes);
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 			//return;
 		}
 	}
@@ -599,7 +602,7 @@ void TopTree::deleteNode ( int32_t i , uint8_t domHash ) {
 	setDepths ( iparent );
 
 	// debug
-	//if ( ! checkTree ( false ) ) { char *xx = NULL; *xx = 0; }
+	//if ( ! checkTree ( false ) ) { gbassert(false); }
 
 	goto done;
 
@@ -678,7 +681,7 @@ void TopTree::deleteNode ( int32_t i , uint8_t domHash ) {
 	m_kickedOutDocIds = true;
 
 	// debug
-	//if ( ! checkTree ( true ) ) { char *xx = NULL; *xx = 0; }
+	//if ( ! checkTree ( true ) ) { gbassert(false); }
 }
 	
 int32_t TopTree::getPrev ( int32_t i ) { 

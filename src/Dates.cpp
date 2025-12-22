@@ -5622,7 +5622,7 @@ bool Dates::parseDates ( Words *w , dateflags_t defFlags , Bits *bits ,
 		if ( adj && adj->m_type == DT_MONTH )
 			continue;
 		// must be a range
-		if ( di->m_type != DT_RANGE_DAYNUM ) { char *xx=NULL;*xx=0; }
+		gbassert_false( di->m_type != DT_RANGE_DAYNUM );
 		// int16_tcuts
 		int32_t num1 = d1->m_num;
 		int32_t num2 = d2->m_num;
@@ -7814,7 +7814,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 					// stop. this was for the url:
 					// http://www.krwg.org/cevents.html
 					break;
-					//char *xx=NULL;*xx=0;}
+					//gbassert(false);}
 				}
 				// get type
 				datetype_t dt = di->m_hasType;
@@ -9900,7 +9900,7 @@ bool Dates::setPart2 ( Addresses *aa , int32_t minPubDate , int32_t maxPubDate ,
 		// skip if invalid (has some disagreement in it)
 		if ( di->m_flags & DF_INVALID ) continue;
 		// must have a year if DT_YEAR is set
-		if ( di->m_year == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( di->m_year == 0 );
 		// . keep going if it already agrees with what we got
 		// . di->m_year is 0 if it has none.. how can that happen here?
 		if ( year == di->m_year ) continue;
@@ -11635,7 +11635,7 @@ int32_t Dates::isCompatible ( Date *di ,
 	//   date header but you are supposed to pick the one right above you.
 	// . also messes up facebook.com and we lose the one event we had
 	//   because for the same reason i guess
-	if ( ! s1 ) { char *xx=NULL;*xx=0; }
+	gbassert(s1);
 	// only do this for dp being store hours
 	if ( storeHours ) {
 		// basic type mask
@@ -11801,7 +11801,7 @@ int32_t Dates::isCompatible ( Date *di ,
 			// get the date index
 			Date *dx = m_datePtrs[pn];
 			// sanity check
-			if ( dx == dp ) { char *xx=NULL;*xx=0; }
+			gbassert_false( dx == dp );
 			// mask our DT_RANGE_TOD and DT_RANGE_DOW
 			// same type as us? then break
 			if ( (dx->m_hasType & ~dmask) == 
@@ -12287,7 +12287,7 @@ int32_t Dates::isCompatible2 ( Section *s1 , Section *s2 , bool useXors ) {
 					//     ! ad->m_cityHash ) {
 					if ( ! ad->m_cityId32 ) {
 					     //! ad->m_adm1->m_cid  ) {
-						char *xx=NULL;*xx=0; }
+						gbassert(false); }
 				}
 				// old way
 				//h = (int32_t)*pp;
@@ -12376,7 +12376,7 @@ int32_t Dates::isCompatible2 ( Section *s1 , Section *s2 , bool useXors ) {
 					//     ! ad->m_cityHash ) {
 					if ( ! ad->m_cityId32 ) {
 					     //! ad->m_adm1->m_cid  ) {
-						char *xx=NULL;*xx=0; }
+						gbassert(false); }
 				}
 				// old way
 				//h = (int32_t)*pp;
@@ -16948,7 +16948,7 @@ int32_t Dates::parseTimeOfDay3 ( Words     *w             ,
 	// must start with a number
 	//if ( ! is_digit(wptrs[i][0]) ) { 
 	//	if ( m_wids[i] != h_noon && 
-	//	     m_wids[i] != h_midnight ) { char *xx=NULL;*xx=0; }
+	//	     m_wids[i] != h_midnight ) { gbassert(false); }
 	//}
 	// if length is two both must be digit ("9p"?)
 	if ( wlens[i]>=2 && 
@@ -17298,7 +17298,7 @@ int32_t Dates::parseTimeOfDay3 ( Words     *w             ,
 	// and not do it here
 	//if ( gotIt && ampmFollows && scannedHours == 0 ) {
 	//	// sanity check
-	//	if ( additional < 0 ) { char *xx=NULL;*xx=0; }
+	//	if ( additional < 0 ) { gbassert(false); }
 	//	*endWordNum += additional + hadPunct - 1;
 	//	// MDW hack fix for "4A"
 	//	if ( *endWordNum == i ) *endWordNum = i+1;
@@ -22967,7 +22967,7 @@ bool Dates::getIntervals2 ( Date *dp ,
 	// if we had an assumed year, do the restriction now
 	//if ( dp->m_flags & DF_ASSUMED_YEAR ) {
 	//	// sanity check
-	//	if ( dp->m_year <= 0 ) { char *xx=NULL;*xx=0; }
+	//	if ( dp->m_year <= 0 ) { gbassert(false); }
 	//	m_year0 = dp->m_year;
 	//	m_year1 = dp->m_year+1;
 	//}
@@ -22975,14 +22975,14 @@ bool Dates::getIntervals2 ( Date *dp ,
 
 	if ( dp->m_flags & DF_ASSUMED_YEAR ) {
 		// sanity check
-		//if ( dp->m_year <= 0 ) { char *xx=NULL;*xx=0; }
+		//if ( dp->m_year <= 0 ) { gbassert(false); }
 		// dates are too old if this is true, return empty
 		//if ( dp->m_year + 1 < m_year0 ) return true;
 	}
 
 	// use the telescoped date if we got that, it has more info
 	//if ( dp->m_telescope ) dp = dp->m_telescope;
-	//if ( dp->m_telescope ) { char *xx=NULL;*xx=0; }
+	//if ( dp->m_telescope ) { gbassert(false); }
 
 	// fill in the final set of intervals for this date
 	Interval finalInt [ MAX_INTERVALS + 1 ];
@@ -23057,7 +23057,7 @@ bool Dates::getIntervals2 ( Date *dp ,
 		// error?
 		if ( ni3 == -1 ) return false;
 		// just for debugging unm.edu!!
-		//if ( ni3 == ni1 ) { char *xx=NULL;*xx=0; }
+		//if ( ni3 == ni1 ) { gbassert(false); }
 		// store result in case we return
 		retInt = arg3;
 		retni  = ni3;
@@ -23478,7 +23478,7 @@ int32_t Dates::addIntervalsB ( Date       *di     ,
 		     ((di->m_ptrs[0]->m_type) & simple) &&
 		     ((di->m_ptrs[1]->m_type) & simple)  ) {
 			// sanity check
-			if ( di->m_numPtrs != 2 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( di->m_numPtrs != 2 );
 			if ( x == 0 ) hflag2 = MAX_UNBOUNDED;
 			else          hflag2 = MIN_UNBOUNDED;
 		}
@@ -23784,7 +23784,7 @@ int32_t Dates::addIntervalsB ( Date       *di     ,
 
 
 		// sanity check
-		//if ( (ym0 % (24*3600) ) != 0 ) { char *xx=NULL;*xx=0;}
+		//if ( (ym0 % (24*3600) ) != 0 ) { gbassert(false);}
 		// loop over every day (assume leap year, 366 days)
 		for ( int32_t d = ym0 ; d < ym1 ; d += 24*3600 ) {
 			int32_t A = a+d;
@@ -24414,11 +24414,11 @@ int32_t Dates::intersect ( Interval *int1 ,
 	int32_t tmpni3 = intersect2 (int1,int2,tmp3,ni1,ni2,depth);
 
 	// compare
-	if ( tmpni3 != ni3 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( tmpni3 != ni3 );
 
 	for ( int32_t x = 0 ; x < ni3 ; x++ ) {
-		if ( tmp3[x].m_a != int3[x].m_a ) { char *xx=NULL;*xx=0; }
-		if ( tmp3[x].m_b != int3[x].m_b ) { char *xx=NULL;*xx=0; }
+		gbassert_false( tmp3[x].m_a != int3[x].m_a );
+		gbassert_false( tmp3[x].m_b != int3[x].m_b );
 	}
 	*/
 
@@ -26873,14 +26873,14 @@ void Dates::setMinMaxYearsOnPage ( ) {
 		if ( numDow != 1 ) continue;
 		int32_t month = di->m_month;
 		// sanity check for month, 1 to 12 are legit
-		if ( month <= 0 || month >= 13 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( month <= 0 || month >= 13 );
 		int32_t day   = di->m_minDayNum;
 		// between 1 and 31 sanity check
-		if ( day < 1 || day > 31 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( day < 1 || day > 31 );
 		// bit #0 to x
 		int32_t dow = getHighestLitBit((unsigned char)(di->m_dowBits));
 		// between 0 and 6
-		if ( dow >= 7 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( dow >= 7 );
 
 		// . Jan 1, 2000 fell on a saturday (leap year)
 		// . Jan 1, 2001 fell on a monday
@@ -26907,7 +26907,7 @@ void Dates::setMinMaxYearsOnPage ( ) {
 		// wrap it up
 		if ( dow < 0 ) dow += 7;
 		// between 0 and 6
-		if ( dow >= 7 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( dow >= 7 );
 		// jan 1 2008 was a tuesday  = 2
 		// jan 1 2000 was a saturday = 6
 		int32_t jan1dow = 2;

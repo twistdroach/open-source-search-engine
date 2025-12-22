@@ -1238,10 +1238,10 @@ bool Proxy::forwardRequest ( StateControl *stC ) {
 	// update size
 	reqSize = p - req;
 	// sanity check
-	if ( reqSize > s->m_readBufSize ) { char *xx=NULL;*xx=0;}
+	gbassert_false( reqSize > s->m_readBufSize );
 
 	// sanity check
-	if ( h->m_isProxy ) { char *xx=NULL;*xx=0; }
+	gbassert_false( h->m_isProxy );
 
 	// if we are a QUERY COMPRESSION proxy send to the specified address
 	int32_t dstIp   = h->m_ip;
@@ -1440,8 +1440,8 @@ void Proxy::gotReplyPage ( void *state, UdpSlot *slot ) {
 	slot->m_readBuf = NULL;
 
 	// sanity check
-	//if ( s->m_readOffset < 0 ) { char *xx=NULL;*xx=0; }
-	if ( slot->m_readBufSize < 0 ) { char *xx=NULL;*xx=0; }
+	//if ( s->m_readOffset < 0 ) { gbassert(false); }
+	gbassert_false( slot->m_readBufSize < 0 );
 
 	int64_t nowms = gettimeofdayInMilliseconds();
 
@@ -1464,7 +1464,7 @@ void Proxy::gotReplyPage ( void *state, UdpSlot *slot ) {
 	// if reply was compressed then uncompress it
 	if ( doUncompress ) {
 		// sanity check
-		if ( size < 12 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( size < 12 );
 		// parse it up
 		unsigned char *p = (unsigned char *)reply;
 		// get the sizes
@@ -1499,7 +1499,7 @@ void Proxy::gotReplyPage ( void *state, UdpSlot *slot ) {
 		}
 
 		// sanity check
-		if ( dptr - dbuf != need ) { char *xx=NULL;*xx=0; }
+		gbassert_false( dptr - dbuf != need );
 
 		// free original compressed reply
 		mfree ( reply , size , "origreply");
@@ -1784,7 +1784,7 @@ Host *Proxy::pickBestHost( StateControl *stC ) {
 
 	// sanity check, for m_stripeLastHostId array size, which is only 8 now
 	int32_t numStripes = g_hostdb.getNumStripes();
-	if ( numStripes > MAX_STRIPES ) { char*xx=NULL;*xx=0; }
+	gbassert_false( numStripes > MAX_STRIPES );
 
 	// see which stripes have non-dead hosts!
 	char stripeDead[MAX_STRIPES];
@@ -1827,7 +1827,7 @@ Host *Proxy::pickBestHost( StateControl *stC ) {
 	}
 
 	// sanity check
-	if ( minns == -1 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( minns == -1 );
 
 	// rotate the preferred next stripe
 	if ( ++m_nextStripe >= numStripes ) m_nextStripe = 0;
@@ -1852,7 +1852,7 @@ Host *Proxy::pickBestHost( StateControl *stC ) {
 	// get the host
 	Host *h = g_hostdb.getHost ( bestHostId );
 	// saity check
-	if ( h->m_isProxy ) { char *xx=NULL;*xx=0; }
+	gbassert_false( h->m_isProxy );
 	// advance until it is from the least-loaded stripe
 	if ( h->m_stripe != minns ) goto loop;
 
@@ -2310,7 +2310,7 @@ float Proxy::getPrice ( int32_t accessType ) {
 	if ( accessType == AT_ADDURL )
 		return 4.99; // $10
 
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return 0.0;
 }
 
@@ -3142,8 +3142,8 @@ bool sendRedirect ( StateUser *su ) {
 		      "content=\"0;URL=/account?rd=1\">");
 
 	// this must be legit!
-	if ( su->m_sessionId64 <= 0 ) { char *xx=NULL;*xx=0; }
-	if ( su->m_userId32    <= 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( su->m_sessionId64 <= 0 );
+	gbassert_false( su->m_userId32    <= 0 );
 
 	// getLoggedInUserId should have set the sessionId64
 	SafeBuf cb;
@@ -3185,7 +3185,7 @@ bool sendPageAccount ( TcpSocket *s , HttpRequest *hr2 ) {
 
 	// only call this from host #0! so we can use msg5 not msg0
 	// and store all of userdb on host #0 and twins.
-	if ( ! g_proxy.isProxy() ) { char *xx=NULL;*xx=0; }
+	gbassert(g_proxy.isProxy());
 
 	// ensure only https! this is sensitive stuff
 	if ( ! s->m_ssl ) {
@@ -3561,7 +3561,7 @@ bool Proxy::hitCreditCard ( StateUser *su ) {
 		       );
 
 	// sanity check
-	//if ( su->m_invoiceNum < 0 ) { char *xx=NULL;*xx=0; }
+	//if ( su->m_invoiceNum < 0 ) { gbassert(false); }
 
 
 	// a negative amount will be a withdraw
@@ -3809,14 +3809,14 @@ bool Proxy::gotDepositDoc ( StateUser *su ) {
 					    "userid32=%" UINT32 " amt=$%.02f"
 					    ,su->m_userId32
 					    ,amount);
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
 
 	// good, now add it to buffer
 	DepositRec dr;
 	memset ( &dr , 0 , sizeof(DepositRec) );
 	int32_t now = getTimeLocal();
-	if ( su->m_userId32 <= 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( su->m_userId32 <= 0 );
 	dr.m_userId32 = su->m_userId32;
 	dr.m_depositDate   = now;
 
@@ -3844,7 +3844,7 @@ bool Proxy::gotDepositDoc ( StateUser *su ) {
 	}
 	// withdraw fee? add that into this table too
 	else {
-		if ( su->m_refundFee <= 0.0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( su->m_refundFee <= 0.0 );
 		dr.m_depositAmount = -1 * su->m_refundFee;
 		dr.m_flags = DRF_WITHDRAW_FEE;
 		m_depositBuf.safeMemcpy ( &dr , sizeof(DepositRec) );
@@ -4871,7 +4871,7 @@ bool Proxy::gotGif ( StateUser *su ) {
 		       );
 
 	// sanity!
-	if ( su->m_sessionId64 < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( su->m_sessionId64 < 0 );
 
 	// make a cookie in case they just logged in through this page!
 	// otherwise the login doesn't "stick"

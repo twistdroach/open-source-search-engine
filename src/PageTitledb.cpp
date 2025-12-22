@@ -161,7 +161,7 @@ bool gotTitleRec ( void *state ) {
 		return g_httpServer.sendErrorReply(s,500,mstrerror(g_errno));
 	}
 	// sanity check. should not block
-	if ( ! xd->m_titleValid ) { char *xx=NULL;*xx=0; }
+	gbassert(xd->m_titleValid);
 
 	// print it out
 	xd->printDoc ( &sb );

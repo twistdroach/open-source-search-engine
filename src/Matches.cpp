@@ -102,7 +102,7 @@ void Matches::setQuery ( Query *q ) {
 
 	//memset ( m_foundNegTermVector, 0, m_q->getNumTerms() );
 
-	if ( m_qwordFlags ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_qwordFlags );
 
 	int32_t need = m_q->m_numWords * sizeof(mf_t) ;
 	m_qwordAllocSize = need;
@@ -155,8 +155,7 @@ void Matches::setQuery ( Query *q ) {
 	uint32_t mask = m_numSlots - 1;
 	int32_t          n;
 	// sanity check
-	if ( m_numSlots > MAX_QUERY_WORDS_TO_MATCH * 3 ) {
-		char *xx = NULL; *xx = 0; }
+	gbassert_false( m_numSlots > MAX_QUERY_WORDS_TO_MATCH * 3 );
 
 	// clear hash table
 	memset ( m_qtableIds   , 0 , m_numSlots * 8 );
@@ -294,7 +293,7 @@ bool Matches::set ( XmlDoc   *xd         ,
 	reset2();
 
 	// sanity check
-	if ( ! xd->m_docIdValid ) { char *xx=NULL;*xx=0; }
+	gbassert(xd->m_docIdValid);
 
 	// . first add all the matches in the body of the doc
 	// . add it first since it will kick out early if too many matches
@@ -924,7 +923,7 @@ bool Matches::addMatches ( Words    *words               ,
 	//   for constant lookup, rather than log(N).
 	static char   s_tableInit = false;
 	static int8_t s_tab[512];
-	if ( getNumXmlNodes() > 512 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( getNumXmlNodes() > 512 );
 	for ( int32_t i = 0 ; ! s_tableInit && i < 128 ; i++ ) {
 		char step = 0;
 		if ( i == TAG_TR    ) step = 2;
@@ -1115,7 +1114,7 @@ bool Matches::addMatches ( Words    *words               ,
 			numWords = 1;
 			numQWords = 1;
 			goto gotMatch2;
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 		}
 
 		//
@@ -1300,7 +1299,7 @@ bool Matches::addMatches ( Words    *words               ,
 			log("query: bad matches error. fix me! query=%s "
 			    "docId=%" INT64 "", m_q->m_orig, docId);
 			return false;
-			char *xx = NULL; *xx = 0; 
+			gbassert(false); 
 		}
 		*/
 		// otherwise, store it in our m_matches[] array
@@ -1319,7 +1318,7 @@ bool Matches::addMatches ( Words    *words               ,
 		// get its color. for highlighting under different colors.
 		m->m_colorNum = qw->m_colorNum;
 		// sanity check
-		if ( m->m_colorNum < 0 ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( m->m_colorNum < 0 );
 		// convenience, used by Summary.cpp
 		m->m_words    = words;
 		m->m_sections = sections;
@@ -1565,7 +1564,7 @@ int32_t Matches::getNumWordsInMatch ( Words *words     ,
 			return 0;
 	}
 	// sanity check
-	if ( k < 0 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( k < 0 );
 	// skip punct words
 	if ( j-1>=0 && m_q->m_qwords[j-1].m_isPunct ) j--;
 	// . ok, we got a quote match

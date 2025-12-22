@@ -43,7 +43,7 @@ void Multicast::reset ( ) {
 	if ( m_inUse && ! g_process.m_exiting ) {
 		log("net: Resetting multicast which is in use. msgType=0x%hhx",
 		    m_msgType);
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 		// destroy the outstanding slots
 		destroySlotsInProgress(NULL);
 		// and undo any sleepwrapper
@@ -112,7 +112,7 @@ bool Multicast::send ( char         *msg              ,
 	// make sure not being re-used!
 	if ( m_inUse ) {
 		log("net: Attempt to re-use active multicast");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	// reset to free "m_msg" in case we are being re-used (like by Msg14)
 	//log(LOG_DEBUG, "Multicast: send() 0x%hhx",msgType);
@@ -140,9 +140,9 @@ bool Multicast::send ( char         *msg              ,
 	m_niceness         = niceness;
 	m_realtime         = realtime;
 	// this can't be -1 i guess
-	if ( totalTimeout <= 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( totalTimeout <= 0 );
 	// don't use this anymore!
-	if ( m_realtime ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( m_realtime );
 	m_replyBuf         = replyBuf;
 	m_replyBufMaxSize  = replyBufMaxSize;
 	m_startTime        = getTime();
@@ -207,7 +207,7 @@ bool Multicast::send ( char         *msg              ,
 			Host *h = g_hostdb.getProxy(i);
 			if ( ! (h->m_type & HT_SCPROXY ) ) continue;
 			// stop breaching
-			if ( np >= 32 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( np >= 32 );
 			// assign this
 			if ( h == firstHost ) hostNumToTry = np;
 			// set our array of ptrs of valid hosts to send to
@@ -217,7 +217,7 @@ bool Multicast::send ( char         *msg              ,
 		m_numHosts  = np;
 		firstHostId = -1;
 		// panic
-		if ( ! np ) { char *xx=NULL;*xx=0; }
+		gbassert(np);
 	}
 
 	// . pick the fastest host in the group
@@ -729,7 +729,7 @@ int32_t Multicast::pickBestHost ( uint32_t key , int32_t firstHostId ,
 		if ( i >= m_numHosts ) {
 			log(LOG_LOGIC,"net: multicast: HostId %" INT32 " not "
 			    "in group.", firstHostId );
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		// if we got a match and it's not dead, and not reporting
 		// system errors, return it
@@ -867,12 +867,12 @@ int32_t Multicast::pickRandomHost ( ) {
 // . sends m_msg to host "h"
 bool Multicast::sendToHost ( int32_t i ) {
 	// sanity check
-	if ( i >= m_numHosts ) { char *xx=NULL;*xx=0; }
+	gbassert_false( i >= m_numHosts );
 	// sanity check , bitch if retired
 	if ( m_retired [ i ] ) {
 		log(LOG_LOGIC,"net: multicast: Host #%" INT32 " is retired. "
 		    "Bad engineer.",i);
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 		return true;
 	}
 	// debug msg
@@ -939,8 +939,7 @@ bool Multicast::sendToHost ( int32_t i ) {
 	// sanity check
 	//if ( g_hostdb.isDead(h) ) {
 	//	log("net: trying to send to dead host.");
-	//	char *xx = NULL; 
-	//	*xx = 0; 
+	//	gbassert(false);
 	//}
 	// don't set hostid if we're sending to a remote cluster
 	int32_t hid = h->m_hostId;
@@ -982,7 +981,7 @@ bool Multicast::sendToHost ( int32_t i ) {
 		    m_msgType,h->m_hostId,mstrerror(g_errno));
 		// i've seen ENOUDPSLOTS available msg here along with oom
 		// condition...
-		//char *xx=NULL;*xx=0; 
+		//gbassert(false); 
 		return false;
 	}
 	// mark it as outstanding
@@ -1314,7 +1313,7 @@ void Multicast::gotReply1 ( UdpSlot *slot ) {
 	// if it matched no slot that's weird
 	if ( i >= m_numHosts ) {
 		log(LOG_LOGIC,"net: multicast: Not our slot 2."); 
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 		return; 
 	}
 	// set m_errnos[i], if any
@@ -1467,7 +1466,7 @@ void Multicast::gotReply1 ( UdpSlot *slot ) {
 
 void Multicast::closeUpShop ( UdpSlot *slot ) {
 	// sanity check
-	if ( ! m_inUse ) { char *xx=NULL;*xx=0; }
+	gbassert(m_inUse);
 	// debug msg
 	//log("Multicast exiting (this=%" INT32 ")",(int32_t)&m_msg34);
 	// destroy the OTHER slots we've spawned that are in progress
@@ -1650,4 +1649,3 @@ char *Multicast::getBestReply ( int32_t *replySize ,
 	if ( m_readBuf ) m_ownReadBuf  = false;
 	return m_readBuf;
 }
-

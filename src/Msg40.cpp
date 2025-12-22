@@ -352,7 +352,7 @@ bool Msg40::getResults ( SearchInput *si      ,
 	// let's try using msg 0xfd like Proxy.cpp uses to forward an http
 	// request! then we just need specify the ip of the proxy and we
 	// do not need hosts2.conf!
-	if ( forward ) { char *xx=NULL;*xx=0; }
+	gbassert_false( forward );
 
 	// . forward to another *collection* and/or *cluster* if we should
 	// . this is used by Msg41 for importing results from another cluster
@@ -488,11 +488,11 @@ bool Msg40::gotExternalReply ( ) {
 	// sanity check
 	if ( freeit ) {
 		log(LOG_LOGIC,"query: msg40: gotReply: Bad engineer.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	if ( bufSize != bufMaxSize ) {
 		log(LOG_LOGIC,"query: msg40: fix me.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	// set ourselves from it
 	deserialize ( buf , bufSize );
@@ -999,7 +999,7 @@ bool Msg40::mergeDocIdsIntoBaseMsg3a() {
 	m_msg3a.m_clusterLevels = (char      *)p; p += td * 1;
 	m_msg3a.m_scoreInfos    = NULL;
 	m_msg3a.m_collnums      = (collnum_t *)p; p += td * sizeof(collnum_t);
-	if ( p - m_msg3a.m_finalBuf != need ) { char *xx=NULL;*xx=0; }
+	gbassert_false( p - m_msg3a.m_finalBuf != need );
 
 	m_msg3a.m_numDocIds = td;
 
@@ -1073,7 +1073,7 @@ bool Msg40::reallocMsg20Buf ( ) {
 	// MDW: try to preserve the old Msg20s if we are being re-called
 	if ( m_buf2 ) {
 		// we do not do recalls when streaming yet
-		if ( m_si->m_streamResults ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_si->m_streamResults );
 		// use these 3 vars for mismatch stat reporting
 		//int32_t      mismatches = 0;
 		//int64_t mismatch1  = 0LL;
@@ -1174,7 +1174,7 @@ bool Msg40::reallocMsg20Buf ( ) {
 				//   " at #%" INT32 ". olddocid=%" INT64 " newdocid=%" INT64 "",i,
 				//   tmp[i]->m_docId,m_msg3a.m_docIds[i]);
 				// core for testing on gb1d only!!!
-				//char *xx = NULL; *xx = 0; 
+				//gbassert(false); 
 			}
 			*/
 			// . otherwise copy the memory if available
@@ -1183,7 +1183,7 @@ bool Msg40::reallocMsg20Buf ( ) {
 			tmp[i]->copyFrom ( m_msg20[k] );
 		}
 		// sanity check
-		if ( p - (char *)tmp != need ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( p - (char *)tmp != need );
 
 		resetBuf2();
 		// destroy all the old msg20s, this was mem leaking
@@ -1290,7 +1290,7 @@ void didTaskWrapper ( void* state ) {
 bool Msg40::launchMsg20s ( bool recalled ) {
 
 	// don't launch any more if client browser closed socket
-	if ( m_socketHadError ) { char *xx=NULL; *xx=0; }
+	gbassert_false( m_socketHadError );
 
 	// these are just like for passing to Msg39 above
 	int32_t maxAge = 0 ;
@@ -1746,7 +1746,7 @@ Msg20 *Msg40::getAvailMsg20 ( ) {
 		return m_msg20[i];
 	}
 	// how can this happen???  THIS HAPPEND
-	char *xx=NULL;*xx=0; 
+	gbassert(false); 
 	return NULL;
 }
 
@@ -1880,7 +1880,7 @@ bool Msg40::gotSummary ( ) {
 		//if ( ! strstr(cc,"Modern Marketing KF400032MA") )  continue;
 		//log("hey");
 		//fprintf(stderr,"msg %" INT32 " = %s\n",i,cc );
-		if ( i == 48329 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( i == 48329 );
 		mr->ptr_content = NULL;
 	}
 	*/
@@ -1970,7 +1970,7 @@ bool Msg40::gotSummary ( ) {
 		// get the next reply we are waiting on to print results order
 		Msg20Reply *mr = m20->m_r;
 		if ( ! mr ) break;
-		//if ( ! mr ) { char *xx=NULL;*xx=0; }
+		//if ( ! mr ) { gbassert(false); }
 
 		// primitive deduping. for diffbot json exclude url's from the
 		// XmlDoc::m_contentHash32.. it will be zero if invalid i guess
@@ -2103,7 +2103,7 @@ bool Msg40::gotSummary ( ) {
 		// merge more docids from the shards' termlists
 		m_msg3a.m_docsToGet = need;
 		// sanity. the original msg39request must be there
-		if ( ! m_msg3a.m_r ) { char *xx=NULL;*xx=0; }
+		gbassert(m_msg3a.m_r);
 		// this should increase m_msg3a.m_numDocIds
 		m_msg3a.mergeLists();
 	}
@@ -2128,7 +2128,7 @@ bool Msg40::gotSummary ( ) {
 	     m_printi >= m_msg3a.m_numDocIds ) {
 		m_printedTail = true;
 		printSearchResultsTail ( st );
-		if ( m_sendsIn < m_sendsOut ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_sendsIn < m_sendsOut );
 		if ( g_conf.m_logDebugTcp )
 			log("tcp: disabling streamingMode now");
 		// this will be our final send
@@ -2223,7 +2223,7 @@ bool Msg40::gotSummary ( ) {
 		//   we had full requests/replies for m_msg3a.m_numDocIds
 		log("msg40: got all replies i guess");
 		goto doAgain;
-		//char *xx=NULL; *xx=0;
+		//gbassert(false);
 	}
 
  complete:
@@ -2307,7 +2307,7 @@ bool Msg40::gotSummary ( ) {
 	//	// we don't need to launch any more! but that does NOT
 	//	// make sense because the reply we just got did not increase
 	//	// m_numContiguous, meaning there is a gap we are waiting on.
-	//	char *xx=NULL; *xx=0;
+	//	gbassert(false);
 	//}
 
         // this logic here makes us get the msg20s in chunks of 50, so the
@@ -2348,8 +2348,8 @@ bool Msg40::gotSummary ( ) {
 		char *level = &m_msg3a.m_clusterLevels[i];
 		// sanity check -- this is a transistional value msg3a should 
 		// set it to something else!
-		if ( *level == CR_GOT_REC         ) { char *xx=NULL; *xx=0; }
-		if ( *level == CR_ERROR_CLUSTERDB ) { char *xx=NULL; *xx=0; }
+		gbassert_false( *level == CR_GOT_REC         );
+		gbassert_false( *level == CR_ERROR_CLUSTERDB );
 		// skip if already "bad"
 		if ( *level != CR_OK ) continue;
 		// if the user only requested docids, we have no summaries
@@ -2642,9 +2642,9 @@ bool Msg40::gotSummary ( ) {
 		//uint32_t sh;
 		//sh = g_titledb.getHostHash(*(key_t*)m_msg20[i]->m_vectorRec);
 		int32_t cn = (int32_t)m_msg3a.m_clusterLevels[i];
-		if ( cn < 0 || cn >= CR_END ) { char *xx=NULL;*xx=0; }
+		gbassert_false( cn < 0 || cn >= CR_END );
 		char *s = g_crStrings[cn];
-		if ( ! s ) { char *xx=NULL;*xx=0; }
+		gbassert(s);
 		logf(LOG_DEBUG, "query: msg40 final hit #%" INT32 ") d=%" UINT64 " "
 		     "cl=%" INT32 " (%s)", 
 		     i,m_msg3a.m_docIds[i],(int32_t)m_msg3a.m_clusterLevels[i],s);
@@ -2787,7 +2787,7 @@ bool Msg40::gotSummary ( ) {
 		// get cluster level
 		char level = m_msg3a.m_clusterLevels[i];
 		// sanity check
-		if ( level < 0 || level >= CR_END ) { char *xx=NULL; *xx =0; }
+		gbassert_false( level < 0 || level >= CR_END );
 		// add it up
 		g_stats.m_filterStats[(int32_t)level]++;
 		// skip if NOT visible
@@ -2844,7 +2844,7 @@ bool Msg40::gotSummary ( ) {
 	// just print warning i guess
 	if ( lang == 0 ) { 
 		log("query: queryLang is 0 for q=%s",q->m_orig);
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 	}
 	// we gotta use query TERMS not words, because the query may be
 	// 'cd rom' and the phrase term will be 'cdrom' which is a good one
@@ -2957,7 +2957,7 @@ bool Msg40::gotSummary ( ) {
 		// otherwise, it is legit!
 		//m_numGigabitInfos = ng;
 		// sanity check
-		//if ( ng > 50 ) { char *xx=NULL;*xx=0; }
+		//if ( ng > 50 ) { gbassert(false); }
 		// time it
 		int64_t took = gettimeofdayInMilliseconds() - stt;
 		if ( took > 5 )
@@ -2997,7 +2997,7 @@ bool Msg40::gotSummary ( ) {
 		logf ( LOG_DEBUG, "query: msg40: more? %d",   m_moreToCome );
 
 	// alloc m_buf, which should be NULL
-	if ( m_buf ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( m_buf );
 
 	// . we need to collapse m_msg3a.m_docIds[], etc. into m_docIds[] etc
 	//   to be just the docids we wanted.
@@ -3175,11 +3175,11 @@ void Msg40::uncluster ( int32_t m ) {
 		     k,m_msg3a.m_docIds[k],m_unclusterCount);
 		// . steal the msg20!
 		// . sanity check -- should have been NULL!
-		if (   m_msg20[k] ) { char *xx=NULL; *xx=0; }
+		gbassert_false(   m_msg20[k] );
 		// sanity check
-		if ( ! m_msg20[m] ) { char *xx=NULL; *xx=0; }
+		gbassert(m_msg20[m]);
 		// sanity check
-		if ( k == m ) { char *xx=NULL; *xx=0; }
+		gbassert_false( k == m );
 		// for every one guy marked as a dup, we uncluster FIVE
 		//if ( ++count >= 5 ) break;
 		// grab it
@@ -3252,8 +3252,7 @@ int32_t Msg40::serialize ( char *buf , int32_t bufLen ) {
 	// . TODO: make sure empty Msg20s are very little space!
 	for ( int32_t i = 0 ; i < m_msg3a.m_numDocIds ; i++ ) {
 		// sanity check
-		if ( m_msg3a.m_clusterLevels[i] == CR_OK && ! m_msg20[i] ) {
-			char *xx = NULL; *xx = 0; }
+		gbassert_false( m_msg3a.m_clusterLevels[i] == CR_OK && ! m_msg20[i] );
 		// if null skip it
 		if ( ! m_msg20[i] ) continue;
 		// do not store the big samples if we're not storing cached 
@@ -3485,7 +3484,7 @@ static int gigabitCmp ( const void *a, const void *b ) {
 bool Msg40::computeGigabits( TopicGroup *tg ) {
 
 	// not if we skipped the first X summariest
-	if ( m_didSummarySkip ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_didSummarySkip );
 
 	//return true;
 
@@ -3505,7 +3504,7 @@ bool Msg40::computeGigabits( TopicGroup *tg ) {
 		// get it
 		Msg20* thisMsg20 = m_msg20[i];
 		// must be there! wtf?
-		if ( ! thisMsg20 ) { char *xx=NULL;*xx=0; }
+		gbassert(thisMsg20);
 		// make sure the summary is not in a foreign language (aac)
 		//if (thisMsg20) {
 		//    unsigned char sLang;
@@ -3548,7 +3547,7 @@ bool Msg40::computeGigabits( TopicGroup *tg ) {
 			// return -1 with g_errno set on error
 			g_errno = EBUFTOOSMALL;
 			return -1;
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 		}
 		// the thing we are counting!!!!
 		maxWords += sampleWords;
@@ -3612,7 +3611,7 @@ bool Msg40::computeGigabits( TopicGroup *tg ) {
 		// get it
 		Msg20* thisMsg20 = m_msg20[i];
 		// must be there! wtf?
-		if ( ! thisMsg20 ) { char *xx=NULL;*xx=0; }
+		gbassert(thisMsg20);
 		// make sure the summary is not in a foreign language (aac)
 		//if (thisMsg20) {
 		//    unsigned char sLang;
@@ -3675,7 +3674,7 @@ bool Msg40::computeGigabits( TopicGroup *tg ) {
 		gbmemcpy ( ff , ptr , len );
 		ff[len] = '\0';
 		// we can have html entities in here now
-		//if ( ! is_alnum(ff[0]) ) { char *xx = NULL; *xx = 0; }
+		//if ( ! is_alnum(ff[0]) ) { gbassert(false); }
 		log("%08" INT32 " %s",score,ff);
 	}
 	*/
@@ -3765,8 +3764,7 @@ bool Msg40::computeGigabits( TopicGroup *tg ) {
 			// skip if nuked already
 			if ( gj->m_termLen == 0 ) continue;
 			// wtf?
-			if ( gj->m_termId64 == gi->m_termId64 ) {
-				char *xx=NULL; *xx=0; }
+			gbassert_false( gj->m_termId64 == gi->m_termId64 );
 			// if page count not the same let it coexist
 			if ( gi->m_numPages != gj->m_numPages ) 
 				continue;
@@ -4254,8 +4252,7 @@ bool hashGigabitSample ( Query *q,
 			// zero out
 			memset ( gbit.m_wordIds , 0 , MAX_GIGABIT_WORDS*8);
 			// sanity
-			if ( gc->m_numWords > MAX_GIGABIT_WORDS ) { 
-				char*xx=NULL;*xx=0;}
+			gbassert_false( gc->m_numWords > MAX_GIGABIT_WORDS );
 			gbmemcpy((char *)gbit.m_wordIds,
 			       (char *)gc->m_wordIds,
 			       gc->m_numWords * 8 );
@@ -4911,7 +4908,7 @@ void hashExcerpt ( Query *q ,
 			//if ( pop > 100 && j == i && is_lower(wp[j][0]) ) 
 			//continue;
 			// the above assumes a MAX_POP of 10k (sanity check)
-			//if ( MAXPOP != 10000 ) { char *xx = NULL; *xx = 0; }
+			//if ( MAXPOP != 10000 ) { gbassert(false); }
 			// are we passed the first word in the phrase?
 			if ( j > i ) {
 				// advance phrase length
@@ -5359,7 +5356,7 @@ void setRepeatScores ( Words *words ,
 		// need at least 5 words in the ring buffer to do analysis
 		if ( ++count < 5 ) continue;
 		// sanity check
-		//if ( start <= lastStart ) { char *xx = NULL; *xx = 0; }
+		//if ( start <= lastStart ) { gbassert(false); }
 		// look up in the hash table
 		//int32_t n = h & mask;
 		// stop at new york times - debug
@@ -5470,7 +5467,7 @@ bool Msg40::computeFastFacts ( ) {
 		ww.setx ( gi->m_term , gi->m_termLen , 0 );
 		int64_t *wids = ww.getWordIds();
 		// fix mere here
-		//if ( ! wids[0] ) { char *xx=NULL;*xx=0; }
+		//if ( ! wids[0] ) { gbassert(false); }
 		if ( ! wids[0] )  {
 			log("doc: wids[0] is null");
 			return true;
@@ -5750,7 +5747,7 @@ bool Msg40::printSearchResult9 ( int32_t ix , int32_t *numPrintedSoFar ,
 
 	// . we stream results right onto the socket
 	// . useful for thousands of results... and saving mem
-	if ( ! m_si || ! m_si->m_streamResults ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! m_si || ! m_si->m_streamResults );
 
 	// get state0
 	State0 *st = (State0 *)m_state;
@@ -5911,8 +5908,7 @@ bool Msg40::printCSVHeaderRow ( SafeBuf *sb ) {
 		// doc not found errors from a bad title rec lookup
 		if ( m20->m_errno && ! m_si->m_showErrors ) 
 			continue;
-
-		if ( ! m20->m_r ) { char *xx=NULL;*xx=0; }
+gbassert(m20->m_r);
 
 		Msg20Reply *mr = m20->m_r;
 
@@ -6056,12 +6052,12 @@ bool Msg40::printJsonItemInCSV ( State0 *st , int32_t ix ) {
 	Msg20 *m20 = getCompletedSummary(ix);
 	if ( ! m20 ) return false;
 	if ( m20->m_errno ) return false;
-	if ( ! m20->m_r ) { char *xx=NULL;*xx=0; }
+	gbassert(m20->m_r);
 	Msg20Reply *mr = m20->m_r;
 	// get content
 	char *json = mr->ptr_content;
 	// how can it be empty?
-	if ( ! json ) { char *xx=NULL;*xx=0; }
+	gbassert(json);
 
 
 	// parse the json
@@ -6137,7 +6133,7 @@ bool Msg40::printJsonItemInCSV ( State0 *st , int32_t ix ) {
 			columnTable->addKey ( &h64 , &newColnum );
 			column = newColnum;
 			numCSVColumns++;
-			//char *xx=NULL;*xx=0; }
+			//gbassert(false); }
 		}
 
 		// set ptr to it for printing when done parsing every field
@@ -6237,7 +6233,7 @@ Msg20 *Msg40::getUnusedMsg20 ( ) {
 	}
 
 	// how can this happen???
-	char *xx=NULL;*xx=0; 
+	gbassert(false); 
 	return NULL;
 }
 

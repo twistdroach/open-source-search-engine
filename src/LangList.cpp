@@ -447,7 +447,7 @@ bool LangList::loadLists ( ) {
 		if(!w.set (buf ,
 			   fileSize ,
 			   TITLEREC_CURRENT_VERSION,true, false)) {
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 			return false;
 		}
 		
@@ -554,7 +554,7 @@ bool LangList::isLangValidForTld(char* tld, int32_t tldLen, unsigned char lang) 
 
 	if(slot < 0) return true;
 	int32_t *tip = (int32_t *)m_tldToCountry.getValueFromSlot(slot);
-	if ( ! tip ) { char *xx=NULL;*xx=0; }
+	gbassert(tip);
 	TldInfo* t = &s_tldInfo[*tip];
 	//it is uninitalized, init on demand.
 	if(t->m_languagebv == 0xffffffff) { 

@@ -69,7 +69,7 @@ bool sendReply ( State0 *st , char *reply ) {
 	if ( ! sock ) { 
 		log("results: not sending back results on an empty socket."
 		    "socket must have closed on us abruptly.");
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 	}
 	SearchInput *si = &st->m_si;
 	char *ct = "text/html";
@@ -3692,7 +3692,7 @@ bool printInlinkText ( SafeBuf *sb , Msg20Reply *mr , SearchInput *si ,
 	//   and stale. Both are really only for BuzzLogic.
 	LinkInfo *info = (LinkInfo *)mr->ptr_linkInfo;//inlinks;
 	// sanity
-	if ( info && mr->size_linkInfo!=info->m_lisize ){char *xx=NULL;*xx=0; }
+	gbassert_false( info && mr->size_linkInfo!=info->m_lisize );
 	// NULLify if empty
 	if ( mr->size_linkInfo <= 0 ) info = NULL;
 	// do not both if none
@@ -5889,7 +5889,7 @@ bool printResult ( State0 *st, int32_t ix , int32_t *numPrintedSoFar ) {
 			sb->safePrintf ("\n\t}\n\n");
 		}
 		// wtf?
-		//char *xx=NULL;*xx=0;
+		//gbassert(false);
 		// at least close up the table
 		if ( si->m_format != FORMAT_HTML ) return true;
 
@@ -8593,14 +8593,14 @@ bool printJsonItemInCSV ( char *json , SafeBuf *sb , State0 *st ) {
 			// do not core on this anymore...
 			log("serps: json column not in table : %s",ji->m_name);
 			continue;
-			//char *xx=NULL;*xx=0;}
+			//gbassert(false);}
 		}
 
 		// get col #
 		int32_t column = *(int32_t *)columnTable->getValueFromSlot ( slot );
 
 		// sanity
-		if ( column >= numCSVColumns ) { char *xx=NULL;*xx=0; }
+		gbassert_false( column >= numCSVColumns );
 
 		// set ptr to it for printing when done parsing every field
 		// for this json item
@@ -9717,7 +9717,7 @@ bool printSearchFiltersBar ( SafeBuf *sb , HttpRequest *hr ) {
 		n++;
 
 		s_num = n;
-		if ( n > 200 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( n > 200 );
 	}
 
 

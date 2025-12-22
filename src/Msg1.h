@@ -170,7 +170,7 @@ inline uint32_t getGroupId ( char rdbId , char *key ) {
 	else if ( rdbId == RDB2_CATDB2 )
 		return g_tagdb.getGroupId((key_t *)key);
 	// core -- must be provided
-	char *xx = NULL; *xx = 0;
+	gbassert(false);
 	//groupId=key.n1 & g_hostdb.m_groupMask;
 	return (((key_t *)key)->n1) & g_hostdb.m_groupMask;
 }

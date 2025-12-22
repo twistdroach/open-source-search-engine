@@ -100,9 +100,7 @@ void handleRequestSpeller ( UdpSlot *slot , int32_t netnice ) {
 	}
 
 	//sanity check
-	if ( p - reply != replySize ){
-		char *xx = NULL; *xx = 0;
-	}
+	gbassert_false( p - reply != replySize );
 
 	int64_t end = gettimeofdayInMilliseconds();
 	if ( end - start > 1 )
@@ -1102,7 +1100,7 @@ bool Speller::loadUnifiedDict() {
 		// skip til |
 		for ( ; *p && *p != '|' ; p++ );
 		// sanity check
-		if ( *p != '|' ) { char *xx=NULL;*xx=0; }
+		gbassert_false( *p != '|' );
 		// tmp NULL that
 		*p = '\0';
 		char langId = getLangIdFromAbbr(start);
@@ -1299,7 +1297,7 @@ bool Speller::loadUnifiedDict() {
 		for ( ; *p && *p !='\n' && *p !='|' ; p++ );
 		if ( *p != '|' ) {
 			log("speller: bad format in wiktionary-lang.txt");
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 		//*p = '\0';
 		//uint8_t langId = getLangIdFromAbbr ( langAbbr );
@@ -1310,7 +1308,7 @@ bool Speller::loadUnifiedDict() {
 		for ( ; *p && *p !='\n' ; p++ );
 		if ( *p != '\n' ) {
 			log("speller: bad format in wiktionary-lang.txt");
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 		int32_t wordLen = p - word;
 		// wiktinary has like prefixes ending in minus. skip!
@@ -1412,7 +1410,7 @@ bool Speller::loadUnifiedDict() {
 int32_t Speller::getPhrasePopularity ( char *str, uint64_t h,
 				    bool checkTitleRecDict,
 				    unsigned char langId ){
-	//char *xx=NULL;*xx=0;
+	//gbassert(false);
 
 	// hack fixes. 
 	// common word like "and"?
@@ -1498,7 +1496,7 @@ int32_t Speller::getPhrasePopularity ( char *str, uint64_t h,
 bool Speller::canSplitWords( char *s, int32_t slen, bool *isPorn, 
 			     char *splitWords,
 			     unsigned char langId, int32_t encodeType ){
-	//char *xx=NULL;*xx=0;
+	//gbassert(false);
 
 	*isPorn = false;
 	char *index[1024];
@@ -1546,7 +1544,7 @@ bool Speller::canSplitWords( char *s, int32_t slen, bool *isPorn,
 
 bool Speller::findNext( char *s, char *send, char **nextWord, bool *isPorn,
 			unsigned char langId, int32_t encodeType ){
-	//char *xx=NULL;*xx=0;
+	//gbassert(false);
 
 	char *loc = NULL;
 	int32_t slen = send - s;
@@ -1930,7 +1928,7 @@ bool Speller::populateHashTable( char *ff, HashTableX *htable,
 // language detection to keep from making 32 sequential
 // calls for the same phrase to isolate the language.
 char *Speller::getPhraseRecord(char *phrase, int len ) {
-	//char *xx=NULL;*xx=0;
+	//gbassert(false);
 	if ( !phrase ) return NULL;
 	//char *rv = NULL;
 	int64_t h = hash64d(phrase, len);
@@ -2063,7 +2061,7 @@ int64_t Speller::getLangBits64 ( int64_t *wid ) {
 
 /*
 int64_t *Speller::getPhraseLanguages(char *phrase, int len ) {
-	//char *xx=NULL;*xx=0;
+	//gbassert(false);
 
 	char *phraseRec = getPhraseRecord(phrase, len );
 	if(!phraseRec) return(NULL);
@@ -2081,7 +2079,7 @@ int64_t *Speller::getPhraseLanguages(char *phrase, int len ) {
  
 bool Speller::getPhraseLanguages(char *phrase, int len,
 				 int64_t *array) {
-	//char *xx=NULL;*xx=0;
+	//gbassert(false);
 
 	char *phraseRec = getPhraseRecord(phrase, len);
 	if(!phraseRec || !array) return false;
@@ -2203,13 +2201,13 @@ static inline int s_findMaxVal(int64_t *vals, int numVals) {
 }
 
 char Speller::getPhraseLanguage(char *phrase, int len) {
-	//char *xx=NULL;*xx=0;
+	//gbassert(false);
 
 	char lang;
 	int64_t *langs = getPhraseLanguages(phrase, len);
 	if(!langs) return(0);
 	lang = s_findMaxVal(langs, MAX_LANGUAGES);
-	if ( lang < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( lang < 0 );
 	if(langs[(uint8_t)lang] == 0) lang = 0;
 	mfree(langs, sizeof(int) * MAX_LANGUAGES, "PhraseRec");
 	return(lang);
@@ -2236,9 +2234,7 @@ void Speller::dictLookupTest ( char *ff ){
 		buf[wlen-1]='\0';
 		uint64_t h = hash64d ( buf, gbstrlen(buf));
 		int32_t pop = g_speller.getPhrasePopularity(buf, h, true);
-		if ( pop < 0 ){
-			char *xx = NULL; *xx = 0;
-		}
+		gbassert_false( pop < 0 );
 		count++;
 	}
 	log ( LOG_WARN,"speller: dictLookupTest took %" INT64 " ms to do "

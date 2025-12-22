@@ -496,7 +496,7 @@ inline uint64_t hash64AsciiLowerE ( char *s, int32_t len, uint64_t startHash ) {
 			uint8_t tmp[4];
 			char    ncs = utf8Encode ( y , tmp );
 			// sanity check
-			if ( ncs > 4 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( ncs > 4 );
 			// hash it up
 			h ^= g_hashtab [i++][tmp[0]];
 			if ( ncs == 1 ) continue;
@@ -509,7 +509,7 @@ inline uint64_t hash64AsciiLowerE ( char *s, int32_t len, uint64_t startHash ) {
 		// entity?
 		skip = getEntity(&s[i],len-i,&x, true);
 		// if not valid... that's weird, sanity check
-		if ( skip <= 0 ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( skip <= 0 );
 		// skip it man
 		p += skip - cs;
 		// resume above

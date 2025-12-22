@@ -38,7 +38,7 @@ void Msg5::reset() {
 		log("disk: Trying to reset a class waiting for a reply.");
 		// might being doing an urgent exit (mainShutdown(1)) or
 		// g_process.shutdown(), so do not core here
-		//char *xx = NULL; *xx = 0; 
+		//gbassert(false); 
 	}
 	m_treeList.freeList();
 	//m_tfndbList.freeList();
@@ -145,7 +145,7 @@ bool Msg5::getList ( char     rdbId         ,
 	// make sure we are not being re-used prematurely
 	if ( m_waitingForList ) {
 		log("disk: Trying to reset a class waiting for a reply.");
-		char *xx = NULL; *xx = 0; 
+		gbassert(false); 
 	}
 	if ( collnum < 0 ) {
 		log("msg5: called with bad collnum=%" INT32 "",(int32_t)collnum);
@@ -154,17 +154,17 @@ bool Msg5::getList ( char     rdbId         ,
 	}
 	// sanity check. we no longer have record caches!
 	// now we do again for posdb gbdocid:xxx| restricted queries
-	//if ( addToCache || maxCacheAge ) {char *xx=NULL;*xx=0; }
+	//if ( addToCache || maxCacheAge ) {gbassert(false); }
 	// assume no error
 	g_errno = 0;
 	// sanity
-	if ( ! list && mergeLists ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! list && mergeLists );
 	// warning
 	if ( collnum < 0 ) log(LOG_LOGIC,"net: bad collection. msg5.");
 	// MUST have this
 	//if ( rdbId == RDB_TITLEDB && ! msg5b ) {
 	//	log(LOG_LOGIC,"net: No msg5b supplied. 1.");
-	//	char *xx = NULL; *xx = 0;
+	//	gbassert(false);
 	//}
 	// . reset the provided list
 	// . this will not free any mem it may have alloc'd but it will set
@@ -183,7 +183,7 @@ bool Msg5::getList ( char     rdbId         ,
 		if ( g_conf.m_logDebugDb )
 		      log(LOG_LOGIC,"net: msg5: MinRecSizes < 0, using 2GB.");
 		minRecSizes = 0x7fffffff;
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 	}
 	// ensure startKey last bit clear, endKey last bit set
 	//if ( (startKey.n0 & 0x01) == 0x01 ) 
@@ -277,7 +277,7 @@ bool Msg5::getList ( char     rdbId         ,
 		if ( m_indexdbTruncationLimit < MIN_TRUNC ) {
 			log("disk: trunc limit = %" INT32 "",
 			    m_indexdbTruncationLimit);
-			char *xx = NULL; *xx = 0; 
+			gbassert(false); 
 		}
 	}
 	*/
@@ -470,7 +470,7 @@ bool Msg5::getList ( char     rdbId         ,
 			//bool ok = m_list->checkList_r ( false , true );
 			//if ( ! ok ) log("GETLIST had problem");
 			// break out
-			//if ( ! ok ) { char *xx = NULL; *xx = 0; }
+			//if ( ! ok ) { gbassert(false); }
 			return true;
 		}
 	}
@@ -749,7 +749,7 @@ bool Msg5::readList ( ) {
 	//key_t diskEndKey = m_treeList.getEndKey();
 	char *diskEndKey = m_treeList.getEndKey();
 	// sanity check
-	if ( m_treeList.m_ks != m_ks ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( m_treeList.m_ks != m_ks );
 
 	// we are waiting for the list
 	//m_waitingForList = true;
@@ -818,7 +818,7 @@ bool Msg5::needsRecall ( ) {
 		return false;
 	}
 	// sanity check
-	if ( ! base && ! g_errno ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! base && ! g_errno );
 	// . return true if we're done reading
 	// . sometimes we'll need to read more because Msg3 will int16_ten the
 	//   endKey to better meat m_minRecSizes but because of 
@@ -875,7 +875,7 @@ bool Msg5::needsRecall ( ) {
 	// sanity check
 	if ( m_indexdbTruncationLimit < MIN_TRUNC ) {
 		log("disk: trunc limit2 = %" INT32 "", m_indexdbTruncationLimit);
-		char *xx = NULL; *xx = 0; 
+		gbassert(false); 
 	}
 	// if we are limited by truncation then we are done
 	if ( base->useHalfKeys() && 
@@ -935,7 +935,7 @@ bool Msg5::needsRecall ( ) {
 		Msg5 *THIS = *(Msg5 **)g_waitingTable.getValueFromSlot(slot);
 		// sanity. must have same start keys!
 		if ( KEYCMP(THIS->m_startKey,m_startKey,m_ks) != 0 ) {
-			char *xx=NULL;*xx=0; }
+			gbassert(false); }
 		// do not call this for the original request
 		if ( THIS != this ) THIS->copyAndSendBackList ( m_list );
 		// delete it
@@ -953,7 +953,7 @@ bool Msg5::needsRecall ( ) {
 		// sanity check
 		//bool ok = m_list->checkList_r ( false , true );
 		// break out
-		//if ( ! ok ) { char *xx = NULL; *xx = 0; }
+		//if ( ! ok ) { gbassert(false); }
 		//if ( ! ok ) log("ADDLIST had problem");
 		// add it if its ok
 		//if ( ok ) m_cache->addList ( m_cacheKey, m_list ) ;
@@ -978,7 +978,7 @@ void gotListWrapper ( void *state ) {
 	// . only returns true if COMPLETELY done
 	if ( THIS->needsRecall() && ! THIS->readList() ) return;
 	// sanity check
-	if ( THIS->m_calledCallback ) { char *xx=NULL;*xx=0; }
+	gbassert_false( THIS->m_calledCallback );
 	// set it now
 	THIS->m_calledCallback = 1;
 	// we are no longer waiting for the list
@@ -1035,7 +1035,7 @@ bool Msg5::gotList ( ) {
 	// MUST have this
 	if ( ! m_msg5b ) {
 		log(LOG_LOGIC,"net: No msg5b supplied.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	m_time1 = gettimeofdayInMilliseconds();
 	int64_t docId1  =g_titledb.getDocIdFromKey((key_t *)m_fileStartKey);
@@ -1077,7 +1077,7 @@ void gotListWrapper2 ( void *state , RdbList *list , Msg5 *msg5 ) {
 	Msg5 *THIS = (Msg5 *)state;
 	if ( ! THIS->gotList2() ) return;
 	// sanity check
-	if ( THIS->m_calledCallback ) { char *xx=NULL;*xx=0; }
+	gbassert_false( THIS->m_calledCallback );
 	// set it now
 	THIS->m_calledCallback = 2;
 	// call the original callback
@@ -1129,7 +1129,7 @@ bool Msg5::gotList2 ( ) {
 		//	m_minEndKey = m_listPtrs[i]->getEndKey();
 		// sanity check
 		//if ( KEYNEG(m_listPtrs[i]->getEndKey()) ) {
-		//	char *xx=NULL;*xx=0; }
+		//	gbassert(false); }
 		if ( KEYCMP(m_listPtrs[i]->getEndKey(),m_minEndKey,m_ks)<0 ) {
 			KEYSET(m_minEndKey,m_listPtrs[i]->getEndKey(),m_ks);
 			// crap, if list is all negative keys, then the
@@ -1141,7 +1141,7 @@ bool Msg5::gotList2 ( ) {
 		}
 	}
 	// sanity check
-	//if ( KEYNEG( m_minEndKey) ) {char *xx=NULL;*xx=0; }
+	//if ( KEYNEG( m_minEndKey) ) {gbassert(false); }
 	/*
 	// if we got a tfndblist, constrain the title rec lists to its 
 	// transformed endkey. we only read in up to 500k of tfndb list so if 
@@ -1177,7 +1177,7 @@ bool Msg5::gotList2 ( ) {
 			KEYSET ( nkey , (char *)&trk , m_ks );
 			// sanity check
 			//if ( g_titledb.getKeySize() != m_ks ) {
-			//	char *xx = NULL; *xx = 0; }
+			//	gbassert(false); }
 			// only do constrain if docid is not 0
 			//if ( docid > 0 && nkey < m_minEndKey ) {
 			if ( docid > 0 && KEYCMP(nkey,m_minEndKey,m_ks)<0 ) {
@@ -1522,7 +1522,7 @@ void threadDoneWrapper ( void *state , ThreadEntry *t ) {
 	// . only returns true if COMPLETELY done
 	if ( THIS->needsRecall() && ! THIS->readList() ) return;
 	// sanity check
-	if ( THIS->m_calledCallback ) { char *xx=NULL;*xx=0; }
+	gbassert_false( THIS->m_calledCallback );
 	// we are no longer waiting for the list
 	THIS->m_waitingForList = false;
 	// set it now
@@ -1672,7 +1672,7 @@ void Msg5::mergeLists_r ( ) {
 	     m_rdbId != RDB2_POSDB2 && 
 	     1 == 3 ) {
 		// disable for now!
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 		// always assume to use it
 		bool useBigRootList = true;
 		// must include the first file always
@@ -1734,7 +1734,7 @@ void Msg5::mergeLists_r ( ) {
 				log("db: Got bad list.");
 				m_list->printList();
 				m_list2.printList();
-				//char *xx = NULL; *xx = 0;
+				//gbassert(false);
 			}
 		}
 #endif
@@ -1853,7 +1853,7 @@ bool Msg5::doneMerging ( ) {
 		// note that
 		if ( ! g_errno ) {
 			log("net: got remote list without blocking");
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 		// if it set g_errno, it could not get a remote list
 		// so try to make due with what we have
@@ -2113,7 +2113,7 @@ void gotRemoteListWrapper( void *state ) { // , RdbList *list ) {
 	// return if this blocks
 	if ( ! THIS->gotRemoteList() ) return;
 	// sanity check
-	if ( THIS->m_calledCallback ) { char *xx=NULL;*xx=0; }
+	gbassert_false( THIS->m_calledCallback );
 	// we are no longer waiting for the list
 	THIS->m_waitingForList = false;
 	// set it now

@@ -7636,7 +7636,7 @@ bool addToSpiderdb ( char *coll , TitleRec *tr ) {
 	// sanity check
 	if ( getGroupId(RDB_SPIDERDB,&k) != g_hostdb.m_groupId ) {
 		log("spider key is wrong groupId");
-		char *xx = NULL; *xx = 0; }
+		gbassert(false); }
 	// add to spiderdb now
 	SpiderRec sr;
 	sr.set ( tr->getUrl       () ,
@@ -10997,7 +10997,7 @@ bool bucketstest ( char* dbname ) {
 			    *(int64_t*)(foundKey+(sizeof(int32_t))),
 			    *(int32_t*)foundKey);
 			rdbb.printBuckets();
-			char* xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		if(foundKey == NULL) {
 			if(nodeNum == -1) {
@@ -11009,7 +11009,7 @@ bool bucketstest ( char* dbname ) {
 			    *(int32_t*)(char*)&k[j]);
 
 			rdbb.printBuckets();
-			char* xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		found++;
 	}
@@ -11132,7 +11132,7 @@ bool bucketstest ( char* dbname ) {
 				    *(int64_t*)(bkey+(sizeof(int32_t))),
 				    *(int32_t*)bkey);
 
-				char* xx = NULL; *xx = 0;
+				gbassert(false);
 			} 
 			else if (bucketlist.isExhausted() ) {
 				treelist.getCurrentKey(tkey);
@@ -11142,7 +11142,7 @@ bool bucketstest ( char* dbname ) {
 				    "%016" XINT64 "%08" XINT32 ".  ",
 				    *(int64_t*)(tkey+(sizeof(int32_t))),
 				    *(int32_t*)tkey);
-				char* xx = NULL; *xx = 0;
+				gbassert(false);
 			}
 			treelist.getCurrentKey(tkey);
 			bucketlist.getCurrentKey(bkey);
@@ -11156,7 +11156,7 @@ bool bucketstest ( char* dbname ) {
 				    *(int32_t*)tkey,
 				    *(int64_t*)(bkey+(sizeof(int32_t))),
 				    *(int32_t*)bkey);
-				char* xx = NULL; *xx = 0;
+				gbassert(false);
 			}
 
 			treelist.skipCurrentRecord();
@@ -11194,7 +11194,7 @@ bool bucketstest ( char* dbname ) {
 					&numPosRecs ,
 					&numNegRecs ,
 					false );
-		if(!status) {char* xx = NULL; *xx = 0;}
+		gbassert(status);
 		if ( status && list.isEmpty() ) break;
 		int32_t numBefore = rdbb.getNumKeys();
 		rdbb.deleteList((collnum_t)0, &list);
@@ -11209,13 +11209,12 @@ bool bucketstest ( char* dbname ) {
 		    *(int64_t*)(key1+(sizeof(int32_t))),
 		    *(int32_t*)key1);;
 
-		if(numBefore - rdbb.getNumKeys() != list.getNumRecs()) 
-			{char* xx = NULL; *xx = 0;}
+		gbassert_false(numBefore - rdbb.getNumKeys() != list.getNumRecs());
 		KEYSET(key2,key1,keySize);
 		KEYSET(key1,list.getLastKey(),keySize);
 		KEYADD(key1,1,keySize);
 	}
-	if(rdbb.getNumKeys() > 0) {char* xx = NULL; *xx = 0;}
+	gbassert_false(rdbb.getNumKeys() > 0);
 
 
 	rdbb.setNeedsSave(false);
@@ -11369,7 +11368,7 @@ bool bucketstest ( char* dbname ) {
 				    *(int64_t*)(bkey+(sizeof(int32_t))),
 				    *(int32_t*)bkey);
 
-				char* xx = NULL; *xx = 0;
+				gbassert(false);
 			} 
 			else if (bucketlist.isExhausted() ) {
 				treelist.getCurrentKey(tkey);
@@ -11379,7 +11378,7 @@ bool bucketstest ( char* dbname ) {
 				    "%016" XINT64 "%08" XINT32 ".  ",
 				    *(int64_t*)(tkey+(sizeof(int32_t))),
 				    *(int32_t*)tkey);
-				char* xx = NULL; *xx = 0;
+				gbassert(false);
 			}
 			treelist.getCurrentKey(tkey);
 			bucketlist.getCurrentKey(bkey);
@@ -11393,7 +11392,7 @@ bool bucketstest ( char* dbname ) {
 				    *(int32_t*)tkey,
 				    *(int64_t*)(bkey+(sizeof(int32_t))),
 				    *(int32_t*)bkey);
-				char* xx = NULL; *xx = 0;
+				gbassert(false);
 			}
 
 			treelist.skipCurrentRecord();
@@ -12965,7 +12964,7 @@ bool summaryTest2   ( char *rec , int32_t listSize, char *coll , int64_t docId ,
 		char *tbuf    = tt.getTitle();
 		int32_t  tbufLen = tt.m_titleBytes;
 		// sanity check
-		if ( ! tbuf && tbufLen ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( ! tbuf && tbufLen );
 
 		// time it
 		//logf(LOG_TIMING,"query: summary step 7");
@@ -13122,7 +13121,7 @@ bool summaryTest3   ( char *rec , int32_t listSize, char *coll , int64_t docId ,
 		char *tbuf    = tt.getTitle();
 		int32_t  tbufLen = tt.m_titleBytes;
 		// sanity check
-		if ( ! tbuf && tbufLen ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( ! tbuf && tbufLen );
 
 		// time it
 		//logf(LOG_TIMING,"query: summary step 7");
@@ -13669,7 +13668,7 @@ void dumpDatedb (char *coll,int32_t startFileNum,int32_t numFiles,bool includeTr
 	int64_t starttid= hash64n("gbxstart")& TERMID_MASK;
 	int64_t endtid  = hash64n("gbxend")& TERMID_MASK;
 	// sanity check
-	if ( list.m_ks != 16 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( list.m_ks != 16 );
 	// loop over entries in list
 	for ( list.resetListPtr() ; ! list.isExhausted() && ! justVerify ;
 	      list.skipCurrentRecord() ) {
@@ -16453,8 +16452,7 @@ bool memTest() {
 
 
 	fprintf(stderr, "memtest: Dumping core to test max core file size.\n");
-	char *xx = NULL;
-	*xx = 0;
+	gbassert(false);
 	for (i=0;i<numPtrs;i++){
 		mfree(ptrs[i], 1024*1024, "memtest");
 	}
@@ -18235,7 +18233,7 @@ bool testBoolean() {
 			// weird stuff happens
 			if (ttval != 0 && ttval != 1){
 				log("query: error in truth table #%d!!!",i);
-				char *xx=NULL;*xx=0;
+				gbassert(false);
 			}
 
 			printBits(bits,q.m_numExplicitBits,bitBuf);

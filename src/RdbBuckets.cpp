@@ -200,10 +200,10 @@ bool RdbBucket::sort() {
 	else if ( ks == 12 ) cmpfn = KEYCMP12;
 	else if ( ks == 16 ) cmpfn = KEYCMP16;
 	else if ( ks ==  6 ) cmpfn = KEYCMP6;
-	else { char *xx=NULL;*xx=0; }
+	else { gbassert(false); }
 
 	char* mergeBuf  = m_parent->getSwapBuf();
-	if(!mergeBuf) {	char* xx = NULL; *xx = 0; }
+	gbassert(mergeBuf);
 
 	int32_t numUnsorted = m_numKeys - m_lastSorted;
 	char *list1  = m_keys;
@@ -225,7 +225,7 @@ bool RdbBucket::sort() {
 	// . the identical keys that were added last
 	// . now we pass in a buffer to merge into, otherwise one is malloced,
 	// . which can fail.  It falls back on qsort which is not stable.
-	if(!m_parent->getSortBuf()) {char *xx = NULL; *xx = 0;}
+	gbassert(m_parent->getSortBuf());
 	gbmergesort (list2, numUnsorted , recSize , cmpfn, 0,
 		     m_parent->getSortBuf(), m_parent->getSortBufSize()); 
 	
@@ -379,7 +379,7 @@ bool RdbBucket::addKey(char *key , char *data , int32_t dataSize) {
 	}
 	
 	if(m_endKey == NULL) { //are we the first key?
-		if(m_numKeys > 0) {char* xx = NULL; *xx = 0;}
+		gbassert_false(m_numKeys > 0);
 		m_endKey = newLoc;
 		m_lastSorted = 1;
 	}
@@ -480,7 +480,7 @@ bool RdbBucket::selfTest (char* prevKey) {
 			    *(int32_t*)prevKey);
 			//printBucket();
 			return false;
-			//char* xx = NULL; *xx = 0;
+			//gbassert(false);
 		}
 	}
 
@@ -497,7 +497,7 @@ bool RdbBucket::selfTest (char* prevKey) {
 			    *(int64_t*)(last+(sizeof(int32_t))), *(int32_t*)last, 
 			    m_numKeys, ks, i);
 			return false;
-			//char* xx = NULL; *xx = 0;
+			//gbassert(false);
 		}
 		last = kk;
 		kk += recSize;
@@ -564,7 +564,7 @@ bool RdbBuckets::set ( int32_t fixedDataSize , int32_t maxMem,
  	m_sortBuf = NULL;
 	//taken from sort.cpp, this is to prevent mergesort from mallocing
 	m_sortBufSize = BUCKET_SIZE * m_recSize + sizeof(char*);
-	if(m_buckets) {char *xx = NULL; *xx = 0;}
+	gbassert_false(m_buckets);
 	m_maxBuckets = 0;
 	m_masterSize = 0;
 	m_masterPtr =  NULL;
@@ -584,7 +584,7 @@ bool RdbBuckets::set ( int32_t fixedDataSize , int32_t maxMem,
 		    " accommodate even 1 bucket, reduce bucket size(%" INT32 ") "
 		    "or increase max mem(%" INT32 ")",
 		    m_dbname, (int32_t)BUCKET_SIZE, m_maxMem);
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 
 	if(!resizeTable(INIT_SIZE)) {
@@ -624,9 +624,9 @@ bool RdbBuckets::set ( int32_t fixedDataSize , int32_t maxMem,
 	RdbList list;
 	int32_t np,nn;
 	b.getList ( cn,(char *)&k1,(char *)&k2,1000,&list,&np,&nn,false);
-	if ( np != 0 || nn != 1 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( np != 0 || nn != 1 );
 	// must be empty
-	if ( b.getNumKeys() != 0 ) { char *xx=NULL;*xx=0; }
+	if ( b.getNumKeys() != 0 ) { gbassert(false); }
 	*/
 
 	return true;
@@ -741,7 +741,7 @@ bool RdbBuckets::resizeTable(int32_t numNeeded) {
 		    "db: Buckets oops, trying to malloc more(%" INT32 ") that max "
 		    "mem(%" INT32 "), should've caught this earlier.",
 		    newMasterSize, m_maxMem);
-		char* xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 
 	char *tmpMasterPtr = (char*)mmalloc(newMasterSize, m_allocName);
@@ -761,7 +761,7 @@ bool RdbBuckets::resizeTable(int32_t numNeeded) {
 	p += tmpMaxBuckets * sizeof(RdbBucket*);
 	RdbBucket* tmpBucketSpace = (RdbBucket*)p;
 	p += tmpMaxBuckets * sizeof(RdbBucket);
-	if(p - tmpMasterPtr != newMasterSize) {char* xx = NULL; *xx = 0;}
+	gbassert_false(p - tmpMasterPtr != newMasterSize);
 
 	for(int32_t i = 0; i < m_numBuckets; i++) {
 		//copy them over one at a time so they
@@ -779,7 +779,7 @@ bool RdbBuckets::resizeTable(int32_t numNeeded) {
 		tmpBucketSpace[i].set(this, bucketMemPtr);
 		bucketMemPtr += (BUCKET_SIZE * m_recSize);
 	}
-	if(bucketMemPtr != m_swapBuf) {char* xx = NULL; *xx = 0;}
+	gbassert_false(bucketMemPtr != m_swapBuf);
 
 // 	log(LOG_WARN, "new size = %" INT32 ", old size = %" INT32 ", newMemUsed = %" INT32 " "
 // 	    "oldMemUsed = %" INT32 "", 
@@ -937,9 +937,7 @@ bool RdbBuckets::getList ( collnum_t collnum ,
 	   m_buckets[endBucket]->getCollnum() != collnum) endBucket--;
 	//log(LOG_WARN, "db numBuckets %" INT32 " start %" INT32 " end %" INT32 "", 
 	//m_numBuckets, startBucket, endBucket);
-	if(m_buckets[endBucket]->getCollnum() != collnum) {
-		char* xx = NULL; *xx = 0;
-	}
+	gbassert_false(m_buckets[endBucket]->getCollnum() != collnum);
 
 	int32_t growth = 0;
 
@@ -1040,8 +1038,7 @@ int RdbBuckets::getListSizeExact ( collnum_t collnum ,
 
 	//log(LOG_WARN, "db numBuckets %" INT32 " start %" INT32 " end %" INT32 "", 
 	//m_numBuckets, startBucket, endBucket);
-	if(m_buckets[endBucket]->getCollnum() != collnum) {
-		char* xx = NULL; *xx = 0; }
+	gbassert_false(m_buckets[endBucket]->getCollnum() != collnum);
 
 	for( int32_t i = startBucket ; i <= endBucket ; i++)
 		numBytes += m_buckets[i]->getListSizeExact(startKey,endKey);
@@ -1133,7 +1130,7 @@ bool RdbBuckets::selfTest(bool thorough, bool core) {
 		if(thorough) {
 			if(!b->selfTest (last)) {
 				if(!core) return false;
-				char* xx = NULL; *xx = 0;
+				gbassert(false);
 			}
 		}
 
@@ -1153,7 +1150,7 @@ bool RdbBuckets::selfTest(bool thorough, bool core) {
 			log(LOG_WARN, "rdbbuckets last key was out "
 			    "of order!!!!!");
 			if(!core) return false;
-			char* xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		last = kk;
 		lastcoll = b->getCollnum();
@@ -1456,7 +1453,7 @@ bool RdbBucket::getList(RdbList* list,
 			    *(int32_t*)endKey);
 
 			printBucket();
-			char* xx=NULL; *xx=0;
+			gbassert(false);
 		}
 		if(endKey &&   KEYCMP(currKey, endKey, ks) > 0) {
 			log("db: key is outside the "
@@ -1476,7 +1473,7 @@ bool RdbBucket::getList(RdbList* list,
 			    *(int32_t*)endKey);
 
 			printBucket();
-			char* xx=NULL; *xx=0;
+			gbassert(false);
 		}
 #endif
 	}
@@ -1688,7 +1685,7 @@ bool RdbBuckets::deleteList(collnum_t collnum, RdbList *list) {
 		if(m_numKeysApprox != 0) {
 			log("db: bucket's number of keys is getting off by %" INT32 ""
 			    " after deleting a list", m_numKeysApprox);
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		m_firstOpenSlot = 0;
 	}
@@ -2241,7 +2238,7 @@ int64_t RdbBuckets::fastLoadColl( BigFile *f,
 		    "please restart the old executable and dump "
 		    "buckets to disk. old=%" INT32 " new=%" INT32 "", 
 		    bucketSize, (int32_t)BUCKET_SIZE);
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 
 	m_dbname = dbname;
@@ -2301,7 +2298,7 @@ int64_t RdbBucket::fastSave_r(int fd, int64_t offset) {
 	int32_t size = p - tmp;
 	if ( size > BTMP_SIZE ) { 
 		log("buckets: btmp_size too small. keysize>18 bytes?");
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
 
 	// now we can save it without fear of being interrupted and having

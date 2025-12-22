@@ -39,7 +39,7 @@ Msg39::~Msg39 () {
 }
 
 void Msg39::reset() {
-	if ( m_inUse ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_inUse );
 	m_allocedTree = false;
 	//m_numDocIdSplits = 1;
 	m_tmpq.reset();
@@ -100,7 +100,7 @@ void sendReply ( UdpSlot *slot , Msg39 *msg39 , char *reply , int32_t replyLen ,
 		     (PTRTYPE)msg39,replyLen);
 
 	// sanity
-	if ( hadError && ! g_errno ) { char *xx=NULL;*xx=0; }
+	gbassert_false( hadError && ! g_errno );
 
 	// no longer in use. msg39 will be NULL if ENOMEM or something
 	if ( msg39 ) msg39->m_inUse = false;
@@ -173,7 +173,7 @@ void Msg39::getDocIds ( UdpSlot *slot ) {
 	if ( finalSize != requestSize ) {
 		log("msg39: sending bad request.");
 		goto BadReq;
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 	}
 
 	getDocIds2 ( m_r );
@@ -231,7 +231,7 @@ void Msg39::getDocIds2 ( Msg39Request *req ) {
 	}
 
 	// wtf?
-	if ( g_errno ) { char *xx=NULL;*xx=0; }
+	gbassert_false( g_errno );
 
 	QUICKPOLL ( m_r->m_niceness );
 
@@ -285,7 +285,7 @@ void Msg39::getDocIds2 ( Msg39Request *req ) {
 	//}
 	// support triplets, etc. later
 	//else {
-	//	char *xx=NULL;*xx=0; 
+	//	gbassert(false); 
 	//}
 
 	// do not do twin splitting if only one host per group
@@ -605,7 +605,7 @@ bool Msg39::getLists () {
 	docIdEnd++;
 	// TODO: add triplet support later for this to split the
 	// read 3 ways. 4 ways for quads, etc.
-	//if ( g_hostdb.getNumStripes() >= 3 ) { char *xx=NULL;*xx=0;}
+	//if ( g_hostdb.getNumStripes() >= 3 ) { gbassert(false);}
 	// do not go over MAX_DOCID  because it gets masked and
 	// ends up being 0!!! and we get empty lists
 	if ( docIdEnd > MAX_DOCID ) docIdEnd = MAX_DOCID;
@@ -887,7 +887,7 @@ bool Msg39::intersectLists ( ) { // bool updateReadInfo ) {
 	hadError:
 		log("msg39: Had error getting termlists: %s.",
 		    mstrerror(g_errno));
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert(g_errno);
 		//sendReply (m_slot,this,NULL,0,0,true);
 		return true; 
 	}
@@ -936,7 +936,7 @@ bool Msg39::intersectLists ( ) { // bool updateReadInfo ) {
 	// . actually we were using it before for rat=0/bool queries but
 	//   i got rid of NO_RAT_SLOTS
 	if ( ! m_allocedTree && ! m_posdbTable.allocTopTree() ) {
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert(g_errno);
 		//sendReply ( m_slot , this , NULL , 0 , 0 , true);
 		return true;
 	}
@@ -953,7 +953,7 @@ bool Msg39::intersectLists ( ) { // bool updateReadInfo ) {
 	if ( ! m_posdbTable.allocWhiteListTable() ) {
 		log("msg39: Had error allocating white list table: %s.",
 		    mstrerror(g_errno));
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert(g_errno);
 		//sendReply (m_slot,this,NULL,0,0,true);
 		return true; 
 	}
@@ -1031,7 +1031,7 @@ bool Msg39::intersectLists ( ) { // bool updateReadInfo ) {
 	// check tree
 	if ( m_tt.m_nodes == NULL ) {
 		log(LOG_LOGIC,"query: msg39: Badness."); 
-		char *xx = NULL; *xx = 0; }
+		gbassert(false); }
 
 	// sometimes we skip the thread
 	//skipThread:
@@ -1080,7 +1080,7 @@ void threadDoneWrapper ( void *state , ThreadEntry *t ) {
 	// get this class
 	Msg39 *THIS = (Msg39 *)state;
 	// sanity check
-	if ( ! THIS->m_blocked ) { char *xx=NULL;*xx=0; }
+	gbassert(THIS->m_blocked);
 
 	// addedLists() could send reply and destroy "THIS" so save this.
 	// it will only sendReply back if it calls estimateHits() which
@@ -1091,7 +1091,7 @@ void threadDoneWrapper ( void *state , ThreadEntry *t ) {
 	// just return if it blocked
 	if ( ! THIS->addedLists () ) {
 		// this can't block
-		if ( numDocIdSplits >= 2 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( numDocIdSplits >= 2 );
 		if ( debug ) log("msg39: addedLists blocked");
 		return;
 	}
@@ -1224,7 +1224,7 @@ bool Msg39::setClusterRecs ( ) {
 	m_clusterLevels = (char      *)p; p += numDocIds * 1;
 	m_clusterRecs   = (key_t     *)p; p += numDocIds * 12;
 	// sanity check
-	if ( p > m_buf + m_bufSize ) { char *xx=NULL; *xx=0; }
+	gbassert_false( p > m_buf + m_bufSize );
 	
 	// loop over all results
 	int32_t nd = 0;
@@ -1247,7 +1247,7 @@ bool Msg39::setClusterRecs ( ) {
 	m_numClusterDocIds = nd;
 
 	// sanity check
-	if ( nd != m_tt.m_numUsedNodes ) { char *xx=NULL;*xx=0; }
+	gbassert_false( nd != m_tt.m_numUsedNodes );
 
 	// . ask msg51 to get us the cluster recs
 	// . it should read it all from the local drives
@@ -1315,7 +1315,7 @@ bool Msg39::gotClusterRecs ( ) {
 		// get the docid
 		//int64_t  docId = getDocIdFromPtr(t->m_docIdPtr);
 		// sanity check
-		if ( t->m_docId != m_clusterDocIds[nd] ) {char *xx=NULL;*xx=0;}
+		gbassert_false( t->m_docId != m_clusterDocIds[nd] );
 		// set it
 		t->m_clusterLevel = m_clusterLevels[nd];
 		t->m_clusterRec   = m_clusterRecs  [nd];
@@ -1540,14 +1540,14 @@ void Msg39::estimateHitsAndSendReply ( ) {
 				// that was never added to. we add those
 				// empty FaceEntries only for range facets
 				// in Posdb.cpp
-				//if(fe->m_count == 0 ) { char *xx=NULL;*xx=0;}
+				//if(fe->m_count == 0 ) { gbassert(false);}
 				gbmemcpy ( p , fe , sizeof(FacetEntry) );
 				p += sizeof(FacetEntry);
 				// do not breach
 				if ( ++count >= (int32_t)MAX_FACETS ) break;
 			}
 			// sanity check
-			if ( p != pend ) { char *xx=NULL;*xx=0; }
+			gbassert_false( p != pend );
 			// do the next query term
 		}
 		// now point to that so it can be serialized below
@@ -1656,7 +1656,7 @@ void Msg39::estimateHitsAndSendReply ( ) {
 		//char      *diptr = t->m_docIdPtr;
 		//int64_t  docId = getDocIdFromPtr(diptr);
 		// sanity check
-		if ( t->m_docId < 0 ) { char *xx=NULL; *xx=0; }
+		gbassert_false( t->m_docId < 0 );
 		//add it to the reply
 		topDocIds         [docCount] = t->m_docId;
 		topScores         [docCount] = t->m_score;

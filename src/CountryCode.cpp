@@ -301,7 +301,7 @@ uint8_t getCountryId ( char *cc ) {
 			char *s    = (char *)s_countryCode[i];
 			//int32_t  slen = gbstrlen ( s );
 			// sanity check
-			if ( !s[0] || !s[1] || s[2]) { char *xx=NULL;*xx=0; }
+			gbassert_false( !s[0] || !s[1] || s[2]);
 			// map it to a 4 byte key
 			tmp[0]=s[0];
 			tmp[1]=s[1];
@@ -311,8 +311,7 @@ uint8_t getCountryId ( char *cc ) {
 			// that is an artifact of HashTableT
 			uint8_t val = i; // +1;
 			// add 1 cuz 0 means lang unknown
-			if ( ! ht.addKey ( tmp , &val ) ) {
-				char *xx=NULL;*xx=0; }
+			gbassert(ht.addKey ( tmp , &val ));
 		}
 	}
 	// lookup
@@ -1261,9 +1260,7 @@ int CountryCode::createHashTable(void) {
 		ccr.sval.country = lookupCountryFromDMOZTopic(sb.getBufStart(), sb.length());
 		ccr.sval.lang = s_getLangIdxFromDMOZ(sb.getBufStart(), sb.length());
 		if(!ccr.lval) continue;
-		if(ccr.sval.lang > 27 || ccr.sval.country > s_numCountryCodes) {
-			char *xx = NULL; *xx = 0;
-		}
+		gbassert_false(ccr.sval.lang > 27 || ccr.sval.country > s_numCountryCodes);
 		if(!ht.addKey(catid, ccr.lval)) {
 			log( "init: Could not add %" INT32 " (%" INT32 ")\n", catid, ccr.lval);
 			continue;

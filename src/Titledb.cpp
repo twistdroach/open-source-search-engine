@@ -17,8 +17,8 @@ bool Titledb::init ( ) {
 	int64_t uh48  = 0x1234567887654321LL & 0x0000ffffffffffffLL;
 	int64_t docId = 123456789;
 	key_t k = makeKey(docId,uh48,false);
-	if ( getDocId(&k) != docId ) { char *xx=NULL;*xx=0;}
-	if ( getUrlHash48(&k) != uh48 ) { char *xx=NULL;*xx=0;}
+	gbassert_false( getDocId(&k) != docId );
+	gbassert_false( getUrlHash48(&k) != uh48 );
 
 	char *url = "http://.ezinemark.com/int32_t-island-child-custody-attorneys-new-york-visitation-lawyers-melville-legal-custody-law-firm-45f00bbed18.html";
 	Url uu;
@@ -27,7 +27,7 @@ bool Titledb::init ( ) {
 	int32_t  dlen1 = uu.getDomainLen();
 	int32_t dlen2 = 0;
 	char *d2 = getDomFast ( url , &dlen2 );
-	if ( dlen1 != dlen2 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( dlen1 != dlen2 );
 	// another one
 	url = "http://ok/";
 	uu.set(url);
@@ -35,7 +35,7 @@ bool Titledb::init ( ) {
 	dlen1 = uu.getDomainLen();
 	dlen2 = 0;
 	d2 = getDomFast ( url , &dlen2 );
-	if ( dlen1 != dlen2 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( dlen1 != dlen2 );
 
 
 	int64_t maxMem = 200000000; // 200MB
@@ -279,7 +279,7 @@ key_t Titledb::makeKey ( int64_t docId, int64_t uh48, bool isDel ){
 
 	int64_t n0 = (uint64_t)(docId&0x3f);
 	// sanity check
-	if ( uh48 & 0xffff000000000000LL ) { char *xx=NULL;*xx=0; }
+	gbassert_false( uh48 & 0xffff000000000000LL );
 	// make room for uh48
 	n0 <<= 48;
 	n0 |= uh48;

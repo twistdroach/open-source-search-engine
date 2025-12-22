@@ -44,7 +44,7 @@ int32_t Synonyms::getSynonyms ( Words *words ,
 	m_niceness = niceness;
 
 	// sanity check
-	if ( wordNum > m_words->m_numWords ) { char *xx=NULL;*xx=0; }
+	gbassert_false( wordNum > m_words->m_numWords );
 
 	// init the dedup table to dedup wordIds
 	HashTableX dt;
@@ -95,7 +95,7 @@ int32_t Synonyms::getSynonyms ( Words *words ,
 	m_langIds = (uint8_t *)bufPtr;
 	bufPtr += maxSyns ;
 
-	if ( bufPtr > tmpBuf + TMPSYNBUFSIZE ) { char *xx=NULL;*xx=0; }
+	gbassert_false( bufPtr > tmpBuf + TMPSYNBUFSIZE );
 
 	// cursors
 	m_aidsPtr  = m_aids;
@@ -272,7 +272,7 @@ int32_t Synonyms::getSynonyms ( Words *words ,
 		// zh_ch?
 		if ( *pipe == '_' ) pipe += 3;
 		// sanity
-		if ( *pipe != '|' ) { char *xx=NULL;*xx=0; }
+		gbassert_false( *pipe != '|' );
 
 		// is it "en" or "zh_ch" etc.
 		int synLangAbbrLen = pipe - ss;
@@ -320,7 +320,7 @@ int32_t Synonyms::getSynonyms ( Words *words ,
 
 		// store the lang as a bit in a bit vector for the query term
 		// so it can be from multiple langs.
-		if ( synLangAbbrLen > 30 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( synLangAbbrLen > 30 );
 		gbmemcpy ( tmp , synLangAbbr , synLangAbbrLen );
 		tmp[synLangAbbrLen] = '\0';
 		langId = getLangIdFromAbbr ( tmp ); // order is linear

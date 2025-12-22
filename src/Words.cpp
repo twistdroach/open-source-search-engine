@@ -114,7 +114,7 @@ bool Words::set ( Xml *xml,
 		  int32_t node1 ,
 		  int32_t node2 ) {
 	// prevent setting with the same string
-	if ( m_xml == xml ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_xml == xml );
 	reset();
 	m_xml = xml;
 	m_version = xml->getVersion();
@@ -135,16 +135,16 @@ bool Words::set ( Xml *xml,
 		// "numBytes" is how many bytes it stored into 'dst"
 		int32_t numBytes = utf8Encode ( c , p );
 		// must be 2 bytes i guess
-		if ( numBytes != 3 ) { char *xx=NULL; *xx=0; }
+		gbassert_false( numBytes != 3 );
 		// check it
 		int32_t size = getUtf8CharSize(p);
-		if ( size != 3 ) { char *xx=NULL; *xx=0; }
+		gbassert_false( size != 3 );
 		// is that punct
-		if ( ! is_punct_utf8 ( p ) ) { char *xx=NULL;*xx=0; }
+		gbassert(is_punct_utf8 ( p ));
 		// make sure can pair across
 		//unsigned char bits = getPunctuationBits  ( dst , 4 );
 		// must be able to pair across
-		//if ( ! ( bits & D_CAN_PAIR_ACROSS ) ) { char *xx=NULL;*xx=0;}
+		//if ( ! ( bits & D_CAN_PAIR_ACROSS ) ) { gbassert(false);}
 	}
 
 	// if xml is empty, bail
@@ -157,7 +157,7 @@ bool Words::set ( Xml *xml,
 	// . range is half-open: [node1, node2)
 	if ( node2 < 0 ) node2 = numNodes;
 	// sanity check
-	if ( node1 > node2 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( node1 > node2 );
 	char *start = xml->getNode(node1);
 	char *end   = xml->getNode(node2-1) + xml->getNodeLen(node2-1);
 	int32_t  size  = end - start;
@@ -232,7 +232,7 @@ bool Words::set11 ( char *s , char *send , int32_t niceness ) {
 
 bool Words::setxi ( char *s , char *buf, int32_t bufSize, int32_t niceness ) {
 	// prevent setting with the same string
-	if ( m_s == s ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_s == s );
 	reset();
 	m_version = TITLEREC_CURRENT_VERSION;
 	// save for sanity check
@@ -260,7 +260,7 @@ bool Words::set ( char *s , int32_t version,
 		  int32_t niceness ) {
 
 	// prevent setting with the same string
-	if ( m_s == s ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_s == s );
 
 	reset();
 	m_version = version;
@@ -507,7 +507,7 @@ bool Words::addWords(char *s,int32_t nodeLen,bool computeWordIds, int32_t nicene
 	if ( m_numWords > m_preCount ) {
 		log(LOG_LOGIC,
 		    "build: words: set: Fix counting routine.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	// compute total length
 	if ( m_numWords <= 0 ) m_totalLen = 0;
@@ -563,7 +563,7 @@ bool Words::allocateWordBuffers(int32_t count, bool tagIds) {
 		p += sizeof(nodeid_t) * count;
 	}
 
-	if ( p > m_buf + m_bufSize ) { char *xx=NULL;*xx=0; }
+	gbassert_false( p > m_buf + m_bufSize );
 
 	return true;
 }
@@ -1253,9 +1253,9 @@ int32_t Words::getLanguage( Sections *sections ,
 
 // get the word index at the given character position 
 int32_t Words::getWordAt ( char *p ) { // int32_t charPos ) {
-	if ( ! p                  ) { char *xx=NULL;*xx=0; }
-	if ( p <  m_words[0]      ) { char *xx=NULL;*xx=0; }
-	if ( p >= getContentEnd() ) { char *xx=NULL;*xx=0; }
+	gbassert(p);
+	gbassert_false( p <  m_words[0]      );
+	gbassert_false( p >= getContentEnd() );
 	
 	int32_t step = m_numWords / 2;
 	int32_t i = m_numWords / 2 ;

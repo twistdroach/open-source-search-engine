@@ -247,7 +247,7 @@ void HashTableT<Key_t, Val_t>::removeSlot ( int32_t n ) {
 	// save it
 	Key_t key = m_keys[n];
 	// sanity check, must be occupied
-	if ( key == 0 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( key == 0 );
 	// delete it
 	m_keys[n] = 0;
 	m_numSlotsUsed--;
@@ -286,7 +286,7 @@ bool HashTableT<Key_t, Val_t>::setTableSize ( int32_t n, char *buf, int32_t bufS
 	m_bufSize = bufSize; 
 
 	// sanity check 
-	//if( m_buf && m_bufSize < need){ char *xx = NULL; *xx = 0; }
+	//if( m_buf && m_bufSize < need){ gbassert(false); }
 
 	// 
 	//char *buf = m_buf1;

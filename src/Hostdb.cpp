@@ -124,7 +124,7 @@ bool Hostdb::init ( int32_t hostIdArg , char *netName ,
 	//bool triedEtc = false;
 
 	// for now we autodetermine
-	if ( hostIdArg != -1 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( hostIdArg != -1 );
 	// init to -1
 	m_hostId = -1;
 
@@ -895,14 +895,14 @@ bool Hostdb::init ( int32_t hostIdArg , char *netName ,
 	if ( m_numProxyHosts > MAX_PROXIES ) {
 		log ( "conf: Number of proxies (%" INT32 ") exceeds max of %i, "
 		      "truncating.", m_numProxyHosts, MAX_PROXIES );
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 		m_numProxyHosts = MAX_PROXIES;
 	}
 	for ( i = 0; i < m_numProxyHosts; i++ ) {
 		m_proxyHosts[i] = &m_hosts[m_numHosts + m_numSpareHosts + i];
 		m_proxyHosts[i]->m_isProxy = true;
 		// sanity
-		if ( m_proxyHosts[i]->m_type == 0  ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_proxyHosts[i]->m_type == 0  );
 	}
 
 	// log discovered hosts
@@ -1367,7 +1367,7 @@ bool Hostdb::hashHost (	bool udp , Host *h , uint32_t ip , uint16_t port ) {
 		log("db: or there is a repeated ip/port in hosts.conf.");
 		log("db: repeated host ip=%s port=%" INT32 " "
 		    "name=%s",iptoa(ip),(int32_t)port,h->m_hostname);
-		return false;//char *xx=NULL;*xx=0;
+		return false;//gbassert(false);
 	}
 
 	// . keep a list of the udp ips for pinging
@@ -1521,7 +1521,7 @@ int32_t Hostdb::getTokenGroupNum ( Host *ha ) {
 	// if only one host, this happens on the second call
 	if ( ha->m_tokenGroupNum >= 0 ) return ha->m_tokenGroupNum;
 	// force seg fault if none found, that's bad
-	char *xx = NULL; *xx = 0;
+	gbassert(false);
 	return -1;
 }
 
@@ -1558,7 +1558,7 @@ int32_t Hostdb::makeHostId ( uint32_t groupId ) {
 
 int32_t Hostdb::makeHostIdFast ( uint32_t groupId ) {
 	// sanity check
-	if ( m_numHosts > 655536 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( m_numHosts > 655536 );
 	// init a table that takes the top 2 bytes of the groupId
 	// and maps to a table
 	static bool           s_init = false;
@@ -1567,8 +1567,7 @@ int32_t Hostdb::makeHostIdFast ( uint32_t groupId ) {
 	// sanity check -- temporary (REMOVE!!)
 	if ( s_init ) {
 		int32_t tmpHostId = makeHostId ( groupId );
-		if ( tmpHostId != s_gidTable [ groupId>>16 ] ) {
-			char *xx = NULL; *xx = 0; }
+		gbassert_false( tmpHostId != s_gidTable [ groupId>>16 ] );
 	}
 
 	if ( s_init ) return s_gidTable[ groupId>>16 ];
@@ -1661,7 +1660,7 @@ int32_t Hostdb::getHostIdWithSpideringEnabled ( uint32_t shardNum ) {
 	}
 	if( !hosts [ hostNum ].m_spiderEnabled) {
 		log("build: cannot spider when entire shard has nospider enabled");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	return hosts [ hostNum ].m_hostId ;
 }
@@ -2397,7 +2396,7 @@ int32_t Hostdb::getBestIp ( Host *h , int32_t fromIp ) {
 // . this returns which ip we should send to
 int32_t Hostdb::getBestHosts2IP ( Host  *h ) {
 	// sanity check
-	if ( this != &g_hostdb ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( this != &g_hostdb );
 	// get external ips
 	unsigned char *a = (unsigned char *)&h->m_ipShotgun;
 	unsigned char *c = (unsigned char *)&h->m_ip;
@@ -2583,7 +2582,7 @@ uint32_t Hostdb::getShardNum ( char rdbId,void *k ) { // ,bool split ) {
 		return m_map [(*(uint16_t *)((char *)k + 10))>>3];
 	}
 	// core -- must be provided
-	char *xx = NULL; *xx = 0;
+	gbassert(false);
 	//groupId=key.n1 & g_hostdb.m_groupMask;
 	//return (((key_t *)key)->n1) & g_hostdb.m_groupMask;
 	return 0;
@@ -2615,7 +2614,7 @@ Host *Hostdb::getBestSpiderCompressionProxy ( int32_t *key ) {
 			// now must be alive
 			if ( g_hostdb.isDead (h) ) continue;
 			// stop to avoid breach
-			if ( s_numAlive >= 64 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( s_numAlive >= 64 );
 			// add it otherwise
 			s_alive[s_numAlive++] = h;
 		}

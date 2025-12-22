@@ -1076,7 +1076,7 @@ void hexToBin ( char *src , int32_t srcLen , char *dst ) {
 		dst++;
 	}
 	// sanity check
-	if ( src != srcEnd ) { char *xx=NULL;*xx=0; }
+	gbassert_false( src != srcEnd );
 }
 
 void binToHex ( unsigned char *src , int32_t srcLen , char *dst ) {
@@ -1089,7 +1089,7 @@ void binToHex ( unsigned char *src , int32_t srcLen , char *dst ) {
 	// always null term!
 	*dst = '\0';
 	// sanity check
-	if ( src != srcEnd ) { char *xx=NULL;*xx=0; }
+	gbassert_false( src != srcEnd );
 }
 
 
@@ -1252,7 +1252,7 @@ int32_t htmlDecode ( char *dst , char *src , int32_t srcLen , bool doSpecial ,
 		// . and make &amp; special so we do not screw up summaries
 		if ( doSpecial ) {
 			// no longer use this!
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 			if ( c == '<' ) {
 				// using [ and ] looks bad in event titles...
 				*dst = '|';
@@ -1308,7 +1308,7 @@ int32_t htmlDecode ( char *dst , char *src , int32_t srcLen , bool doSpecial ,
 		// . "numBytes" is how many bytes it stored into 'dst"
 		int32_t numBytes = utf8Encode ( c , dst );
 		// sanity check. do not eat our tail if dst == src
-		if ( numBytes > skip ) { char *xx=NULL;*xx=0; }
+		gbassert_false( numBytes > skip );
 		// advance dst ptr
 		dst += numBytes;
 		// skip over the encoded entity in the source string
@@ -1758,7 +1758,7 @@ bool setTimeAdjustmentFilename ( char *dir, char *filename ) {
 	s_hasFileName = true;
 	int32_t len1 = gbstrlen(dir);
 	int32_t len2 = gbstrlen(filename);
-	if ( len1 + len2 > 1000 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( len1 + len2 > 1000 );
 	sprintf(s_tafile,"%s/%s",dir,filename);
 	return true;
 }
@@ -1901,8 +1901,7 @@ int64_t gettimeofdayInMillisecondsSynced() {
 	//if ( g_inSigHandler ) return g_nowGlobal;
 	// i find that a pthread can call this function even though
 	// a signal handler is underway in the main thread!
-	if ( g_inSigHandler && ! g_threads.amThread() ) { 
-		char *xx = NULL; *xx = 0; }
+	gbassert_false( g_inSigHandler && ! g_threads.amThread() );
 	// sanity check
 	if ( ! isClockInSync() ) { 
 		static int s_printed = 0;
@@ -1910,7 +1909,7 @@ int64_t gettimeofdayInMillisecondsSynced() {
 			s_printed++;
 			log("xml: clock not in sync with host #0 yet!!!!!!");
 		}
-		//char *xx = NULL; *xx = 0; }
+		//gbassert(false); }
 	}
 
 	int64_t now;
@@ -1946,10 +1945,9 @@ int64_t gettimeofdayInMillisecondsGlobalNoCore() {
 	//if ( g_inSigHandler ) return g_nowGlobal;
 	// i find that a pthread can call this function even though
 	// a signal handler is underway in the main thread!
-	if ( g_inSigHandler && ! g_threads.amThread() ) { 
-		char *xx = NULL; *xx = 0; }
+	gbassert_false( g_inSigHandler && ! g_threads.amThread() );
 	// sanity check
-	//if ( ! g_clockInSync ) { char *xx = NULL; *xx = 0; }
+	//if ( ! g_clockInSync ) { gbassert(false); }
 	//if ( ! g_clockInSync ) 
 	//	log("gb: Getting global time but clock not in sync.");
 	// this isn't async signal safe...
@@ -1981,8 +1979,7 @@ int64_t gettimeofdayInMilliseconds() {
 	//if ( g_inSigHandler ) return g_now;
 	// i find that a pthread can call this function even though
 	// a signal handler is underway in the main thread!
-	if ( g_inSigHandler && ! g_threads.amThread() ) { 
-		char *xx = NULL; *xx = 0; }
+	gbassert_false( g_inSigHandler && ! g_threads.amThread() );
 
 	// the real tiem sigalrm interrupt in Loop.cpp sets this to
 	// true once per millisecond
@@ -2025,8 +2022,7 @@ time_t getTimeLocal () {
 	//if ( g_inSigHandler ) return (time_t)(g_now / 1000);
 	// i find that a pthread can call this function even though
 	// a signal handler is underway in the main thread!
-	if ( g_inSigHandler && ! g_threads.amThread() ) { 
-		char *xx = NULL; *xx = 0; }
+	gbassert_false( g_inSigHandler && ! g_threads.amThread() );
 	// get time now
 	uint32_t now = gettimeofdayInMilliseconds() / 1000;
 	// and adjust it
@@ -2277,7 +2273,7 @@ int32_t stripHtml( char *content, int32_t contentLen, int32_t version, int32_t s
 		gbmemcpy ( x , nodes[i].m_node , nodes[i].m_nodeLen );
 		x += nodes[i].m_nodeLen;
 		// sanity check
-		if ( x > xend ) { char *xx=NULL;*xx=0;}
+		gbassert_false( x > xend );
 	}
 	contentLen = x - content;
 	content [ contentLen ] = '\0';
@@ -2388,8 +2384,7 @@ char *serializeMsg ( int32_t  baseSize ,
 		// the space until after this call toe serialize()
 		if ( ! *strPtr ) goto skip;
 		// sanity check -- cannot copy onto ourselves
-		if ( p > *strPtr && p < *strPtr + *sizePtr ) {
-			char *xx = NULL; *xx = 0; }
+		gbassert_false( p > *strPtr && p < *strPtr + *sizePtr );
 		// copy the string into the buffer
 		gbmemcpy ( p , *strPtr , *sizePtr );
 	skip:
@@ -2454,14 +2449,13 @@ char *serializeMsg2 ( void *thisPtr ,
 		if ( ! *srcStrPtr )
 			goto skip;
 		// if this is valid then size can't be 0! fix upstream.
-		if ( ! *srcSizePtr ) { char *xx=NULL;*xx=0; }
+		gbassert(*srcSizePtr);
 		// if size is 0 use gbstrlen. helps with InjectionRequest
 		// where we set ptr_url or ptr_content but not size_url, etc.
 		//if ( ! *srcSizePtr )
 		//	*srcSizePtr = gbstrlen(*strPtr);
 		// sanity check -- cannot copy onto ourselves
-		if ( p > *srcStrPtr && p < *srcStrPtr + *srcSizePtr ) {
-			char *xx = NULL; *xx = 0; }
+		gbassert_false( p > *srcStrPtr && p < *srcStrPtr + *srcSizePtr );
 		// copy the string into the buffer
 		gbmemcpy ( p , *srcStrPtr , *srcSizePtr );
 	skip:
@@ -2529,7 +2523,7 @@ bool deserializeMsg2 ( char    **firstStrPtr , // ptr_url
 		// make it NULL if size is 0 though
 		if ( *sizePtr == 0 ) *strPtr = NULL;
 		// sanity check
-		if ( *sizePtr < 0 ) return false;//{ char *xx = NULL; *xx =0; }
+		if ( *sizePtr < 0 ) return false;//{ gbassert(false); }
 		// advance our destination ptr
 		p += *sizePtr;
 		// advance both ptrs to next string
@@ -2578,7 +2572,7 @@ time_t mktime_utc ( struct tm *ttt ) {
 		//   get it into utc
 		s_localOff = qq;
 		// sanity
-		if ( s_localOff != timezone ) { char *xx=NULL;*xx=0; }
+		gbassert_false( s_localOff != timezone );
 	}
 	*/
 	// see what our timezone is!

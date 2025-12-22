@@ -291,14 +291,14 @@ bool SafeBuf::pushDouble ( double i) {
 }
 
 int32_t SafeBuf::popLong ( ) {
-	if ( m_length < 4 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_length < 4 );
 	int32_t ret = *(int32_t *)(m_buf+m_length-4);
 	m_length -= 4;
 	return ret;
 }
 
 float SafeBuf::popFloat ( ) {
-	if ( m_length < 4 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_length < 4 );
 	float ret = *(float *)(m_buf+m_length-4);
 	m_length -= 4;
 	return ret;
@@ -359,7 +359,7 @@ bool SafeBuf::cat2 ( SafeBuf& c,
 	}
 
 	// unmatched tag?
-	if ( ! *e ) { char *xx=NULL;*xx=0; }
+	gbassert(*e);
 
 	// concatenate it to our buffer
 	if ( ! safeMemcpy ( p , e - p ) ) return false;
@@ -1157,7 +1157,7 @@ bool  SafeBuf::htmlEncode(char *s, int32_t lenArg, bool encodePoundSign ,
 	//bool convertUtf8CharsToEntity ) {
 	// . we assume we are encoding into utf8
 	// . sanity check
-	if ( m_encoding == csUTF16 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( m_encoding == csUTF16 );
 
 	// the new truncation logic
 	int32_t len = lenArg;
@@ -1274,7 +1274,7 @@ bool  SafeBuf::htmlEncode(char *s, int32_t lenArg, bool encodePoundSign ,
 bool  SafeBuf::javascriptEncode(char *s, int32_t len ) {
 	// . we assume we are encoding into utf8
 	// . sanity check
-	if ( m_encoding == csUTF16 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( m_encoding == csUTF16 );
 	// alloc some space if we need to. add a byte for NULL termination.
 	if(m_length+len+1>=m_capacity && !reserve(m_capacity+len))return false;
 	// tmp vars
@@ -1369,7 +1369,7 @@ bool  SafeBuf::javascriptEncode(char *s, int32_t len ) {
 			// loop over the bytes
 			int32_t numBytes = getUtf8CharSize(s);
 			// sanity
-			if ( numBytes >= 5 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( numBytes >= 5 );
 			// write out each bytes as two chars each
 			for ( int32_t k = 0 ; k < numBytes ; k++ , s++ ) {
 				// store hex digit
@@ -1929,7 +1929,7 @@ Tag *SafeBuf::addTag ( char *mysite ,
 	Tag *tag = (Tag *)getBuf();
 	tag->set(mysite,tagname,now,user,ip,data,dsize);
 	incrementLength ( tag->getRecSize() );
-	if ( tag->getRecSize() > need ) { char *xx=NULL;*xx=0; }
+	gbassert_false( tag->getRecSize() > need );
 	return tag;
 }
 
@@ -1940,7 +1940,7 @@ bool SafeBuf::addTag ( Tag *tag ) {
 		// note it
 		return log("safebuf: encountered corrupted tag datasize=%" INT32 ".",
 			   tag->m_recDataSize);
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 	}
 	return safeMemcpy ( (char *)tag , recSize );
 }
@@ -2130,7 +2130,7 @@ bool SafeBuf::truncateLongWords ( char *s , int32_t srcLen , int32_t minmax ) {
 	if ( dst > dstart && dst[-1] == ' ' ) dst--;
 	// sanity check
 	char *end = m_buf + m_capacity;
-	if ( dst+1 > end ) { char *xx=NULL;*xx=0; }
+	gbassert_false( dst+1 > end );
 	// update length
 	m_length = dst - m_buf;
 	// a safe null term
@@ -3322,7 +3322,7 @@ bool SafeBuf::compress() {
 	// now free old buf
 	purge();
 	// sanity
-	if ( destLen > need - 4 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( destLen > need - 4 );
 	// store length here too now
 	*(int32_t *)newBuf = origLen;
 	// . and set to new buf
@@ -3356,7 +3356,7 @@ bool SafeBuf::uncompress() {
 		return false;
 	}
 	// sanity
-	if ( avail != need ) { char *xx=NULL;*xx=0; }
+	gbassert_false( avail != need );
 	// now free old buf
 	purge();
 	// and set to new buf
@@ -3578,7 +3578,7 @@ bool SafeBuf::base64Decode ( char *src , int32_t srcLen , int32_t niceness ) {
 			s_bmap[c] = val++;
 		for ( unsigned char c = '0' ; c <= '9'; c++ ) 
 			s_bmap[c] = val++;
-		if ( val != 62 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( val != 62 );
 		s_bmap[(unsigned char)'+'] = 62;
 		s_bmap[(unsigned char)'/'] = 63;
 	}
@@ -3620,7 +3620,7 @@ bool SafeBuf::base64Decode ( char *src , int32_t srcLen , int32_t niceness ) {
 		// sanity
 		if ( dst >= dstEnd ) {
 			log("safebuf: bas64decode breach");
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 			*dst = '\0';
 			return false;
 		}

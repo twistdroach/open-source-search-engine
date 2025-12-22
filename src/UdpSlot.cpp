@@ -209,7 +209,7 @@ void UdpSlot::connect ( UdpProtocol    *proto    ,
 		 ! isLocal ) { // || ! g_hostdb.isIpInNetwork ( ip ) ) {
 		// i guess we use this 
 		m_maxDgramSize = DGRAM_SIZE_INTERNET;
-		//char *xx=NULL; *xx=0; 
+		//gbassert(false); 
 	}
 	//else if ( ip == g_hostdb.getMyIp() )
 	else if ( g_hostdb.isMyIp(ip) )
@@ -239,7 +239,7 @@ void UdpSlot::resetConnect ( ) {
 		  (m_ip & 0x000000ff) != (g_hostdb.m_myIp & 0x000000ff) ||
 		  ! g_hostdb.isIpInNetwork ( m_ip ) ) {
 		m_maxDgramSize = DGRAM_SIZE_INTERNET;
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 	//else if ( m_ip == g_hostdb.getMyIp() )
 	else if ( g_hostdb.isMyIp(m_ip) )
@@ -300,7 +300,7 @@ bool UdpSlot::sendSetup ( char      *msg         ,
 		    (int32_t)msgSize,(int32_t)m_maxDgramSize,
 		    (int32_t)MAX_DGRAMS,maxMsgSize,
 		    msgType);
-		//char *xx=NULL; *xx=0;
+		//gbassert(false);
 		g_errno = EMSGTOOBIG;//EBADENGINEER;
 		return false;
 		//msgSize = MAX_DGRAMS * DGRAM_SIZE;
@@ -1045,7 +1045,7 @@ int32_t UdpSlot::sendAck ( int sock , int64_t now ,
 			    "Fixing. Do not panic.",
 			    dgramNum , m_dgramsToRead );
 			fixSlot();
-			//char *xx = NULL; *xx = 0;
+			//gbassert(false);
 			//sleep(50000);
 			//return -1;
 			return -1;
@@ -1152,7 +1152,7 @@ int32_t UdpSlot::sendAck ( int sock , int64_t now ,
 		    "already been sent. Next ack to send should be for dgram "
 		    "# %" INT32 ". Fixing. Do not panic.",
 		    dgramNum , m_firstUnlitSentAckBit );
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 		fixSlot();
 		return 1;
 	}
@@ -1281,7 +1281,7 @@ bool UdpSlot::readDatagramOrAck ( int        sock    ,
 	// handle acks
 	if ( m_proto->isAck ( peek , peekSize ) ) {
 		// if ack for msg4 core to test its save stuff
-		//if ( m_msgType == 0x04 ) { char *xx=NULL;*xx=0; }
+		//if ( m_msgType == 0x04 ) { gbassert(false); }
 		readAck ( sock, dgramNum , now ); 
 		// keep stats
 		if ( m_host ) m_host->m_dgramsFrom++;
@@ -1511,8 +1511,8 @@ bool UdpSlot::readDatagramOrAck ( int        sock    ,
 	     // must be reply! not request.
 	     m_callback ) {
 		// sanity
-		if ( m_proto->getMaxPeekSize() < 24 ) { char *xx=NULL;*xx=0;}
-		if ( headerSize != 12 )               { char *xx=NULL;*xx=0;}
+		if ( m_proto->getMaxPeekSize() < 24 ) { gbassert(false);}
+		gbassert_false( headerSize != 12 );
 		// ips must match. like a checksum kinda.
 		int32_t ip1 = *(int32_t *)(peek+headerSize);
 		int32_t ip2 = *(int32_t *)(peek+headerSize+4);
@@ -1566,7 +1566,7 @@ bool UdpSlot::readDatagramOrAck ( int        sock    ,
 			// is out of sync between hosts, so core
 			// SEEMS like the roadrunner wireless connection
 			// is spiking our packets sometimes with noise...
-			//char *xx = NULL; *xx = 0;
+			//gbassert(false);
 			return false;
 		}
 		// save what's before us

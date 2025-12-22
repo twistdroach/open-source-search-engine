@@ -81,7 +81,7 @@ void Images::setCandidates ( Url *pageUrl , Words *words , Xml *xml ,
 	// flag it
 	m_setCalled = true;
 	// strange...
-	if ( m_imgReply ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_imgReply );
 	// save this
 	m_xml       = xml;
 	m_pageUrl   = pageUrl;
@@ -135,7 +135,7 @@ void Images::setCandidates ( Url *pageUrl , Words *words , Xml *xml ,
 		// in Msg14.cpp
 		if ( ! q.set2 ( buf , langUnknown , false ) ) return;
 		// sanity test
-		if ( q.getNumTerms() != 1 ) { char *xx=0;*xx=0; }
+		gbassert_false( q.getNumTerms() != 1 );
 		// store the termid
 		m_termIds[m_numImages] = q.getTermId(0);
 		// advance the counter
@@ -171,7 +171,7 @@ void Images::setCandidates ( Url *pageUrl , Words *words , Xml *xml ,
 		lastPosScore = i;
 	}
 	// sanity check
-	if ( getNumXmlNodes() > 512 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( getNumXmlNodes() > 512 );
 	// . pedal firstPosScore back until we hit a section boundary
 	// . i.e. stop once we hit a front/back tag pair, like <div> and </div>
 	char tc[512];
@@ -288,7 +288,7 @@ bool Images::getThumbnail ( char *pageSite ,
 			    void *state ,
 			    void   (*callback)(void *state) ) {
 	// sanity check
-	if ( ! m_setCalled ) { char *xx=NULL;*xx=0; }
+	gbassert(m_setCalled);
 	// we haven't had any error
 	m_hadError  = 0;
 	// no reason to stop yet
@@ -299,9 +299,9 @@ bool Images::getThumbnail ( char *pageSite ,
 	m_phase = 0;
 
 	// sanity check
-	if ( ! m_pageUrl ) { char *xx=NULL;*xx=0; }
+	gbassert(m_pageUrl);
 	// sanity check
-	if ( ! pageSite ) { char *xx=NULL;*xx=0; }
+	gbassert(pageSite);
 	// we need to be a permalink
 	//if ( ! isPermalink ) return true;
 
@@ -326,9 +326,9 @@ bool Images::getThumbnail ( char *pageSite ,
 	// this will at least have one component, the 0/NULL component
 	uint32_t *tph = xd->getTagPairHash32();
 	// must not block or error on us
-	if ( tph == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( tph == (void *)-1 );
 	// must not error on use?
-	if ( ! tph ) { char *xx=NULL;*xx=0; }
+	gbassert(tph);
 
 	// . see DupDetector.cpp, very similar to this
 	// . see how many pages we have from our same site with our same 
@@ -337,7 +337,7 @@ bool Images::getThumbnail ( char *pageSite ,
 	char c = pageSite[siteLen];
 	pageSite[siteLen]=0;
 	// site MUST NOT start with "http://"
-	if ( strncmp ( pageSite , "http://", 7)==0){char*xx=NULL;*xx=0;}
+	gbassert_false( strncmp ( pageSite , "http://", 7)==0);
 	// this must match what we hash in XmlDoc::hashNoSplit()
 	sprintf ( buf , "gbsitetemplate:%" UINT32 "%s", (uint32_t)*tph,pageSite );
 	pageSite[siteLen]=c;

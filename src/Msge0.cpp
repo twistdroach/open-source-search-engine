@@ -155,7 +155,7 @@ bool Msge0::launchRequests ( int32_t starti ) {
 	for ( i = 0 /*starti*/ ; i < MAX_OUTSTANDING_MSGE0 ; i++ )
 		if ( ! m_used[i] ) break;
 	// sanity check
-	if ( i >= MAX_OUTSTANDING_MSGE0 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( i >= MAX_OUTSTANDING_MSGE0 );
 	// normalize the url
 	m_urls[i].set ( p , plen );
 	// save the url number, "n"
@@ -194,7 +194,7 @@ bool Msge0::sendMsg8a ( int32_t i ) {
 	// how big are all the tags we got for this url
 	int32_t need = sizeof(TagRec);
 	// sanity check
-	if ( need > SLAB_SIZE ) { char *xx=NULL;*xx=0; }
+	gbassert_false( need > SLAB_SIZE );
 	// how much space left in the latest buffer
 	if ( m_slabPtr + need > m_slabEnd ) {
 		// inc the buffer number

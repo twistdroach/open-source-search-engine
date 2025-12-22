@@ -47,39 +47,39 @@ bool Posdb::init ( ) {
 			  false , // delkey?
 			  shardedByTermId );
 	// test it out
-	if ( g_posdb.getTermId ( &k ) != termId ) { char *xx=NULL;*xx=0; }
+	gbassert_false( g_posdb.getTermId ( &k ) != termId );
 	//int64_t d2 = g_posdb.getDocId(&k);
-	if ( g_posdb.getDocId (&k ) != docId ) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.getHashGroup ( &k ) !=hashGroup) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.getWordPos ( &k ) !=  dist ) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.getDensityRank (&k)!=densityRank){ char *xx=NULL;*xx=0; }
-	if ( g_posdb.getDiversityRank(&k)!=diversityRank){char *xx=NULL;*xx=0;}
-	if ( g_posdb.getWordSpamRank(&k)!=wordSpamRank){ char *xx=NULL;*xx=0; }
-	if ( g_posdb.getSiteRank (&k) != siteRank ) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.getLangId ( &k ) != langId ) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.getMultiplier ( &k ) !=multiplier){char *xx=NULL;*xx=0; }
-	if ( g_posdb.getIsSynonym ( &k ) != isSynonym) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.isShardedByTermId(&k)!=shardedByTermId){char *xx=NULL;*xx=0; }
+	gbassert_false( g_posdb.getDocId (&k ) != docId );
+	gbassert_false( g_posdb.getHashGroup ( &k ) !=hashGroup);
+	gbassert_false( g_posdb.getWordPos ( &k ) !=  dist );
+	gbassert_false( g_posdb.getDensityRank (&k)!=densityRank);
+	gbassert_false( g_posdb.getDiversityRank(&k)!=diversityRank);
+	gbassert_false( g_posdb.getWordSpamRank(&k)!=wordSpamRank);
+	gbassert_false( g_posdb.getSiteRank (&k) != siteRank );
+	gbassert_false( g_posdb.getLangId ( &k ) != langId );
+	gbassert_false( g_posdb.getMultiplier ( &k ) !=multiplier);
+	gbassert_false( g_posdb.getIsSynonym ( &k ) != isSynonym);
+	gbassert_false( g_posdb.isShardedByTermId(&k)!=shardedByTermId);
 	// more tests
 	setDocIdBits ( &k, docId );
 	setMultiplierBits ( &k, multiplier );
 	setSiteRankBits ( &k, siteRank );
 	setLangIdBits ( &k, langId );
 	// test it out
-	if ( g_posdb.getTermId ( &k ) != termId ) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.getDocId (&k ) != docId ) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.getWordPos ( &k ) !=  dist ) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.getDensityRank (&k)!=densityRank){ char *xx=NULL;*xx=0; }
-	if ( g_posdb.getDiversityRank(&k)!=diversityRank){char *xx=NULL;*xx=0;}
-	if ( g_posdb.getWordSpamRank(&k)!=wordSpamRank){ char *xx=NULL;*xx=0; }
-	if ( g_posdb.getSiteRank (&k) != siteRank ) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.getHashGroup ( &k ) !=hashGroup) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.getLangId ( &k ) != langId ) { char *xx=NULL;*xx=0; }
-	if ( g_posdb.getMultiplier ( &k ) !=multiplier){char *xx=NULL;*xx=0; }
-	if ( g_posdb.getIsSynonym ( &k ) != isSynonym) { char *xx=NULL;*xx=0; }
+	gbassert_false( g_posdb.getTermId ( &k ) != termId );
+	gbassert_false( g_posdb.getDocId (&k ) != docId );
+	gbassert_false( g_posdb.getWordPos ( &k ) !=  dist );
+	gbassert_false( g_posdb.getDensityRank (&k)!=densityRank);
+	gbassert_false( g_posdb.getDiversityRank(&k)!=diversityRank);
+	gbassert_false( g_posdb.getWordSpamRank(&k)!=wordSpamRank);
+	gbassert_false( g_posdb.getSiteRank (&k) != siteRank );
+	gbassert_false( g_posdb.getHashGroup ( &k ) !=hashGroup);
+	gbassert_false( g_posdb.getLangId ( &k ) != langId );
+	gbassert_false( g_posdb.getMultiplier ( &k ) !=multiplier);
+	gbassert_false( g_posdb.getIsSynonym ( &k ) != isSynonym);
 
 	setFacetVal32 ( &k,45678 );
-	if ( getFacetVal32 ( &k ) != 45678 ) { char *xx=NULL;*xx=0;}
+	gbassert_false( getFacetVal32 ( &k ) != 45678 );
 
 	/*
 	// more tests
@@ -108,7 +108,7 @@ bool Posdb::init ( ) {
 		    (int32_t)(*(unsigned char *)p));
 	list.resetListPtr();
 	list.checkList_r(false,true,RDB_POSDB);
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	*/
 
 	int64_t  maxTreeMem = 350000000; // 350MB
@@ -383,14 +383,14 @@ void Posdb::makeKey ( void              *vkp            ,
 		      bool shardedByTermId ) {
 
 	// sanity
-	if ( siteRank      > MAXSITERANK      ) { char *xx=NULL;*xx=0; }
-	if ( wordSpamRank  > MAXWORDSPAMRANK  ) { char *xx=NULL;*xx=0; }
-	if ( densityRank   > MAXDENSITYRANK   ) { char *xx=NULL;*xx=0; }
-	if ( diversityRank > MAXDIVERSITYRANK ) { char *xx=NULL;*xx=0; }
-	if ( langId        > MAXLANGID        ) { char *xx=NULL;*xx=0; }
-	if ( hashGroup     > MAXHASHGROUP     ) { char *xx=NULL;*xx=0; }
-	if ( wordPos       > MAXWORDPOS       ) { char *xx=NULL;*xx=0; }
-	if ( multiplier    > MAXMULTIPLIER    ) { char *xx=NULL;*xx=0; }
+	gbassert_false( siteRank      > MAXSITERANK      );
+	gbassert_false( wordSpamRank  > MAXWORDSPAMRANK  );
+	gbassert_false( densityRank   > MAXDENSITYRANK   );
+	gbassert_false( diversityRank > MAXDIVERSITYRANK );
+	gbassert_false( langId        > MAXLANGID        );
+	gbassert_false( hashGroup     > MAXHASHGROUP     );
+	gbassert_false( wordPos       > MAXWORDPOS       );
+	gbassert_false( multiplier    > MAXMULTIPLIER    );
 
 	key144_t *kp = (key144_t *)vkp;
 
@@ -627,7 +627,7 @@ int64_t Posdb::getTermFreq ( collnum_t collnum, int64_t termId ) {
 	// 			  &numNeg,
 	// 			  true );
 	// if ( numPos*18 != numBytes ) {
-	// 	char *xx=NULL;*xx=0; }
+	// 	gbassert(false); }
 
 	
 
@@ -720,7 +720,7 @@ void PosdbTable::init ( Query     *q               ,
 			//int32_t       numLists        ,
 			Msg39Request *r            ) {
 	// sanity check -- watch out for double calls
-	if ( m_initialized ) { char *xx= NULL; *xx =0; }
+	gbassert_false( m_initialized );
 	// clear everything
 	reset();
 	// we are now
@@ -734,7 +734,7 @@ void PosdbTable::init ( Query     *q               ,
 	//m_numLists = q->m_numTerms;
 	m_msg2 = msg2;
 	// sanity
-	if ( m_msg2 && ! m_msg2->m_query ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_msg2 && ! m_msg2->m_query );
 	// save this
 	m_collnum = r->m_collnum;
 	// save the request
@@ -744,7 +744,7 @@ void PosdbTable::init ( Query     *q               ,
 	//m_coll = coll;
 	// get the rec for it
         CollectionRec *cr = g_collectiondb.getRec ( m_collnum );
-        if ( ! cr ) { char *xx=NULL;*xx=0; }
+        gbassert(cr);
 	// set this now
 	//m_collnum = cr->m_collnum;
 
@@ -768,12 +768,12 @@ void PosdbTable::init ( Query     *q               ,
 	// QueryTerm::m_posdbListPtrs
 	if ( ! msg2 ) return;
 	// sanity
-	if ( msg2->getNumLists() != m_q->getNumTerms() ) {char *xx=NULL;*xx=0;}
+	gbassert_false( msg2->getNumLists() != m_q->getNumTerms() );
 	// copy the list ptrs to the QueryTerm::m_posdbListPtr
 	for ( int32_t i = 0 ; i < m_q->m_numTerms ; i++ ) 
 		m_q->m_qterms[i].m_posdbListPtr = msg2->getList(i);
 	// we always use it now
-	if ( ! topTree ) {char *xx=NULL;*xx=0;}
+	gbassert(topTree);
 }
 
 // this is separate from allocTopTree() function below because we must
@@ -1515,7 +1515,7 @@ char *getHashGroupString ( unsigned char hg ) {
 	if ( hg == HASHGROUP_INURL ) return "in url";
 	if ( hg == HASHGROUP_INMENU ) return "in menu";
 	return "unknown!";
-	char *xx=NULL;*xx=0; 
+	gbassert(false); 
 	return NULL;
 }
 
@@ -1595,7 +1595,7 @@ void PosdbTable::intersectLists9_r ( ) {
 		//if ( m_sectionStats.m_numUniqueSites == 17 ) { 
 		//	log("q=%s",m_r->ptr_query);
 		//	log("hey");
-		//	//char *xx = NULL;*xx=0; 
+		//	//gbassert(false); 
 		//}
 		//if(!strcmp(m_r->ptr_query,"gbsectionhash:3335323672699668766"
 		//	log("boo");
@@ -1927,7 +1927,7 @@ void PosdbTable::intersectLists9_r ( ) {
 			log("query: too many sublists. %" INT32 " >= %" INT32 "",
 			    nn,(int32_t)MAX_SUBLISTS);
 			return;
-			char *xx=NULL; *xx=0; 
+			gbassert(false); 
 		}
 		// count # required groups
 		nrg++;
@@ -2038,7 +2038,7 @@ void PosdbTable::intersectLists9_r ( ) {
 		char *nwp12   [100];
 		char *nwpEnd  [100];
 		char  nwpFlags[100];
-		if ( numLists >= 100 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( numLists >= 100 );
 		int32_t nsub = 0;
 		// set the list ptrs to merge
 		for ( int32_t k = 0 ; k < numLists ; k++ ) {
@@ -2177,7 +2177,7 @@ void PosdbTable::intersectLists9_r ( ) {
 	// breach?
 	if ( doAlternativeAlgo ) {
 		// sanity check
-		if ( mptr > mend ) { char *xx=NULL;*xx=0; }
+		gbassert_false( mptr > mend );
 		int64_t endTime = gettimeofdayInMilliseconds();
 		int64_t took = endTime - startTime;
 		log("posdb: synlist merge took %" INT64 " ms", took);
@@ -2399,7 +2399,7 @@ void PosdbTable::intersectLists9_r ( ) {
 	}
 
 	// sanity
-	if ( minddd >= MAX_SUBLISTS ) { char *xx=NULL;*xx=0; }
+	gbassert_false( minddd >= MAX_SUBLISTS );
 
 	// all sublists exhausted for the smallest required termlist?
 	if ( docId == MAX_DOCID ) goto done;
@@ -2551,7 +2551,7 @@ void PosdbTable::intersectLists9_r ( ) {
 		if ( isFirstKey ) {
 			gbmemcpy ( mptr , nwp[mink] , 12 );
 			// sanity check! make sure these not being used...
-			//if ( mptr[2] & 0x03 ) { char *xx=NULL;*xx=0; }
+			//if ( mptr[2] & 0x03 ) { gbassert(false); }
 			// wipe out its syn bits and re-use our way
 			mptr[2] &= 0xfc;
 			// set the synbit so we know if its a synonym of term
@@ -2609,7 +2609,7 @@ void PosdbTable::intersectLists9_r ( ) {
 			//int32_t pos = g_posdb.getWordPos(mptr);
 			//log("j=%" INT32 " mink=%" INT32 " hgx=%" INT32 " pos=%" INT32 "",j,mink,hgx,pos);
 			//if ( pos == 8949 ) { // 73779 ) {
-			//	char *xx=NULL;*xx=0; }
+			//	gbassert(false); }
 			// save it
 			lastMptr = mptr;
 			mptr += 6;
@@ -2630,7 +2630,7 @@ void PosdbTable::intersectLists9_r ( ) {
 	}
 
 	// breach?
-	if ( mptr > mbuf + 300000 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( mptr > mbuf + 300000 );
 
  jumpDownHere:
 
@@ -2743,7 +2743,7 @@ void PosdbTable::intersectLists9_r ( ) {
 		// sanity check
 		if ( bestPos[i] &&
 		     s_inBody[g_posdb.getHashGroup(bestPos[i])] ) {
-			char *xx=NULL;*xx=0; }
+			gbassert(false); }
 		//sts /= 3.0;
 		if ( sts < minSingleScore ) minSingleScore = sts;
 	}
@@ -2826,7 +2826,7 @@ void PosdbTable::intersectLists9_r ( ) {
 			// ok, no more! null means empty list
 			xpos[i] = NULL;
 			// must be in title or something else then
-			if ( ! bestPos[i] ) { char *xx=NULL;*xx=0; }
+			gbassert(bestPos[i]);
 		}
 		// if all xpos are NULL, then no terms are in body...
 		if ( xpos[i] ) allNull = false;
@@ -2880,7 +2880,7 @@ void PosdbTable::intersectLists9_r ( ) {
 		minPos = g_posdb.getWordPos(xpos[x]);
 	}
 	// sanity
-	if ( minx < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( minx < 0 );
 
  advanceAgain:
 	// now advance that to slide our window
@@ -3019,7 +3019,7 @@ void PosdbTable::intersectLists9_r ( ) {
 	dcs.m_numRequiredTerms = nrg;
 	// ensure enough room we can't allocate in a thread!
 	if ( m_scoreInfoBuf.getAvail() < (int32_t)sizeof(DocIdScore)+1) { 
-		char *xx=NULL;*xx=0; }
+		gbassert(false); }
 	// if same as last docid, overwrite it since we have a higher
 	// siterank or langid i guess
 	if ( docId == lastDocId ) 
@@ -3252,7 +3252,7 @@ float PosdbTable::getSingleTermScore ( int32_t i,
 		if ( s_first ) log("posdb: CRITICAL single buf overflow");
 		s_first = false;
 		return sum;
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 	}
 	// increase buf ptr over this then
 	m_singleScoreBuf.incrementLength(need);
@@ -3928,7 +3928,7 @@ float PosdbTable::getTermPairScoreForAny ( int32_t i, int32_t j,
 			// not deleted right!
 			if ( (uint64_t)g_posdb.getDocId(wpi) != 
 			     m_docId ) {
-				char *xx=NULL;*xx=0;
+				gbassert(false);
 				goto done;
 			}
 			// re-set this i guess
@@ -4129,7 +4129,7 @@ float PosdbTable::getTermPairScoreForAny ( int32_t i, int32_t j,
 			// not deleted right!
 			if ( (uint64_t)g_posdb.getDocId(wpj) != 
 			     m_docId ) {
-				char *xx=NULL;*xx=0;
+				gbassert(false);
 				goto done;
 			}
 			// re-set this i guess
@@ -4730,7 +4730,7 @@ bool PosdbTable::setQueryTermInfo ( ) {
 			log("query: too many sublists. %" INT32 " >= %" INT32 "",
 			    nn,(int32_t)MAX_SUBLISTS);
 			return false;
-			char *xx=NULL; *xx=0; 
+			gbassert(false); 
 		}
 		
 		// compute m_totalSubListsSize
@@ -4800,7 +4800,7 @@ bool PosdbTable::setQueryTermInfo ( ) {
 	}
 
 	// bad! ringbuf[] was not designed for this nonsense!
-	if ( m_minListi >= 255 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_minListi >= 255 );
 	
 	// set this for caller to use to loop over the queryterminfos
 	m_numQueryTermInfos = nrg;
@@ -4975,7 +4975,7 @@ inline bool isInRange( char *p , QueryTerm *qt ) {
 	// }
 
 	// how did this happen?
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return true;
 }
 		
@@ -5034,7 +5034,7 @@ int64_t PosdbTable::countUniqueDocids( QueryTermInfo *qti ) {
 void PosdbTable::addDocIdVotes ( QueryTermInfo *qti , int32_t   listGroupNum) {
 
 	// sanity check, we store this in a single byte below for voting
-	if ( listGroupNum >= 256 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( listGroupNum >= 256 );
 
 	// int16_tcut
 	char *bufStart = m_docIdVoteBuf.getBufStart();
@@ -5313,7 +5313,7 @@ void PosdbTable::addDocIdVotes ( QueryTermInfo *qti , int32_t   listGroupNum) {
 	actualDocId <<= 8;
 	actualDocId |= (unsigned char)dp[0];
 	actualDocId >>= 2;
-	if (  dd != actualDocId ) { char *xx=NULL;*xx=0; }
+	gbassert_false(  dd != actualDocId );
 	*/
 
 	// advance
@@ -5508,7 +5508,7 @@ void PosdbTable::intersectLists10_r ( ) {
 		//if ( m_facetStats.m_numUniqueSites == 17 ) { 
 		//	log("q=%s",m_r->ptr_query);
 		//	log("hey");
-		//	//char *xx = NULL;*xx=0; 
+		//	//gbassert(false); 
 		//}
 		//if(!strcmp(m_r->ptr_query,"gbsectionhash:3335323672699668766"
 		//	log("boo");
@@ -5546,12 +5546,12 @@ void PosdbTable::intersectLists10_r ( ) {
 		if ( d1 > m_msg2->m_docIdEnd ) { 
 			log("posdb: d1=%" INT64 " > %" INT64 "",
 			    d1,m_msg2->m_docIdEnd);
-			//char *xx=NULL;*xx=0; 
+			//gbassert(false); 
 		}
 		if ( d1 < m_msg2->m_docIdStart ) { 
 			log("posdb: d1=%" INT64 " < %" INT64 "",
 			    d1,m_msg2->m_docIdStart);
-			//char *xx=NULL;*xx=0; 
+			//gbassert(false); 
 		}
 		// first key is always 18 bytes cuz it has the termid
 		// scan recs in the list
@@ -5738,7 +5738,7 @@ void PosdbTable::intersectLists10_r ( ) {
 		char *p = list->m_list;
 		// you must provide termlists that start with 12 byte key
 		// for the seo hack! this is for scoring individual docids
-		if ( g_posdb.getKeySize(p) != 12 ) { char *xx=NULL;*xx=0;}
+		if ( g_posdb.getKeySize(p) != 12 ) { gbassert(false);}
 	}
 	*/
 
@@ -5937,7 +5937,7 @@ void PosdbTable::intersectLists10_r ( ) {
 	char    **xpos           = (char   **)pp; pp += sizeof(char *) * nqt;
 	char     *bflags         = (char    *)pp; pp += sizeof(char) * nqt;
 	float    *scoreMatrix    = (float   *)pp; pp += sizeof(float) *nqt*nqt;
-	if ( pp > m_stackBuf.getBufEnd() ) {char *xx=NULL;*xx=0; }
+	gbassert_false( pp > m_stackBuf.getBufEnd() );
 
 	for ( int32_t i = 0 ; i < m_numQueryTermInfos ; i++ ) {
 		// get it
@@ -6207,7 +6207,7 @@ void PosdbTable::intersectLists10_r ( ) {
 					px += 12;
 				}
 				// sanity check
-				if ( px != xp ) { char *xx=NULL;*xx=0; }
+				gbassert_false( px != xp );
 				*/
 				// not there? xlist will be NULL
 				qti->m_savedCursor[j] = xp;
@@ -6264,7 +6264,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			}
 			// sanity. must be 12 byte key
 			//if ( (*xc & 0x06) != 0x02 ) {
-			//	char *xx=NULL;*xx=0;}
+			//	gbassert(false);}
 			// save it
 			qti->m_savedCursor[j] = xc;
 			// get new docid
@@ -6290,7 +6290,7 @@ void PosdbTable::intersectLists10_r ( ) {
 					log("posdb: encountered corrupt "
 					    "posdb list. bailing.");
 					return;
-					//char *xx=NULL;*xx=0;
+					//gbassert(false);
 				}
 				// the next docid? it will be a 12 byte key.
 				if ( ! (*xc & 0x04) ) break;
@@ -6583,7 +6583,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			nwp      [nsub] = qti->m_savedCursor [k];
 			// sanity
 			//if ( g_posdb.getKeySize(nwp[nsub]) > 12 ) { 
-			//	char *xx=NULL;*xx=0;}
+			//	gbassert(false);}
 			// if doing seohack then m_cursor was not advanced
 			// so advance it here
 			if ( m_msg2 ) nwpEnd [nsub] = qti->m_cursor [k];
@@ -6600,7 +6600,7 @@ void PosdbTable::intersectLists10_r ( ) {
 				char *xx = nwp[k];
 				char *xxend = nwpEnd[k];
 				if ( g_posdb.getKeySize(xx) != 12 ) {
-					char *xx=NULL;*xx=0; }
+					gbassert(false); }
 				char ks;
 				for ( ; xx < xxend ; xx += ks ) {
 					if ( xx>nwp[k]&&g_posdb.getKeySize(xx)
@@ -6667,7 +6667,7 @@ void PosdbTable::intersectLists10_r ( ) {
 		// get keysize
 		char ks = g_posdb.getKeySize(nwp[mink]);
 		// sanity
-		//if ( ks > 12 ) { char *xx=NULL;*xx=0; }
+		//if ( ks > 12 ) { gbassert(false); }
 		//
 		// HACK OF CONFUSION:
 		//
@@ -6686,7 +6686,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			// store a 12 byte key in the merged list buffer
 			gbmemcpy ( mptr , nwp[mink] , 12 );
 			// sanity check! make sure these not being used...
-			//if ( mptr[2] & 0x03 ) { char *xx=NULL;*xx=0; }
+			//if ( mptr[2] & 0x03 ) { gbassert(false); }
 			// wipe out its syn bits and re-use our way
 			mptr[2] &= 0xfc;
 			// set the synbit so we know if its a synonym of term
@@ -6747,7 +6747,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			//log("j2=%" INT32 " mink=%" INT32 " hgx=%" INT32 " pos=%" INT32 "",
 			//    (int32_t)j,(int32_t)mink,(int32_t)hgx,(int32_t)pos);
 			//if ( pos == 8949 ) { // 73779 ) {
-			//	char *xx=NULL;*xx=0; }
+			//	gbassert(false); }
 			// save it
 			lastMptr = mptr;
 			mptr += 6;
@@ -6769,7 +6769,7 @@ void PosdbTable::intersectLists10_r ( ) {
 	}
 
 	// breach?
-	if ( mptr > mbuf + 300000 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( mptr > mbuf + 300000 );
 
 	// clear the counts on this DocIdScore class for this new docid
 	pdcs = NULL;
@@ -6807,11 +6807,9 @@ void PosdbTable::intersectLists10_r ( ) {
 		char *plistEnd = miniMergedEnd[i];
 		int32_t  psize    = plistEnd - plist;
 		// test it. first key is 12 bytes.
-		if ( psize && g_posdb.getKeySize(plist) != 12 ) {
-			char *xx=NULL;*xx=0; }
+		gbassert_false( psize && g_posdb.getKeySize(plist) != 12 );
 		// next key is 6
-		if ( psize > 12 && g_posdb.getKeySize(plist+12) != 6){
-			char *xx=NULL;*xx=0; }
+		gbassert_false( psize > 12 && g_posdb.getKeySize(plist+12) != 6);
 		// show it
 		//if ( ! m_msg2 && m_r->m_seoDebug ) {
 		//	log("seo: dumping mergedlist #%" INT32 "",i);
@@ -6961,9 +6959,8 @@ void PosdbTable::intersectLists10_r ( ) {
 					  pdcs,
 					  &bestPos[i]);
 		// sanity check
-		if ( bestPos[i] &&
-		     s_inBody[g_posdb.getHashGroup(bestPos[i])] ) {
-			char *xx=NULL;*xx=0; }
+		gbassert_false( bestPos[i] &&
+		     s_inBody[g_posdb.getHashGroup(bestPos[i])] );
 		//sts /= 3.0;
 		if ( sts < minSingleScore ) minSingleScore = sts;
 	}
@@ -7053,7 +7050,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			// ok, no more! null means empty list
 			xpos[i] = NULL;
 			// must be in title or something else then
-			if ( ! bestPos[i] ) { char *xx=NULL;*xx=0; }
+			gbassert(bestPos[i]);
 		}
 		// if all xpos are NULL, then no terms are in body...
 		if ( xpos[i] ) allNull = false;
@@ -7110,7 +7107,7 @@ void PosdbTable::intersectLists10_r ( ) {
 		minPos = g_posdb.getWordPos(xpos[x]);
 	}
 	// sanity
-	if ( minx < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( minx < 0 );
 
  advanceAgain:
 	// now advance that to slide our window
@@ -7449,7 +7446,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			// get it
 			HashTableX *ft = &qt->m_facetHashTable;
 			fe=(FacetEntry *)ft->getValue(&rangeVal32);
-			if ( ! fe ) { char *xx=NULL;*xx=0; }
+			gbassert(fe);
 			//fe->m_count++;
 			//fe->m_docId = m_docId;
 		}
@@ -7472,8 +7469,7 @@ void PosdbTable::intersectLists10_r ( ) {
 			// specified, and your
 			if ( ! fe ) {
 				// sanity check
-				if ( qw->m_numFacetRanges > 0 ) { 
-					char *xx=NULL;*xx=0; }
+				gbassert_false( qw->m_numFacetRanges > 0 );
 				memset ( &ff , 0 , sizeof(FacetEntry) );
 				fe = &ff;
 				int32_t slot;
@@ -7555,7 +7551,7 @@ void PosdbTable::intersectLists10_r ( ) {
 		// ensure enough room we can't allocate in a thread!
 		if ( m_scoreInfoBuf.getAvail()<(int32_t)sizeof(DocIdScore)+1){
 			goto advance;
-			char *xx=NULL;*xx=0; }
+			gbassert(false); }
 		// if same as last docid, overwrite it since we have a higher
 		// siterank or langid i guess
 		if ( m_docId == lastDocId ) 
@@ -7623,7 +7619,7 @@ void PosdbTable::intersectLists10_r ( ) {
 		// might not be full yet
 		if ( sx >= sxEnd ) goto advance;
 		// must be there!
-		if ( ! si ) { char *xx=NULL;*xx=0; }
+		gbassert(si);
 
 		// note it because it is slow
 		// this is only used if getting score info, which is
@@ -7666,12 +7662,12 @@ void PosdbTable::intersectLists10_r ( ) {
 		// sanity
 		// take this out i've seen this core here before, no idea
 		// why, but why core?
-		//if ( m_docId == 0 ) { char *xx=NULL;*xx=0; }
+		//if ( m_docId == 0 ) { gbassert(false); }
 		// use an integer score like lastSpidered timestamp?
 		if ( m_sortByTermNumInt >= 0 ) {
 			t->m_intScore = intScore;
 			t->m_score = 0.0;
-			if ( ! m_topTree->m_useIntScores){char *xx=NULL;*xx=0;}
+			gbassert(m_topTree->m_useIntScores);
 		}
 		// . this will not add if tree is full and it is less than the 
 		//   m_lowNode in score
@@ -7703,10 +7699,10 @@ void PosdbTable::intersectLists10_r ( ) {
 		// set this... this is done in msg3a normally, but if doing
 		// seo shit we gotta do it here. since only running on one 
 		// docid we can do this
-		if ( nds->m_pairsOffset != 0 &&
-		     nds->m_numPairs ) { char *xx=NULL;*xx=0; }
-		if ( nds->m_singlesOffset != 0 &&
-		     nds->m_numSingles ) { char *xx=NULL;*xx=0; }
+		gbassert_false( nds->m_pairsOffset != 0 &&
+		     nds->m_numPairs );
+		gbassert_false( nds->m_singlesOffset != 0 &&
+		     nds->m_numSingles );
 		nds->m_pairScores = 
 			(PairScore *)m_pairScoreBuf.getBufStart();
 		nds->m_singleScores =
@@ -7968,9 +7964,9 @@ void printTermList ( int32_t i, char *list, int32_t listSize ) {
 		    , syn
 		    );
 		if ( firstKey && g_posdb.getKeySize(px)!=12) {
-			char *xx=NULL;*xx=0; }
+			gbassert(false); }
 		else if ( ! firstKey&& g_posdb.getKeySize(px)!=6) {
-			char *xx=NULL;*xx=0; }
+			gbassert(false); }
 		if ( firstKey ) px += 12;
 		else            px += 6;
 		firstKey = false;
@@ -8081,7 +8077,7 @@ bool PosdbTable::makeDocIdVoteBufForBoolQuery_r ( ) {
 				bool inRange = false;
 
 				// sanity
-				//if ( d < lastDocId ) { char *xx=NULL;*xx=0; }
+				//if ( d < lastDocId ) { gbassert(false); }
 				//lastDocId = d;
 
 				// point to it
@@ -8126,14 +8122,13 @@ bool PosdbTable::makeDocIdVoteBufForBoolQuery_r ( ) {
 				//docId &= DOCID_MASK;
 				// test it
 				//int64_t docId = g_posdb.getDocId(dp-8);
-				//if ( d2 != docId ) { char *xx=NULL;*xx=0; }
+				//if ( d2 != docId ) { gbassert(false); }
 				// store this docid though. treat as int64_t
 				// but we mask with keymask
 				int32_t slot = m_bt.getSlot ( &docId );
 				if ( slot < 0 ) {
 					// we can't alloc in a thread, careful
-					if ( ! m_bt.addKey(&docId,bitVec) ) {
-						char *xx=NULL;*xx=0; }
+					gbassert(m_bt.addKey(&docId,bitVec));
 					continue;
 				}
 				// or the bit in otherwise
@@ -8213,7 +8208,7 @@ bool PosdbTable::makeDocIdVoteBufForBoolQuery_r ( ) {
 				d2 |= (unsigned char)dst[0];
 				d2 >>= 2;
 				docId >>= 2;
-				if ( d2 != docId ) { char *xx=NULL;*xx=0; }
+				gbassert_false( d2 != docId );
 			}
 			// end test
 			dst += 6;
@@ -8273,7 +8268,7 @@ int Posdb::printList ( RdbList &list ) {
 			//d,nd1,nd2,nd3);
 			err = " (alignerror1)";
 			if ( nd1 < d ) err = " (alignordererror1)";
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 		}
 		if ( recSize == 12 && !(rec[1] & 0x02) )  {
 			//int64_t nd1 = g_posdb.getDocId(rec+6);
@@ -8285,8 +8280,8 @@ int Posdb::printList ( RdbList &list ) {
 			// seems like 12 bytes
 			//log("debug1: d=%" INT64 " nd1=%" INT64 " nd2=%" INT64 " nd3=%" INT64 "",
 			//d,nd1,nd2,nd3);
-			//if ( nd2 < d ) { char *xx=NULL;*xx=0; }
-			//char *xx=NULL;*xx=0;
+			//if ( nd2 < d ) { gbassert(false); }
+			//gbassert(false);
 			err = " (alignerror2)";
 			if ( nd2 < d ) err = " (alignorderrror2)";
 		}
@@ -8301,7 +8296,7 @@ int Posdb::printList ( RdbList &list ) {
 			// seems like 12 bytes really as well!
 			//log("debug2: d=%" INT64 " nd1=%" INT64 " nd2=%" INT64 " nd3=%" INT64 "",
 			//d,nd1,nd2,nd3);
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 			err = " (alignerror3)";
 			if ( nd2 < d ) err = " (alignordererror3)";
 		}
@@ -8312,7 +8307,7 @@ int Posdb::printList ( RdbList &list ) {
 		//if ( err )
 		//	printf("%s",err );
 		//continue;
-		//if ( ! magicBit && recSize == 6 ) { char *xx=NULL;*xx=0; }
+		//if ( ! magicBit && recSize == 6 ) { gbassert(false); }
 		if ( 1==1 ) //termId < 0 )
 			//fprintf(stderr,
 			log(

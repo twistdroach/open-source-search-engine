@@ -1170,7 +1170,7 @@ mallocmemloop:
 		else 
 			s_missed++;
 		// to debug oom issues:
-		//char *xx=NULL;*xx=0;
+		//gbassert(false);
 		// send an email alert if this happens! it is a sign of
 		// "memory fragmentation"
 		//static bool s_sentEmail = false;
@@ -1883,9 +1883,9 @@ void *getElecMem ( int32_t size ) {
 	// skip that
 	p += leftover;
 	// inefficient?
-	if ( realMemEnd - p > (int32_t)MEMPAGESIZE ) { char *xx=NULL;*xx=0;}
+	gbassert_false( realMemEnd - p > (int32_t)MEMPAGESIZE );
 	// ensure we do not breach
-	if ( p > realMemEnd ) { char *xx=NULL;*xx=0; }
+	gbassert_false( p > realMemEnd );
 	// test it, this should core
 	//protmem[0] = 32;
 	// return that for them

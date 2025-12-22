@@ -884,7 +884,7 @@ void handleRequest54 ( UdpSlot *udpSlot , int32_t niceness ) {
 	}
 
 	// we must have a winner
-	if ( ! winnersp ) { char *xx=NULL;*xx=0; }
+	gbassert(winnersp);
 
 	int64_t nowms = gettimeofdayInMillisecondsLocal();
 
@@ -911,7 +911,7 @@ void handleRequest54 ( UdpSlot *udpSlot , int32_t niceness ) {
 	}
 
 	// sanity
-	if ( (int32_t)sizeof(ProxyReply) > TMPBUFSIZE ){char *xx=NULL;*xx=0;}
+	gbassert_false( (int32_t)sizeof(ProxyReply) > TMPBUFSIZE );
 
 	// and give proxy ip/port back to the requester so they can
 	// use that to download their url

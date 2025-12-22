@@ -271,7 +271,7 @@ bool Loop::addSlot ( bool forReading , int fd, void *state,
 	// sanity
 	if ( fd > MAX_NUM_FDS ) {
 		log("loop: bad fd of %" INT32 "",(int32_t)fd);
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
 	// debug note
 	if (  forReading && (g_conf.m_logDebugLoop || g_conf.m_logDebugTcp) )
@@ -307,7 +307,7 @@ bool Loop::addSlot ( bool forReading , int fd, void *state,
 			s_readFds[s_numReadFds++] = fd;
 			FD_SET ( fd,&s_selectMaskRead  );
 			// sanity
-			if ( s_numReadFds>MAX_NUM_FDS){char *xx=NULL;*xx=0;}
+			gbassert_false( s_numReadFds>MAX_NUM_FDS);
 		}
 	}
 	else {
@@ -318,7 +318,7 @@ bool Loop::addSlot ( bool forReading , int fd, void *state,
 	 		s_writeFds[s_numWriteFds++] = fd;
 	 		FD_SET ( fd,&s_selectMaskWrite  );
 	 		// sanity
-	 		if ( s_numWriteFds>MAX_NUM_FDS){char *xx=NULL;*xx=0;}
+	 		gbassert_false( s_numWriteFds>MAX_NUM_FDS);
 	 	}
 	}
 	// set our callback and state
@@ -406,7 +406,7 @@ void Loop::callCallbacks_ass ( bool forReading , int fd , int64_t now ,
 			    "nice=%" INT32 "",(int32_t)fd,(int32_t)s->m_niceness);
 
 		// sanity check. -1 no longer supported
-		if ( s->m_niceness < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( s->m_niceness < 0 );
 
 		// save it
 		int32_t saved = g_niceness;
@@ -814,7 +814,7 @@ void sigvtalrmHandler ( int x , siginfo_t *info , void *y ) {
 		// i guess sometimes niceness 1 things call niceness 0 things?
 		log("loop: crap crap crap!!!");
 #endif
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 	}
 	// basically ignore this alarm if already in a quickpoll
 	if ( g_loop.m_inQuickPoll ) return;
@@ -842,7 +842,7 @@ void sigvtalrmHandler ( int x , siginfo_t *info , void *y ) {
 		// deflat_slot() or logest_match() function
 		// for now do not dump core --- re-enable this later
 		// mdw TODO
-		//char *xx=NULL;*xx=0; 
+		//gbassert(false); 
 	}
 
 	// if it has been a while since heartbeat (> 10000ms) dump core so
@@ -857,7 +857,7 @@ void sigvtalrmHandler ( int x , siginfo_t *info , void *y ) {
 		logf(LOG_DEBUG,"gb: CPU seems blocked. Dumping stack.");
 		printStackTrace( x , info , y );
 #endif
-		//char *xx=NULL; *xx=0; 
+		//gbassert(false); 
 
 	}
 

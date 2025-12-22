@@ -39,7 +39,7 @@ bool Msg9b::addCatRecs ( char *urls        ,
 	// ensure NULL terminated
 	if ( coll[collLen] ) {
 		log(LOG_LOGIC,"admin: Collection not NULL terminated.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	// . SiteRec bitmap is given in SiteRec.cpp
 	// . key(12) + dataSize(4) + filenum(4) + url + ?NULL?
@@ -102,7 +102,7 @@ bool Msg9b::addCatRecs ( char *urls        ,
 		g_catdb.normalizeUrl(&site, &site);
 
 		// sanity
-		if ( numCatids[k] > MAX_CATIDS ) { char *xx=NULL;*xx=0; }
+		gbassert_false( numCatids[k] > MAX_CATIDS );
 
 		// make a siteRec from this url
 		CatRec sr;
@@ -116,8 +116,7 @@ bool Msg9b::addCatRecs ( char *urls        ,
 		key_t key;
 		// sanity test
 		CatRec cr2;
-		if ( ! cr2.set ( NULL , sr.getData(), sr.getDataSize(),false)){
-			char *xx=NULL;*xx=0; }
+		gbassert(cr2.set ( NULL , sr.getData(), sr.getDataSize(),false));
 		// debug when generating catdb
 		//char *x = p;
 		//for ( ; x<e ; x++ ) {

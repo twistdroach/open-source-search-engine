@@ -42,7 +42,7 @@ bool RdbDump::set ( //char     *coll          ,
 
 	if ( ! orderedDump ) {
 		log(LOG_LOGIC,"db: RdbDump does not support non-ordered.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	//if ( ! coll &&
 	//if ( ! coll && rdb->m_isCollectionLess )
@@ -236,8 +236,7 @@ void RdbDump::doneDumping ( ) {
 #ifdef GBSANITYCHECK
 	// sanity check
 	log("DOING SANITY CHECK FOR MAP -- REMOVE ME");
-	if ( m_map && ! m_map->verifyMap ( m_file ) ) {
-		char *xx = NULL; *xx = 0; }
+	gbassert_false( m_map && ! m_map->verifyMap ( m_file ) );
 	// now check the whole file for consistency
 	if ( m_ks == 18 ) { // map->m_rdbId == RDB_POSDB ) {
 		collnum_t collnum = g_collectiondb.getCollnum ( m_coll );
@@ -312,7 +311,7 @@ bool RdbDump::dumpTree ( bool recall ) {
 	//if ( collnum < 0 ) {
 	//	//if ( g_catdb->getRdb() == m_rdb )
 	//	if ( ! m_rdb->m_isCollectionLess ) {
-	//		char *xx=NULL;*xx=0; //return true;
+	//		gbassert(false); //return true;
 	//	}
 	//	g_errno = 0;
 	//	collnum = 0;
@@ -379,7 +378,7 @@ bool RdbDump::dumpTree ( bool recall ) {
  		// 			 false , // sleep on problem?
  		// 			 m_rdb->m_rdbId )) {
  		// 	log("db: list to dump is not sane!");
-		// 	char *xx=NULL;*xx=0;
+		// 	gbassert(false);
  		// }
 
 
@@ -542,7 +541,7 @@ bool RdbDump::dumpList ( RdbList *list , int32_t niceness , bool recall ) {
 			    KEYSTR(k,m_ks));
 			g_errno = EBADENGINEER;
 			//return true;
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 	}
 
@@ -643,7 +642,7 @@ bool RdbDump::dumpList ( RdbList *list , int32_t niceness , bool recall ) {
 		log("db: Failed to prealloc list into map: %s.",
 		    mstrerror(g_errno));
 		// g_errno should be set to something if that failed
-		if ( ! g_errno ) { char *xx = NULL; *xx = 0; }
+		gbassert(g_errno);
 		return true;
 	}
 	// tab to the old offset
@@ -814,7 +813,7 @@ bool RdbDump::doneReadingForVerify ( ) {
 	// start timing on first call only
 	if ( m_addToMap ) t = gettimeofdayInMilliseconds();
 	// sanity check
-	if ( m_list->m_ks != m_ks ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( m_list->m_ks != m_ks );
 
 	bool triedToFix = false;
 
@@ -831,8 +830,8 @@ bool RdbDump::doneReadingForVerify ( ) {
 			log("db: trying to fix tree or buckets");
 			if ( m_tree ) m_tree->fixTree();
 			//if ( m_buckets ) m_buckets->fixBuckets();
-			if ( m_buckets ) { char *xx=NULL;*xx=0; }
-			if ( triedToFix ) { char *xx=NULL;*xx=0; }
+			gbassert_false( m_buckets );
+			gbassert_false( triedToFix );
 			triedToFix = true;
 			goto tryAgain;
 		}
@@ -843,7 +842,7 @@ bool RdbDump::doneReadingForVerify ( ) {
 		// what happens when Rdb.cpp is dumping an RdbTree
 		//m_offset -= m_bytesToWrite ;
 		// this should never happen now since we call prealloc() above
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 		return true;
 	}
 
@@ -967,7 +966,7 @@ bool RdbDump::doneReadingForVerify ( ) {
 		g_errno = 0;
 		// if ( m_rdb && m_rdb->m_rdbId != RDB_DOLEDB ) {
 		// 	// core now to debug this for sectiondb
-		// 	char *xx=NULL;*xx=0;
+		// 	gbassert(false);
 		// 	((RdbTree *)m_tree)->fixTree ( );
 		// }
 	}

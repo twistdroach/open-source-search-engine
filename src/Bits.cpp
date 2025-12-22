@@ -438,7 +438,7 @@ bool Bits::setForSummary ( Words *words , char *buf , int32_t bufSize ) {
 		// only do this once
 		s_init = true;
 		// clear table
-		if ( 1000 < getNumXmlNodes() ) { char *xx=NULL;*xx=0; }
+		gbassert_false( 1000 < getNumXmlNodes() );
 		memset ( s_bt , 0 , 1000 * sizeof(nodeid_t) );
 		// set just those that have bits #defined in Bits.h
 		s_bt [ TAG_TITLE      ] = D_IN_TITLE;

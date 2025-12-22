@@ -415,7 +415,7 @@ bool updateSiteListBuf ( collnum_t collnum ,
 			if (  x >= pe   ) break;
 			// ok, we got something here i think
 			// no, might be like http://xyz.com/?poo
-			//if ( u.getPathLen() <= 1 ) { char *xx=NULL;*xx=0; }
+			//if ( u.getPathLen() <= 1 ) { gbassert(false); }
 			// calc length from "start" of line so we can
 			// jump to the path quickly for compares. inc "/"
 			pd.m_pathOff = (x-1) - patternStart;
@@ -511,7 +511,7 @@ char *getMatchingUrlPattern ( SpiderColl *sc ,
 	if ( dt->getNumSlotsUsed() == 0 ) { 
 		// empty site list -- no matches
 		return NULL;
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 	}
 
 	// this table maps a 32-bit domain hash of a domain to a

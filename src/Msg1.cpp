@@ -49,7 +49,7 @@ void returnMsg1 ( void *state ) {
 	int32_t i = msg1 - s_msg1;
 	if ( i < 0 || i > MAX_MSG1S ) {
 		log(LOG_LOGIC,"net: msg1: Major problem adding data."); 
-		char *xx = NULL; *xx = 0; }
+		gbassert(false); }
 	if ( s_head == -1 ) { s_head    = i      ; s_next[i] = -1; }
 	else                { s_next[i] = s_head ; s_head    =  i; }
 }
@@ -118,11 +118,10 @@ bool Msg1::addList ( RdbList      *list              ,
 	// if list has no records in it return true
 	if ( ! list || list->isEmpty() ) return true;
 	// sanity check
-	if ( list->m_ks !=  8 &&
+	gbassert_false( list->m_ks !=  8 &&
 	     list->m_ks != 12 &&
 	     list->m_ks != 16 &&
-	     list->m_ks != 24 ) { 
-		char *xx=NULL;*xx=0; }
+	     list->m_ks != 24 );
 	// start at the beginning
 	list->resetListPtr();
 	// if caller does not want reply try to accommodate him
@@ -153,7 +152,7 @@ bool Msg1::addList ( RdbList      *list              ,
 		else if ( ! list->m_ownData ) {
 			log(LOG_LOGIC,"net: msg1: List must own data. Bad "
 			    "engineer.");
-			char *xx = NULL; *xx = 0; 
+			gbassert(false); 
 		}
 		// lastly, if it was a clean steal, don't let list free it
 		else list->m_ownData = false;
@@ -164,7 +163,7 @@ bool Msg1::addList ( RdbList      *list              ,
 		if ( Y->m_ourList.isExhausted() ) {
 			log(LOG_LOGIC,"net: msg1: List is exhausted. "
 			    "Bad engineer."); 
-			char *xx = NULL; *xx = 0; }
+			gbassert(false); }
 		// now re-call
 		bool inTransit;
 		bool status = Y->addList ( &Y->m_ourList ,
@@ -229,11 +228,10 @@ bool Msg1::addList ( RdbList      *list              ,
 // . if the list is sorted by keys this will be the most efficient
 bool Msg1::sendSomeOfList ( ) {
 	// sanity check
-	if ( m_list->m_ks !=  8 &&
+	gbassert_false( m_list->m_ks !=  8 &&
 	     m_list->m_ks != 12 &&
 	     m_list->m_ks != 16 &&
-	     m_list->m_ks != 24 ) { 
-		char *xx=NULL;*xx=0; }
+	     m_list->m_ks != 24 );
 	// debug msg
 	//log("sendSomeOfList: mcast=%"UINT32" exhausted=%"INT32"",
 	//    (int32_t)&m_mcast,(int32_t)m_list->isExhausted());
@@ -355,8 +353,7 @@ bool Msg1::sendSomeOfList ( ) {
 		//int32_t crec = m_list->getCurrentRecSize();
 		m_list->skipCurrentRecord();
 		// sanity check
-		if ( m_list->m_listPtr > m_list->m_listEnd ) {
-			char *xx=NULL;*xx=0; }
+		gbassert_false( m_list->m_listPtr > m_list->m_listEnd );
 	}
  done:
 	// now point to the end of the data
@@ -379,8 +376,7 @@ bool Msg1::sendSomeOfList ( ) {
  	QUICKPOLL(m_niceness);
 
 	// sanity test for new rdbs
-	if ( m_list->m_fixedDataSize != getDataSizeFromRdbId(m_rdbId) ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( m_list->m_fixedDataSize != getDataSizeFromRdbId(m_rdbId) );
 
 	// little debug thing for genCatdb from msg9b's huge list add
 	//if ( m_list->m_listSize > 10000000 )
@@ -527,7 +523,7 @@ skip:
 	// sanity check
 	//if ( collLen <= 0 ) {
 	//	log(LOG_LOGIC,"net: No collection specified for list add.");
-	//	//char *xx = NULL; *xx = 0;
+	//	//gbassert(false);
 	//	g_errno = ENOCOLLREC;
 	//	return true;
 	//}
@@ -910,7 +906,7 @@ uint32_t getGroupId ( char rdbId , char *key, bool split ) {
 	else if ( rdbId == RDB2_CATDB2 )
 		return g_tagdb.getGroupId((key_t *)key);
 	// core -- must be provided
-	char *xx = NULL; *xx = 0;
+	gbassert(false);
 	//groupId=key.n1 & g_hostdb.m_groupMask;
 	return (((key_t *)key)->n1) & g_hostdb.m_groupMask;
 	}
@@ -924,7 +920,7 @@ uint32_t getGroupId ( char rdbId , char *key, bool split ) {
 	if ( rdbId == RDB2_DATEDB2 )
 		return g_datedb.getNoSplitGroupId((key128_t *)key);
 	// nobody else can be "no split" i guess
-	char *xx = NULL; *xx = 0;
+	gbassert(false);
 	return 0;
 }
 */

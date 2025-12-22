@@ -669,7 +669,7 @@ class XmlDoc {
 	int32_t *getFinalCrawlDelay();
 	int32_t      m_finalCrawlDelay;
 	//int32_t getTryAgainTimeDelta() { 
-	//	if ( ! m_tryAgainTimeDeltaValid ) { char *xx=NULL;*xx=0;}
+	//	if ( ! m_tryAgainTimeDeltaValid ) { gbassert(false);}
 	//	return m_tryAgainTimeDelta;
 	//};
 	char *getIsWWWDup ( ) ;

@@ -127,8 +127,8 @@ bool RdbTree::set ( int32_t fixedDataSize ,
 	// set rdbid
 	m_rdbId = rdbId; // -1;
 	// sanity
-	if ( rdbId < -1       ) { char *xx=NULL;*xx=0; }
-	if ( rdbId >= RDB_END ) { char *xx=NULL;*xx=0; }
+	gbassert_false( rdbId < -1       );
+	gbassert_false( rdbId >= RDB_END );
 	// if its doledb, set it
 	//if ( dbname && strcmp(dbname,"doledb") == 0 ) m_rdbId = RDB_DOLEDB;
 	// adjust m_maxMem to virtual infinity if it was -1
@@ -168,7 +168,7 @@ void RdbTree::reset ( ) {
 		// it calls Collectiondb::deleteRec() which calls
 		// SpiderColl::reset() which calls m_waitingTree.reset()
 		// which was coring here! so take this out
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 	}
 	// unprotect it all
 	if ( m_useProtection ) unprotect ( );
@@ -285,7 +285,7 @@ int32_t RdbTree::clear ( ) {
 		CollectionRec *cr = g_collectiondb.getRec(i);
 		if ( ! cr ) continue;
 		if ( m_rdbId < 0 ) continue;
-		//if (((unsigned char)m_rdbId)>=RDB_END){char *xx=NULL;*xx=0; }
+		//if (((unsigned char)m_rdbId)>=RDB_END){gbassert(false); }
 		cr->m_numNegKeysInTree[(unsigned char)m_rdbId] = 0;
 		cr->m_numPosKeysInTree[(unsigned char)m_rdbId] = 0;
 	}
@@ -483,20 +483,19 @@ int32_t RdbTree::addNode ( collnum_t collnum ,
 	m_needsSave = true;
 
 	// sanity check - no empty positive keys for doledb
-	if ( m_rdbId == RDB_DOLEDB && dataSize == 0 && (key[0]&0x01) == 0x01){
-		char *xx=NULL;*xx=0; }
+	gbassert_false( m_rdbId == RDB_DOLEDB && dataSize == 0 && (key[0]&0x01) == 0x01);
 
 	// for posdb
-	if ( m_ks == 18 &&(key[0] & 0x06) ) {char *xx=NULL;*xx=0; }
+	gbassert_false( m_ks == 18 &&(key[0] & 0x06) );
 
 	// sanity check, break if 0 > titleRec > 100MB, it's probably corrupt
 	//if ( m_dbname && m_dbname[0]=='t' && dataSize >= 4 && 
 	//     (*((int32_t *)data) > 100000000 || *((int32_t *)data) < 0 ) ) {
-	//	char *xx = NULL; *xx = 0; }
+	//	gbassert(false); }
 	// sanity check (MDW)
 	//if ( dataSize == 0 && (*key & 0x01) && m_dbname[0] != 'c' && 
 	//     (*key & 0x02) ) {
-	//	char *xx = NULL; *xx = 0; }
+	//	gbassert(false); }
 	// commented out because is90PercentFull checks m_memOccupied and
 	// we can breech m_memAlloced w/o breeching 90% of m_memOccupied
 	// if ( m_memAlloced + dataSize > m_maxMem) {
@@ -556,7 +555,7 @@ int32_t RdbTree::addNode ( collnum_t collnum ,
 		// crap, when fixing a tree this will segfault because
 		// m_recs[collnum] is NULL.
 		if ( m_rdbId >= 0 && g_collectiondb.m_recs[collnum] ) {
-			//if( ((unsigned char)m_rdbId)>=RDB_END){char *xx=NULL;*xx=0; }
+			//if( ((unsigned char)m_rdbId)>=RDB_END){gbassert(false); }
 			g_collectiondb.m_recs[collnum]->
 				m_numNegKeysInTree[(unsigned char)m_rdbId] =0;
 			g_collectiondb.m_recs[collnum]->
@@ -640,7 +639,7 @@ int32_t RdbTree::addNode ( collnum_t collnum ,
 		// m_recs[collnum] is NULL.
 		if ( m_rdbId >= 0 && g_collectiondb.m_recs[collnum] ) {
 			//if( ((unsigned char)m_rdbId)>=RDB_END){
-			//char *xx=NULL;*xx=0; }
+			//gbassert(false); }
 			CollectionRec *cr ;
 			cr = g_collectiondb.m_recs[collnum];
 			if(cr)cr->m_numNegKeysInTree[(unsigned char)m_rdbId]++;
@@ -653,7 +652,7 @@ int32_t RdbTree::addNode ( collnum_t collnum ,
 		// m_recs[collnum] is NULL.
 		if ( m_rdbId >= 0 && g_collectiondb.m_recs[collnum] ) {
 			//if( ((unsigned char)m_rdbId)>=RDB_END){
-			//char *xx=NULL;*xx=0; }
+			//gbassert(false); }
 			CollectionRec *cr ;
 			cr = g_collectiondb.m_recs[collnum];
 			if(cr)cr->m_numPosKeysInTree[(unsigned char)m_rdbId]++;
@@ -728,7 +727,7 @@ void RdbTree::deleteNodes ( collnum_t collnum ,
 		log("db: Can not delete record from tree because "
 		    "not writable 2. name=%s",m_dbname);
 		return;
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 	}
 
 	// protect it all from writes again
@@ -760,10 +759,10 @@ void RdbTree::deleteNode3 ( int32_t i , bool freeData ) {
 		log("db: Can not delete record from tree because "
 		    "not writable. name=%s",m_dbname);
 		return;
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 	}
 	// must be saved from interrupts lest i be changed
-	//if(g_intOff <= 0 && g_globalNiceness == 0 ) { char *xx=NULL;*xx=0; }
+	//if(g_intOff <= 0 && g_globalNiceness == 0 ) { gbassert(false); }
 
 	// no deleting if we're saving
 	if ( m_isSaving ) log("db: Can not delete record from tree because "
@@ -898,7 +897,7 @@ void RdbTree::deleteNode3 ( int32_t i , bool freeData ) {
 	//m_numPosKeysPerColl[m_collnums[i]] = 0;
 	if ( m_rdbId >= 0 ) {
 		//if ( ((unsigned char)m_rdbId)>=RDB_END){
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 		CollectionRec *cr ;
 		cr = g_collectiondb.m_recs[m_collnums[i]];
 		if(cr){
@@ -970,7 +969,7 @@ void RdbTree::deleteNode3 ( int32_t i , bool freeData ) {
 		m_numNegativeKeys--;
 		//m_numNegKeysPerColl[m_collnums[i]]--;
 		if ( m_rdbId >= 0 ) {
-			//if( ((unsigned char)m_rdbId)>=RDB_END){char *xx=NULL;*xx=0; }
+			//if( ((unsigned char)m_rdbId)>=RDB_END){gbassert(false); }
 			CollectionRec *cr ;
 			cr = g_collectiondb.m_recs[m_collnums[i]];
 			if(cr)cr->m_numNegKeysInTree[(unsigned char)m_rdbId]--;
@@ -980,7 +979,7 @@ void RdbTree::deleteNode3 ( int32_t i , bool freeData ) {
 		m_numPositiveKeys--;
 		//m_numPosKeysPerColl[m_collnums[i]]--;
 		if ( m_rdbId >= 0 ) {
-			//if( ((unsigned char)m_rdbId)>=RDB_END){char *xx=NULL;*xx=0; }
+			//if( ((unsigned char)m_rdbId)>=RDB_END){gbassert(false); }
 			CollectionRec *cr ;
 			cr = g_collectiondb.m_recs[m_collnums[i]];
 			if(cr)cr->m_numPosKeysInTree[(unsigned char)m_rdbId]--;
@@ -1037,7 +1036,7 @@ bool RdbTree::deleteKeys ( collnum_t collnum , char *keys , int32_t numKeys ) {
 bool RdbTree::deleteList ( collnum_t collnum ,
 			   RdbList *list , bool doBalancing ) {
 	// sanity check
-	if ( list->m_ks != m_ks ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( list->m_ks != m_ks );
 	// return if no non-empty nodes in the tree
 	if ( m_numUsedNodes <= 0 ) return true;
 	// reset before calling list->getCurrent*() functions
@@ -1290,8 +1289,7 @@ bool RdbTree::checkTree2 ( bool printMsgs , bool doChainTest ) {
 			m_keys[i*m_ks] &= 0xfd;
 		}
 		// for posdb
-		if ( m_ks == 18 &&(m_keys[i*m_ks] & 0x06) ) {
-			char *xx=NULL;*xx=0; }
+		gbassert_false( m_ks == 18 &&(m_keys[i*m_ks] & 0x06) );
 
 		if ( isTitledb && m_data[i] ) {
 			char *data = m_data[i];
@@ -1433,7 +1431,7 @@ bool RdbTree::checkTree2 ( bool printMsgs , bool doChainTest ) {
 			// assume linkdb
 			//key192_t *kp = (key192_t *)k;
 			//unsigned char hc = g_linkdb.getLinkerHopCount_uk(kp);
-			//if ( hc ) { char *xx=NULL;*xx=0; }
+			//if ( hc ) { gbassert(false); }
 		}
 		//ensure depth
 		int32_t newDepth = computeDepth ( i );
@@ -1544,49 +1542,49 @@ bool RdbTree::growTree ( int32_t nn , int32_t niceness ) {
 	// . downsizing should NEVER fail!
 	if ( cp ) {
 		ss = (collnum_t *)mrealloc ( cp , nn*cs , on*cs , m_allocName);
-		if ( ! ss ) { char *xx = NULL; *xx = 0; }
+		gbassert(ss);
 		m_collnums = ss;
 		QUICKPOLL(niceness);
 	}
 	if ( kp ) {
 		kk = (char *)mrealloc ( kp, nn*k, on*k, m_allocName );
-		if ( ! kk ) { char *xx = NULL; *xx = 0; }
+		gbassert(kk);
 		m_keys = kk;
 		QUICKPOLL(niceness);
 	}
 	if ( lp ) {
 		x = (int32_t *)mrealloc ( lp , nn*4 , on*4 , m_allocName );
-		if ( ! x ) { char *xx = NULL; *xx = 0; }
+		gbassert(x);
 		m_left = x;
 		QUICKPOLL(niceness);
 	}
 	if ( rp ) {
 		x = (int32_t *)mrealloc ( rp , nn*4 , on*4 , m_allocName );
-		if ( ! x ) { char *xx = NULL; *xx = 0; }
+		gbassert(x);
 		m_right = x;
 		QUICKPOLL(niceness);
 	}
 	if ( pp ) {
 		x = (int32_t *)mrealloc ( pp , nn*4 , on*4 , m_allocName );
-		if ( ! x ) { char *xx = NULL; *xx = 0; }
+		gbassert(x);
 		m_parents = x;
 		QUICKPOLL(niceness);
 	}
 	if ( dp && m_fixedDataSize != 0 ) {
 		p = (char **)mrealloc ( dp , nn*d , on*d , m_allocName );
-		if ( ! p ) { char *xx = NULL; *xx = 0; }
+		gbassert(p);
 		m_data = p;
 		QUICKPOLL(niceness);
 	}
 	if ( sp && m_fixedDataSize == -1 ) {
 		x = (int32_t *)mrealloc ( sp , nn*4 , on*4 , m_allocName );
-		if ( ! x ) { char *xx = NULL; *xx = 0; }
+		gbassert(x);
 		m_sizes = x;
 		QUICKPOLL(niceness);
 	}
 	if ( tp && m_doBalancing ) {
 		s = (char *)mrealloc ( tp , nn   , on   , m_allocName );
-		if ( ! s ) { char *xx = NULL; *xx = 0; }
+		gbassert(s);
 		m_depth = s;
 		QUICKPOLL(niceness);
 	}
@@ -1858,7 +1856,7 @@ bool RdbTree::getList ( collnum_t collnum ,
 			//if (m_dbname && m_dbname[0]=='t' && dataSize >= 4 && 
 			//     (*((int32_t *)m_data[node]) > 100000000 || 
 			//      *((int32_t *)m_data[node]) < 0 ) ) {
-			//	char *xx = NULL; *xx = 0; }
+			//	gbassert(false); }
 			// add the key and data
 			if ( ! list->addRecord ( key,//&m_keys[node*m_ks] ,
 						 dataSize     ,
@@ -1884,9 +1882,8 @@ bool RdbTree::getList ( collnum_t collnum ,
 				     "and data size of %" INT32 " into a list.",
 				     node,(int32_t)m_data[node],dataSize);
 				// detect tagdb corruption
-				if ( tag->m_bufSize < 0 ||
-				     tag->m_bufSize > 3000 ) {
-					char *xx=NULL;*xx=0; }
+				gbassert_false( tag->m_bufSize < 0 ||
+				     tag->m_bufSize > 3000 );
 			}
 			*/
 		}
@@ -2473,7 +2470,7 @@ bool RdbTree::fastSave ( char    *dir       ,
 	// sanity check
 	if ( dbname && strcmp(dbname,m_dbname) ) {
 		log("db: tree dbname mismatch.");
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 	m_state    = state;
 	m_callback = callback;
@@ -2908,7 +2905,7 @@ int32_t RdbTree::fastLoadBlock ( BigFile   *f          ,
 	// get valid collnum ranges
 	int32_t max  = g_collectiondb.m_numRecs;
 	// sanity check
-	//if ( max >= MAX_COLLS ) { char *xx = NULL; *xx = 0; }
+	//if ( max >= MAX_COLLS ) { gbassert(false); }
 	// define ending node for all loops
 	int32_t end = start + n ;
 	// int16_tcut
@@ -3238,7 +3235,7 @@ int32_t  RdbTree::getNumNegativeKeys ( collnum_t collnum ) {
 	if ( m_rdbId < 0 ) return m_numNegativeKeys;
 	CollectionRec *cr = g_collectiondb.m_recs[collnum];
 	if ( ! cr ) return 0;
-	//if ( ! m_countsInitialized ) { char *xx=NULL;*xx=0; }
+	//if ( ! m_countsInitialized ) { gbassert(false); }
 	return cr->m_numNegKeysInTree[(unsigned char)m_rdbId]; 
 }
 
@@ -3247,7 +3244,7 @@ int32_t  RdbTree::getNumPositiveKeys ( collnum_t collnum ) {
 	if ( m_rdbId < 0 ) return m_numPositiveKeys;
 	CollectionRec *cr = g_collectiondb.m_recs[collnum];
 	if ( ! cr ) return 0;
-	//if ( ! m_countsInitialized ) { char *xx=NULL;*xx=0; }
+	//if ( ! m_countsInitialized ) { gbassert(false); }
 	return cr->m_numPosKeysInTree[(unsigned char)m_rdbId]; 
 }
 
@@ -3259,7 +3256,7 @@ void RdbTree::setNumKeys ( CollectionRec *cr ) {
 
 	return;
 
-	if ( ((unsigned char)m_rdbId) >= RDB_END ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ((unsigned char)m_rdbId) >= RDB_END );
 
 	collnum_t collnum = cr->m_collnum;
 	cr->m_numNegKeysInTree[(unsigned char)m_rdbId] = 0;

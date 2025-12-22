@@ -38,8 +38,8 @@ class Slot {
 	Slot     *m_nextAvail;
 };
 
-#define  sleep(a) { char *xx=NULL;*xx=0; }
-#define usleep(a) { char *xx=NULL;*xx=0; }
+#define  sleep(a) { gbassert(false); }
+#define usleep(a) { gbassert(false); }
 
 // linux 2.2 kernel has this limitation
 #define MAX_NUM_FDS 1024

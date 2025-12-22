@@ -577,7 +577,7 @@ void Clusterdb::getSampleVector ( char *vec , TermTable *table ) {
 		if ( mask == 0 ) {
 			log (LOG_LOGIC,"build: Clusterdb sample vector mask "
 			     "is already at 0.");
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		// debug msg
 		//log("AGAIN");

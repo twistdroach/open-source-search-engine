@@ -44,7 +44,7 @@ Rdb::Rdb ( ) {
 void Rdb::reset ( ) {
 	//if ( m_needsSave ) {
 	//	log(LOG_LOGIC,"db: Trying to reset tree without saving.");
-	//	char *xx = NULL; *xx = 0;
+	//	gbassert(false);
 	//	return;
 	//}
 	/*
@@ -100,9 +100,9 @@ void Rdb::addBase ( collnum_t collnum , RdbBase *base ) {
 	}
 	CollectionRec *cr = g_collectiondb.m_recs[collnum];
 	if ( ! cr ) return;
-	//if ( cr->m_bases[(unsigned char)m_rdbId] ) { char *xx=NULL;*xx=0; }
+	//if ( cr->m_bases[(unsigned char)m_rdbId] ) { gbassert(false); }
 	RdbBase *oldBase = cr->getBasePtr ( m_rdbId );
-	if ( oldBase ) { char *xx=NULL;*xx=0; }
+	gbassert_false( oldBase );
 	//cr->m_bases[(unsigned char)m_rdbId] = base;
 	cr->setBasePtr ( m_rdbId , base );
 	log ( LOG_DEBUG,"db: added base to collrec "
@@ -138,7 +138,7 @@ bool Rdb::init ( char          *dir                  ,
 	// reset all
 	reset();
 	// sanity
-	if ( ! dir ) { char *xx=NULL;*xx=0; }
+	gbassert(dir);
 	// this is the working dir, all collection repositories are subdirs
 	//m_dir.set ( dir );
 	// catdb, statsdb, accessdb, facebookdb, syncdb
@@ -163,7 +163,7 @@ bool Rdb::init ( char          *dir                  ,
 	if ( m_rdbId <= 0 ) 
 		return log(LOG_LOGIC,"db: dbname of %s is invalied.",dbname);
 	// sanity check
-	if ( m_ks != getKeySizeFromRdbId(m_rdbId) ) { char*xx=NULL;*xx=0;}
+	gbassert_false( m_ks != getKeySizeFromRdbId(m_rdbId) );
 	// get page size
 	m_pageSize = GB_TFNDB_PAGE_SIZE;
 	if ( m_rdbId == RDB_INDEXDB    ) m_pageSize = GB_INDEXDB_PAGE_SIZE;
@@ -361,7 +361,7 @@ bool Rdb::init ( char          *dir                  ,
 // . returns false and sets g_errno on error
 bool Rdb::updateToRebuildFiles ( Rdb *rdb2 , char *coll ) {
 	// how come not in repair mode?
-	if ( ! g_repairMode ) { char *xx = NULL; *xx = 0; }
+	gbassert(g_repairMode);
 	// make a dir in the trash subfolder to hold them
 	uint32_t t = (uint32_t)getTime();
 	char dstDir[282];
@@ -389,7 +389,7 @@ bool Rdb::updateToRebuildFiles ( Rdb *rdb2 , char *coll ) {
 	// allow anything more to be added... and we do not allow any
 	// collections to be deleted via Collectiondb::deleteRec() when
 	// in repair mode... how could this happen?
-	//if ( m_needsSave ) { char *xx = NULL; *xx = 0; }
+	//if ( m_needsSave ) { gbassert(false); }
 	// delete old collection recs
 	CollectionRec *cr = g_collectiondb.getRec ( coll );
 	if ( ! cr ) return log("db: Exchange could not find coll, %s.",coll);
@@ -600,7 +600,7 @@ bool Rdb::deleteAllRecs ( collnum_t collnum ) {
 	// only for doledb now, because we unlink we do not move the files
 	// into the trash subdir and doledb is easily regenerated. i don't
 	// want to take the risk with other files.
-	if ( m_rdbId != RDB_DOLEDB ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_rdbId != RDB_DOLEDB );
 
 	CollectionRec *cr = g_collectiondb.getRec ( collnum );
 
@@ -939,7 +939,7 @@ bool Rdb::close ( void *state , void (* callback)(void *state ), bool urgent ,
 void closeSleepWrapper ( int fd , void *state ) {
 	Rdb *THIS = (Rdb *)state;
 	// sanity check
-	if ( ! THIS->m_isClosing ) { char *xx = NULL; *xx = 0; }
+	gbassert(THIS->m_isClosing);
 	// continue closing, this returns false if blocked
 	if ( ! THIS->close ( THIS->m_closeState, 
 			     THIS->m_closeCallback ,
@@ -978,8 +978,7 @@ void Rdb::doneSaving ( ) {
 	//	return;
 	//}
 	// sanity
-	if ( m_dbname == NULL || m_dbname[0]=='\0' ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( m_dbname == NULL || m_dbname[0]=='\0' );
 	// display any error, if any, otherwise prints "Success"
 	logf(LOG_INFO,"db: Successfully saved %s-saved.dat.", m_dbname);
 
@@ -1125,7 +1124,7 @@ bool Rdb::loadTree ( ) {
 		if(!m_buckets.testAndRepair()) {
 			log("db: unrepairable buckets, "
 			    "remove and restart.");
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 
 		
@@ -1184,7 +1183,7 @@ bool Rdb::dumpTree ( int32_t niceness ) {
 	if ( g_loop.m_inQuickPoll ) return true;
 
 	// sanity checks
-	if (   g_loop.m_inQuickPoll ) { char *xx=NULL;*xx=0; }
+	gbassert_false(   g_loop.m_inQuickPoll );
 	
 	// bail if already dumping
 	//if ( m_dump.isDumping() ) return true;
@@ -1643,7 +1642,7 @@ bool Rdb::dumpCollLoop ( ) {
 	if(m_useTree) maxFileSize = m_tree.getMemOccupiedForList ();
 	else          maxFileSize = m_buckets.getMemOccupied();
 	// sanity
-	if ( maxFileSize < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( maxFileSize < 0 );
 	// because we are actively spidering the list we dump ends up
 	// being more, by like 20% or so, otherwise we do not make a
 	// big enough diskpagecache and it logs breach msgs... does not
@@ -1697,7 +1696,7 @@ bool Rdb::dumpCollLoop ( ) {
 		// and if that is there do not clear RdbMem!
 		m_dumpErrno = g_errno;
 		// for now core out
-		//char *xx=NULL;*xx=0;
+		//gbassert(false);
 	}
 
 	// loop back up since we did not block
@@ -2008,7 +2007,7 @@ bool Rdb::addList ( collnum_t collnum , RdbList *list,
 	// if nothing then just return true
 	if ( list->isExhausted() ) return true;
 	// sanity check
-	if ( list->m_ks != m_ks ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( list->m_ks != m_ks );
 	// . do not add data to indexdb if we're in urgent merge mode!
 	// . sender will wait and try again
 	// . this is killing us! we end up adding a bunch of recs to sectiondb
@@ -2213,7 +2212,7 @@ bool Rdb::addList ( collnum_t collnum , RdbList *list,
 	key_t endKey   = g_titledb.makeLastTitleRecKey  ( d );
 	int32_t  n        = tt->getNextNode ( collnum , startKey );
 	// sanity check -- make sure url is NULL terminated
-	//if ( ulen > 0 && st->m_url[st->m_ulen] ) { char*xx=NULL;*xx=0; }
+	//if ( ulen > 0 && st->m_url[st->m_ulen] ) { gbassert(false); }
 	// Tfndb::makeExtQuick masks the host hash with TFNDB_EXTMASK
 	uint32_t mask1 = (uint32_t)TFNDB_EXTMASK;
 	// but use the smallest of these
@@ -2444,7 +2443,7 @@ bool Rdb::addRecord ( collnum_t collnum,
 	if ( KEYNEG(key) ) {
 		if ( (dataSize > 0 && data) ) {
 			log("db: Got data for a negative key.");
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 	}
 	// sanity check
@@ -2452,7 +2451,7 @@ bool Rdb::addRecord ( collnum_t collnum,
 		g_errno = EBADENGINEER;
 		log(LOG_LOGIC,"db: addRecord: DataSize is %" INT32 " should "
 		    "be %" INT32 "", dataSize,m_fixedDataSize );
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 		return false;
 	}
 
@@ -2505,14 +2504,14 @@ bool Rdb::addRecord ( collnum_t collnum,
 	//else if ( m_fixedDataSize != 0 ) {
 	//	g_errno = EBADENGINEER;
 	//	log(LOG_LOGIC,"db: addRecord: Data is required for rdb rec.");
-	//	char *xx=NULL;*xx=0;
+	//	gbassert(false);
 	//}
 	// sanity check
 	//if ( m_fixedDataSize >= 0 && dataSize != m_fixedDataSize ) {
 	//	g_errno = EBADENGINEER;
 	//	log(LOG_LOGIC,"db: addRecord: DataSize is %" INT32 " should "
 	//	    "be %" INT32 "", dataSize,m_fixedDataSize );
-	//	char *xx=NULL;*xx=0;
+	//	gbassert(false);
 	//	return false;
 	//}
 
@@ -2571,7 +2570,7 @@ bool Rdb::addRecord ( collnum_t collnum,
 
 	if ( m_rdbId == RDB_DOLEDB && g_conf.m_logDebugSpider ) {
 		// must be 96 bits
-		if ( m_ks != 12 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_ks != 12 );
 		// set this
 		key_t doleKey = *(key_t *)key;
 		// remove from g_spiderLoop.m_lockTable too!
@@ -2605,7 +2604,7 @@ bool Rdb::addRecord ( collnum_t collnum,
 	/*
 	if ( m_rdbId == RDB_DOLEDB ) {
 		// must be 96 bits
-		if ( m_ks != 12 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_ks != 12 );
 		// set this
 		key_t doleKey = *(key_t *)key;
 		// remove from g_spiderLoop.m_lockTable too!
@@ -2976,7 +2975,7 @@ bool Rdb::addRecord ( collnum_t collnum,
 		// sanity check
 		if ( n < 0 ) {
 			log("db: Did not find tfndb key to rollback.");
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		// did we have an "oppKey"?
 		if ( s_tfndbHadOppKey ) {
@@ -2986,7 +2985,7 @@ bool Rdb::addRecord ( collnum_t collnum,
 			// would since we deleted it above
 			if ( n < 0 ) {
 				log("db: Failed to re-add tfndb key.");
-				char *xx = NULL; *xx = 0;
+				gbassert(false);
 			}
 		}
 	}
@@ -3286,7 +3285,7 @@ char getKeySizeFromRdbId ( uint8_t rdbId ) {
 		// only stock the table once
 		s_flag = false;
 		// sanity check. do not breach s_table1[]!
-		if ( RDB_END >= 50 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( RDB_END >= 50 );
 		// . loop over all possible rdbIds
 		// . RDB_NONE is 0!
 		for ( int32_t i = 1 ; i < RDB_END ; i++ ) {
@@ -3317,7 +3316,7 @@ char getKeySizeFromRdbId ( uint8_t rdbId ) {
 	// sanity check
 	if ( s_table1[rdbId] == 0 ) { 
 		log("rdb: bad lookup rdbid of %i",(int)rdbId);
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
 	return s_table1[rdbId];
 }
@@ -3330,7 +3329,7 @@ int32_t getDataSizeFromRdbId ( uint8_t rdbId ) {
 		// only stock the table once
 		s_flag = false;
 		// sanity check
-		if ( RDB_END >= 80 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( RDB_END >= 80 );
 		// loop over all possible rdbIds
 		for ( int32_t i = 1 ; i < RDB_END ; i++ ) {
 			// assume none
@@ -3377,13 +3376,13 @@ int32_t getDataSizeFromRdbId ( uint8_t rdbId ) {
 				ds = -1;
 			else if ( i == RDB2_SECTIONDB2 )
 				ds = sizeof(SectionVote);
-			else { char *xx=NULL;*xx=0; }
+			else { gbassert(false); }
 			// get the rdb for this rdbId
 			//Rdb *rdb = getRdbFromId ( i );
 			// sanity check
-			//if ( ! rdb ) continue;//{ char *xx=NULL;*xx=0; }
+			//if ( ! rdb ) continue;//{ gbassert(false); }
 			// sanity!
-			//if ( rdb->m_ks == 0 ) { char *xx=NULL;*xx=0; }
+			//if ( rdb->m_ks == 0 ) { gbassert(false); }
 			// set the table
 			s_table2[i] = ds;//rdb->m_fixedDataSize;
 		}
@@ -3549,7 +3548,7 @@ int32_t Rdb::reclaimMemFromDeletedTreeNodes( int32_t niceness ) {
 	log("rdb: reclaiming tree mem for doledb");
 
 	// this only works for non-dumped RdbMem right now, i.e. doledb only
-	if ( m_rdbId != RDB_DOLEDB ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_rdbId != RDB_DOLEDB );
 
 	// start scanning the mem pool
 	char *p    = m_mem.m_mem;
@@ -3591,7 +3590,7 @@ int32_t Rdb::reclaimMemFromDeletedTreeNodes( int32_t niceness ) {
 		//char *key = m_tree.getKey(i);
 		//if ( (key[0] & 0x01) == 0x00 ) { occupied++; continue; }
 		// sanity, ensure legit
-		if ( data < pstart ) { char *xx=NULL;*xx=0; }
+		gbassert_false( data < pstart );
 		// offset
 		int32_t doff = (int32_t)(data - pstart);
 		// a dup? sanity check
@@ -3666,7 +3665,7 @@ int32_t Rdb::reclaimMemFromDeletedTreeNodes( int32_t niceness ) {
 		p += recSize;
 	}
 
-	//if ( skipped != marked ) { char *xx=NULL;*xx=0; }
+	//if ( skipped != marked ) { gbassert(false); }
 
 	// sanity -- this breaks us. i tried taking the quickpolls out to stop
 	// if(ht.getNumSlotsUsed()!=m_tree.m_numUsedNodes){
@@ -3675,7 +3674,7 @@ int32_t Rdb::reclaimMemFromDeletedTreeNodes( int32_t niceness ) {
 	// 	    ,m_tree.m_numUsedNodes
 	// 	    );
 	// 	while(1==1)sleep(1);
-	// 	char *xx=NULL;*xx=0;
+	// 	gbassert(false);
 	// }
 
 	int32_t inUseNew = dst - pstart;
@@ -3686,11 +3685,11 @@ int32_t Rdb::reclaimMemFromDeletedTreeNodes( int32_t niceness ) {
 	// how much did we reclaim
 	int32_t reclaimed = inUseOld - inUseNew;
 
-	if ( reclaimed < 0 ) { char *xx=NULL;*xx=0; }
-	if ( inUseNew  < 0 ) { char *xx=NULL;*xx=0; }
-	if ( inUseNew  > m_mem.m_memSize ) { char *xx=NULL;*xx=0; }
+	gbassert_false( reclaimed < 0 );
+	gbassert_false( inUseNew  < 0 );
+	gbassert_false( inUseNew  > m_mem.m_memSize );
 
-	//if ( reclaimed == 0 && marked ) { char *xx=NULL;*xx=0;}
+	//if ( reclaimed == 0 && marked ) { gbassert(false);}
 
 	// now update data ptrs in the tree, m_data[]
 	for ( int i = 0 ; i < nn ; i++ ) {
@@ -3700,10 +3699,10 @@ int32_t Rdb::reclaimMemFromDeletedTreeNodes( int32_t niceness ) {
 		// update the data otherwise
 		char *data = m_tree.m_data[i];
 		// sanity, ensure legit
-		if ( data < pstart ) { char *xx=NULL;*xx=0; }
+		gbassert_false( data < pstart );
 		int32_t offset = data - pstart;
 		int32_t *newOffsetPtr = (int32_t *)ht.getValue ( &offset );
-		if ( ! newOffsetPtr ) { char *xx=NULL;*xx=0; }
+		gbassert(newOffsetPtr);
 		char *newData = pstart + *newOffsetPtr;
 		m_tree.m_data[i] = newData;
 	}

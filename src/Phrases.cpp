@@ -94,7 +94,7 @@ bool Phrases::set( Words    *words,
 	//m_numWordsTotal5= (unsigned char *)p ; p += m_numPhrases * 1;
 
 	// sanity
-	if ( p != m_buf + need ) { char *xx=NULL;*xx=0; }
+	gbassert_false( p != m_buf + need );
 
 	// clear this
 	//memset ( m_numWordsTotal , 0 , m_numPhrases );
@@ -352,12 +352,12 @@ void Phrases::setPhrase ( int32_t i, int32_t niceness ) {
 	// don't jump the edge
 	//if ( j >= nw ) j = nw - 1;
 	// sanity check
-	if ( lastWordj == -1 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( lastWordj == -1 );
 	// set the phrase length (from word #i up to & including word #j)
 	//m_numWordsTotal[i] = j - i + 1;
 	//m_numWordsTotal [i] = lastWordj - i + 1;
 	// sanity check
-	if ( lastWordj - i + 1 > 255 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( lastWordj - i + 1 > 255 );
 	// set the phrase spam
 	if ( minSpam == -1 ) minSpam = 0;
 	m_phraseSpam[i] = minSpam;
@@ -391,7 +391,7 @@ void Phrases::setPhrase ( int32_t i, int32_t niceness ) {
 	// the score weight, if any
 	//if ( m_phraseScores ) m_phraseScores [i] = minScore;
 	// sanity check
-	//if(m_phraseScores && minScore == 0x7fffffff ) {char *xx =NULL;*xx=0;}
+	//if(m_phraseScores && minScore == 0x7fffffff ) {gbassert(false);}
 	// debug msg
 	//char *w = m_words->getWord(i) ;
 	//int32_t  wlen = m_words->getWordLen(i) ; 
@@ -413,7 +413,7 @@ char *Phrases::getPhrase ( int32_t i , int32_t *phrLen , int32_t npw ) {
 	int32_t  n ;
 	if      ( npw == 2 ) n = m_numWordsTotal2[i] ;
 	else if ( npw == 3 ) n = m_numWordsTotal3[i] ;
-	else { char *xx=NULL; *xx=0; }
+	else { gbassert(false); }
 	//char *w1    = m_words->getWord(i);
 	//char *w2    = m_words->getWord(i+n-1);
 	//int32_t  wlen2 = m_words->getWordLen(i+n-1);

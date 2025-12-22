@@ -216,8 +216,8 @@ bool Threads::init ( ) {
 	//m_needBottom = false;
 
 	// sanity check
-	//if ( sizeof(pthread_t) > sizeof(pid_t) ) { char *xx=NULL;*xx=0; }
-	if ( sizeof(pid_t) > sizeof(pthread_t) ) { char *xx=NULL;*xx=0; }
+	//if ( sizeof(pthread_t) > sizeof(pid_t) ) { gbassert(false); }
+	gbassert_false( sizeof(pid_t) > sizeof(pthread_t) );
 
 	setPid();
 
@@ -616,25 +616,25 @@ void Threads::resumeLowPriorityThreads() {
 void checkList  ( ThreadEntry **headPtr , ThreadEntry **tailPtr ) {
 	ThreadEntry *t = *headPtr;
 	// another check
-	if ( tailPtr && *headPtr && ! *tailPtr ) { char *xx=NULL;*xx=0; }
-	if ( tailPtr && ! *headPtr && *tailPtr ) { char *xx=NULL;*xx=0; }
+	gbassert_false( tailPtr && *headPtr && ! *tailPtr );
+	gbassert_false( tailPtr && ! *headPtr && *tailPtr );
 	if ( ! t ) return;
 	// head can not have a prev
-	if ( t->m_prevLink ) { char *xx=NULL;*xx=0; }
+	gbassert_false( t->m_prevLink );
 	ThreadEntry *last = NULL;
 	for ( ; t ; t = t->m_nextLink ) {
-		if ( t->m_prevLink != last ) { char *xx=NULL;*xx=0; }
-		if ( last && last->m_nextLink != t ) { char *xx=NULL;*xx=0; }
+		gbassert_false( t->m_prevLink != last );
+		gbassert_false( last && last->m_nextLink != t );
 		last = t;
 	}
 	if ( ! tailPtr ) return;
 	t = *tailPtr;
 	// tail can not have a next
-	if ( t->m_nextLink ) { char *xx=NULL;*xx=0; }
+	gbassert_false( t->m_nextLink );
 	last = NULL;
 	for ( ; t ; t = t->m_prevLink ) {
-		if ( t->m_nextLink != last ) { char *xx=NULL;*xx=0; }
-		if ( last && last->m_prevLink != t ) { char *xx=NULL;*xx=0; }
+		gbassert_false( t->m_nextLink != last );
+		gbassert_false( last && last->m_prevLink != t );
 		last = t;
 	}
 }
@@ -946,7 +946,7 @@ ThreadEntry *ThreadQueue::addEntry ( int32_t   niceness                     ,
 	}
 
 	// sanity
-	if ( t->m_isOccupied ) { char *xx=NULL;*xx=0; }
+	gbassert_false( t->m_isOccupied );
 
 
 	// debug test
@@ -1103,7 +1103,7 @@ ThreadEntry *ThreadQueue::addEntry ( int32_t   niceness                     ,
 	// remove from empty list
 	removeLink ( &m_emptyHead , t );
 	// sanity
-	if ( m_emptyHead == t ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_emptyHead == t );
 	// add to the new waiting list at the end
 	addLinkToTail ( bestHeadPtr , bestTailPtr , t );
 
@@ -1395,7 +1395,7 @@ bool ThreadQueue::timedCleanUp ( int32_t maxNiceness ) {
 		//int32_t niceness = t->m_niceness;
 		char qnum     = t->m_qnum;
 		ThreadQueue *tq = &g_threads.m_threadQueues[(int)qnum];
-		if ( tq != this ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( tq != this );
 
 		// get read size before cleaning it up -- it could get nuked
 		//int32_t rs = 0;
@@ -1549,7 +1549,7 @@ void makeCallback ( ThreadEntry *t ) {
 	// only be calling niceness 0 callbacks here
 	// no, this is only called from sleep wrappers originating from
 	// Loop.cpp, so we should be ok
-	//if ( g_niceness==0 && t->m_niceness ) { char *xx=NULL;*xx=0; }
+	//if ( g_niceness==0 && t->m_niceness ) { gbassert(false); }
 
 	// save it
 	int32_t saved = g_niceness;
@@ -1760,7 +1760,7 @@ bool ThreadQueue::cleanUp ( ThreadEntry *tt , int32_t maxNiceness ) {
 		//int32_t niceness = t->m_niceness;
 		char qnum     = t->m_qnum;
 		ThreadQueue *tq = &g_threads.m_threadQueues[(int)qnum];
-		if ( tq != this ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( tq != this );
 
 		/*
 		// get read size before cleaning it up -- it could get nuked
@@ -2663,7 +2663,7 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 	if ( s_bad ) {
 		log(LOG_LOGIC,"thread: PID received: %" INT32 " > %" INT32 ". Bad.",
 		    s_badPid, (int32_t)MAX_PID);
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 	}
 	// wait for him
 	//ret = waitpid ( -1*pid , &status , 0 );
@@ -2711,8 +2711,7 @@ bool ThreadQueue::launchThreadForReals ( ThreadEntry **headPtr ,
 	t->m_si    = si;
 	t->m_stack = s_stackPtrs [ si ];
 	// check it's aligned
-	if ( (uint64_t)(t->m_stack) & (THRPAGESIZE-1) ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( (uint64_t)(t->m_stack) & (THRPAGESIZE-1) );
 	// UNprotect the whole stack so we can use it
 	mprotect ( t->m_stack + GUARDSIZE , STACK_SIZE - GUARDSIZE , 
 		   PROT_READ | PROT_WRITE );

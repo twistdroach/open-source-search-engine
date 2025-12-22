@@ -32,7 +32,7 @@ Collectiondb::Collectiondb ( ) {
 	if ( RDB_END2 >= RDB_END ) return;
 	log("db: increase RDB_END2 to at least %" INT32 " in "
 	    "Collectiondb.h",(int32_t)RDB_END);
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 }
 
 // reset rdb
@@ -67,7 +67,7 @@ bool Collectiondb::init ( bool isDump ) {
 	if ( RDB_END2 < RDB_END ) { 
 		log("db: increase RDB_END2 to at least %" INT32 " in "
 		    "Collectiondb.h",(int32_t)RDB_END);
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 	// if it set g_errno, return false
 	//if ( g_errno ) return log("admin: Had init error: %s.",
@@ -248,7 +248,7 @@ bool Collectiondb::addExistingColl ( char *coll, collnum_t collnum ) {
 		    "already exists in memory. Do an ls on "
 		    "the working dir to see if there are two "
 		    "collection dirs with the same coll name",coll);
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 
 	// also try by #, i've seen this happen too
@@ -388,7 +388,7 @@ bool Collectiondb::addNewColl ( char *coll ,
 	//}
 	// TODO: scan for holes here...
 	//else { 
-	if ( newCollnum < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( newCollnum < 0 );
 
 	// ceiling?
 	//int64_t maxColls = 1LL<<(sizeof(collnum_t)*8);
@@ -666,17 +666,17 @@ bool Collectiondb::addNewColl ( char *coll ,
 
 void CollectionRec::setBasePtr ( char rdbId , class RdbBase *base ) {
 	// if in the process of swapping in, this will be false...
-	//if ( m_swappedOut ) { char *xx=NULL;*xx=0; }
-	if ( rdbId < 0 || rdbId >= RDB_END ) { char *xx=NULL;*xx=0; }
+	//if ( m_swappedOut ) { gbassert(false); }
+	gbassert_false( rdbId < 0 || rdbId >= RDB_END );
 	// Rdb::deleteColl() will call this even though we are swapped in
 	// but it calls it with "base" set to NULL after it nukes the RdbBase
 	// so check if base is null here.
-	if ( base && m_bases[ (unsigned char)rdbId ]){ char *xx=NULL;*xx=0; }
+	gbassert_false( base && m_bases[ (unsigned char)rdbId ]);
 	m_bases [ (unsigned char)rdbId ] = base;
 }
 
 RdbBase *CollectionRec::getBasePtr ( char rdbId ) {
-	if ( rdbId < 0 || rdbId >= RDB_END ) { char *xx=NULL;*xx=0; }
+	gbassert_false( rdbId < 0 || rdbId >= RDB_END );
 	return m_bases [ (unsigned char)rdbId ];
 }
 
@@ -686,14 +686,14 @@ static bool s_inside = false;
 // . TODO: ensure not called from in thread, not thread safe
 RdbBase *CollectionRec::getBase ( char rdbId ) {
 
-	if ( s_inside ) { char *xx=NULL;*xx=0; }
+	gbassert_false( s_inside );
 
 	if ( ! m_swappedOut ) return m_bases[(unsigned char)rdbId];
 
 	log("cdb: swapin collnum=%" INT32 "",(int32_t)m_collnum);
 
 	// sanity!
-	if ( g_threads.amThread() ) { char *xx=NULL;*xx=0; }
+	gbassert_false( g_threads.amThread() );
 
 	s_inside = true;
 
@@ -1093,7 +1093,7 @@ bool Collectiondb::resetColl ( char *coll ,  bool purgeSeeds) {
 	// must be there. if not, we create test i guess
 	if ( ! cr ) { 
 		log("db: could not get coll rec \"%s\" to reset", coll);
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
 
 	return resetColl2 ( cr->m_collnum, purgeSeeds);
@@ -1124,7 +1124,7 @@ bool Collectiondb::growRecPtrBuf ( collnum_t collnum ) {
 	}
 
 	// sanity
-	if ( m_recPtrBuf.getCapacity() < need ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_recPtrBuf.getCapacity() < need );
 
 	// set it
 	m_recs = (CollectionRec **)m_recPtrBuf.getBufStart();
@@ -1135,7 +1135,7 @@ bool Collectiondb::growRecPtrBuf ( collnum_t collnum ) {
 	// re-max
 	int32_t max = m_recPtrBuf.getCapacity() / sizeof(CollectionRec *);
 	// sanity
-	if ( collnum >= max ) { char *xx=NULL;*xx=0; }
+	gbassert_false( collnum >= max );
 
 	// initialize slot
 	m_recs [ collnum ] = NULL;
@@ -1153,7 +1153,7 @@ bool Collectiondb::setRecPtr ( collnum_t collnum , CollectionRec *cr ) {
 		return false;
 
 	// sanity
-	if ( collnum < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( collnum < 0 );
 
 	// sanity
 	int32_t max = m_recPtrBuf.getCapacity() / sizeof(CollectionRec *);
@@ -1168,7 +1168,7 @@ bool Collectiondb::setRecPtr ( collnum_t collnum , CollectionRec *cr ) {
 	// a delete?
 	if ( ! cr ) {
 		// sanity
-		if ( collnum >= max ) { char *xx=NULL;*xx=0; }
+		gbassert_false( collnum >= max );
 		// get what's there
 		CollectionRec *oc = m_recs[collnum];
 		// let it go
@@ -1194,7 +1194,7 @@ bool Collectiondb::setRecPtr ( collnum_t collnum , CollectionRec *cr ) {
 		return false;
 
 	// sanity
-	if ( cr->m_collnum != collnum ) { char *xx=NULL;*xx=0; }
+	gbassert_false( cr->m_collnum != collnum );
 
 	// add to hash table to map name to collnum_t
 	int64_t h64 = hash64n(cr->m_coll);
@@ -1275,7 +1275,7 @@ bool Collectiondb::resetColl2( collnum_t oldCollnum,
 	//we->m_purgeSeeds = purgeSeeds;
 
 	// now must be "qatest123" only for now
-	//if ( strcmp(coll,"qatest123") ) { char *xx=NULL;*xx=0; }
+	//if ( strcmp(coll,"qatest123") ) { gbassert(false); }
 	// no spiders can be out. they may be referencing the CollectionRec
 	// in XmlDoc.cpp... quite likely.
 	//if ( g_conf.m_spideringEnabled ||
@@ -1368,7 +1368,7 @@ bool Collectiondb::resetColl2( collnum_t oldCollnum,
 
 	// advance sanity check. did we wrap around?
 	// right now we #define collnum_t int16_t
-	if ( m_numRecs > 0x7fff ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_numRecs > 0x7fff );
 
 	// make a new collnum so records in transit will not be added
 	// to any rdb...
@@ -1858,9 +1858,9 @@ void CollectionRec::reset() {
 
 	// make sure we do not leave spiders "hanging" waiting for their
 	// callback to be called... and it never gets called
-	//if ( m_callbackQueue.length() > 0 ) { char *xx=NULL;*xx=0; }
-	//if ( m_doingCallbacks ) { char *xx=NULL;*xx=0; }
-	//if ( m_replies != m_requests  ) { char *xx=NULL;*xx=0; }
+	//if ( m_callbackQueue.length() > 0 ) { gbassert(false); }
+	//if ( m_doingCallbacks ) { gbassert(false); }
+	//if ( m_replies != m_requests  ) { gbassert(false); }
 	m_localCrawlInfo.reset();
 	m_globalCrawlInfo.reset();
 	//m_requests = 0;
@@ -2141,7 +2141,7 @@ bool CollectionRec::countEvents ( ) {
 			      -1LL          , // sync point
 			      NULL          )){// msg5b
 		// not allowed to block!
-		char *xx=NULL;*xx=0; }
+		gbassert(false); }
 	// scan the list, score is how many valid events from that docid
 	uint32_t total = 0;
 	for ( ; ! list.isExhausted() ; list.skipCurrentRec() ) {
@@ -2167,8 +2167,8 @@ bool CollectionRec::countEvents ( ) {
 	     newStartKey.n1==0xffffffffffffffffLL )
 		goto done;
 	// sanity check
-	if ( newStartKey < startKey ) { char *xx=NULL;*xx=0; }
-	if ( newStartKey > endKey   ) { char *xx=NULL;*xx=0; }
+	gbassert_false( newStartKey < startKey );
+	gbassert_false( newStartKey > endKey   );
 	// inc it
 	newStartKey.n0++;
 	// in the top if the bottom wrapped
@@ -4024,7 +4024,7 @@ bool CollectionRec::rebuildUrlFiltersDiffbot() {
 
 
 	//char *x = "http://staticpages.diffbot.com/testCrawl/article1.html";
-	//if(m_hasupr && regexec(&m_upr,x,0,NULL,0) ) { char *xx=NULL;*xx=0; }
+	//if(m_hasupr && regexec(&m_upr,x,0,NULL,0) ) { gbassert(false); }
 
 	return true;
 
@@ -4195,8 +4195,8 @@ int64_t CollectionRec::getNumDocsIndexed() {
 // so we do not have to keep sending this huge msg!
 bool CollectionRec::shouldSendLocalCrawlInfoToHost ( int32_t hostId ) {
 	if ( ! m_spiderColl ) return false;
-	if ( hostId < 0 ) { char *xx=NULL;*xx=0; }
-	if ( hostId >= g_hostdb.m_numHosts ) { char *xx=NULL;*xx=0; }
+	gbassert_false( hostId < 0 );
+	gbassert_false( hostId >= g_hostdb.m_numHosts );
 	// sanity
 	return m_spiderColl->m_sendLocalCrawlInfoToHost[hostId];
 }

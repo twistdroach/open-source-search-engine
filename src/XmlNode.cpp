@@ -222,7 +222,7 @@ int32_t XmlNode::set ( char *node , bool pureXml , int32_t version ) {
 		// set the hash table
 		for ( int32_t i = 0 ; i < nn ; i++ ) {
 			// sanity
-			if ( g_nodes[i].m_nodeId != i ) { char *xx=NULL;*xx=0;}
+			gbassert_false( g_nodes[i].m_nodeId != i );
 		}
 	}
 
@@ -623,14 +623,13 @@ nodeid_t getTagId ( char *s , NodeType **retp ) {
 			int32_t  nlen = gbstrlen(name);
 			int64_t h = hash64Upper_a ( name,nlen,0LL );
 			NodeType *nt = &g_nodes[i];
-			if ( ! s_ht.addKey(&h,&nt) ) { 
-				char *xx=NULL;*xx=0; }
+			gbassert(s_ht.addKey(&h,&nt));
 		}
 		// sanity
-		if ( s_ht.m_numSlots != 1024 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( s_ht.m_numSlots != 1024 );
 		// sanity test
 		nodeid_t tt = getTagId ( "br" );
-		if ( tt != TAG_BR ) { char *xx=NULL;*xx=0; }
+		gbassert_false( tt != TAG_BR );
 	}
 
 
@@ -667,7 +666,7 @@ nodeid_t XmlNode::setNodeInfo ( int64_t  nodeHash ){//  , char *hasBackTag ,
 		// set the hash table
 		for ( int32_t i = 0 ; i < nn ; i++ ) {
 			// sanity check
-			if(g_nodes[i].m_nodeId != i ) { char *xx=NULL;*xx=0;}
+			gbassert_false(g_nodes[i].m_nodeId != i );
 		}
 	}
 	*/

@@ -200,7 +200,7 @@ bool Process::getFilesToCopy ( char *srcDir , SafeBuf *buf ) {
 
 	// sanirty
 	int32_t slen = gbstrlen(srcDir);
-	if ( srcDir[slen-1] != '/' ) { char *xx=NULL;*xx=0; }
+	gbassert_false( srcDir[slen-1] != '/' );
 
 	for ( int32_t i = 0 ; i < (int32_t)sizeof(g_files)/4 ; i++ ) {
 		// terminate?
@@ -2328,7 +2328,7 @@ static int32_t s_lastRunTime = 0;
 void eventStatSleepWrapper ( void *state , int fd ) {
 
 	// why even register it if not host #0?
-	if ( g_hostdb.m_myHostId != 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( g_hostdb.m_myHostId != 0 );
 	// local time. we are on host #0
 	int32_t now = getTimeLocal();
 	// wait at least one hour

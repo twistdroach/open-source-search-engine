@@ -580,7 +580,7 @@ class PlaceMem {
 	int32_t  getNumPtrs ( ) { return m_numPlacePtrs; };
 
 	void *getPtr ( int32_t ptrNum ) {
-		if ( ptrNum >= m_numPlacePtrs ) { char *xx=NULL;*xx=0; }
+		gbassert_false( ptrNum >= m_numPlacePtrs );
 		return (void *)m_placePtrs[ptrNum];
 	};
 

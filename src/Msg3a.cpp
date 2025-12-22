@@ -238,7 +238,7 @@ bool Msg3a::getDocIds ( Msg39Request *r          ,
 		// make a proper endkey
 		//endKey += 2;
 		// sanity
-		if ( ( m_ckey.n0 & 0x01 ) == 0x00 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( ( m_ckey.n0 & 0x01 ) == 0x00 );
 		// reset it
 		//m_cacheRec     = NULL;
 		//m_cacheRecSize = 0;
@@ -709,7 +709,7 @@ bool Msg3a::gotAllShardReplies ( ) {
 		//   to free it since it is owned by the slot?
 		if ( freeit ) { 
 			log(LOG_LOGIC,"query: msg3a: Steal failed."); 
-			char *xx = NULL; *xx=0; 
+			gbassert(false); 
 		}
 		// bad reply?
 		if ( ! mr || replySize < 29 ) {
@@ -834,7 +834,7 @@ bool Msg3a::gotAllShardReplies ( ) {
 	int32_t need = sizeof(key_t) + 4 + dataSize;
 	bool status = cr.reserve ( need );
 	// sanity
-	if ( ( m_ckey.n0 & 0x01 ) == 0x00 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ( m_ckey.n0 & 0x01 ) == 0x00 );
 	// ignore errors
 	g_errno = 0;
 	// return on error with g_errno cleared if cache add failed
@@ -855,7 +855,7 @@ bool Msg3a::gotAllShardReplies ( ) {
 	for ( int32_t i = 0 ; i < max ; i++ ) 
 		cr.pushLong(getSiteHash26(i));
 	// sanity
-	if ( cr.length() != need ) { char *xx=NULL;*xx=0; }
+	gbassert_false( cr.length() != need );
 	// make these
 	key_t startKey;
 	key_t endKey;
@@ -1051,7 +1051,7 @@ bool Msg3a::mergeLists ( ) {
 	int64_t     *diEnd [MAX_SHARDS];
 	for ( int32_t j = 0; j < m_numHosts ; j++ ) {
 		// how does this happen?
-		if ( j >= MAX_SHARDS ) { char *xx=NULL;*xx=0; }
+		gbassert_false( j >= MAX_SHARDS );
 		Msg39Reply *mr =m_reply[j];
 		// if we have gbdocid:| in query this could be NULL
 		if ( ! mr ) {
@@ -1122,7 +1122,7 @@ bool Msg3a::mergeLists ( ) {
 		// sanity
 		if ( ! ht->m_isWritable ) {
 			log("msg3a: queryterm::constructor not called?");
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 	}
 
@@ -1253,7 +1253,7 @@ bool Msg3a::mergeLists ( ) {
 	//
 
 
-	if ( m_docsToGet <= 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_docsToGet <= 0 );
 
 	// . how much do we need to store final merged docids, etc.?
 	// . docid=8 score=4 bitScore=1 clusterRecs=key_t clusterLevls=1
@@ -1293,7 +1293,7 @@ bool Msg3a::mergeLists ( ) {
 
 	// sanity check
 	char *pend = m_finalBuf + need;
-	if ( p != pend ) { char *xx = NULL; *xx =0; }
+	gbassert_false( p != pend );
 	// . now allocate for hash table
 	// . get at least twice as many slots as docids
 	HashTableT<int64_t,char> htable;
@@ -1411,7 +1411,7 @@ bool Msg3a::mergeLists ( ) {
 				    "info for "
 				    "d=%" INT64 "",
 				    m_docIds[m_numDocIds]);
-			//char *xx=NULL; *xx=0;  261561804684
+			//gbassert(false);  261561804684
 			// qry = www.yahoo
 		}
 		// point to the single DocIdScore for this docid
@@ -1526,7 +1526,7 @@ int32_t Msg3a::serialize   ( char *buf , char *bufEnd ) {
 	// store cluster levels
 	gbmemcpy ( p , m_clusterLevels , m_numDocIds ); p += m_numDocIds;
 	// sanity check
-	if ( p > pend ) { char *xx = NULL ; *xx = 0; }
+	gbassert_false( p > pend );
 	// return how much we did
 	return p - buf;
 }
@@ -1545,7 +1545,7 @@ int32_t Msg3a::deserialize ( char *buf , char *bufEnd ) {
 	// get cluster levels
 	m_clusterLevels = (char *)p; p += m_numDocIds;
 	// sanity check
-	if ( p > pend ) { char *xx = NULL ; *xx = 0; }
+	gbassert_false( p > pend );
 	// return how much we did
 	return p - buf;
 }

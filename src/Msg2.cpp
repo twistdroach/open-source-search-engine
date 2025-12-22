@@ -61,7 +61,7 @@ bool Msg2::getLists ( int32_t     rdbId       ,
 	}
 	// save callback and state
 	m_query       = query;
-	if ( ! query ) { char *xx=NULL;*xx=0; }
+	gbassert(query);
 	m_state       = state;
 	m_callback    = callback;
 	m_niceness    = niceness;
@@ -133,7 +133,7 @@ bool Msg2::getLists ( ) {
 	// . make slots for all
 	for (  ; m_i < m_numLists ; m_i++ ) {
 		// sanity for Msg39's sake. do no breach m_lists[].
-		if ( m_i >= ABS_MAX_QUERY_TERMS ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_i >= ABS_MAX_QUERY_TERMS );
 		// if any had error, forget the rest. do not launch any more
 		if ( m_errno ) break;
 		// skip if already did it
@@ -154,7 +154,7 @@ bool Msg2::getLists ( ) {
 		//for( ; j < MSG2_MAX_REQUESTS ; j++ ) if ( m_avail[j] ) break;
 		//if ( j >= MSG2_MAX_REQUESTS ) {
 		//	log(LOG_LOGIC,"query: No msg5s available.");
-		//	char *xx = NULL; *xx = 0;
+		//	gbassert(false);
 		//}
 		// endtime of 0 means to ignore
 		//m_endTimes[i] = 0;
@@ -197,7 +197,7 @@ bool Msg2::getLists ( ) {
 		// if ( ( minRecSize > ( 500 * 1024 * 1024 ) || 
 		//        minRecSize < 0) ){
 		// 	log( "minRecSize = %" INT32 "", minRecSize );
-		// 	char *xx=NULL; *xx=0;
+		// 	gbassert(false);
 		// }
 
 		//bool forceLocalIndexdb = true;
@@ -376,7 +376,7 @@ bool Msg2::getLists ( ) {
 		//tt.safeMemcpy(current,end-current);
 		//tt.pushChar('/');
 		//int64_t yy = hash64n(tt.getBufStart());
-		//if ( yy != termId ) { char *xx=NULL;*xx=0; }
+		//if ( yy != termId ) { gbassert(false); }
 		int64_t finalTermId = hash64 ( termId , prefixHash );
 		// mask to 48 bits
 		finalTermId &= TERMID_MASK;
@@ -403,7 +403,7 @@ bool Msg2::getLists ( ) {
 		m_p = p;
 
 		// sanity for Msg39's sake. do no breach m_lists[].
-		if ( m_w >= MAX_WHITELISTS ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_w >= MAX_WHITELISTS );
 
 		// like 90MB last time i checked. so it won't read more
 		// than that...
@@ -493,7 +493,7 @@ void Msg2::returnMsg5 ( Msg5 *msg5 ) {
 	int32_t i; for ( i = 0 ; i < MSG2_MAX_REQUESTS ; i++ ) 
 		if ( &m_msg5[i] == msg5 ) break;
 	// wtf?
-	if ( i >= MSG2_MAX_REQUESTS ) { char *xx=NULL;*xx=0; }
+	gbassert_false( i >= MSG2_MAX_REQUESTS );
 	// make it available
 	m_avail[i] = true;
 	// reset it
@@ -538,7 +538,7 @@ void gotListWrapper ( void *state , RdbList *rdblist, Msg5 *msg5 ) {
 	// identify the msg0 slot we use
 	int32_t i  = list - THIS->m_lists;
 	//int32_t i = ms->m_i;
-	//if ( i < 0 || i >= MSG2_MAX_REQUESTS ) { char *xx=NULL;*xx=0; }
+	//if ( i < 0 || i >= MSG2_MAX_REQUESTS ) { gbassert(false); }
 	//int32_t nn = THIS->m_slotNum [ i ];
  	//THIS->m_inProgress[ i] = false;
 	THIS->returnMsg5 ( ms );

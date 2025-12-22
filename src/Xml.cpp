@@ -260,7 +260,7 @@ bool Xml::set ( char  *s             ,
 	if ( !s || slen <= 0) return true;
 	if ( s[slen] != '\0' ) {
 		log(LOG_LOGIC,"build: Xml: Content is not null terminated.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 		//sleep(100);
 		g_errno = EBADENGINEER;
 		return false;
@@ -638,7 +638,7 @@ bool Xml::set ( char  *s             ,
 		i = p - &m_xml[0] ;
 	}
 	// sanity
-	if ( m_numNodes > m_maxNumNodes ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_numNodes > m_maxNumNodes );
 	// trim off last node if empty! it is causing a core in isBackTag()
 	if ( m_numNodes > 0 && m_nodes[m_numNodes-1].m_nodeLen == 0 )
 		m_numNodes--;

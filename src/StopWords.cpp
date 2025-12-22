@@ -213,7 +213,7 @@ bool isStopWord32 ( int32_t h ) {
 			const char *sw    = s_stopWords[i];
 			int32_t  swlen = gbstrlen ( sw );
 			int32_t  swh   = hash32Lower_utf8 ( sw , swlen );
-			if ( ! s_table32.addKey (&swh) ) {char *xx=NULL;*xx=0;}
+			gbassert(s_table32.addKey (&swh));
 		}
 	}
 	return s_table32.isInTable ( &h );
@@ -3946,8 +3946,7 @@ bool isVerb ( int64_t *hp ) {
 			int32_t  swlen = gbstrlen ( sw );
 			// use the same algo that Words.cpp computeWordIds does
 			int64_t swh = hash64Lower_utf8 ( sw , swlen );
-			if ( ! s_verbTable.addKey ( &swh ) ) { 
-				char *xx=NULL;*xx=0; }
+			gbassert(s_verbTable.addKey ( &swh ));
 		}
 		s_verbsInitialized = true;
 	} 
@@ -4370,9 +4369,9 @@ int32_t isCommonQueryWordInEnglish ( int64_t h64 ) {
 		s_commonQueryWordsInitialized = true;
 		// sanity test
 		int32_t tid32 = hash32n("on");
-		if ( !isCommonQueryWordInEnglish(tid32)){char *xx=NULL;*xx=0;}
+		gbassert(isCommonQueryWordInEnglish(tid32));
 		tid32 = hash32n("web");
-		if ( !isCommonQueryWordInEnglish(tid32)){char *xx=NULL;*xx=0;}
+		gbassert(isCommonQueryWordInEnglish(tid32));
 	} 
 
 	// . all 1 char letter words are stop words

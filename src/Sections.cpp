@@ -802,7 +802,7 @@ bool Sections::set ( Words     *w                       ,
 			}
 			else {
 				//current = NULL;
-				//char *xx=NULL;*xx=0; 
+				//gbassert(false); 
 				// i guess this is bad html!
 				current = rootSection;
 			}
@@ -1342,7 +1342,7 @@ bool Sections::set ( Words     *w                       ,
 		nodeid_t tid = tids[ws];
 		// sanity check, <a> guys are not sections
 		//if ( tid == TAG_A &&
-		//     !(sn->m_flags & SEC_SENTENCE) ) { char *xx=NULL;*xx=0; }
+		//     !(sn->m_flags & SEC_SENTENCE) ) { gbassert(false); }
 		// use a modified tid as the tag hash?
 		int64_t mtid = tid;
 		// custom xml tag, hash the tag itself
@@ -2400,7 +2400,7 @@ bool Sections::set ( Words     *w                       ,
 		// so we have to save our voting info since the content is
 		// gone. that way we can delete it from sectiondb later if
 		// we need to.
-		if ( m_numSections > 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_numSections > 0 );
 		// . set our m_osvt table from what's left
 		// . this returns false and sets g_errno on error
 		if ( ! m_nsvt.deserialize(sectionsVotes,-1,m_niceness) ) 
@@ -6302,7 +6302,7 @@ bool Sections::setSentFlagsPart2 ( ) {
 		if ( str[0] == '-' )
 			si->m_sentFlags |= SENT_BADEVENTSTART;
 		// must have a sign
-		else { char *xx=NULL;*xx=0; }
+		else { gbassert(false); }
 	}
 	*/
 
@@ -9706,7 +9706,7 @@ int32_t Sections::getDelimHash ( char method , Section *bro , Section *head ) {
 		int32_t a = next->m_firstWordPos;
 		int32_t b = next->m_lastWordPos;
 		// sanity check
-		if ( a < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( a < 0 );
 		// scan
 		for ( int32_t i = a ; i <= b ; i++ ) {
 			// breathe
@@ -11129,7 +11129,7 @@ Section *Sections::insertSubSection ( Section *parentArg , int32_t a , int32_t b
 	if ( m_numSections >= m_maxNumSections )
 		// try to realloc i guess
 		if ( ! growSections() ) return NULL;
-		//char *xx=NULL;*xx=0;}
+		//gbassert(false);}
 
 	//
 	// make a new section
@@ -11295,14 +11295,14 @@ Section *Sections::insertSubSection ( Section *parentArg , int32_t a , int32_t b
 		Section *s2 = m_sectionPtrs[b-1];
 		// check for interlace
 		for ( ; s1 ; s1 = s1->m_parent ) 
-			if ( s1->m_a < a && 
+			gbassert_false( s1->m_a < a && 
 			     s1->m_b > a &&
-			     s1->m_b < b    ) {char *xx=NULL;*xx=0;}
+			     s1->m_b < b    );
 		// check for interlace
 		for ( ; s2 ; s2 = s2->m_parent ) 
-			if ( s2->m_a < b && 
+			gbassert_false( s2->m_a < b && 
 			     s2->m_b > b &&
-			     s2->m_a > a    ) {char *xx=NULL;*xx=0;}
+			     s2->m_a > a    );
 	}
 #endif
 
@@ -11671,7 +11671,7 @@ bool Sections::splitSections ( char *delimeter , int32_t dh ) {
 		// subsections
 		saved = i;
 		// sanity check
-		//if ( start == i ) { char *xx=NULL;*xx=0; }
+		//if ( start == i ) { gbassert(false); }
 
 	subloop:
 		// sanity check
@@ -11718,7 +11718,7 @@ bool Sections::splitSections ( char *delimeter , int32_t dh ) {
 		//for ( int32_t u = w+1 ; u < m_numSections ; u++ ) {
 		//	if ( m_sections[w].m_a == m_sections[u].m_a &&
 		//	     m_sections[w].m_b == m_sections[u].m_b ) {
-		//		char *xx=NULL;*xx=0; }
+		//		gbassert(false); }
 		//}}
 
 		/*
@@ -11982,7 +11982,7 @@ bool SectionVotingTable::addListOfVotes ( RdbList *list,
 		if ( turkTagHash32 == 0 ) {
 			// now that we do compression we strip these votes
 			// in Msg0.cppp
-			//char *xx=NULL;*xx=0; 
+			//gbassert(false); 
 			m_totalSiteVoters++;
 			//log("sect: got site voter");
 			// sanity check - make sure only one per docid
@@ -12294,7 +12294,7 @@ float SectionVotingTable::getScore ( int32_t turkTagHash , int32_t sectionType )
 	// and use an average for the score
 	//if ( nsv ) score += nsv->m_score / nsv->m_numSampled;
 	// sanity check
-	if ( numSampled <= 0.0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( numSampled <= 0.0 );
 	// normalize
 	return score / numSampled;
 }
@@ -12315,7 +12315,7 @@ float SectionVotingTable::getOldScore ( Section *sn , int32_t sectionType ) {
 	if ( osv ) score += osv->m_score;
 	if ( osv ) numSampled += osv->m_numSampled;
 	// sanity check
-	if ( numSampled <= 0.0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( numSampled <= 0.0 );
 	// normalize
 	return score / numSampled;
 }
@@ -12334,7 +12334,7 @@ float SectionVotingTable::getNewScore ( Section *sn , int32_t sectionType ) {
 	if ( nsv ) score      += nsv->m_score;
 	if ( nsv ) numSampled += nsv->m_numSampled;
 	// sanity check
-	if ( numSampled <= 0.0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( numSampled <= 0.0 );
 	// normalize
 	return score / numSampled;
 }
@@ -12380,7 +12380,7 @@ float SectionVotingTable::getOldNumSampled ( Section *sn , int32_t sectionType )
 	float numSampled = 0.0;
 	if ( osv ) numSampled += osv->m_numSampled;
 	// sanity check
-	if ( numSampled <= 0.0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( numSampled <= 0.0 );
 	// normalize
 	return numSampled;
 }
@@ -12418,7 +12418,7 @@ void Sections::getArticleRange ( int32_t *start , int32_t *end ) {
 	m_articleStartWord = a;
 	m_articleEndWord   = b;
 	// sanity check. if m_hadArticle was set, we should have something
-	if ( (a == -1 || b == -1) && m_hadArticle ) { char *xx=NULL;*xx=0; }
+	if ( (a == -1 || b == -1) && m_hadArticle ) { gbassert(false); }
 	// set the range to return it
 	*start = m_articleStartWord;
 	*end   = m_articleEndWord;
@@ -12603,7 +12603,7 @@ char *Sections::respiderLineWaiters ( char *metaList    ,
 		// advance p
 		p += sreq->getRecSize();
 		// sanity check
-		if ( p > pend ) { char *xx=NULL;*xx=0; }
+		gbassert_false( p > pend );
 		// debug
 		logf(LOG_DEBUG,"section: respider line waiter d=%" INT64 "",docId);
 	}
@@ -12638,8 +12638,8 @@ bool Sections::print ( SafeBuf *sbuf ,
 		Section *sp = sn->m_parent;
 		if ( ! sp ) continue;
 		// check if contained
-		if ( sn->m_a < sp->m_a ) { char *xx=NULL;*xx=0; }
-		if ( sn->m_b > sp->m_b ) { char *xx=NULL;*xx=0; }
+		gbassert_false( sn->m_a < sp->m_a );
+		gbassert_false( sn->m_b > sp->m_b );
 	}
 
 	char  **wptrs = m_words->getWords    ();
@@ -12653,8 +12653,8 @@ bool Sections::print ( SafeBuf *sbuf ,
 		QUICKPOLL ( m_niceness );
 		// get section
 		Section *sn = m_sectionPtrs[i];
-		if ( sn->m_a >  i ) { char *xx=NULL;*xx=0; }
-		if ( sn->m_b <= i ) { char *xx=NULL;*xx=0; }
+		gbassert_false( sn->m_a >  i );
+		gbassert_false( sn->m_b <= i );
 	}
 
 	bool hadWords = false;
@@ -12702,7 +12702,7 @@ bool Sections::print ( SafeBuf *sbuf ,
 			for ( ; sp && sp->m_a == sn->m_a ; sp = sp->m_parent )
 				spbuf[qq++] = sp;
 			// sanity check
-			if ( qq > 20 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( qq > 20 );
 			// flag for printing
 			//bool printed = false;
 			// for sanity check
@@ -12716,7 +12716,7 @@ bool Sections::print ( SafeBuf *sbuf ,
 				if ( lastk && 
 				     ( sk->m_a > lastk->m_a || 
 				       sk->m_b > lastk->m_b )) { 
-					char *xx=NULL;*xx=0; }
+					gbassert(false); }
 				// save it
 				lastk = sk;
 				// flag
@@ -13017,7 +13017,7 @@ bool Sections::print ( SafeBuf *sbuf ,
 		int32_t a = sn->m_a;
 		int32_t b = sn->m_b;
 		// -1 means an unclosed tag!! should no longer be the case
-		if ( b == -1 ) { char *xx=NULL;*xx=0; }//b=m_words->m_numWords;
+		gbassert_false( b == -1 );//b=m_words->m_numWords;
 		sbuf->safePrintf("</nobr></td>");
 
 		if ( sn->m_minEventId >= 1 )
@@ -13231,7 +13231,7 @@ bool Sections::print ( SafeBuf *sbuf ,
 			 );
 	sbuf->safePrintf("</table>\n<br><br>\n");
 	// must be \0 terminated
-	if ( sbuf->m_buf[sbuf->m_length] ) { char *xx=NULL;*xx=0; }
+	gbassert_false( sbuf->m_buf[sbuf->m_length] );
 
 			 
 	return true;
@@ -13514,7 +13514,7 @@ char *Sections::getSectionsReply ( int32_t *size ) {
 	// store it
 	int32_t bytes = m_osvt.serialize ( m_buf , m_bufSize );
 	// sanity check
-	if ( bytes != m_bufSize ) { char *xx=NULL;*xx=0; }
+	gbassert_false( bytes != m_bufSize );
 	// save this
 	*size = bytes;
 	// good
@@ -13539,7 +13539,7 @@ char *Sections::getSectionsVotes ( int32_t *size ) {
 	// store it
 	int32_t bytes = m_nsvt.serialize ( m_buf2 , m_bufSize2 );
 	// sanity check
-	if ( bytes != m_bufSize2 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( bytes != m_bufSize2 );
 	// save this
 	*size = bytes;
 	// good
@@ -14036,7 +14036,7 @@ bool Sections::setMenus ( ) {
 			break;
 		}
 		// sanity check - must have sentence
-		//if ( ! sk ) { char *xx=NULL;*xx=0; }
+		//if ( ! sk ) { gbassert(false); }
 	}
 
 
@@ -14767,7 +14767,7 @@ bool Sections::setTableDateHeaders ( Section *ts ) {
 	adt.set ( 4 , 0 , 64 , adtbuf, 1000, false,m_niceness,"adttab");
 
 	// sanity check
-	//if ( ! m_firstDateValid ) { char *xx=NULL;*xx=0; }
+	//if ( ! m_firstDateValid ) { gbassert(false); }
 	// return right away if table contains no dates
 	//int32_t dn = ts->m_firstDate - 1;
 	//if ( dn < 0 ) return true;
@@ -15059,14 +15059,13 @@ bool Sections::swoggleTable ( int32_t dn , Section *ts ) {
 		// cram everything into last column in case of too many cols
 		if ( colnum >= MAXCOLS ) colnum = MAXCOLS-1;
 		// sanity
-		if ( colnum < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( colnum < 0 );
 		// get col section. starts at colnum=1, not 0!
 		Section *cs = colSections[colnum];
 		// make a new col section if haven't already
 		if ( ! cs ) {
 			// overflow check
-			if ( m_numSections >= m_maxNumSections) {
-				char *xx=NULL;*xx=0;}
+			gbassert_false( m_numSections >= m_maxNumSections);
 			// insert it
 			cs = &m_sections[m_numSections++];
 			// count them as well
@@ -15547,7 +15546,7 @@ bool SectionVotingTable::print ( SafeBuf *sbuf , char *title ) {
 			 );
 	sbuf->safePrintf("</table>\n<br><br>\n");
 	// must be \0 terminated
-	if ( sbuf->m_buf[sbuf->m_length] ) { char *xx=NULL;*xx=0; }
+	gbassert_false( sbuf->m_buf[sbuf->m_length] );
 
 	return true;
 }
@@ -16734,7 +16733,7 @@ sentflags_t getMixedCaseFlags ( Words *words ,
 /*
 uint32_t getSectionContentTagHash3 ( Section *sn ) {
 	// sanity check
-	if ( sn->m_firstWordPos < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( sn->m_firstWordPos < 0 );
 	// hash the tagid of this section together with its last
 	// 3 parents for a total of 4
 	uint32_t th = sn->m_tagId;
@@ -17289,10 +17288,10 @@ bool Sectiondb::init ( ) {
 		       secType,
 		       docId,
 		       false ); // del key?
-	if ( g_sectiondb.getSectionHash(&k) != sech32 ){char*xx=NULL;*xx=0;}
-	if ( g_sectiondb.getSiteHash(&k) != sh64 ){char*xx=NULL;*xx=0;}
-	if ( g_sectiondb.getSectionType(&k) !=secType){char*xx=NULL;*xx=0;}
-	if ( g_sectiondb.getDocId(&k) != docId ){char*xx=NULL;*xx=0;}
+	if ( g_sectiondb.getSectionHash(&k) != sech32 ){gbassert(false);}
+	if ( g_sectiondb.getSiteHash(&k) != sh64 ){gbassert(false);}
+	if ( g_sectiondb.getSectionType(&k) !=secType){gbassert(false);}
+	if ( g_sectiondb.getDocId(&k) != docId ){gbassert(false);}
 	*/
 	
 

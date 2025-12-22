@@ -283,8 +283,7 @@ void processReply ( char *reply , int32_t replyLen ) {
 		// only hash content since mime has a timestamp in it
 		content = mime.getContent();
 		contentLen = mime.getContentLen();
-		if ( content && contentLen>0 && content[contentLen] ) { 
-			char *xx=NULL;*xx=0; }
+		gbassert_false( content && contentLen>0 && content[contentLen] );
 	}
 
 	if ( ! content ) {
@@ -907,7 +906,7 @@ bool qainject1 ( ) {
 				      NULL , // &msg5b        ,
 				      true          )) {
 			log("qa: HEY! it did not block");
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 		g_threads.enableThreads();
 		if ( list.m_listSize ) {
@@ -924,7 +923,7 @@ bool qainject1 ( ) {
 				log("qa: termid=%" INT64 " docid=%" INT64 ,
 				    tid,d);
 			}
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 			exit(0);
 		}
 
@@ -945,7 +944,7 @@ bool qainject1 ( ) {
 		ff.set ( sb.getBufStart() );
 		if ( ff.doesExist() ) {
 			log("qa: failed qa test of posdb0001.dat. coring.");
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 		*/
 	}

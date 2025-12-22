@@ -208,7 +208,7 @@ void PingServer::sendPingsToAll ( ) {
 	// get host #0
 	Host *hz = g_hostdb.getHost ( 0 );
 	// sanity check
-	if ( hz->m_hostId != 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( hz->m_hostId != 0 );
 
 
 	// do a quick send to host 0 out of band if we have never
@@ -325,7 +325,7 @@ void PingServer::pingHost ( Host *h , uint32_t ip , uint16_t port ) {
 			      count != g_hostdb.getNumHostsAlive()) ) {
                              //( h->m_isProxy &&
                              //count != g_hostdb.getNumProxyAlive()) ) { 
-				char *xx = NULL; *xx = 0; }
+				gbassert(false); }
 		}
 	}
 
@@ -433,7 +433,7 @@ void PingServer::pingHost ( Host *h , uint32_t ip , uint16_t port ) {
 	//pi->m_kernelErrors = me->m_pingInfo.m_kernelErrors;
 
 	//if ( me->m_kernelErrors ){
-	//char *xx = NULL; *xx = 0;
+	//gbassert(false);
 	//}
 	int32_t l_loadavg = (int32_t) (g_process.getLoadAvg() * 100.0);
 	//gbmemcpy(p, &l_loadavg, sizeof(int32_t));	p += sizeof(int32_t);
@@ -472,7 +472,7 @@ void PingServer::pingHost ( Host *h , uint32_t ip , uint16_t port ) {
 	pi->m_hostsConfCRC = g_hostdb.getCRC();
 
 	// ensure crc is legit
-	if ( g_hostdb.getCRC() == 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( g_hostdb.getCRC() == 0 );
 
 	// disk usage (df -ka)
 	//*(float *)p = g_process.m_diskUsage; p += 4;
@@ -529,7 +529,7 @@ void PingServer::pingHost ( Host *h , uint32_t ip , uint16_t port ) {
 	int32_t vsize = getVersionSize(); // 21 bytes
 	// gbmemcpy ( p , v , vsize );
 	// p += vsize;
-	if ( vsize != 21 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( vsize != 21 );
 	gbmemcpy ( pi->m_gbVersionStr , v , vsize );
 
 	// int32_t requestSize = sizeof(PingRequest);//p - request;
@@ -540,7 +540,7 @@ void PingServer::pingHost ( Host *h , uint32_t ip , uint16_t port ) {
 	// 	log("ping: "
 	// 	    "YOU ARE MIXING MULTIPLE GB VERSIONS IN YOUR CLUSTER. "
 	// 	    "MAKE SURE THEY ARE ALL THE SAME GB BINARY");
-	// 	char *xx = NULL; *xx = 0; }
+	// 	gbassert(false); }
 
 
 	//char *request = (char *)pi;
@@ -648,8 +648,8 @@ void gotReplyWrapperP ( void *state , UdpSlot *slot ) {
 	if ( g_errno == EUDPTIMEDOUT ) tripTime = g_conf.m_deadHostTimeout;
 	updatePingTime ( h , pingPtr , tripTime );
 	// sanity checks
-	if ( slot->m_ip==h->m_ip && !h->m_inProgress1) {char *xx=NULL;*xx=0;}
-	if ( slot->m_ip!=h->m_ip && !h->m_inProgress2) {char *xx=NULL;*xx=0;}
+	gbassert_false( slot->m_ip==h->m_ip && !h->m_inProgress1);
+	gbassert_false( slot->m_ip!=h->m_ip && !h->m_inProgress2);
 	// consider it out of progress
 	if ( slot->m_ip == h->m_ip ) h->m_inProgress1 = false;
 	else                         h->m_inProgress2 = false;
@@ -957,8 +957,7 @@ void handleRequest11 ( UdpSlot *slot , int32_t niceness ) {
 
 		// sanity
 		PingInfo *pi2 = (PingInfo *)request;
-		if ( pi2->m_hostId != h->m_hostId ) { 
-			char *xx=NULL;*xx=0; }
+		gbassert_false( pi2->m_hostId != h->m_hostId );
 
 		// now we just copy the class
 		gbmemcpy ( &h->m_pingInfo , request , requestSize );
@@ -996,7 +995,7 @@ void handleRequest11 ( UdpSlot *slot , int32_t niceness ) {
 		h->m_hostsConfCRC = *(int32_t*)(p);
 		p += sizeof(int32_t);
 		// sanity
-		if ( h->m_hostsConfCRC == 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( h->m_hostsConfCRC == 0 );
 
 		// disk usage
 		h->m_diskUsage = *(float *)p;
@@ -1057,7 +1056,7 @@ void handleRequest11 ( UdpSlot *slot , int32_t niceness ) {
 		char mode = h->m_pingInfo.m_repairMode;
 
 		//if ( h->m_kernelErrors ){
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 		//}
 		
 		// set his repair mode in the hosts table
@@ -2255,7 +2254,7 @@ bool pageSprintPCS2 ( void *state , TcpSocket *s) {
 
 	// part the request to make room for cookie
 	char *ss = strstr ( p , "Cookie: ");
-	if ( ! ss ) { char *xx = NULL; *xx = 0; }
+	gbassert(ss);
 	ss += 8; // points to right after the space
 	// insert the cookie
 	gbmemcpy ( ss+cookieLen , ss , pend - ss );
@@ -2367,7 +2366,7 @@ void gotDocWrapper ( void *state , TcpSocket *s ) {
 		    g_pingServer.m_numRequests2, 
 		    g_pingServer.m_numReplies2, 
 		    g_pingServer.m_maxRequests2);
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 	}
 	Host *h = (Host *)state;
 
@@ -2731,8 +2730,7 @@ void PingServer::getTimes ( int32_t hostId , int32_t *avg , int32_t *stdDev ) {
 void updatePingTime ( Host *h , int32_t *pingPtr , int32_t tripTime ) {
 
 	// sanity check
-	if ( pingPtr != &h->m_ping && pingPtr != &h->m_pingShotgun ) { 
-		char *xx = NULL; *xx = 0; }
+	gbassert_false( pingPtr != &h->m_ping && pingPtr != &h->m_pingShotgun );
 
 	// . was it dead before this?
 	// . both ips must be dead for it to be dead
@@ -2779,7 +2777,7 @@ void updatePingTime ( Host *h , int32_t *pingPtr , int32_t tripTime ) {
                 // sanity check, this should be at least 1 since we are alive
                 //if ( g_hostdb.m_numProxyAlive < 0 ||
                 //     g_hostdb.m_numProxyAlive > g_hostdb.getNumProxy() ) {
-                //        char *xx = NULL; *xx =0; }
+                //        gbassert(false); }
         }
         else {
                 // maintain m_numHostsAlive if there was a change in state
@@ -2787,9 +2785,8 @@ void updatePingTime ( Host *h , int32_t *pingPtr , int32_t tripTime ) {
                 if ( ! wasDead && isDead ) g_hostdb.m_numHostsAlive--;
 
                 // sanity check, this should be at least 1 since we are alive
-                if ( g_hostdb.m_numHostsAlive < 0 ||
-                     g_hostdb.m_numHostsAlive > g_hostdb.m_numHosts ) {
-                        char *xx = NULL; *xx =0; }
+                gbassert_false( g_hostdb.m_numHostsAlive < 0 ||
+                     g_hostdb.m_numHostsAlive > g_hostdb.m_numHosts );
         }
 }
 
@@ -3262,7 +3259,7 @@ bool sendNotification ( EmailInfo *ei ) {
 	//log("ping: NOT SENDING NOTIFICATION -- DEBUG!!");
 	//return true;
 
-	//if ( ei->m_inUse ) { char *xx=NULL;*xx=0; }
+	//if ( ei->m_inUse ) { gbassert(false); }
 
 	// caller must set this, as well as m_finalCallback/m_finalState
 	CollectionRec *cr = g_collectiondb.m_recs[ei->m_collnum];
@@ -3276,7 +3273,7 @@ bool sendNotification ( EmailInfo *ei ) {
 	if ( cr ) crawl = cr->m_diffbotCrawlName.getBufStart();
 
 	// sanity check, can only call once
-	if ( ei->m_notifyBlocked != 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ei->m_notifyBlocked != 0 );
 
 	//ei->m_inUse = true;
 

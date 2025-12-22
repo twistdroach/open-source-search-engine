@@ -225,7 +225,7 @@ bool sendPageGet ( TcpSocket *s , HttpRequest *r ) {
 // returns true
 bool sendErrorReply ( void *state , int32_t err ) {
 	// ensure this is set
-	if ( ! err ) { char *xx=NULL;*xx=0; }
+	gbassert(err);
 	// get it
 	State2 *st = (State2 *)state;
 	// get the tcp socket from the state
@@ -598,7 +598,7 @@ bool processLoop ( void *state ) {
 	// . TRICKY: loop over words in qq.m_qwords, but they should be 1-1
 	//   with words in qw.
 	// . sanity check
-	//if ( qw.getNumWords() != qq.m_numWords ) { char *xx = NULL; *xx = 0;}
+	//if ( qw.getNumWords() != qq.m_numWords ) { gbassert(false);}
 	// declare up here
 	Matches m;
 	// do the loop
@@ -858,7 +858,7 @@ bool processLoop ( void *state ) {
 			return sendErrorReply ( st , g_errno );
 		}
 		// sanity check
-		//if ( ! xd->m_wordsValid ) { char *xx=NULL;*xx=0; }
+		//if ( ! xd->m_wordsValid ) { gbassert(false); }
 		// how much space left in p?
 		//avail = bufEnd - p;
 

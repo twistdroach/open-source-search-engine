@@ -57,27 +57,27 @@ bool Linkdb::init ( ) {
 	setLostDate_uk(&k,ld2 );
 
 	// now test it
-	if(getLinkeeSiteHash32_uk(&k)!=linkeeSiteHash32){char *xx=NULL;*xx=0;}
-	if(getLinkeeUrlHash64_uk(&k)!=linkeeUrlHash64){char *xx=NULL;*xx=0;}
-	if ( isLinkSpam_uk    ( &k ) != linkSpam       ) {char *xx=NULL;*xx=0;}
-	if (getLinkerSiteHash32_uk(&k)!=linkerSiteHash32){char *xx=NULL;*xx=0;}
-	if ( getLinkerSiteRank_uk(&k) != linkerSiteRank){char *xx=NULL;*xx=0;}
-	if ( getLinkerIp24_uk ( &k ) != ipdom3         ) {char *xx=NULL;*xx=0;}
-	if ( getLinkerIp_uk ( &k ) != ip         ) {char *xx=NULL;*xx=0;}
-	if ( getLinkerDocId_uk( &k ) != docId          ) {char *xx=NULL;*xx=0;}
-	if ( getDiscoveryDate_uk(&k) != dd2  ) {char *xx=NULL;*xx=0;}
-	if ( getLostDate_uk(&k) != ld2  ) {char *xx=NULL;*xx=0;}
+	gbassert_false(getLinkeeSiteHash32_uk(&k)!=linkeeSiteHash32);
+	gbassert_false(getLinkeeUrlHash64_uk(&k)!=linkeeUrlHash64);
+	gbassert_false( isLinkSpam_uk    ( &k ) != linkSpam       );
+	gbassert_false(getLinkerSiteHash32_uk(&k)!=linkerSiteHash32);
+	gbassert_false( getLinkerSiteRank_uk(&k) != linkerSiteRank);
+	gbassert_false( getLinkerIp24_uk ( &k ) != ipdom3         );
+	gbassert_false( getLinkerIp_uk ( &k ) != ip         );
+	gbassert_false( getLinkerDocId_uk( &k ) != docId          );
+	gbassert_false( getDiscoveryDate_uk(&k) != dd2  );
+	gbassert_false( getLostDate_uk(&k) != ld2  );
 
 	// more tests
 	setDiscoveryDate_uk (&k,discoveryDate);
 	setLostDate_uk (&k,lostDate);
-	if ( getDiscoveryDate_uk(&k) != dd2  ) {char *xx=NULL;*xx=0;}
-	if ( getLostDate_uk(&k) != ld2  ) {char *xx=NULL;*xx=0;}
+	gbassert_false( getDiscoveryDate_uk(&k) != dd2  );
+	gbassert_false( getLostDate_uk(&k) != ld2  );
 
 	int32_t ip3 = 0xabcdef12;
 	setIp32_uk ( &k , ip3 );
 	int32_t ip4 = getLinkerIp_uk ( &k );
-	if ( ip3 != ip4 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ip3 != ip4 );
 
 	int64_t maxTreeMem = 40000000; // 40MB
 	int32_t maxTreeNodes = maxTreeMem /(sizeof(key224_t)+16);
@@ -499,7 +499,7 @@ bool getLinkInfo ( SafeBuf   *reqBuf              ,
 	int32_t hostNum = x / sectionWidth;
 	int32_t numHosts = g_hostdb.getNumHostsPerShard();
 	Host *hosts = g_hostdb.getShard ( shardNum); // Group ( groupId );
-	if ( hostNum >= numHosts ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( hostNum >= numHosts );
 	int32_t hostId = hosts [ hostNum ].m_hostId ;
 	if( !hosts [ hostNum ].m_spiderEnabled) {
 		hostId = g_hostdb.getHostIdWithSpideringEnabled ( shardNum );
@@ -564,7 +564,7 @@ static void sendReplyWrapper ( void *state ) {
 	// get original request
 	Msg25Request *req = (Msg25Request *)slot2->m_readBuf;
 	// sanity
-	if ( req->m_udpSlot != slot2 ) { char *xx=NULL;*xx=0;}
+	gbassert_false( req->m_udpSlot != slot2 );
 	// if in table, nuke it
 	// but only if it was in SITE mode, not PAGE. we've lost our
 	// table entry like this before.
@@ -591,7 +591,7 @@ static void sendReplyWrapper ( void *state ) {
 	if ( saved || ! reply2 ) {
 		int32_t err = saved;
 		if ( ! err ) err = g_errno;
-		if ( ! err ) { char *xx=NULL;*xx=0; }
+		gbassert(err);
 		g_udpServer.sendErrorReply(udpSlot,err);
 	}
 	else {
@@ -721,9 +721,9 @@ void  handleRequest25 ( UdpSlot *slot , int32_t netnice ) {
 				   m25->m_linkInfoBuf ) ) // SafeBuf 4 output
 		return;
 
-	if(m25->m_linkInfoBuf->getLength()<=0&&!g_errno){char *xx=NULL;*xx=0;}
+	gbassert_false(m25->m_linkInfoBuf->getLength()<=0&&!g_errno);
 
-	if ( g_errno == ETRYAGAIN ) { char *xx=NULL;*xx=0; }
+	gbassert_false( g_errno == ETRYAGAIN );
 
 	// wait for msg5 to be done reading list. this happens somehow,
 	// i'm not 100% sure how. code has too many indirections.
@@ -733,8 +733,8 @@ void  handleRequest25 ( UdpSlot *slot , int32_t netnice ) {
 	}
 
 	// sanity
-	if ( m25->m_msg5.m_msg3.m_numScansCompleted < 
-	     m25->m_msg5.m_msg3.m_numScansStarted ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m25->m_msg5.m_msg3.m_numScansCompleted < 
+	     m25->m_msg5.m_msg3.m_numScansStarted );
 
 	if ( g_errno )
 		log("linkdb: error getting linkinfo: %s",mstrerror(g_errno));
@@ -839,9 +839,9 @@ bool Msg25::getLinkInfo2( char      *site                ,
 	m_getLinkerTitles     = getLinkerTitles;
 	// save safebuf ptr, where we store the link info
 	m_linkInfoBuf = linkInfoBuf;
-	if ( ! linkInfoBuf ) { char *xx=NULL;*xx=0; }
+	gbassert(linkInfoBuf);
 	// sanity check
-	if ( m_mode == MODE_PAGELINKINFO && ! docId ) {char *xx=NULL; *xx=0; }
+	gbassert_false( m_mode == MODE_PAGELINKINFO && ! docId );
 	// get collection rec for our collection
 	CollectionRec *cr = g_collectiondb.getRec ( collnum );
 	// bail if NULL
@@ -936,7 +936,7 @@ bool Msg25::getLinkInfo2( char      *site                ,
 bool Msg25::doReadLoop ( ) {
 
 	// sanity. no double entry.
-	if ( m_gettingList ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_gettingList );
 
 	// . get the top X results from this termlist
 	// . but skip link: terms with a 1 (no link text) for a score
@@ -1027,8 +1027,8 @@ bool Msg25::doReadLoop ( ) {
 		log("build: msg25 call to msg5 did not block");
 
 	// sanity
-	if ( m_msg5.m_msg3.m_numScansCompleted < 
-	     m_msg5.m_msg3.m_numScansStarted ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_msg5.m_msg3.m_numScansCompleted < 
+	     m_msg5.m_msg3.m_numScansStarted );
 
 	// return true on error
 	if ( g_errno ) {
@@ -1079,8 +1079,8 @@ bool Msg25::gotList() {
 	m_gettingList = false;
 
 	// sanity
-	if ( m_msg5.m_msg3.m_numScansCompleted < 
-	     m_msg5.m_msg3.m_numScansStarted ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_msg5.m_msg3.m_numScansCompleted < 
+	     m_msg5.m_msg3.m_numScansStarted );
 
 	// return true on error
 	if ( g_errno ) {
@@ -1116,7 +1116,7 @@ bool Msg25::gotList() {
 		int64_t needSlots = m_list.getListSize() / LDBKS;
 		// wtf?
 		if ( m_list.getListSize() > READSIZE + 10000 ) {
-			//char *xx=NULL;*xx=0; }
+			//gbassert(false); }
 			log("linkdb: read very big linkdb list %" INT32 " bytes "
 			    "bigger than needed",
 			    m_list.getListSize() - READSIZE );
@@ -1154,7 +1154,7 @@ bool Msg25::gotList() {
 	if ( m_mode == MODE_SITELINKINFO ) return sendRequests();
 
 	// when MODE_PAGELINKINFO we must have a site quality for that site
-	if ( m_siteNumInlinks < 0 ) {char *xx=NULL;*xx=0; }
+	gbassert_false( m_siteNumInlinks < 0 );
 
 	// int16_tcut
 	int32_t n = m_siteNumInlinks;
@@ -1350,7 +1350,7 @@ bool Msg25::sendRequests ( ) {
 		int32_t j ;
 		for (j=0 ;j<MAX_MSG20_OUTSTANDING;j++) if (!m_inUse[j]) break;
 		// sanity check
-		if ( j >= MAX_MSG20_OUTSTANDING ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( j >= MAX_MSG20_OUTSTANDING );
 		// "claim" it
 		m_inUse [j] = 1;
 
@@ -1832,7 +1832,7 @@ bool Msg25::gotLinkText ( Msg20Request *req ) {
 	// set "r" to "p" doing a swap operation
 	if ( dup && dup != r ) {
 		// sanity check
-		if ( dupi < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( dupi < 0 );
 		// HACK: swap them
 		Msg20Reply *tmp      = m_replyPtrs [dupi];
 		int32_t        tmpSize  = m_replySizes[dupi];
@@ -2750,7 +2750,7 @@ bool Msg25::addNote ( char *note , int32_t noteLen , int64_t docId ) {
 		char *p = m_bufPtr;
 		if ( p + sizeof(NoteEntry) + noteLen + 1 >= m_bufEnd ) {
 			log("build: increase buf size in Msg25.");
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		// store the entry
 		NoteEntry *e = (NoteEntry *)p;
@@ -2974,9 +2974,9 @@ LinkInfo *makeLinkInfo ( char        *coll                    ,
 		int32_t wrote;
 		char *s = k.serialize ( &wrote , p , pend - p , true );
 		// sanity check
-		if ( s != p ) { char *xx=NULL;*xx=0; }
+		gbassert_false( s != p );
 		// sanity check
-		if ( k.getStoredSize() != wrote ) { char *xx=NULL;*xx=0;}
+		gbassert_false( k.getStoredSize() != wrote );
 		// note it if recycled
 		if ( k.m_recycled )
 			logf(LOG_DEBUG,"build: recycling Inlink %s for linkee "
@@ -2986,7 +2986,7 @@ LinkInfo *makeLinkInfo ( char        *coll                    ,
 	}
 	// . sanity check, should have used up all the buf exactly
 	// . so we can free the buf with k->getStoredSize() being the allocSize
-	if ( p != pend ) { char *xx=NULL;*xx=0; }
+	gbassert_false( p != pend );
 
 	// how many guys that we stored were internal?
 	info->m_numInlinksInternal = (char)icount3;
@@ -3290,7 +3290,7 @@ char *Inlink::serialize ( int32_t *retSize     ,
 	gbmemcpy ( p , (char *)this , need );
 	p += need;
 
-	if ( p != pend ) { char *xx=NULL;*xx=0; }
+	gbassert_false( p != pend );
 
 	return buf;
 }
@@ -3845,7 +3845,7 @@ bool Links::addLink ( char *link , int32_t linkLen , int32_t nodeNum ,
 		p += newAllocLinks * sizeof(char **);
 
 		// sanity check -- check for breach
-		if ( p > newBuf + newAllocSize ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( p > newBuf + newAllocSize );
 
 		if (m_linkBuf){
 			gbmemcpy(newLinkPtrs, m_linkPtrs, 
@@ -4034,7 +4034,7 @@ bool Links::addLink ( char *link , int32_t linkLen , int32_t nodeNum ,
 	//   see what links it has in common with the others for now...
 	if ( setLinkHash ) {
 		// sanity
-		if ( m_doQuickSet ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_doQuickSet );
 		// get url length
 		int32_t ulen = url.getUrlLen();
 		// subtract the cgi length

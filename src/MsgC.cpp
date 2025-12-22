@@ -37,7 +37,7 @@ bool MsgC::getIp(char  *hostname    , int32_t   hostnameLen ,
 	m_ipPtr = ip;
 	m_forwardToProxy = forwardToProxy;
 	// sanity check
-	if ( ! m_ipPtr ) { char *xx = NULL; *xx = 0; }
+	gbassert(m_ipPtr);
 	// First check if g_dns has it. This function is a part of the 
 	// g_dns.getIp() function, except that we do not lookup the ip in
 	// the dns server directly after not finding it in the cache.
@@ -68,7 +68,7 @@ bool MsgC::getIp(char  *hostname    , int32_t   hostnameLen ,
 		// somebody put a http://3.0/ link in here
 		//if ( *ip >= 1 && *ip < 10 )
 		//	log("dns: hostname had ip %s",iptoa(*ip));
-		//if ( *ip == 3 ) { char *xx=NULL;*xx=0; }
+		//if ( *ip == 3 ) { gbassert(false); }
 		if ( *ip != 0 ) return true;
 	}
 	// key is hash of the hostname
@@ -86,7 +86,7 @@ bool MsgC::getIp(char  *hostname    , int32_t   hostnameLen ,
 	//   a dns timed out error getting it the last time. these will be
 	//   cached for about a day.
 	if ( g_dns.isInCache ( key , ip ) ) {
-		if ( *ip == 3 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( *ip == 3 );
 		// debug msg
 		//log(LOG_DEBUG, "dns::getIp: %s (key=%"UINT64") has ip=%s in cache!!!",
 		//     tmp,key.n0,iptoa(*ip));
@@ -188,7 +188,7 @@ bool MsgC::getIp(char  *hostname    , int32_t   hostnameLen ,
 	// it should have set g_errno to EDEADHOST if this happens
 	if ( ! host ) {
 		log("dns: please add primary dns to spider proxy gb.conf");
-		if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+		gbassert(g_errno);
 		return true;
 	}
 	//uint32_t groupId     = host->m_groupId;
@@ -302,7 +302,7 @@ int32_t MsgC::gotReply(){
 		    "again.", *m_ipPtr,m_u.m_url);
 		g_errno = ETRYAGAIN;
 		*m_ipPtr = 0;
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 	}
 	// . don't add to cache if there was an error.
 	// . at this level, these are multicast errors, not dns errors

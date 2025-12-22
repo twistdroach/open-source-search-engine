@@ -227,7 +227,7 @@ uint8_t getLangIdFromAbbr ( char *abbr ) {
 	// english?
 	if ( ! strcasecmp((char *)abbr,"en_uk")) return langEnglish;
 	if ( ! strcasecmp((char *)abbr,"en_us")) return langEnglish;
-	//char *xx=NULL;*xx=0;
+	//gbassert(false);
 	return langUnknown;//0;
 }
 

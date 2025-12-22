@@ -507,8 +507,8 @@ void handleRequestfd ( UdpSlot *slot , int32_t niceness ) {
 	// proxy so that the search result pages can be compressed to
 	// save bandwidth so we can serve APN's queries over lobonet
 	// which is only 2Mbps.
-	//if ( g_proxy.isCompressionProxy() ) { char *xx=NULL;*xx=0; }
-	if ( g_hostdb.m_myHost->m_type==HT_QCPROXY) {char *xx=NULL;*xx=0;}
+	//if ( g_proxy.isCompressionProxy() ) { gbassert(false); }
+	gbassert_false( g_hostdb.m_myHost->m_type==HT_QCPROXY);
 
 	// if niceness is 0, use the higher priority udpServer
 	//UdpServer *us = &g_udpServer;
@@ -517,7 +517,7 @@ void handleRequestfd ( UdpSlot *slot , int32_t niceness ) {
 	int32_t  requestSize  = slot->m_readBufSize;
 	int32_t  requestAlloc = slot->m_readBufMaxSize;
 	// sanity check, must at least contain \0 and ip (5 bytes total)
-	if ( requestSize < 5 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( requestSize < 5 );
 	// make a fake TcpSocket
 	TcpSocket *s = (TcpSocket *)mcalloc(sizeof(TcpSocket),"tcpudp");
 	// this sucks
@@ -1328,7 +1328,7 @@ bool HttpServer::sendReply ( TcpSocket  *s , HttpRequest *r , bool isAdmin) {
 		log("http: proxy should have handled this request");
 		// i've seen this core once on a GET /logo-small.png request
 		// and i am not sure why... so let it slide...
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 	}
 
 	// . where do they want us to start sending from in the file
@@ -1580,7 +1580,7 @@ bool HttpServer::sendReply2 ( char *mime,
 	//if ( (ht & HT_PROXY) && *rb == 'Z' && alreadyCompressed ) {
 	if ( alreadyCompressed ) {
 		sendBufSize = contentLen;
-		//if ( mimeLen ) { char *xx=NULL;*xx=0; }
+		//if ( mimeLen ) { gbassert(false); }
 	}
 	// what the hell is up with this???
 	//if ( sendBufSize > g_conf.m_httpMaxSendBufSize ) 
@@ -1657,7 +1657,7 @@ bool HttpServer::sendReply2 ( char *mime,
 	else if ( (ht & HT_PROXY) && (*rb == 'Z') ) {
 		gbmemcpy ( sendBuf , content, contentLen );
 		// sanity check
-		if ( sendBufSize != contentLen ) { char *xx=NULL;*xx=0; }
+		gbassert_false( sendBufSize != contentLen );
 		// note it
 		//logf(LOG_DEBUG,"http: forwarding. pageLen=%" INT32 "",contentLen);
 	}
@@ -1669,7 +1669,7 @@ bool HttpServer::sendReply2 ( char *mime,
 		gbmemcpy ( p , content, contentLen );
 		p += contentLen;
 		// sanity check
-		if ( sendBufSize != contentLen+mimeLen) { char *xx=NULL;*xx=0;}
+		gbassert_false( sendBufSize != contentLen+mimeLen);
 	}
 
 	// . store the login/logout links after <body> tag
@@ -1915,7 +1915,7 @@ bool HttpServer::sendErrorReply ( TcpSocket *s , int32_t error , char *errmsg ,
 	g_errno = 0;
 
 	// sanity check
-	if ( strncasecmp(errmsg,"Success",7)==0 ) {char*xx=NULL;*xx=0;}
+	gbassert_false( strncasecmp(errmsg,"Success",7)==0 );
 
 	// get time in secs since epoch
 	time_t now ;//= getTimeGlobal();
@@ -2043,7 +2043,7 @@ bool HttpServer::sendQueryErrorReply( TcpSocket *s , int32_t error ,
 	if (!content) content = "";
 
 	// sanity check
-	if ( strncasecmp(errmsg,"Success",7)==0 ) {char*xx=NULL;*xx=0;}
+	if ( strncasecmp(errmsg,"Success",7)==0 ) {gbassert(false);}
 
 	if ( format == FORMAT_HTML ) {
 		// Page content
@@ -2813,7 +2813,7 @@ bool HttpServer::sendDynamicPage ( TcpSocket *s           ,
 	else if ( (ht & HT_PROXY) && *rb == 'Z' ) {
 		gbmemcpy ( sendBuf , page , pageLen );
 		// sanity check
-		if ( sendBufSize != pageLen ) { char *xx=NULL;*xx=0; }
+		gbassert_false( sendBufSize != pageLen );
 		// note it
 		logf(LOG_DEBUG,"http: forwarding. pageLen=%" INT32 "",pageLen);
 	}
@@ -2825,7 +2825,7 @@ bool HttpServer::sendDynamicPage ( TcpSocket *s           ,
 		gbmemcpy ( p , page , pageLen );
 		p += pageLen;
 		// sanity check
-		if ( sendBufSize != pageLen+mimeLen ) { char *xx=NULL;*xx=0;}
+		gbassert_false( sendBufSize != pageLen+mimeLen );
 	}
 
 	// . send if off
@@ -3040,7 +3040,7 @@ TcpSocket *HttpServer::unzipReply(TcpSocket* s) {
 	}
 	mfree (s->m_readBuf, s->m_readBufSize, "HttpUnzip");
 	pnew += uncompressedLen;
-	if(pnew - newBuf > need - 2 ) {char *xx=NULL;*xx=0;}
+	gbassert_false(pnew - newBuf > need - 2 );
 	*pnew = '\0';
 	//log("http: got compressed doc, %f:1 compressed "
 	//"(%" INT32 "/%" INT32 "). took %" INT64 " ms",
@@ -3697,7 +3697,7 @@ void gotSquidProxiedUrlIp ( void *state , int32_t ip ) {
 	r->size_url = sqs->m_sock->m_readOffset + 1;
 
 	// sanity
-	if ( r->ptr_url && r->ptr_url[r->size_url-1] ) { char *xx=NULL;*xx=0;}
+	gbassert_false( r->ptr_url && r->ptr_url[r->size_url-1] );
 
 	// use urlip for this, it determines what host downloads it
 	r->m_firstIp                = r->m_urlIp;
@@ -3788,7 +3788,7 @@ void gotSquidProxiedContent ( void *state ) {
 	sqs->m_msg13.m_replyBuf = NULL;
 
 	// sanity, this should be exact... since TcpServer.cpp needs that
-	//if ( replySize != replyAllocSize ) { char *xx=NULL;*xx=0; }
+	//if ( replySize != replyAllocSize ) { gbassert(false); }
 
 	mdelete ( sqs, sizeof(SquidState), "sqs");
 	delete  ( sqs );

@@ -371,7 +371,7 @@ static bool initEntityTable(){
 			// grab the unicode code point
 			UChar32 up = s_entities[i].unicode;
 			// now we are 100% up
-			if ( ! up ) { char *xx=NULL;*xx=0; }
+			gbassert(up);
 			// point to it
 			char *buf = (char *)s_entities[i].utf8;
 			// if uchar32 not 0 then set the utf8 with it
@@ -410,9 +410,9 @@ static bool initEntityTable(){
 			// set length
 			s_entities[i].utf8Len = len;
 			// check it
-			if ( len == 0 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( len == 0 );
 			// must not exist!
-			if ( s_table.isInTable(&h) ) { char*xx=NULL;*xx=0;}
+			gbassert_false( s_table.isInTable(&h) );
 			// store the entity index in the hash table as score
 			if ( ! s_table.addTerm ( &h, i+1 ) ) return false;
 		}

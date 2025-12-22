@@ -721,7 +721,7 @@ bool StateCD::sendList ( ) {
 			m_titledbStartKeys[i] += 1;
 		}
 
-		else { char *xx=NULL;*xx=0; }
+		else { gbassert(false); }
 
 		// figure out why we do not get the full list????
 		//if ( list->m_listSize >= 0 ) { // m_minRecSizes ) {
@@ -845,7 +845,7 @@ void StateCD::printSpiderdbList ( RdbList *list,SafeBuf *sb,char **lastKeyPtr){
 			//log("diffbot: had a spider reply with no "
 			//    "corresponding spider request for uh48=%" INT64 ""
 			//    , srep->getUrlHash48());
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 		}
 
 		// print the url if not yet printed
@@ -1180,7 +1180,7 @@ bool showAllCrawls ( TcpSocket *s , HttpRequest *hr ) {
 	char *token = hr->getString("token",&tokenLen);
 
 	// token MUST be there because this function's caller checked for it
-	if ( ! token ) { char *xx=NULL;*xx=0; }
+	gbassert(token);
 
 	// store the crawl stats as html into "sb"
 	SafeBuf sb;
@@ -1441,7 +1441,7 @@ char *getNewCollName ( ) { // char *token , int32_t tokenLen ) {
 
 	// include a +5 for "-test"
 	// include 16 for crawlid (16 char hex #)
-	//if ( tokenLen + 16 + 5>= MAX_COLL_LEN ) { char *xx=NULL;*xx=0;}
+	//if ( tokenLen + 16 + 5>= MAX_COLL_LEN ) { gbassert(false);}
 	// ensure the crawlid is the full 16 characters long so we
 	// can quickly extricate the crawlid from the collection name
 	//gbmemcpy ( s_collBuf, token, tokenLen );
@@ -1990,7 +1990,7 @@ bool sendPageCrawlbot ( TcpSocket *socket , HttpRequest *hr ) {
 	// make the collection name so it includes the token and crawl name
 	char collName[MAX_COLL_LEN+1];
 	// sanity
-	if ( MAX_COLL_LEN < 64 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( MAX_COLL_LEN < 64 );
 	// make a compound name for collection of token and name
 	sprintf(collName,"%s-%s",token,name);
 
@@ -3134,7 +3134,7 @@ bool printCrawlBotPage2 ( TcpSocket *socket ,
 			// skip if empty
 			if ( ! xd ) continue;
 			// sanity check
-			if ( ! xd->m_sreqValid ) { char *xx=NULL;*xx=0; }
+			gbassert(xd->m_sreqValid);
 			// skip if not our coll rec!
 			//if ( xd->m_cr != cr ) continue;
 			if ( xd->m_collnum != cr->m_collnum ) continue;

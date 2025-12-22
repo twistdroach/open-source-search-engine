@@ -112,7 +112,7 @@ bool Msg8b::getCatRec  ( Url     *url              ,
 		if ( m_requestSize != requestSize ) {
 			log ( "Msg8b: request size %" INT32 " != %" INT32 ", bad engineer.",
 			      m_requestSize, requestSize );
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		QUICKPOLL(m_niceness);
 		
@@ -342,7 +342,7 @@ void Msg8b::gotReply ( ) {
 			log("Msg8b: Deserialized reply size %" INT32 " "
 			    "!= %" INT32 "",
 			    (int32_t)(p - reply), replySize );
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		QUICKPOLL(m_niceness);
 
@@ -405,7 +405,7 @@ void handleRequest8b ( UdpSlot *slot, int32_t netnice ) {
 		log("build: Msg8b: Read Request Size %" INT32 " != %" INT32 ", "
 		    "bad engineer.",
 		    (int32_t)(p - request), requestSize);
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	// create the state
 	State08b *st8b;
@@ -493,7 +493,7 @@ void gotCatRecWrapper ( void *state ) { // , CatRec *catrec ) {
 	if (p - data != dataSize) {
 		log("Msg8b: Reply Size %" INT32 " != %" INT32 "",
 		    (int32_t)(p - data), dataSize);
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	// clean up the state
 	mdelete ( st8b , sizeof(State08b) , "Msg8b" );

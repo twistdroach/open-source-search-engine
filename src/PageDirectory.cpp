@@ -28,7 +28,7 @@ bool sendPageDirectory ( TcpSocket *s , HttpRequest *r ) {
 	int32_t decodedPathLen = urlDecode(decodedPath, path, pathLen);
 	decodedPath[decodedPathLen] = '\0';
 	// sanity check
-	if ( decodedPathLen > MAX_HTTP_FILENAME_LEN ) { char*xx=NULL;*xx=0;}
+	gbassert_false( decodedPathLen > MAX_HTTP_FILENAME_LEN );
 	// remove cgi
 	int32_t cgiPos = 0;
 	int32_t cgiLen = 0;
@@ -111,7 +111,7 @@ bool sendPageDirectory ( TcpSocket *s , HttpRequest *r ) {
 						 cgiLen,
 						 true , 
 						 r );
-	if ( requestBufLen > 1024+MAX_COLL_LEN+128 ) { char*xx=NULL;*xx=0; }
+	gbassert_false( requestBufLen > 1024+MAX_COLL_LEN+128 );
 	if ( requestBufLen == 0 ) {
 		g_errno = EBADREQUEST;
 		log ( "directory: Unable to generate request for Directory: %s",

@@ -96,7 +96,7 @@ bool Msg51::getClusterRecs ( int64_t     *docIds                   ,
 		log("db: msg51. Collection rec null for collnum %" INT32 ".", 
 		    (int32_t)collnum);
 		g_errno = EBADENGINEER;
-		char *xx=NULL; *xx=0;
+		gbassert(false);
 		return true;
 	}
 	// keep a pointer for the caller
@@ -166,9 +166,8 @@ bool Msg51::sendRequests ( int32_t k ) {
 	}
 
 	// sanity check
-	if ( m_clusterLevels[m_nexti] <  0      ||
-	     m_clusterLevels[m_nexti] >= CR_END   ) {
-		char *xx = NULL; *xx = 0; }
+	gbassert_false( m_clusterLevels[m_nexti] <  0      ||
+	     m_clusterLevels[m_nexti] >= CR_END   );
 
 	// skip if we already got the rec for this guy!
 	if ( m_clusterLevels[m_nexti] != CR_UNINIT ) {
@@ -199,7 +198,7 @@ bool Msg51::sendRequests ( int32_t k ) {
 				       NULL      );// cachedTime
 	if ( found ) {
 		// sanity check
-		if ( crecSize != sizeof(key_t) ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( crecSize != sizeof(key_t) );
 		m_clusterRecs[m_nexti] = *(key_t *)crecPtr;
 		// it is no longer CR_UNINIT, we got the rec now
 		m_clusterLevels[m_nexti] = CR_GOT_REC;
@@ -232,7 +231,7 @@ bool Msg51::sendRequests ( int32_t k ) {
 	}
 
 	// sanity check -- must have one!!
-	if ( slot >= MSG51_MAX_REQUESTS ) { char *xx = NULL ; *xx=0 ; }
+	gbassert_false( slot >= MSG51_MAX_REQUESTS );
 
 	// send it, returns false if blocked, true otherwise
 	sendRequest ( slot );
@@ -278,7 +277,7 @@ bool Msg51::sendRequest ( int32_t    i ) {
 	int32_t           numHosts     = g_hostdb.getNumHostsPerShard();
 	uint32_t  shardNum     = getShardNum(RDB_CLUSTERDB,&startKey);
 	Host          *hosts        = g_hostdb.getShard ( shardNum );
-	if ( hostNum >= numHosts ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( hostNum >= numHosts );
 	int32_t firstHostId = hosts [ hostNum ].m_hostId ;
 
 	// if we are doing a full split, keep it local, going across the net
@@ -338,8 +337,7 @@ void gotClusterRecWrapper51 ( void *state ) {//, RdbList *rdblist ) {
 	// extract our class form him -- a hack
 	Msg51 *THIS = (Msg51 *)msg0->m_parent;
 	// sanity check
-	if ( &THIS->m_msg0[msg0->m_slot51] != msg0 ) {
-		char *xx = NULL; *xx =0; }
+	gbassert_false( &THIS->m_msg0[msg0->m_slot51] != msg0 );
 	// process it
 	THIS->gotClusterRec ( msg0 ) ;
 	// get slot number for re-send on this slot
@@ -505,7 +503,7 @@ loop:
 	level = &clusterLevels[i];
 
 	// sanity check
-	if ( *level == CR_UNINIT ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( *level == CR_UNINIT );
 	// and the adult bit, for cleaning the results
 	if ( familyFilter && g_clusterdb.hasAdultContent ( crec ) ) {
 		*level = CR_DIRTY; goto loop; }

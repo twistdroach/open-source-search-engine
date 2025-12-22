@@ -376,9 +376,7 @@ gbmergesort(	void*	base,
 	//if ((list2 = (u_char*) malloc(nmemb * size + PSIZE)) == NULL)
 	mallocsize = nmemb * size + PSIZE;
 	if(bufSpace) {
-		if(bufSpaceSize < mallocsize) {
-			char *xx = NULL; *xx = 0;
-		}
+		gbassert_false(bufSpaceSize < mallocsize);
 		list2 = (u_char*)bufSpace;
 	}
 	else list2 = (u_char*) mmalloc(mallocsize, "gbmergesort");

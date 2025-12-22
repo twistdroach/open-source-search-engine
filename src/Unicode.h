@@ -233,7 +233,7 @@ int32_t stripAccentMarks(char *outbuf, int32_t outbufsize,
 //#define CrashMe() {					     
 //		log("Unicode: Need to update %s, line %d!!!\n", 
 //		    __FILE__, __LINE__);		     
-//		char *xx = NULL; *xx = 0;                    
+//		gbassert(false);                    
 //	}
 
 

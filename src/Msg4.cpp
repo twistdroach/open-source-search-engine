@@ -196,7 +196,7 @@ bool flushMsg4Buffers ( void *state , void (* callback) (void *) ) {
 	// inc count
 	s_numCallbacks++;
 
-	//if ( s_flushCallback ) { char *xx=NULL;*xx=0; }
+	//if ( s_flushCallback ) { gbassert(false); }
 	// start it up
 	flushLocal();
 
@@ -292,7 +292,7 @@ bool Msg4::addList ( RdbList   *list                   ,
 		     bool       splitList              ) {
 
 	// sanity check
-	//if ( niceness != MAX_NICENESS ) { char *xx=NULL;*xx=0;}
+	//if ( niceness != MAX_NICENESS ) { gbassert(false);}
 	// clear it
 	g_errno = 0;
 	// if list has no records in it return true
@@ -332,7 +332,7 @@ bool Msg4::addList ( RdbList   *list                   ,
 bool Msg4::storeList ( RdbList *list , char rdbId , collnum_t collnum ) {
 
 	// sanity check
-	if ( rdbId < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( rdbId < 0 );
 
 	// nobody is after us in the linked list
 	m_next = NULL;
@@ -345,8 +345,8 @@ bool Msg4::storeList ( RdbList *list , char rdbId , collnum_t collnum ) {
 	//if ( s_msg4Tail && this != s_msg4Head ) {
 	if ( s_msg4Tail ) {
 		// sanity check -- detect re-use of a blocked msg4!
-		if ( this == s_msg4Head ) { char *xx =NULL; *xx=0; }
-		if ( ! s_msg4Head       ) { char *xx =NULL; *xx=0; }
+		gbassert_false( this == s_msg4Head );
+		gbassert(s_msg4Head);
 		// spider hang bug
 		//logf(LOG_DEBUG,
 		//   "db: msg4 blocked. adding to tail. msg4=%" INT32 "",(int32_t)this);
@@ -367,7 +367,7 @@ bool Msg4::storeList ( RdbList *list , char rdbId , collnum_t collnum ) {
 	//logf(LOG_DEBUG,"build: msg4 first in line. msg4=%" INT32 "",(int32_t)this);
 
 	// sanity check
-	if ( s_msg4Head || s_msg4Tail ) { char *xx=NULL; *xx=0; }
+	gbassert_false( s_msg4Head || s_msg4Tail );
 
 	// . wait in line
 	// . when the s_hostBufs[hostId] is able to accommodate our
@@ -401,7 +401,7 @@ bool storeList2 ( RdbList *list ,
 		log("repair: Consider erasing repair.dat and "
 		    "repair-addsinprogress.dat to restart the repair IF "
 		    "you were doing a repair.");
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
 
 	// store each record in the list into the send buffers
@@ -513,8 +513,8 @@ bool Msg4::addMetaList ( char      *metaList                 ,
 	if ( metaListSize == 0 ) return true;
 
 	// sanity
-	//if ( collnum < 0 || collnum > 1000 ) { char *xx=NULL;*xx=0; }
-	if ( collnum < 0 ) { char *xx=NULL;*xx=0; }
+	//if ( collnum < 0 || collnum > 1000 ) { gbassert(false); }
+	gbassert_false( collnum < 0 );
 
 	// if first time set this
 	m_currentPtr   = metaList;
@@ -559,7 +559,7 @@ bool Msg4::addMetaList ( char      *metaList                 ,
 	// . FURTHERMORE the multicast seems to always be called with
 	//   MAX_NICENESS so i'm not sure how niceness 0 will really help
 	//   with any of this stuff.
-	//if ( s_msg4Head || s_msg4Tail ) { char *xx=NULL; *xx=0; }
+	//if ( s_msg4Head || s_msg4Tail ) { gbassert(false); }
 	if ( s_msg4Head || s_msg4Tail ) {
 		log("msg4: got unexpected head"); // :)
 		goto retry;
@@ -605,8 +605,8 @@ bool Msg4::addMetaList2 ( ) {
 
 	char *pend = m_metaList + m_metaListSize;
 
-	//if ( m_collnum < 0 || m_collnum > 1000 ) { char *xx=NULL;*xx=0; }
-	if ( m_collnum < 0 ) { char *xx=NULL;*xx=0; }
+	//if ( m_collnum < 0 || m_collnum > 1000 ) { gbassert(false); }
+	gbassert_false( m_collnum < 0 );
 
 	// store each record in the list into the send buffers
 	for ( ; p < pend ; ) {
@@ -624,7 +624,7 @@ bool Msg4::addMetaList2 ( ) {
 		if ( *p & 0x01 ) del = false;
 		else             del = true;
 		// tmp debug
-		//if ( del ) { char *xx=NULL;*xx=0;}
+		//if ( del ) { gbassert(false);}
 		// get the key size. a table lookup in Rdb.cpp.
 		int32_t ks ;
 		if      ( rdbId == RDB_POSDB || rdbId == RDB2_POSDB2) ks = 18;
@@ -657,19 +657,19 @@ bool Msg4::addMetaList2 ( ) {
 			// -1 means to read it in
 			dataSize = *(int32_t *)p;
 			// sanity check
-			if ( dataSize < 0 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( dataSize < 0 );
 			// sanity check
 			//if ( rdbId == RDB_DOLEDB && 
 			//     (*key & 0x01) == 0x01 && // positive key
 			//     dataSize <= 0 ) {
-			//	char *xx=NULL;*xx=0; }
+			//	gbassert(false); }
 			// skip dataSize
 			p += 4;
 		}
 		// skip over the data, if any
 		p += dataSize;
 		// breach us?
-		if ( p > pend ) { char *xx=NULL;*xx=0; }
+		gbassert_false( p > pend );
 		// i fixed UdpServer.cpp to NOT call msg4 handlers when in
 		// a quickpoll, in case we receive a niceness 0 msg4 request
  		QUICKPOLL(m_niceness); // MAX_NICENESS);
@@ -744,7 +744,7 @@ bool storeRec ( collnum_t      collnum ,
  retry:
 	// sanity check
 	//if ( recSize==16 && rdbId==RDB_SPIDERDB && *(int32_t *)(rec+12)!=0 ) {
-	//	char *xx=NULL; *xx=0; }
+	//	gbassert(false); }
 	// . how many bytes do we need to store the request?
 	// . USED(4 bytes)/collnum/rdbId(1)/recSize(4bytes)/recData
 	// . "USED" is only used for mallocing new slots really
@@ -785,7 +785,7 @@ bool storeRec ( collnum_t      collnum ,
 	// . includes everything even itself
 	int32_t  used = *(int32_t *)buf;
 	// sanity check. "used" must include the 4 bytes of itself
-	if ( used < 12 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( used < 12 );
 	// how much total buf space do we have, used or unused?
 	int32_t  maxSize = s_hostBufSizes[hostId];
 	// how many bytes are available in "buf"?
@@ -865,7 +865,7 @@ bool sendBuffer ( int32_t hostId , int32_t niceness ) {
 	if ( ! isClockInSync() ) { 
 		log("msg4: msg4: warning sending out adds but clock not in "
 		    "sync with host #0");
-		//char *xx=NULL ; *xx=0; }
+		//gbassert(false); }
 	}
 	// try to keep all zids unique, regardless of their group
 	static uint64_t s_lastZid = 0;
@@ -954,7 +954,7 @@ Multicast *getMulticast ( ) {
 	// count it
 	s_mcastsOut++;
 	// sanity
-	if ( avail->m_inUse ) { char *xx=NULL;*xx=0; }
+	gbassert_false( avail->m_inUse );
 	// return that
 	return avail;
 }
@@ -991,7 +991,7 @@ void gotReplyWrapper4 ( void *state , void *state2 ) {
 
 	// get the udpslot that is replying here
 	UdpSlot *replyingSlot = mcast->m_slot;
-	if ( ! replyingSlot ) { char *xx=NULL;*xx=0; }
+	gbassert(replyingSlot);
 
 	returnMulticast ( mcast );
 
@@ -1087,7 +1087,7 @@ void storeLineWaiters ( ) {
 	if ( ! s_msg4Head ) s_msg4Tail = NULL;
 	// . if his callback was NULL, then was loaded in loadAddsInProgress()
 	// . we no longer do that so callback should never be null now
-	if ( ! msg4->m_callback ) { char *xx=NULL;*xx=0; }
+	gbassert(msg4->m_callback);
 	// log this now i guess. seems to happen a lot if not using threads
 	if ( g_conf.m_useThreads )
 		logf(LOG_DEBUG,"msg4: calling callback for msg4=0x%" PTRFMT "",
@@ -1297,7 +1297,7 @@ bool addMetaList ( char *p , UdpSlot *slot ) {
 				    "be in repair mode.");
 				g_errno = ETRYAGAIN;
 				return false;
-				//char *xx=NULL;*xx=0;
+				//gbassert(false);
 			}
 		}
 		if ( ! rdb ) {
@@ -1315,7 +1315,7 @@ bool addMetaList ( char *p , UdpSlot *slot ) {
 			//if ( p < pend ) goto loop;
 			// all done
 			//return true;
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 			// silently drop it, the WHOLE thing, it seems 
 			// corrupted!!!
 			return true;
@@ -1348,7 +1348,7 @@ bool addMetaList ( char *p , UdpSlot *slot ) {
 		    //not in repair mode. dropping.",(int32_t)rdbId);
 		g_errno = ETRYAGAIN;
 		return false;
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 		// drop it for now!!
 		p += recSize;
 		if ( p < pend ) goto loop;
@@ -1637,7 +1637,7 @@ bool loadAddsInProgress ( char *prefix ) {
 		// sanity check
 		if ( *(int32_t *)buf != used ) {
 			log("build: file %s is bad.",filename);
-			char *xx = NULL; *xx = 0; 
+			gbassert(false); 
 		}
 		if ( i >= s_numHostBufs ) {
 			mfree ( buf , allocSize ,"hostbuf");
@@ -1831,7 +1831,7 @@ void processSpecialSignal ( collnum_t collnum , char *p ) {
 	// use a uh48 of 0 to signify an unlock operation
 	//g_titledb.getUrlHash48 ( (key_t *)key ) == 0LL ) {
 	// must be 96 bits
-	//if ( m_ks != 12 ) { char *xx=NULL;*xx=0; }
+	//if ( m_ks != 12 ) { gbassert(false); }
 	// get docid that was locked
 	//int64_t d = g_titledb.getDocId ( (key_t *)key);
 	int64_t d = fake->n0;

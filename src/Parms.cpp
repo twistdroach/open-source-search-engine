@@ -83,8 +83,8 @@ key96_t makeParmKey ( collnum_t collnum , Parm *m , int16_t occNum ) {
 	// delbit. 1 means positive key
 	k.n0 |= 0x01;
 	// test
-	if ( getCollnumFromParmRec ((char *)&k)!=collnum){char*xx=NULL;*xx=0;}
-	if ( getOccNumFromParmRec ((char *)&k)!=occNum){char*xx=NULL;*xx=0;}
+	gbassert_false( getCollnumFromParmRec ((char *)&k)!=collnum);
+	gbassert_false( getOccNumFromParmRec ((char *)&k)!=occNum);
 	return k;
 }
 
@@ -190,7 +190,7 @@ bool CommandInsertUrlFiltersRow ( char *rec ) {
 		// must be an array!
 		if ( ! m->isArray() ) continue;
 		// sanity check
-		if ( m->m_obj != OBJ_COLL ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m->m_obj != OBJ_COLL );
 		// . add that row
 		// . returns false and sets g_errno on error
 		if ( ! g_parms.insertParm ( i, rowNum,(char *)cr)) return true;
@@ -226,7 +226,7 @@ bool CommandRemoveConnectIpRow ( char *rec ) {
 		// must be an array!
 		if ( ! m->isArray() ) continue;
 		// sanity check
-		if ( m->m_obj != OBJ_CONF ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m->m_obj != OBJ_CONF );
 		// must be masterip
 		if ( m->m_type != TYPE_IP ) continue;
 		// . nuke that parm's element
@@ -255,7 +255,7 @@ bool CommandRemovePasswordRow ( char *rec ) {
 		// must be an array!
 		if ( ! m->isArray() ) continue;
 		// sanity check
-		if ( m->m_obj != OBJ_CONF ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m->m_obj != OBJ_CONF );
 		// must be master password
 		if ( m->m_type != TYPE_STRINGNONEMPTY ) continue;
 		// . nuke that parm's element
@@ -293,7 +293,7 @@ bool CommandRemoveUrlFiltersRow ( char *rec ) {
 		// must be an array!
 		if ( ! m->isArray() ) continue;
 		// sanity check
-		if ( m->m_obj != OBJ_COLL ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m->m_obj != OBJ_COLL );
 		// . nuke that parm's element
 		// . returns false and sets g_errno on error
 		if ( ! g_parms.removeParm ( i,rowNum,(char *)cr)) return true;
@@ -311,7 +311,7 @@ bool CommandCloneColl ( char *rec ) {
 	// . from "&restart=467" for example
 	char *data = rec + sizeof(key96_t) + 4;
 	int32_t dataSize = *(int32_t *)(rec + sizeof(key96_t));
-	//if ( dataSize < 1 ) { char *xx=NULL;*xx=0; }
+	//if ( dataSize < 1 ) { gbassert(false); }
 	// copy parm settings from this collection name
 	char *srcColl = data;
 	
@@ -360,7 +360,7 @@ bool CommandAddColl ( char *rec , char customCrawl ) {
 	char *data = rec + sizeof(key96_t) + 4;
 	int32_t dataSize = *(int32_t *)(rec + sizeof(key96_t));
 	// collection name must be at least 2 bytes (includes \0)
-	if ( dataSize <= 1 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( dataSize <= 1 );
 
 	// then collname, \0 terminated
 	char *collName = data;
@@ -511,7 +511,7 @@ bool CommandRestartColl ( char *rec , WaitEntry *we ) {
 	// . from "&restart=467" for example
 	char *data = rec + sizeof(key96_t) + 4;
 	int32_t dataSize = *(int32_t *)(rec + sizeof(key96_t));
-	if ( dataSize < 1 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( dataSize < 1 );
 	collnum_t oldCollnum = atol(data);
 
 	if ( oldCollnum < 0 || 
@@ -569,7 +569,7 @@ bool CommandResetColl ( char *rec , WaitEntry *we ) {
 	// . from "&restart=467" for example
 	char *data = rec + sizeof(key96_t) + 4;
 	int32_t dataSize = *(int32_t *)(rec + sizeof(key96_t));
-	if ( dataSize < 1 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( dataSize < 1 );
 	collnum_t oldCollnum = atol(data);
 
 	if ( oldCollnum < 0 || 
@@ -1881,7 +1881,7 @@ bool Parms::printParms2 ( SafeBuf* sb ,
 
 			//
 			// mdw just debug to here ... left off here
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 
 		// . do we have an array? if so print title on next row
 		//   UNLESS these are priority checkboxes, those can all 
@@ -2132,7 +2132,7 @@ bool Parms::printParm ( SafeBuf* sb,
 	// delimit each cgi var if we need to
 	if ( m->m_cgi && gbstrlen(m->m_cgi) > 45 ) {
 		log(LOG_LOGIC,"admin: Cgi variable is TOO big.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	char cgi[64];
 	if ( m->m_cgi ) {
@@ -2491,7 +2491,7 @@ bool Parms::printParm ( SafeBuf* sb,
 	// a string and that string is the diffbot api url to use. 
 	// the string is empty or zero length to indicate none.
 	//else if ( t == TYPE_DIFFBOT_DROPDOWN ) {
-	//	char *xx=NULL;*xx=0;
+	//	gbassert(false);
 	//}
 	//else if ( t == TYPE_UFP )
 	else if ( t == TYPE_SAFEBUF && 
@@ -2931,14 +2931,14 @@ bool Parms::setFromRequest ( HttpRequest *r ,
 
 	// use convertHttpRequestToParmList() for these because they
 	// are persistent records that are updated on every shard.
-	if ( objType == OBJ_COLL ) { char *xx=NULL;*xx=0; }
-	if ( objType == OBJ_CONF ) { char *xx=NULL;*xx=0; }
+	gbassert_false( objType == OBJ_COLL );
+	gbassert_false( objType == OBJ_CONF );
 
 	// ensure valid
 	if ( ! THIS ) {
 		// it is null when no collection explicitly specified...
 		log(LOG_LOGIC,"admin: THIS is null for setFromRequest");
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
 
 	// need this for searchInput which takes default from "cr"
@@ -3072,7 +3072,7 @@ bool Parms::removeParm ( int32_t i , int32_t an , char *THIS ) {
 void Parms::setParm ( char *THIS , Parm *m , int32_t mm , int32_t j , char *s ,
 		      bool isHtmlEncoded , bool fromRequest ) {
 
-	if ( fromRequest ) { char *xx=NULL;*xx=0; }
+	gbassert_false( fromRequest );
 
 	// . this is just for setting CollectionRecs, so skip if offset < 0
 	// . some parms are just for SearchInput (search parms)
@@ -3093,13 +3093,13 @@ void Parms::setParm ( char *THIS , Parm *m , int32_t mm , int32_t j , char *s ,
 		log(LOG_LOGIC,"admin: Parm \"%s\" had NULL default value. "
 		    "Forcing to 0.",
 		    tit);
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 	}
 
 	// sanity check
 	if ( &m_parms[mm] != m ) {
 		log(LOG_LOGIC,"admin: Not sane parameters.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 
 	// if attempting to add beyond array max, bail out
@@ -3402,14 +3402,14 @@ void Parms::setToDefault ( char *THIS , char objType , CollectionRec *argcr ) {
 		// what is this?
 		//if ( m->m_obj == OBJ_COLL ) {
 		//	CollectionRec *cr = (CollectionRec *)THIS;
-		//	if ( cr->m_bases[1] ) { char *xx=NULL;*xx=0; }
+		//	if ( cr->m_bases[1] ) { gbassert(false); }
 		//}
 		// sanity check, make sure it does not overflow
 		if ( m->m_obj == OBJ_COLL &&
 		     m->m_off > (int32_t)sizeof(CollectionRec)){
 			log(LOG_LOGIC,"admin: Parm in Parms.cpp should use "
 			    "OBJ_COLL not OBJ_CONF");
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		//if ( m->m_page == PAGE_PRIORITIES )
 		//	log("hey");
@@ -3420,12 +3420,12 @@ void Parms::setToDefault ( char *THIS , char objType , CollectionRec *argcr ) {
 			log(LOG_LOGIC,"admin: Page can not reference "
 			    "g_conf and be declared AFTER PAGE_CGIPARMS in "
 			    "Pages.h. Title=%s",m->m_title);
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		// if defOff >= 0 get from cr like for searchInput vals
 		// whose default is from the collectionRec...
 		if ( m->m_defOff >= 0 && argcr ) {
-			if ( ! argcr ) { char *xx=NULL;*xx=0; }
+			gbassert(argcr);
 			char *def = m->m_defOff+(char *)argcr;
 			char *dst = (char *)THIS + m->m_off;
 			gbmemcpy ( dst , def , m->m_size );
@@ -3435,7 +3435,7 @@ void Parms::setToDefault ( char *THIS , char objType , CollectionRec *argcr ) {
 		if ( m->m_max <= 1 ) {
 			//if ( i == 282 )  // "query" parm
 			//	log("hey");
-			//if ( ! m->m_def ) { char *xx=NULL;*xx=0; }
+			//if ( ! m->m_def ) { gbassert(false); }
 			setParm ( THIS , m, i, 0, m->m_def, false/*not enc.*/,
 				  false );
 			//((CollectionRec *)THIS)->m_orig[i] = 1;
@@ -3546,7 +3546,7 @@ bool Parms::setFromFile ( void *THIS        ,
 		int32_t nb;
 		int32_t newnn;
 	loop:
-		if ( m->m_obj == OBJ_NONE ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m->m_obj == OBJ_NONE );
 		// get xml node number of m->m_xml in the "xml" file
 		newnn = xml.getNodeNum(nn,1000000,m->m_xml,gbstrlen(m->m_xml));
 #ifdef _GLOBALSPEC_
@@ -3791,7 +3791,7 @@ bool Parms::setXmlFromFile(Xml *xml, char *filename, SafeBuf *sb ) {
 	// if ( fsize > bufSize ) {
 	// 	log ("conf: File size of %s is %" INT32 ", must be "
 	// 	     "less than %" INT32 ".",f.getFilename(),fsize,bufSize );
-	// 	char *xx = NULL; *xx = 0;
+	// 	gbassert(false);
 	// }
 	// open it for reading
 	// f.set ( filename );
@@ -4118,7 +4118,7 @@ Parm *Parms::getParm ( char *cgi ) {
 			if ( s_phtable[n] == h ) {
 				log(LOG_LOGIC,"Parms: collisions forbidden in "
 				    "getParm(). Duplicate cgi name?");
-				char *xx = NULL; *xx = 0;
+				gbassert(false);
 			}
 			if (++n >= PHTABLE_SIZE) n = 0;
 		}
@@ -4335,7 +4335,7 @@ bool Parms::serializeConfParm( Parm *m, int32_t i, char **p, char *end,
 
 	// safebuf not supported here yet, but it for coll recs below
 	// so copy code from there if you need it
-	if ( m->m_type == TYPE_SAFEBUF ) { char *xx=NULL;*xx=0;}
+	gbassert_false( m->m_type == TYPE_SAFEBUF );
 
 	if (m->m_type == TYPE_STRING || 
 	    m->m_type == TYPE_STRINGBOX || 
@@ -4548,7 +4548,7 @@ void Parms::deserialize( char *buf ) {
 		// grab the parm we're working on
 		if ( sp->i < 0 || sp->i >= m_numParms ) {
 			log( "admin: invalid parm # in Parms::deserialize" );
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		Parm *m = &m_parms[ sp->i ]; 
 		
@@ -4578,7 +4578,7 @@ void Parms::deserialize( char *buf ) {
 	}
 	if (numLooped >= MAX_LOOP) {
 		log( "admin: infinite loop in Parms::deserialize(). halting!");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 
 	// if we changed the conf, we need to save it
@@ -4606,7 +4606,7 @@ void Parms::deserializeConfParm( Parm *m, SerParm *sp, char **p,
 	     m->m_off + sp->size < 0 ){
 		log(LOG_WARN, "admin: deserializing parm would overflow "
 		    "the collection rec!");
-		char *xx =0; *xx = 0;
+		gbassert(false);
 	}
 	if ( sp->size == 0 ) { // string
 		char *sVal = sp->val;
@@ -4698,7 +4698,7 @@ void Parms::deserializeCollParm( CollectionRec *cr,
 	     m->m_off + sp->size < 0 ) {
 		log(LOG_WARN, "admin: deserializing parm would overflow "
 		    "the collection rec!");
-		char *xx =0; *xx = 0;
+		gbassert(false);
 	}
 	if ( sp->size == 0 ) { // strings
 		char *sVal = sp->val; // the sent string buffer i guess
@@ -4793,7 +4793,7 @@ void Parms::deserializeCollParm( CollectionRec *cr,
 	}
 	else {
 		// sanity
-		if ( m->m_type == TYPE_SAFEBUF ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m->m_type == TYPE_SAFEBUF );
 
 		if ( 0 != memcmp( sp->val, (char *)cr + m->m_off, sp->size) ) {
 			// copy the new value
@@ -20133,10 +20133,10 @@ void Parms::init ( ) {
 		// sanity now
 		if ( m_parms[i].m_page == -1 ) { 
 			log("parms: bad page \"%s\"",m_parms[i].m_title);
-			char *xx=NULL;*xx=0; }
+			gbassert(false); }
 		if ( m_parms[i].m_obj == -1 ) { 
 			log("parms: bad obj \"%s\"",m_parms[i].m_title);
-			char *xx=NULL;*xx=0; }
+			gbassert(false); }
 
 		// if its a fixed size then make sure m_size is not set
 		if ( m_parms[i].m_fixed > 0 ) {
@@ -20219,17 +20219,17 @@ void Parms::init ( ) {
 		}
 		if ( m->m_obj == OBJ_CONF && m->m_off >= (int32_t)sizeof(Conf) ) {
 			log("admin: Parm %s has bad m_off value.",m->m_title);
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		if (m->m_obj==OBJ_COLL&&m->m_off>=(int32_t)sizeof(CollectionRec)){
 			log("admin: Parm %s has bad m_off value.",m->m_title);
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		if ( m->m_off >= 0 && 
 		     m->m_obj == OBJ_SI && 
 		     m->m_off >= (int32_t)sizeof(SearchInput)){
 			log("admin: Parm %s has bad m_off value.",m->m_title);
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 
 		if ( m_parms[i].m_page == -1 ) {
@@ -20481,19 +20481,19 @@ void Parms::overlapTest ( char step ) {
 
 
 bool Parm::getValueAsBool ( SearchInput *si ) {
-	if ( m_obj != OBJ_SI ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_obj != OBJ_SI );
 	char *p = (char *)si + m_off;
 	return *(bool *)p;
 }
 
 int32_t Parm::getValueAsLong ( SearchInput *si ) {
-	if ( m_obj != OBJ_SI ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_obj != OBJ_SI );
 	char *p = (char *)si + m_off;
 	return *(int32_t *)p;
 }
 
 char *Parm::getValueAsString ( SearchInput *si ) {
-	if ( m_obj != OBJ_SI ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_obj != OBJ_SI );
 	char *p = (char *)si + m_off;
 	return *(char **)p;
 }
@@ -20570,7 +20570,7 @@ bool Parms::addNewParmToList2 ( SafeBuf *parmList ,
 		// include \0
 		valSize = gbstrlen(val)+1;
 		// sanity
-		if ( val[valSize-1] != '\0' ) { char *xx=NULL;*xx=0; }
+		gbassert_false( val[valSize-1] != '\0' );
 	}
 	else if ( m->m_type == TYPE_LONG ) {
 		// watch out for unsigned 32-bit numbers, so use atoLL()
@@ -20633,7 +20633,7 @@ bool Parms::addNewParmToList2 ( SafeBuf *parmList ,
 	}
 	else {
 		log("parms: shit unsupported parm type");
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 
 	key96_t key = makeParmKey ( collnum , m ,  occNum );
@@ -20702,7 +20702,7 @@ bool Parms::addCurrentParmToList2 ( SafeBuf *parmList ,
 		data = sb->getBufStart();
 		dataSize = sb->length();
 		// sanity
-		if ( dataSize > 0 && !data[dataSize-1]){char *xx=NULL;*xx=0;}
+		gbassert_false( dataSize > 0 && !data[dataSize-1]);
 		// include the \0 since we do it for strings above
 		if ( dataSize > 0 ) dataSize++;
 		// empty? make it \0 then to be like strings i guess
@@ -20711,7 +20711,7 @@ bool Parms::addCurrentParmToList2 ( SafeBuf *parmList ,
 			dataSize = 1;
 		}
 		// sanity check
-		if ( dataSize > 0 && data[dataSize-1] ) {char *xx=NULL;*xx=0;}
+		gbassert_false( dataSize > 0 && data[dataSize-1] );
 		// if just a \0 then make it empty
 		//if ( dataSize && !data[0] ) {
 		//	data = NULL;
@@ -21096,7 +21096,7 @@ bool Parms::convertHttpRequestToParmList (HttpRequest *hr, SafeBuf *parmList,
 			m = getParmFast1 ( "cse",  &occNum);
 			if      ( val && val[0] == '0' ) val = "1";
 			else if ( val && val[0] == '1' ) val = "0";
-			if ( ! m ) { char *xx=NULL;*xx=0; }
+			gbassert(m);
 		}
 
 		if ( ! m ) continue;
@@ -21174,7 +21174,7 @@ Parm *Parms::getParmFast2 ( int32_t cgiHash32 ) {
 		s_pht.m_useKeyMagic = true;
 		// wtf?
 		if ( m_numParms <= 0 ) init();
-		if ( m_numParms <= 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_numParms <= 0 );
 		// fill up hashtable
 		for ( int32_t i = 0 ; i < m_numParms ; i++ ) {
 			// get it
@@ -21204,7 +21204,7 @@ Parm *Parms::getParmFast2 ( int32_t cgiHash32 ) {
 				log("parms: dup parm h32=%" INT32 " "
 				    "\"%s\" vs \"%s\"",
 				    ph32, dup->m_title,parm->m_title);
-				char *xx=NULL;*xx=0;
+				gbassert(false);
 			}
 			// add that to hash table
 			s_pht.addKey ( &ph32 , &parm );
@@ -21485,7 +21485,7 @@ void gotParmReplyWrapper ( void *state , UdpSlot *slot ) {
 		// a new head
 		if ( pn == s_headNode ) {
 			// sanity
-			if ( pn->m_prevNode ) { char *xx=NULL;*xx=0; }
+			gbassert_false( pn->m_prevNode );
 			// the guy after us is the new head
 			s_headNode = pn->m_nextNode;
 		}
@@ -21493,7 +21493,7 @@ void gotParmReplyWrapper ( void *state , UdpSlot *slot ) {
 		// a new tail?
 		if ( pn == s_tailNode ) {
 			// sanity
-			if ( pn->m_nextNode ) { char *xx=NULL;*xx=0; }
+			gbassert_false( pn->m_nextNode );
 			// the guy before us is the new tail
 			s_tailNode = pn->m_prevNode;
 		}
@@ -21502,7 +21502,7 @@ void gotParmReplyWrapper ( void *state , UdpSlot *slot ) {
 		if ( ! s_headNode ) s_tailNode = NULL;
 
 		// wtf?
-		if ( ! pn->m_calledCallback ) { char *xx=NULL;*xx=0; }
+		gbassert(pn->m_calledCallback);
 
 		// do callback first before freeing pn
 		//if ( pn->m_callback ) pn->m_callback ( pn->m_state );
@@ -21577,7 +21577,7 @@ bool Parms::doParmSendingLoop ( ) {
 		if ( ! pn ) { 
 			log("parms: pn is null");
 			break;
-			char *xx=NULL; *xx=0; 
+			gbassert(false); 
 		}
 
 		// give him a free pass? some parm updates are directed to 
@@ -21834,7 +21834,7 @@ void handleRequest3fLoop ( void *weArg ) {
 void handleRequest3f ( UdpSlot *slot , int32_t niceness ) {
 
 	// sending to host #0 is not right...
-	//if ( g_hostdb.m_hostId == 0 ) { char *xx=NULL;*xx=0; }
+	//if ( g_hostdb.m_hostId == 0 ) { gbassert(false); }
 
 	char *parmRecs = slot->m_readBuf;
 	char *parmEnd  = parmRecs + slot->m_readBufSize;
@@ -21937,8 +21937,8 @@ bool Parms::syncParmsWithHost0 ( ) {
 	// copy for sending
 	SafeBuf sendBuf;
 	if ( ! sendBuf.safeMemcpy ( &hashList ) ) return false;
-	if ( sendBuf.getCapacity() != hashList.length() ){char *xx=NULL;*xx=0;}
-	if ( sendBuf.length() != hashList.length()  ){char *xx=NULL;*xx=0;}
+	gbassert_false( sendBuf.getCapacity() != hashList.length() );
+	gbassert_false( sendBuf.length() != hashList.length()  );
 
 	// allow udpserver to free it
 	char *request = sendBuf.getBufStart();
@@ -22021,7 +22021,7 @@ void handleRequest3e ( UdpSlot *slot , int32_t niceness ) {
 		uint32_t collNameHash32 = *(int32_t *)p;
 		p += 4;
 		// sanity check. -1 means g_conf. i guess.
-		if ( c < -1 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( c < -1 );
 		// and parm hash
 		int64_t h64 = *(int64_t *)p;
 		p += 8;
@@ -22196,7 +22196,7 @@ bool Parms::addAllParmsToList ( SafeBuf *parmList, collnum_t collnum ) {
 
 		if ( collnum == -1 && parm->m_obj != OBJ_CONF ) continue;
 		if ( collnum >=  0 && parm->m_obj != OBJ_COLL ) continue;
-		if ( collnum < -1 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( collnum < -1 );
 
 		// like 'statsdb max cache mem' etc.
 		if ( parm->m_flags & PF_NOSYNC ) continue;
@@ -22205,7 +22205,7 @@ bool Parms::addAllParmsToList ( SafeBuf *parmList, collnum_t collnum ) {
 		// receiving end
 		if ( parm->m_cgiHash == 0 ) { 
 			log("parms: no cgi for parm %s",parm->m_title);
-			char *xx=NULL; *xx=0;
+			gbassert(false);
 		}
 
 		int32_t occNum = -1;
@@ -22367,10 +22367,10 @@ bool Parms::updateParm ( char *rec , WaitEntry *we ) {
 		// nuke it
 		sb->purge();
 		// require that the \0 be part of the update i guess
-		//if ( ! data || dataSize <= 0 ) { char *xx=NULL;*xx=0; }
+		//if ( ! data || dataSize <= 0 ) { gbassert(false); }
 		// check for \0
 		if ( data && dataSize > 0 ) {
-			if ( data[dataSize-1] != '\0') { char *xx=NULL;*xx=0;}
+			gbassert_false( data[dataSize-1] != '\0');
 			// this means that we can not use string POINTERS as 
 			// parms!! don't include \0 as part of length
 			sb->safeStrcpy ( data ); // , dataSize );
@@ -22382,7 +22382,7 @@ bool Parms::updateParm ( char *rec , WaitEntry *we ) {
 		// sanity
 		// we no longer include the \0 in the dataSize...so a dataSize
 		// of 0 means empty string...
-		//if ( data[dataSize-1] != '\0' ) { char *xx=NULL;*xx=0; }
+		//if ( data[dataSize-1] != '\0' ) { gbassert(false); }
 	}
 	else {
 		// and copy the data into collrec or g_conf
@@ -22584,7 +22584,7 @@ bool Parm::printVal ( SafeBuf *sb , collnum_t collnum , int32_t occNum ) {
 
 	log("parms: missing parm type!!");
 
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	return false;
 }
 

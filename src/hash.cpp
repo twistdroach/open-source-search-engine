@@ -234,7 +234,7 @@ uint64_t hash64d ( const char *p, int32_t plen ) {
 		uint8_t tmp[4];
 		char    ncs = utf8Encode ( x , (char *)tmp );
 		// sanity check
-		if ( ncs > 4 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( ncs > 4 );
 		// i've seen this happen for 4 byte char =
 		// -16,-112,-51,-125  which has x=66371 and y=66371
 		// but utf8Encode() returned 0!

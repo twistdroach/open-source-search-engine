@@ -175,7 +175,7 @@ class Posdb {
 	// we map the 32bit score to like 7 bits here
 	void setMultiplierBits ( void *vkp , unsigned char mbits ) {
 		key144_t *kp = (key144_t *)vkp;
-		if ( mbits > MAXMULTIPLIER ) { char *xx=NULL;*xx=0; }
+		gbassert_false( mbits > MAXMULTIPLIER );
 		kp->n0 &= 0xfc0f;
 		// map score to bits
 		kp->n0 |= ((uint16_t)mbits) << 4;
@@ -191,14 +191,14 @@ class Posdb {
 	
 	void setSiteRankBits ( void *vkp , char siteRank ) {
 		key144_t *kp = (key144_t *)vkp;
-		if ( siteRank > MAXSITERANK ) { char *xx=NULL;*xx=0; }
+		gbassert_false( siteRank > MAXSITERANK );
 		kp->n1 &= 0xfffffe1fffffffffLL;
 		kp->n1 |= ((uint64_t)siteRank)<<(32+5);
 	}
 	
 	void setLangIdBits ( void *vkp , char langId ) {
 		key144_t *kp = (key144_t *)vkp;
-		if ( langId > MAXLANGID ) { char *xx=NULL;*xx=0; }
+		gbassert_false( langId > MAXLANGID );
 		kp->n1 &= 0xffffffe0ffffffffLL;
 		// put the lower 5 bits here
 		kp->n1 |= ((uint64_t)(langId&0x1f))<<(32);
@@ -278,7 +278,7 @@ class Posdb {
 	// in a posdblist
 	char *getNextDocIdSublist ( char *p ,  char *listEnd ) {
 		// key must be 12
-		//if ( getKeySize(p) != 12 ) { char *xx=NULL;*xx=0; }
+		//if ( getKeySize(p) != 12 ) { gbassert(false); }
 		// skip that first key
 		p += 12;
 		// skip the 6 byte keys
@@ -933,7 +933,7 @@ inline char *getWordPosList ( int64_t docId , char *list , int32_t listSize ) {
 	// . TODO: speed this up!!!
 	step = step - (step % 6);
 	// sanity
-	if ( step % 6 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( step % 6 );
 	// ensure never 0
 	if ( step <= 0 ) {
 		step = 6;

@@ -486,7 +486,7 @@ bool Msg1c::gotList ( ) {
 		// store it
 		if ( ! m_sb.safeMemcpy ( (char *)&sr , recSize ) ) {
 			// g_errno must be set
-			if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+			gbassert(g_errno);
 			//s_isRunning = false;
 			log(LOG_LOGIC,
 			    "admin: Query reindex size of %" INT32 " "
@@ -687,7 +687,7 @@ bool Msg1d::updateTagTerms ( ) {
 			}
 		}
 		// sanity
-		if ( ! m_msg12.m_hasLock ) { char *xx=NULL;*xx=0; }
+		gbassert(m_msg12.m_hasLock);
 		// get tag rec
 		if ( ! m_gotTagRec++ ) {
 			// make the fake url

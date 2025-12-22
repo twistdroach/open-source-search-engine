@@ -37,8 +37,8 @@ public:
 	//	memset ( this,0,sizeof(EmailInfo) ); 
 	//};
 	//void reset() { 
-	//	if ( m_inUse ) { char *xx=NULL;*xx=0; }
-	//	if ( m_notifyBlocked ) { char *xx=NULL;*xx=0; }
+	//	if ( m_inUse ) { gbassert(false); }
+	//	if ( m_notifyBlocked ) { gbassert(false); }
 	//	memset ( this,0,sizeof(EmailInfo) ); 
 	//};
 };

@@ -189,7 +189,7 @@ void RdbMem::freeDumpedMem( RdbTree *tree ) {
 	//char *memEnd = m_mem + m_memSize;
 
 	// this should still be true so allocData() returns m_ptr2 ptrs
-	if ( ! m_rdb->m_inDumpLoop ) { char *xx=NULL;*xx=0; }
+	gbassert(m_rdb->m_inDumpLoop);
 
 	// count how many data nodes we had to move to avoid corruption
 	int32_t count = 0;
@@ -233,7 +233,7 @@ void RdbMem::freeDumpedMem( RdbTree *tree ) {
 		int32_t size;
 		if ( tree->m_sizes ) size = tree->m_sizes[i];
 		else size = tree->m_fixedDataSize;
-		if ( size < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( size < 0 );
 		if ( size == 0 ) continue;
 		// m_inDumpLoop is still true at this point so 
 		// so allocData should return m_ptr2 guys

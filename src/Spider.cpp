@@ -4319,7 +4319,7 @@ bool SpiderColl::scanListForWinners ( ) {
 // 			sleep(1);
 // 			if ( flag ) goto sleepLoop;
 // 		}
-// #define sleep(a) { char *xx=;*xx=0; }
+// #define sleep(a) { gbassert(false); }
 
 		//
 		// just calculating page counts? if the url filters are based
@@ -4967,7 +4967,7 @@ bool SpiderColl::scanListForWinners ( ) {
 		// 		     &winSpiderTimeMS ,
 		// 		     &winUh48 );
 		// // sanity
-		//if(winUh48 != sreq2->getUrlHash48() ) { char *xx=NULL;*xx=0;}
+		//if(winUh48 != sreq2->getUrlHash48() ) { gbassert(false);}
 		// // make the doledb key
 		// key_t doleKey = g_doledb.makeKey ( winPriority,
 		// 				   // convert to secs from ms
@@ -4984,7 +4984,7 @@ bool SpiderColl::scanListForWinners ( ) {
 		// // have the same uh48 and that is the key in the tree.
 		// if ( dedup.isInTable ( &winUh48 ) ) {
 		// 	log("spider: got dup uh48=%" UINT64 " dammit", winUh48);
-		// 	char *xx=NULL;*xx=0;
+		// 	gbassert(false);
 		// 	continue;
 		// }
 		// // do not allow dups
@@ -5078,7 +5078,7 @@ bool SpiderColl::scanListForWinners ( ) {
 		// store this
 		int32_t rsize = winReq->getRecSize();
 		// sanity check
-		if ( rsize > (int32_t)MAX_BEST_REQUEST_SIZE){char *xx=NULL;*xx=0;}
+		gbassert_false( rsize > (int32_t)MAX_BEST_REQUEST_SIZE );
 		// now store this SpiderRequest for adding to doledb
 		gbmemcpy ( m_bestRequestBuf , winReq, rsize );
 		// point to that
@@ -5089,7 +5089,7 @@ bool SpiderColl::scanListForWinners ( ) {
 		m_bestSpiderTimeMS = winTimeMS;
 		m_bestMaxSpidersPerIp = winMaxSpidersPerIp;
 		// sanity
-		if ( (int64_t)winTimeMS < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( (int64_t)winTimeMS < 0 );
 		// note it
 		if ( g_conf.m_logDebugSpider ) {
 			log("spider: found winning request IN THIS LIST ip=%s "
@@ -5105,7 +5105,7 @@ bool SpiderColl::scanListForWinners ( ) {
 			    m_bestRequest->getUrlHash48(),
 			    m_bestRequest->m_url);
 			// debug why not sticking to our site!
-			//if ( strstr(m_bestRequest->m_url,"//www.jezebelgallery.com") == NULL ) { char *xx=NULL;*xx=0; }
+			//if ( strstr(m_bestRequest->m_url,"//www.jezebelgallery.com") == NULL ) { gbassert(false); }
 		}
 	}
 	else if ( g_conf.m_logDebugSpider ) {
@@ -5514,7 +5514,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 			    );
 		// when his SpiderReply comes back it will call 
 		// addWaitingTree with a "0" time so he'll get back in there
-		//if ( wn < 0 ) { char *xx=NULL; *xx=0; }
+		//if ( wn < 0 ) { gbassert(false); }
 		if ( wn >= 0 ) {
 			m_waitingTree.deleteNode (wn,false );
 			// note that
@@ -5541,7 +5541,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 		if ( m_doleIpTable.isInTable ( &firstIp ) ) {
 			// sanity i guess. remove this line if it hits this!
 			log("spider: wtf????");
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 			return true;
 		}
 
@@ -5567,7 +5567,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 		oldSpiderTimeMS |= (m_waitingTreeKey.n0 >> 32);
 		// delete old node
 		//int32_t wn = m_waitingTree.getNode(0,(char *)&m_waitingTreeKey);
-		//if ( wn < 0 ) { char *xx=NULL;*xx=0; }
+		//if ( wn < 0 ) { gbassert(false); }
 		if ( wn >= 0 ) {
 			m_waitingTree.deleteNode3 (wn,false );
 			//log("spdr: 2 del node %" INT32 " for %s",wn,iptoa(firstIp));
@@ -5614,7 +5614,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 	if ( g_spiderLoop.m_lockTable.isInTable ( &key ) ) {
 		log("spider: best request got doled out from under us");
 		return true;
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
 
 	// make the doledb key first for this so we can add it
@@ -5641,11 +5641,11 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 	gbmemcpy ( p , m_bestRequest , recSize );
 	p += recSize;
 	// sanity check
-	if ( p - m_doleBuf > (int32_t)MAX_DOLEREC_SIZE ) { char *xx=NULL;*xx=0; }
+	if ( p - m_doleBuf > (int32_t)MAX_DOLEREC_SIZE ) { gbassert(false); }
 	*/
 
 	// how did this happen?
-	//if ( ! m_msg1Avail ) { char *xx=NULL;*xx=0; }
+	//if ( ! m_msg1Avail ) { gbassert(false); }
 
 	char *doleBufEnd = doleBuf->getBuf();
 
@@ -5698,8 +5698,8 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 	// 	//   priorities because it saves us a msg5 call to doledb in 
 	// 	//   the scanning loop
 	// 	//int32_t bp = sreq3->m_priority;//m_bestRequest->m_priority;
-	// 	//if ( bp <  0                     ) { char *xx=NULL;*xx=0; }
-	// 	//if ( bp >= MAX_SPIDER_PRIORITIES ) { char *xx=NULL;*xx=0; }
+	// 	//if ( bp <  0                     ) { gbassert(false); }
+	// 	//if ( bp >= MAX_SPIDER_PRIORITIES ) { gbassert(false); }
 	// 	//m_isDoledbEmpty [ bp ] = 0;
 	// }
 
@@ -5724,7 +5724,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 	// cached dolebuf to doledb then remove it from cache so it's not
 	// a cached empty dolebuf and we recompute it not using the cache.
 	if ( isFromCache && p >= doleBufEnd ) {
-		//if ( addToCache ) { char *xx=NULL;*xx=0; }
+		//if ( addToCache ) { gbassert(false); }
 		// debug note
 		// if ( m_collnum == 18752 )
 		// 	log("spider: rdbcache: adding single byte. skipsize=%i"
@@ -5803,9 +5803,9 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 						true ,// incCounts
 						NULL , // rec timestamp
 						true );  // promote?
-		if ( ! inCache2 ) { char *xx=NULL;*xx=0; }
-		if ( testLen != m_doleBuf.length() ) {char *xx=NULL;*xx=0; }
-		if ( *(int32_t *)testPtr != newJump ){char *xx=NULL;*xx=0; }
+		gbassert(inCache2);
+		if ( testLen != m_doleBuf.length() ) {gbassert(false); }
+		if ( *(int32_t *)testPtr != newJump ){gbassert(false); }
 		SafeBuf tmp;
 		tmp.setBuf ( testPtr , testLen , testLen , false );
 		validateDoleBuf ( &tmp );
@@ -5830,7 +5830,7 @@ bool SpiderColl::addDoleBufIntoDoledb ( SafeBuf *doleBuf, bool isFromCache ) {
 	int32_t node = s_ufnTree.getNextNode ( 0, (char *)&bkey );
 	// if this firstip had too few requests to make it into the
 	// tree then node will be < 0!
-	//if ( node < 0 ) { char *xx=NULL;*xx=0; }
+	//if ( node < 0 ) { gbassert(false); }
 	if ( node >= 0 ) {
 		//log("deleting node #%" INT32 " firstip=%s uh48=%" UINT64 "",
 		//    node,iptoa(firstIp),uh48);
@@ -5995,7 +5995,7 @@ uint64_t SpiderColl::getSpiderTimeMS ( SpiderRequest *sreq,
 		// a lot of times these are corrupt! wtf???
 		//spiderTimeMS = minSpiderTimeMS;
 		return spiderTimeMS;
-		//{ char*xx=NULL;*xx=0;}
+		//{ gbassert(false);}
 	}
 	// compute new spiderTime for this guy, in seconds
 	int64_t waitInSecs = (uint64_t)(m_cr->m_spiderFreqs[ufn]*3600*24.0);
@@ -6086,7 +6086,7 @@ bool SpiderColl::addToDoleTable ( SpiderRequest *sreq ) {
 			log(LOG_DEBUG,"spider: added ip=%s to doleiptable "
 			    "(score=1)",iptoa(sreq->m_firstIp));
 		// sanity check
-		//if ( ! m_doleIpTable.m_isWritable ) { char *xx=NULL;*xx=0;}
+		//if ( ! m_doleIpTable.m_isWritable ) { gbassert(false);}
 	}
 
 	// . these priority slots in doledb are not empty
@@ -6126,7 +6126,7 @@ uint32_t getShardToSpider ( char *sr ) {
 bool isAssignedToUs ( int32_t firstIp ) {
 	// sanity check... must be in our group.. we assume this much
 	//if ( g_spiderdb.getGroupId(firstIp) != g_hostdb.m_myHost->m_groupId){
-	//	char *xx=NULL;*xx=0; }
+	//	gbassert(false); }
 	// . host to dole it based on ip
 	// . ignore lower 8 bits of ip since one guy often owns a whole block!
 	//int32_t hostId=(((uint32_t)firstIp) >> 8) % g_hostdb.getNumHosts();
@@ -6413,7 +6413,7 @@ void doneSleepingWrapperSL ( int fd , void *state ) {
 		// . we use m_didRound to share spiders across all collections
 		//if ( ! sc->m_didRound ) continue;
 		// ensure at the top!
-		//if( sc->m_pri2!=MAX_SPIDER_PRIORITIES-1){char*xx=NULL;*xx=0;}
+		//if( sc->m_pri2!=MAX_SPIDER_PRIORITIES-1){gbassert(false);}
 		// ok, reset it so it can start a new doledb scan
 		//sc->m_didRound = false;
 		// reset this as well. if there are no spiderRequests
@@ -6499,7 +6499,7 @@ void doneSendingNotification ( void *state ) {
 
 	// i guess each host advances its own round... so take this out
 	// sanity check
-	//if ( g_hostdb.m_myHost->m_hostId != 0 ) { char *xx=NULL;*xx=0; }
+	//if ( g_hostdb.m_myHost->m_hostId != 0 ) { gbassert(false); }
 
 	//float respiderFreq = -1.0;
 	float respiderFreq = cr->m_collectiveRespiderFrequency;
@@ -6545,7 +6545,7 @@ void doneSendingNotification ( void *state ) {
 	     cr->m_maxCrawlRounds > 0 ) return;
 
 	// this should have been set below
-	//if ( cr->m_spiderRoundStartTime == 0 ) { char *xx=NULL;*xx=0; }
+	//if ( cr->m_spiderRoundStartTime == 0 ) { gbassert(false); }
 
 	// find the "respider frequency" from the first line in the url
 	// filters table whose expressions contains "{roundstart}" i guess
@@ -7033,7 +7033,7 @@ void SpiderLoop::spiderDoledUrls ( ) {
 		// . reset our doledb empty timer every 3 minutes and also
 		// . reset our doledb empty status
 		int32_t wait = SPIDER_DONE_TIMER - 10;
-		if ( wait < 10 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( wait < 10 );
 		if ( sc && nowGlobal - sc->m_lastEmptyCheck >= wait ) {
 			// assume doledb not empty
 			sc->m_allDoledbPrioritiesEmpty = 0;
@@ -7063,7 +7063,7 @@ void SpiderLoop::spiderDoledUrls ( ) {
 	gbassert( nowGlobal != 0 );
 
 	// sanity check
-	//if ( m_cri >= g_collectiondb.m_numRecs ) { char *xx=NULL;*xx=0; }
+	//if ( m_cri >= g_collectiondb.m_numRecs ) { gbassert(false); }
 
 	// grab this
 	//collnum_t collnum = m_cri;
@@ -7071,7 +7071,7 @@ void SpiderLoop::spiderDoledUrls ( ) {
 
 	// update the crawlinfo for this collection if it has been a while.
 	// should never block since callback is NULL.
-	//if ( ! updateCrawlInfo(cr,NULL,NULL,true) ) { char *xx=NULL;*xx=0; }
+	//if ( ! updateCrawlInfo(cr,NULL,NULL,true) ) { gbassert(false); }
 
 	// get this
 	//char *coll = cr->m_coll;
@@ -7467,7 +7467,7 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 
 	// double check
 	//if ( ! m_list.checkList_r( true , false, RDB_DOLEDB) ) { 
-	//	char *xx=NULL;*xx=0; }
+	//	gbassert(false); }
 
 	// debug parm
 	//int32_t lastpri = -2;
@@ -7528,7 +7528,7 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 	if ( pri3 != m_sc->m_pri2 ) {
 		m_sc->m_nextDoledbKey = g_doledb.makeFirstKey2 ( m_sc->m_pri2);
 		// the key must match the priority queue its in as nextKey
-		//if ( pri3 != m_sc->m_pri2 ) { char *xx=NULL;*xx=0; }
+		//if ( pri3 != m_sc->m_pri2 ) { gbassert(false); }
 	}
 
 	if ( g_conf.m_logDebugSpider ) {
@@ -7536,7 +7536,7 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 		log("spider: setting pri2=%" INT32 " queue doledb nextkey to "
 		    "%s (pri=%" INT32 ")",
 		    m_sc->m_pri2,KEYSTR(&m_sc->m_nextDoledbKey,12),pri4);
-		//if ( pri4 != m_sc->m_pri2 ) { char *xx=NULL;*xx=0; }
+		//if ( pri4 != m_sc->m_pri2 ) { gbassert(false); }
 	}
 
 	// update next doledbkey for this priority to avoid having to
@@ -7793,7 +7793,7 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 		// will remove the lock from the lock table... so this 
 		// situation is perfectly fine i guess.. assuming that is
 		// what is going on
-		//if ( lockCount >= max ) { char *xx=NULL;*xx=0; }
+		//if ( lockCount >= max ) { gbassert(false); }
 		// this is not good
 		static bool s_flag = false;
 		if ( ! s_flag ) {
@@ -7825,7 +7825,7 @@ bool SpiderLoop::gotDoledbList2 ( ) {
 	//	SpiderRequest *sreq2 = m_sc->getSpiderRequest2 (&uh48,pdocid);
 	//	// must be there. i guess it could be missing if there is
 	//	// corruption and we lost it in spiderdb but not in doledb...
-	//	if ( ! sreq2 ) { char *xx=NULL;*xx=0; }
+	//	if ( ! sreq2 ) { gbassert(false); }
 	//}
 
 	// log this now
@@ -7962,7 +7962,7 @@ bool SpiderLoop::spiderUrl9 ( SpiderRequest *sreq ,
 			      int32_t sameIpWaitTime ,
 			      int32_t maxSpidersOutPerIp ) {
 	// sanity check
-	//if ( ! sreq->m_doled ) { char *xx=NULL;*xx=0; }
+	//if ( ! sreq->m_doled ) { gbassert(false); }
 	// if waiting on a lock, wait
 	gbassert( ! m_msg12.m_gettingLocks );
 	// sanity
@@ -8096,7 +8096,7 @@ bool SpiderLoop::spiderUrl9 ( SpiderRequest *sreq ,
 			log("spider: spidering same url %s twice. "
 			    "different firstips?",
 			    xd->m_firstUrl.m_url);
-			//char *xx=NULL;*xx=0; }
+			//gbassert(false); }
 		}
 		// keep chugging
 		continue;
@@ -8245,7 +8245,7 @@ bool SpiderLoop::spiderUrl9 ( SpiderRequest *sreq ,
 	// it will not block if the lock was found in our m_lockCache!
 	return true;
 	// should always block now!
-	//char *xx=NULL;*xx=0;
+	//gbassert(false);
 	// i guess we got it
 	//return spiderUrl2 ( );
 	//return true;
@@ -8254,7 +8254,7 @@ bool SpiderLoop::spiderUrl9 ( SpiderRequest *sreq ,
 bool SpiderLoop::spiderUrl2 ( ) {
 
 	// sanity check
-	//if ( ! m_sreq->m_doled ) { char *xx=NULL;*xx=0; }
+	//if ( ! m_sreq->m_doled ) { gbassert(false); }
 
 	// . find an available doc slot
 	// . we can have up to MAX_SPIDERS spiders (300)
@@ -8268,7 +8268,7 @@ bool SpiderLoop::spiderUrl2 ( ) {
 	if ( i >= MAX_SPIDERS ) {
 		log(LOG_DEBUG,"build: Already have %" INT32 " outstanding spiders.",
 		    (int32_t)MAX_SPIDERS);
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 
 	// breathe
@@ -8314,9 +8314,9 @@ bool SpiderLoop::spiderUrl2 ( ) {
 	//	// get any request from our urlhash table
 	//	SpiderRequest *sreq2 = m_sc->getSpiderRequest2 (&uh48,pdocid);
 	//	// must be valid parent
-	//	if ( ! sreq2 && pdocid == 0LL ) { char *xx=NULL;*xx=0; }
+	//	if ( ! sreq2 && pdocid == 0LL ) { gbassert(false); }
 	//	// for now core on this
-	//	if ( ! sreq2 ) {  char *xx=NULL;*xx=0; }
+	//	if ( ! sreq2 ) {  gbassert(false); }
 	//	// log it
 	//	logf(LOG_DEBUG,"spider: spidering uh48=%" UINT64 " pdocid=%" UINT64 "",
 	//	     uh48,pdocid);
@@ -8394,9 +8394,9 @@ bool SpiderLoop::spiderUrl2 ( ) {
 		    "url %s",
 		    (int)m_sreq->m_priority,m_sreq->m_url);
 		m_sreq->m_priority = 0;
-		//char *xx=NULL;*xx=0; 
+		//gbassert(false); 
 	}
-	//if(m_sreq->m_priority >= MAX_SPIDER_PRIORITIES){char *xx=NULL;*xx=0;}
+	//if(m_sreq->m_priority >= MAX_SPIDER_PRIORITIES){gbassert(false);}
 	// update this
 	m_sc->m_outstandingSpiders[(unsigned char)m_sreq->m_priority]++;
 
@@ -8410,7 +8410,7 @@ bool SpiderLoop::spiderUrl2 ( ) {
 	// debug log
 	//log("XXX: incremented count to %" INT32 " for %s",
 	//    m_sc->m_spidersOut,m_sreq->m_url);
-	//if ( m_sc->m_spidersOut != m_numSpidersOut ) { char *xx=NULL;*xx=0; }
+	//if ( m_sc->m_spidersOut != m_numSpidersOut ) { gbassert(false); }
 
 	// . return if this blocked
 	// . no, launch another spider!
@@ -8506,7 +8506,7 @@ bool SpiderLoop::indexedDoc ( XmlDoc *xd ) {
 	// debug log
 	//log("XXX: decremented count to %" INT32 " for %s",
 	//    sc->m_spidersOut,sreq->m_url);
-	//if ( sc->m_spidersOut != m_numSpidersOut ) { char *xx=NULL;*xx=0; }
+	//if ( sc->m_spidersOut != m_numSpidersOut ) { gbassert(false); }
 
 	// breathe
 	QUICKPOLL ( xd->m_niceness );
@@ -8666,7 +8666,7 @@ bool SpiderLoop::indexedDoc ( XmlDoc *xd ) {
 	//if ( addedMetaList ) return true;
 
 	// sanity
-	//if ( ! m_uh48 ) { char *xx=NULL; *xx=0; }
+	//if ( ! m_uh48 ) { gbassert(false); }
 
 	// the lock we had in g_spiderLoop.m_lockTable for the doleKey
 	// is now remove in Rdb.cpp when it receives a negative dole key to
@@ -8729,7 +8729,7 @@ bool Msg12::getLocks ( int64_t uh48, // probDocId ,
 	m_removing = false;
 	m_confirming = false;
 	// make sure is really docid
-	//if ( probDocId & ~DOCID_MASK ) { char *xx=NULL;*xx=0; }
+	//if ( probDocId & ~DOCID_MASK ) { gbassert(false); }
 	// . mask out the lower bits that may change if there is a collision
 	// . in this way a url has the same m_probDocId as the same url
 	//   in the index. i.e. if we add a new spider request for url X and
@@ -8857,7 +8857,7 @@ bool Msg12::getLocks ( int64_t uh48, // probDocId ,
 	// block?
 	if ( m_numRequests > 0 ) return false;
 	// i guess nothing... hmmm... all dead?
-	//char *xx=NULL; *xx=0; 
+	//gbassert(false); 
 	// m_hasLock should be false... all lock hosts seem dead... wait
 	if ( g_conf.m_logDebugSpider )
 		logf(LOG_DEBUG,"spider: all lock hosts seem dead for %s "
@@ -9271,7 +9271,7 @@ void handleRequest12 ( UdpSlot *udpSlot , int32_t niceness ) {
 			g_errno = EBADENGINEER;
 			us->sendErrorReply ( udpSlot , g_errno );
 			return;
-			//char *xx=NULL;*xx=0; }
+			//gbassert(false); }
 		}
 		UrlLock *lock = (UrlLock *)ht->getValueFromSlot ( slot );
 		lock->m_confirmed = true;
@@ -9295,7 +9295,7 @@ void handleRequest12 ( UdpSlot *udpSlot , int32_t niceness ) {
 			// tree is dumping or something, probably ETRYAGAIN
 			if ( g_errno != ETRYAGAIN ) {msg = "error adding neg rec to doledb";	log("spider: %s %s",msg,mstrerror(g_errno));
 			}
-			//char *xx=NULL;*xx=0;
+			//gbassert(false);
 			us->sendErrorReply ( udpSlot , g_errno );
 			return;
 		}
@@ -9707,7 +9707,7 @@ bool printList ( State11 *st ) {
 		if ( ! g_spiderdb.isSpiderRequest ( (key128_t *)rec )) {
 			log("spider: not printing spiderreply");
 			continue;
-			//char*xx=NULL;*xx=0;
+			//gbassert(false);
 		}
 		// get the spider rec, encapsed in the data of the doledb rec
 		SpiderRequest *sreq = (SpiderRequest *)rec;
@@ -9741,7 +9741,7 @@ bool printList ( State11 *st ) {
 
 bool sendPage ( State11 *st ) {
 	// sanity check
-	//if ( ! g_errno ) { char *xx=NULL;*xx=0; }
+	//if ( ! g_errno ) { gbassert(false); }
 	//SafeBuf sb; sb.safePrintf("Error = %s",mstrerror(g_errno));
 
 	// int16_tcut
@@ -11468,7 +11468,7 @@ bool initAggregatorTable ( ) {
 		int32_t  slen = gbstrlen ( s );
 		int32_t h32 = hash32 ( s , slen );
 		char val = 1;
-		if ( ! s_table.addKey(&h32,&val)) {char*xx=NULL;*xx=0;}
+		gbassert(s_table.addKey(&h32,&val));
 	}
 	// then stock with event aggregator sites
 	n = (int32_t)sizeof(s_aggSites)/ sizeof(char *); 
@@ -11477,7 +11477,7 @@ bool initAggregatorTable ( ) {
 		int32_t  slen = gbstrlen ( s );
 		int32_t h32 = hash32 ( s , slen );
 		char val = 2;
-		if ( ! s_table.addKey(&h32,&val)) {char*xx=NULL;*xx=0;}
+		gbassert(s_table.addKey(&h32,&val));
 	}
 	// do not repeat this
 	s_init = true;
@@ -12598,7 +12598,7 @@ int32_t getUrlFilterNum2 ( SpiderRequest *sreq       ,
 			// skip for now???
 			// this happens if INJECTING a url from the
 			// "add url" function on homepage
-			if ( ! valPtr ) a=0;//continue;//{char *xx=NULL;*xx=0;}
+			if ( ! valPtr ) a=0;//continue;//{gbassert(false);}
 			// int16_tcut
 			else a = *valPtr;
 			//log("siteadds=%" INT32 " for %s",a,sreq->m_url);
@@ -12639,7 +12639,7 @@ int32_t getUrlFilterNum2 ( SpiderRequest *sreq       ,
 			// if no count in table, that is strange, i guess
 			// skip for now???
 			int32_t a;
-			if ( ! valPtr ) a = 0;//{ char *xx=NULL;*xx=0; }
+			if ( ! valPtr ) a = 0;//{ gbassert(false); }
 			else a = *valPtr;
 			// what is the provided value in the url filter rule?
 			int32_t b = atoi(s);
@@ -12678,7 +12678,7 @@ int32_t getUrlFilterNum2 ( SpiderRequest *sreq       ,
 			// if no count in table, that is strange, i guess
 			// skip for now???
 			int32_t a;
-			if ( ! valPtr ) a = 0;//{ char *xx=NULL;*xx=0; }
+			if ( ! valPtr ) a = 0;//{ gbassert(false); }
 			else a = *valPtr;
 			// int16_tcut
 			//log("sitepgs=%" INT32 " for %s",a,sreq->m_url);
@@ -12723,7 +12723,7 @@ int32_t getUrlFilterNum2 ( SpiderRequest *sreq       ,
 			// if no count in table, that is strange, i guess
 			// skip for now???
 			int32_t a;
-			if ( ! valPtr ) a = 0;//{ char *xx=NULL;*xx=0; }
+			if ( ! valPtr ) a = 0;//{ gbassert(false); }
 			else a = *valPtr;
 			// what is the provided value in the url filter rule?
 			int32_t b = atoi(s);
@@ -13174,9 +13174,9 @@ int32_t getUrlFilterNum2 ( SpiderRequest *sreq       ,
 			if ( isForMsg20 ) continue;
 			// do not match rule if never attempted
 			// if ( srep->m_spideredTime ==  0 ) {
-			// 	char*xx=NULL;*xx=0;}
+			// 	gbassert(false);}
 			// if ( srep->m_spideredTime == (uint32_t)-1){
-			// 	char*xx=NULL;*xx=0;}
+			// 	gbassert(false);}
 			// shortcut
 			int32_t a = nowGlobal - srep->m_spideredTime;
 			// make into days
@@ -13446,7 +13446,7 @@ int32_t getUrlFilterNum2 ( SpiderRequest *sreq       ,
 
 	}
 	// sanity check ... must be a default rule!
-	//char *xx=NULL;*xx=0;
+	//gbassert(false);
 	// return -1 if no match, caller should use a default
 	return -1;
 }
@@ -13482,7 +13482,7 @@ int32_t getUrlFilterNum ( SpiderRequest *sreq       ,
 				      NULL,0,
 				      false,
 				      MAX_NICENESS,
-				      "ufntab") ) { char *xx=NULL;*xx=0; } 
+				      "ufntab") ) { gbassert(false); } 
 	}
 
 	// check in cache using date of request and reply and uh48 as the key
@@ -13840,7 +13840,7 @@ void updateAllCrawlInfosSleepWrapper ( int fd , void *state ) {
 	return;
 
 	// somehow we did not block... hmmmm...
-	//char *xx=NULL;*xx=0;
+	//gbassert(false);
 	//gotCrawlInfoReply( cr , NULL );
 
 	// we did not block...

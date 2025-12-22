@@ -155,7 +155,7 @@ class HashTableX {
 		d >>= 2;
 		if ( d==110324895284 && termId == 39206941907955LL ) {
 			log("got it");
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 		*/
 		// grow it!

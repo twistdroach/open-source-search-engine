@@ -405,7 +405,7 @@ void Json::test ( ) {
 	// print them out?
 	//log("json: type0=%"INT32"",(int32_t)ji->m_type);
 	// sanity test
-	if ( ji->m_type != 6 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ji->m_type != 6 );
 
 	return;
 }

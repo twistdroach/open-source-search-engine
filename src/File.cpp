@@ -61,7 +61,7 @@ void sanityCheck ( ) {
 	int32_t openCount = 0;
 	for ( int i = 0 ; i < MAX_NUM_FDS ; i++ )
 		if ( s_open[i] ) openCount++;
-	if ( openCount != s_numOpenFiles ) { char *xx=NULL;*xx=0; }
+	gbassert_false( openCount != s_numOpenFiles );
 }
 
 
@@ -568,7 +568,7 @@ bool File::close ( ) {
 		return false; 
 	}
 	// sanity
-	if ( ! s_open[m_fd] ) { char *xx=NULL;*xx=0; }
+	gbassert(s_open[m_fd]);
 	// mark it as closed
 	s_open        [ m_fd ] = 0;
 	s_filePtrs    [ m_fd ] = NULL;
@@ -609,7 +609,7 @@ int File::getfd () {
 	if ( ! m_calledOpen ) { // m_vfd < 0 ) {
 		g_errno = EBADENGINEER;
 		log(LOG_LOGIC,"disk: getfd: Must call open() first.");
-		char *xx=NULL; *xx=0; 
+		gbassert(false); 
 		return -2;
 	}
 
@@ -625,7 +625,7 @@ int File::getfd () {
 
 	// . sanity check
 	// . no caller should call open/getfd after unlink was queued for thread
-	//if ( m_gone ) { char *xx = NULL; *xx = 0; }
+	//if ( m_gone ) { gbassert(false); }
 	// get the real fd from the virtual fd
 	//int fd = s_fds [ m_vfd ];
 	// return true if it's already opened
@@ -637,7 +637,7 @@ int File::getfd () {
 			    (int)m_fd,getFilename(),(PTRTYPE)this,
 			    (int)m_closeCount,
 			    (int)s_closeCounts[m_fd]);
-		if ( m_fd >= MAX_NUM_FDS ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_fd >= MAX_NUM_FDS );
 		// but update the timestamp to reduce chance it closes on us
 		//s_timestamps [ m_vfd ] = getTime();
 		s_timestamps [ m_fd ] = gettimeofdayInMillisecondsLocal();
@@ -711,7 +711,7 @@ int File::getfd () {
 
 		// sanity. how can we get an fd already opened?
 		// because it was closed in a thread in close1_r()
-		if ( fd >= 0 && s_open[fd] ) { char *xx=NULL;*xx=0; }
+		gbassert_false( fd >= 0 && s_open[fd] );
 		// . now inc that count in case there was someone reading on
 		//   that fd right before it was closed and we got it
 		// . ::close() call can now happen in a thread, so we
@@ -830,7 +830,7 @@ bool File::closeLeastUsed () {
 	for ( ; f ; f = f->m_nextActive ) {
 		mini2 = f->m_vfd;
 		// how can this be?
-		if ( s_fds [ mini2 ] < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( s_fds [ mini2 ] < 0 );
 		if ( s_writing [ mini2 ] ) continue;
 		if ( s_unlinking [ mini2 ] ) continue;
 		// when we got like 1000 reads queued up, it uses a *lot* of
@@ -880,7 +880,7 @@ bool File::closeLeastUsed () {
 	if ( fcntl ( fd, F_SETFL, flags ) < 0 ) {
 		// valgrind
 		if ( errno == EINTR ) goto retry27;
-		//char *xx = NULL; *xx = 1;
+		//gbassert(false);
 		log("disk: fcntl(%i): %s",fd,mstrerror(errno));
 		// return false;
 		errno = 0;
@@ -967,7 +967,7 @@ int64_t getFileSize ( const char *filename ) {
         // return the size if the status was ok
         if ( status == 0 ) {
 		//int64_t tmp = getFileSize_cygwin ( filename );
-		//if ( tmp>=0 && tmp != stats.st_size ) {char *xx=NULL;*xx=0; }
+		//if ( tmp>=0 && tmp != stats.st_size ) {gbassert(false); }
 		return stats.st_size;
 	}
 
@@ -1089,7 +1089,7 @@ int32_t File::doesExist ( ) {
 	if ( ! g_errno ) {
 		log("process: you tried to overload __errno_location() "
 		    "but were unsuccessful. you need to be using pthreads.");
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
         log("disk: error stat3(%s): %s", getFilename() , strerror(g_errno));
         return -1;

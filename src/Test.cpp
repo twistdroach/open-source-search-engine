@@ -64,16 +64,15 @@ void Test::reset ( ) {
 
 char *Test::getTestDir ( ) {
 	// sanity
-	if ( g_conf.m_testSpiderEnabled && g_conf.m_testParserEnabled ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( g_conf.m_testSpiderEnabled && g_conf.m_testParserEnabled );
 	if ( g_conf.m_testSpiderEnabled )
 		return "test-spider";
 	if ( g_conf.m_testParserEnabled )
 		return "test-parser";
 	// default if they just turn on spiders (spiders on cmd)
 	//return "test-spider";
-	//if ( ! m_testDir ) { char *xx=NULL;*xx=0; }
-	char *xx=NULL;*xx=0;
+	//if ( ! m_testDir ) { gbassert(false); }
+	gbassert(false);
 	return NULL;
 }
 
@@ -146,19 +145,17 @@ void Test::initTestRun ( ) {
 	//   lock down titledb for the scan and there could be recs from
 	//   the collection we are repairing in titledb's rdbtree, which,
 	//   when dumped, would mess up our scan.
-	if ( ! g_conf.m_testSpiderEnabled && ! g_conf.m_testParserEnabled ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( ! g_conf.m_testSpiderEnabled && ! g_conf.m_testParserEnabled );
 
 	// if both enabled, core
-	if ( g_conf.m_testSpiderEnabled && g_conf.m_testParserEnabled ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( g_conf.m_testSpiderEnabled && g_conf.m_testParserEnabled );
 
 	// if the power went off
 	if ( ! g_process.m_powerIsOn ) return;
 
 	// return if currently running
 	// no, admin can re-init even if running now
-	//if ( m_isRunning ) { char *xx=NULL;*xx=0; }//return;
+	//if ( m_isRunning ) { gbassert(false); }//return;
 
 	// must be host #0 only
 	if ( g_hostdb.m_myHost->m_hostId != 0 ) return;
@@ -395,7 +392,7 @@ void Test::initTestRun ( ) {
 void Test::stopIt ( ) {
 
 	// sanity
-	if ( m_isAdding ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_isAdding );
 	// flag that we are done
 	m_isRunning = false;
 
@@ -622,7 +619,7 @@ void Test::stopIt ( ) {
 					dir,testDir,h,ri-1);
 				// sanity check
 				//File tf; tf.set(pbuf1);
-				//if ( ! tf.doesExist()) {char *xx=NULL;*xx=0;}
+				//if ( ! tf.doesExist()) {gbassert(false);}
 				// tmp file name
 				char tmp1[200];
 				char tmp2[200];
@@ -802,11 +799,11 @@ void Test::stopIt ( ) {
 		// set this
 		ulen[un] = tmp.length() - uptr[un] ;
 		// sanity check
-		if ( ulen[un] > 10000000 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( ulen[un] > 10000000 );
 		// inc it
 		un++;
 		// increase the 5000!!
-		if ( un >= 5000 ) { char *xx=NULL; *xx=0; }
+		gbassert_false( un >= 5000 );
 	}
 
 
@@ -949,10 +946,9 @@ bool Test::injectLoop ( ) {
 	// make the key (parentDocId=0)
 	m_sreq.setKey ( fakeIp, 0LL , false );
 	// test it
-	if ( g_spiderdb.getFirstIp(&m_sreq.m_key) != fakeIp ) {
-		char *xx=NULL;*xx=0;}
+	gbassert_false( g_spiderdb.getFirstIp(&m_sreq.m_key) != fakeIp );
 	// sanity check. check for http(s)://
-	if ( m_sreq.m_url[0] != 'h' ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_sreq.m_url[0] != 'h' );
 
 	// reset this
 	g_errno = 0;

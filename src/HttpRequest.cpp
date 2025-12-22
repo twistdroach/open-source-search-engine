@@ -102,7 +102,7 @@ bool HttpRequest::copy ( class HttpRequest *r , bool stealBuf ) {
 
 	if ( stealBuf ) {
 		// if he's on the stack, that's a problem!
-		if ( r->m_reqBuf.m_usingStack ) { char *xx=NULL;*xx=0; }
+		gbassert_false( r->m_reqBuf.m_usingStack );
 		// copy the safebuf member var directly
 		gbmemcpy ( &m_reqBuf , &r->m_reqBuf , sizeof(SafeBuf) );
 		// do not let it free anything
@@ -130,7 +130,7 @@ bool HttpRequest::copy ( class HttpRequest *r , bool stealBuf ) {
 	m_path       = dbuf + (r->m_path       - sbuf );
 	m_cgiBuf     = dbuf + (r->m_cgiBuf     - sbuf );
 	// not supported yet. we'd have to allocate it
-	if ( m_cgiBuf2 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_cgiBuf2 );
 	return true;
 }
 
@@ -415,7 +415,7 @@ bool HttpRequest::set (char *url,int32_t offset,int32_t size,time_t ifModifiedSi
 	 // sanity check
 	 // if ( m_bufLen + 1 > MAX_REQ_LEN ) {
 	 //	 log("build: HttpRequest buf is too small.");
-	 //	 char *xx = NULL; *xx = 0;
+	 //	 gbassert(false);
 	 // }
 	 // debug it
 	 // log("hreq: %s",m_reqBuf.getBufStart());
@@ -455,7 +455,7 @@ bool HttpRequest::set ( char *origReq , int32_t origReqLen , TcpSocket *sock ) {
 	 m_isSSL  = 0; if ( sock ) m_isSSL = (bool)sock->m_ssl;
 
 	 // TcpServer should always give us a NULL terminated request
-	 if ( req[reqLen] != '\0' ) { char *xx = NULL; *xx = 0; }
+	 gbassert_false( req[reqLen] != '\0' );
 	 
 	 // how long is the first line, the primary request
 	 // int32_t i;

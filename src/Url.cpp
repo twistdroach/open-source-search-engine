@@ -1784,7 +1784,7 @@ char *Url::getSite ( int32_t *siteLen , char *coll , bool defaultToHostname ,
 	// see if we do
 	if ( tagRec ) tag = tagRec->getTag("sitepathdepth");
 	// sanity check
-	if ( tag && tag->m_dataSize != 1 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( tag && tag->m_dataSize != 1 );
 	// if there, get the sitepathdepth value it contains
 	if ( tag ) sitepathdepth = (int32_t)tag->m_data[0];
 
@@ -2327,7 +2327,7 @@ char *getFilenameFast ( char *s , int32_t *filenameLen ) {
 	// get length of hostname
 	for ( s++; *s && *s != '/' ; s++ );
 	// should always have a /
-	if ( *s != '/' ) { char *xx=NULL;*xx=0;}
+	gbassert_false( *s != '/' );
 	// skip that
 	s++;
 	// this point to the filename
@@ -2362,7 +2362,7 @@ char *getPathEnd ( char *s , int32_t desiredDepth ) {
 	// get length of hostname
 	for ( s++; *s && *s != '/' ; s++ );
 	// should always have a /
-	if ( *s != '/' ) { char *xx=NULL;*xx=0;}
+	gbassert_false( *s != '/' );
 	// skip that
 	s++;
 	// init depth
@@ -2404,7 +2404,7 @@ int32_t getPathDepth ( char *s , bool hasHttp ) {
 		// skip proto
 		while ( *s != ':' ) s++;
 		// must have it!
-		if ( ! *s ) { char *xx=NULL;*xx=0; }
+		gbassert(*s);
 		// skip ://
 		s += 3;
 	}
@@ -2413,7 +2413,7 @@ int32_t getPathDepth ( char *s , bool hasHttp ) {
 	// no, might be a site like "xyz.com"
 	if ( ! *s ) return 0;
 	// should always have a /
-	if ( *s != '/' ) { char *xx=NULL;*xx=0;}
+	gbassert_false( *s != '/' );
 	// skip that
 	s++;
 	// init depth

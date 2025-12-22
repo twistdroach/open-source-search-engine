@@ -67,8 +67,8 @@ bool HashTableX::set (int32_t  keySize              ,
 	//if ( initialNumTerms < 32 ) initialNumTerms = 32;
 	// sanity check. assume min keysize of 4 because we do *(int32_t *)key
 	// logic below!!
-	if (keySize < 4 ) { char *xx=NULL;*xx=0; }
-	if (dataSize < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false(keySize < 4 );
+	gbassert_false(dataSize < 0 );
 	// auto?
 	if (initialNumSlots == -1 ) {
 		int32_t slotSize = keySize + dataSize + 1;
@@ -179,7 +179,7 @@ int32_t HashTableX::getOccupiedSlotNum ( void *key ) {
 // for value-less hashtables
 bool HashTableX::addKey ( void *key ) {
 	// sanity check -- need to supply data?
-	if ( m_ds != 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_ds != 0 );
 	return addKey ( key , NULL , NULL );
 }
 
@@ -192,7 +192,7 @@ bool HashTableX::addKey ( void *key , void *val , int32_t *slot ) {
 		return false;
 	}
 	// never got initialized? call HashTableX::init()
-	if ( m_ks <= 0 ){ char *xx=NULL; *xx=0; }
+	gbassert_false( m_ks <= 0 );
 
 	if ( ! m_allowGrowth && m_numSlotsUsed + 1 > m_numSlots ) {
 		log("hashtable: hit max ceiling of hashtable of %" INT32 " slots. "
@@ -324,17 +324,17 @@ bool HashTableX::setTableSize ( int32_t oldn , char *buf , int32_t bufSize ) {
 	// make it a power of 2 for speed if small
 	n = getHighestLitBitValueLL((uint64_t)oldn * 2LL -1);
 	// sanity check, must be less than 1B
-	if ( n > 1000000000 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( n > 1000000000 );
 	// limit...
 	//if ( n > m_maxSlots ) n = m_maxSlots;
 	// do not go negative on me
 	if ( oldn == 0 ) n = 0;
 	// sanity check
-	if ( n < oldn ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( n < oldn );
 	// do we have a buf?
 	int32_t need = (m_ks+m_ds+1) * n;
 	// sanity check, buf should also meet what we need
-	if ( buf && bufSize < need ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( buf && bufSize < need );
 
 	// we grow kinda slow, it slows things down, so note it
 	int64_t startTime =0LL;
@@ -697,7 +697,7 @@ char *HashTableX::serialize ( int32_t *bufSize ) {
 	if ( ! buf ) return (char *)-1;
 	int32_t used = serialize ( buf , need );
 	// ensure it matches
-	if ( used != need ) { char *xx=NULL;*xx=0; }
+	gbassert_false( used != need );
 	// store it
 	*bufSize = used;
 	return buf;
@@ -729,9 +729,9 @@ int32_t HashTableX::serialize ( char *buf , int32_t bufSize ) {
 	// flags (allowDups)
 	need += 1;
 	// sanity check
-	if ( need > bufSize ) { char *xx=NULL;*xx=0; }
+	gbassert_false( need > bufSize );
 	// sanity check -- i guess placedb hashtable in XmlDoc.cpp uses 512!
-	if ( m_ks > 127 || m_ds > 512 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_ks > 127 || m_ds > 512 );
 
 	// store # slots total
 	*(int32_t *)p = m_numSlots; p += 4;	
@@ -757,7 +757,7 @@ int32_t HashTableX::serialize ( char *buf , int32_t bufSize ) {
 		p += m_ks;
 	}
 	// sanity check
-	if ( used != m_numSlotsUsed ) { char *xx=NULL; *xx=0; }
+	gbassert_false( used != m_numSlotsUsed );
 	// store data that is valid
 	for ( int32_t i = 0 ; i < m_numSlots ; i++ ) {
 		// skip if empty
@@ -797,7 +797,7 @@ bool HashTableX::deserialize ( char *buf , int32_t bufSize , int32_t niceness ) 
 		return false;
 
 	// sanity check
-	if ( m_numSlots != numSlots ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_numSlots != numSlots );
 	
 	// add keys etc. now
 	char *kp = p;
@@ -806,13 +806,13 @@ bool HashTableX::deserialize ( char *buf , int32_t bufSize , int32_t niceness ) 
 	// loop over all keys
 	for ( ; kp < dpstart ; kp += ks , dp += ds ) 
 		// add this pair. should NEVER fail
-		if ( ! addKey ( kp , dp ) ) { char *xx=NULL;*xx=0; }
+		gbassert(addKey ( kp , dp ));
 
 	// sanity check
-	if ( m_numSlotsUsed != numSlotsUsed ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_numSlotsUsed != numSlotsUsed );
 
 	// sanity check
-	if ( bufSize >= 0 && dp > buf + bufSize ) { char *xx=NULL;*xx=0; }
+	gbassert_false( bufSize >= 0 && dp > buf + bufSize );
 
 	// success
 	return true;
@@ -892,7 +892,7 @@ int32_t HashTableX::getKeyChecksum32 () {
 			continue;
 		}
 		// unsupported key size
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 	return checksum;
 }

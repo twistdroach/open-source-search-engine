@@ -163,18 +163,17 @@ bool Statsdb::init ( ) {
 		// then incorporate the bool parm
 		bb->m_graphHash = hash32h( bb->m_labelHash , bb->m_graphType );
 		// add it to labeltable... why???
-		if ( ! m_labelTable.addKey (&bb->m_graphHash,&bb ) ) { 
-			char *xx=NULL;*xx=0; }
+		gbassert(m_labelTable.addKey (&bb->m_graphHash,&bb ));
 	}
 
 	// sanity test
 	//Stat ts;
 	//ts.setKey ( 0x123456789LL , 0x7654321 );
-	//if ( ts.getTime1()     != 0x123456789LL ) { char *xx=NULL;*xx=0; }
-	//if ( ts.getLabelHash() != 0x7654321     ) { char *xx=NULL;*xx=0; }
+	//if ( ts.getTime1()     != 0x123456789LL ) { gbassert(false); }
+	//if ( ts.getLabelHash() != 0x7654321     ) { gbassert(false); }
 	//ts.setKey ( 1268261684329LL , -246356284 );
-	//if ( ts.getTime1()     != 1268261684329LL ) { char *xx=NULL;*xx=0; }
-	//if ( ts.getLabelHash() != -246356284      ) { char *xx=NULL;*xx=0; }
+	//if ( ts.getTime1()     != 1268261684329LL ) { gbassert(false); }
+	//if ( ts.getLabelHash() != -246356284      ) { gbassert(false); }
 
 	// call this twice per second
 	if ( ! g_loop.registerSleepCallback(500,NULL,flushStatsWrapper))
@@ -322,7 +321,7 @@ bool Statsdb::addStat ( int32_t        niceness ,
 	// not thread safe!
 	//if ( g_threads.amThread() ) { 
 	//	log("statsdb: called from thread");
-	//	char *xx=NULL;*xx=0; 
+	//	gbassert(false); 
 	//}
 
 	// . for now we can only add stats if we are synced with host #0 clock
@@ -338,7 +337,7 @@ bool Statsdb::addStat ( int32_t        niceness ,
 	t2Arg = localToGlobalTimeMilliseconds ( t2Arg );
 
 	// sanity check
-	if ( ! label ) { char *xx=NULL;*xx=0; }
+	gbassert(label);
 
 	int32_t labelHash;
 	if ( parmHash ) labelHash = parmHash;
@@ -433,7 +432,7 @@ bool Statsdb::addStat ( int32_t        niceness ,
 			// must be there!
 			node2 = tree->getNode ( 0 , (char *)&sk );
 			// must be there!
-			if ( node2 < 0 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( node2 < 0 );
 			// point to it
 			sd = (StatData *)tree->getData ( node2 );
 		}
@@ -479,8 +478,8 @@ bool Statsdb::makeGIF ( int32_t t1Arg ,
 		return true;
 	}
 
-	if ( t1Arg < 0 ) { char *xx=NULL;*xx=0; }
-	if ( t2Arg < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( t1Arg < 0 );
+	gbassert_false( t2Arg < 0 );
 
 	// # of samples in moving average
 	m_samples  = samples;
@@ -493,7 +492,7 @@ bool Statsdb::makeGIF ( int32_t t1Arg ,
 	m_t1 = t1Arg;//(int64_t)t1Arg * 1000LL;
 	m_t2 = t2Arg;//(int64_t)t2Arg * 1000LL;
 
-	if ( m_t1 >= m_t2 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_t1 >= m_t2 );
 
 	m_ht0.reset();
 	m_sb0.reset();
@@ -786,7 +785,7 @@ bool Statsdb::gifLoop ( ) {
 			log("statsdb: unrecognized parm hash = %" INT32 "",
 			    pp->m_parmHash);
 			continue;
-			//char *xx=NULL;*xx=0; }
+			//gbassert(false); }
 		}
 
 		// set the line width
@@ -891,7 +890,7 @@ char *Statsdb::plotGraph ( char *pstart ,
 	// . use "graphHash" to map to unit display
 	// . this is a disk read volume
 	Label *label = getLabel ( graphHash );
-	if ( ! label ) { char *xx=NULL;*xx=0; }
+	gbassert(label);
 
 	//log("stats: plotting %s",label->m_keyDesc) ;
 
@@ -1275,8 +1274,8 @@ StatState *Statsdb::getStatState ( int32_t us ) {
 	// if there, return it
 	if ( offsetPtr ) {
 		// sanity check
-		if ( *offsetPtr <  0              ) { char *xx=NULL;*xx=0; }
-		if ( *offsetPtr >= m_sb0.length() ) { char *xx=NULL;*xx=0; }
+		gbassert_false( *offsetPtr <  0              );
+		gbassert_false( *offsetPtr >= m_sb0.length() );
 		// get buf start
 		char *buf = m_sb0.getBufStart();
 		// point to it
@@ -1350,7 +1349,7 @@ bool Statsdb::addPoint(StatKey *sk,StatData *sd,StatState *ss , Label *label){
 		 val = sd->m_totalQuantity / sd->m_totalTime;
 	 else if ( label->m_graphType == GRAPH_QUANTITY_PER_OP )
 		 val = sd->m_totalQuantity / sd->m_totalOps;
-	 else { char *xx=NULL;*xx=0; }
+	 else { gbassert(false); }
 
 	 // remove tail. this ringbuffer is used to make the moving average.
 	 int32_t k = ss->m_i;
@@ -1371,7 +1370,7 @@ bool Statsdb::addPoint(StatKey *sk,StatData *sd,StatState *ss , Label *label){
 	 }
 
 	 // must not be valid!
-	 if ( ss->m_valid[ss->m_i] ) { char *xx=NULL;*xx=0; }
+	 gbassert_false( ss->m_valid[ss->m_i] );
 
 	 // we are valid now
 	 ss->m_valid[ss->m_i] = true; 
@@ -1532,7 +1531,7 @@ bool Statsdb::addEventPoint ( int32_t  t1        ,
 	//float bf = (float)DX2 * (float)(t2 - m_t1) / (float)(m_t2 - m_t1);
 	// round it to nearest pixel
 	//int32_t  b = (int32_t)(bf + .5) + m_bx;
-	//if ( a > b ) { char *xx=NULL;*xx=0; }
+	//if ( a > b ) { gbassert(false); }
 
 	// 5 pixel width when rendering the square, 2 pixel boundary
 	int32_t b = a + 7;
@@ -1542,7 +1541,7 @@ bool Statsdb::addEventPoint ( int32_t  t1        ,
 	if ( ! m ) { 
 		log("statsdb: unrecognized parm hash = %" INT32 "",parmHash);
 		return true;
-		//char *xx=NULL;*xx=0; }
+		//gbassert(false); }
 	}
 
 	// go down each line of points

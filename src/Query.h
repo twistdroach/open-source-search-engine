@@ -817,7 +817,7 @@ class Query {
 
 	// return an implicit vector from an explicit which contains the explic
 	qvec_t getImplicits ( qvec_t ebits ) {
-		if ( ! m_bmapIsSet ) { char *xx=NULL;*xx=0; }
+		gbassert(m_bmapIsSet);
 		uint8_t *ev = (uint8_t *)&ebits;
 		return	m_bmap[0][ev[0]] | 
 			m_bmap[1][ev[1]] | 

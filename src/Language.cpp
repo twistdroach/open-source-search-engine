@@ -595,9 +595,7 @@ bool Language::loadSpellerDict( char *spellerBuf, int32_t spellerBufSize,
 		gbstrlen(m_tuplePtr[j]) ;
 
 	// sanity check
-	if ( numTuples != m_numTuples ){
-		char *xx = NULL; *xx = 0;
-	}
+	gbassert_false( numTuples != m_numTuples );
 
 	// kill last one seems problemtic with #define EFENCE in Mem.cpp
 	numTuples--;
@@ -662,7 +660,7 @@ bool Language::loadSpellerDict( char *spellerBuf, int32_t spellerBufSize,
 		if ( slot != -1 ){
 			log(LOG_LOGIC, "speller: %" INT32 " != -1, %16" XINT64 ", %s", 
 				slot, phonetKey, tuple);
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		
 		// make the composite value
@@ -898,7 +896,7 @@ bool Language::loadNarrow( char *spellerBuf, int32_t spellerBufSize,
 	if ( numNarrowPtrs != m_numNarrowPtrs ){
 		log(LOG_LOGIC, "speller: %" INT32 " != %" INT32 " numNarrowPtrs",
 			numNarrowPtrs, m_numNarrowPtrs);
-		char *xx=NULL; *xx=0;
+		gbassert(false);
 	}
 	// sort the front pointers and back pointers
 	gbsort ( m_frntPtrs, m_numNarrowPtrs, sizeof(char*), cmpFrnt );
@@ -1101,7 +1099,7 @@ bool Language::loadWikipediaWords(){
 		int32_t slot = m_wiki.getSlot ( key );
 		if ( slot != -1 ){
 			continue;
-			char *xx=NULL; *xx=0;
+			gbassert(false);
 		}
 		m_wiki.addKey(key,1);
 	}
@@ -1132,9 +1130,7 @@ bool Language::loadMispelledWords(){
 		buf[wlen-1]='\0';
 		uint32_t key = hash32d(buf, gbstrlen(buf));
 		int32_t slot = m_misp.getSlot ( key );
-		if ( slot != -1 ){
-			char *xx=NULL; *xx=0;
-		}
+		gbassert_false( slot != -1 );
 		m_misp.addKey(key,1);
 	}
 
@@ -1740,16 +1736,12 @@ int32_t Language::tryPhonet( char *phonetTmp, char *origPhonet,
 		char cleanReco[MAX_PHRASE_LEN];
 		// sanity check, this is in the dict, so we should be able to
 		// make the word into clean
-		if ( !makeClean( wordReco, gbstrlen(wordReco), cleanReco,
-				 MAX_PHRASE_LEN ) ){
-			char *xx = NULL; *xx = 0;
-		}
+		gbassert(makeClean( wordReco, gbstrlen(wordReco), cleanReco,
+				 MAX_PHRASE_LEN ));
 		// now the phonetic
 		char *phonetReco = wordReco + gbstrlen(wordReco) + 1;
 		// sanity check
-		if ( !cleanReco[0] || !phonetReco ){
-			char *xx = NULL; *xx = 0;
-		}
+		gbassert_false( !cleanReco[0] || !phonetReco );
 		
 		// we want the min Score, so this is init'ed to max
 		int32_t wordScore = LARGE_SCORE;
@@ -1861,9 +1853,7 @@ int32_t Language::tryPhonet( char *phonetTmp, char *origPhonet,
 int32_t Language::editDistance( char *a, char *b, int32_t level, // starting level
 			       int32_t limit ) { // maximum level
 	// sanity check
-	if ( level <= 0  || limit < level){
-		char *xx = NULL; *xx = 0;
-	}
+	gbassert_false( level <= 0  || limit < level);
 
 	int32_t score = LARGE_SCORE;
 	while (score >= LARGE_SCORE && level <= limit) {
@@ -1872,7 +1862,7 @@ int32_t Language::editDistance( char *a, char *b, int32_t level, // starting lev
 		else if (level < 5)
 			score = limitEditDistance( a, b, level );
 		else {
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 			//score = editDistance(a,b,w);
 		}
 		++level;
@@ -2870,7 +2860,7 @@ tr.set ( rec , recSize , false ) ; // owndata?
 		if ( ++y >  (int32_t)maxNumIps ) {
 			log(LOG_LOGIC,"spell: IP table is too small. "
 			    "Exiting.");
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		goto ipchain;
 	}
@@ -3251,7 +3241,7 @@ tr.set ( rec , recSize , false ) ; // owndata?
 		if ( ++y >  (int32_t)maxNumIps ) {
 			log(LOG_LOGIC,"spell: IP table is too small. "
 			    "Exiting.");
-			char *xx = NULL; *xx = 0;
+			gbassert(false);
 		}
 		goto ipchain;
 	}

@@ -102,7 +102,7 @@ bool Wiki::loadText ( int32_t fileSize ) {
 	//buf[size] = '\0';
 	sb.pushChar('\0');
 	// should not have reallocated too much
-	if ( sb.length() + 100 < sb.m_capacity ) { char *xx=NULL;*xx=0; }
+	gbassert_false( sb.length() + 100 < sb.m_capacity );
 
 	char *buf = sb.getBufStart();
 	int32_t size = sb.length() - 1;
@@ -475,7 +475,7 @@ bool Wiki::setPhraseAffinityWeights ( Query *q , float *affWeights ,
 // . returns true and sets g_errno on error
 bool Wiki::getRandomPhrase ( void *state , void (*callback)(void *state)) {
 	// sanity check
-	if ( this != &g_wiki ) { char *xx=NULL;*xx=0; }
+	gbassert_false( this != &g_wiki );
 	// this will be set on error
 	m_errno = 0;
 	// just get it from the file...
@@ -497,7 +497,7 @@ bool Wiki::getRandomPhrase ( void *state , void (*callback)(void *state)) {
 		m_opened = true;
 	}
 	// someone is already outstanding!
-	if ( m_callback ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_callback );
 	// save it
 	m_state    = state;
 	m_callback = callback;

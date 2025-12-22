@@ -133,14 +133,14 @@ bool Msg0::getList ( int64_t hostId      , // host to ask (-1 if none)
 	// don't have to check each machine in the network. if this is true it
 	// means to query each split and merge the results together into a
 	// single unified termlist. only applies to indexdb/datedb.
-	//if ( doIndexdbSplit ) { char *xx = NULL; *xx = 0; }
+	//if ( doIndexdbSplit ) { gbassert(false); }
 	// note this because if caller is wrong it hurts performance major!!
 	//if ( doIndexdbSplit ) 
 	//	logf(LOG_DEBUG,"net: doing msg0 with indexdb split true");
 	// warning
 	if ( collnum < 0 ) log(LOG_LOGIC,"net: NULL collection. msg0.");
 
-	//if ( doIndexdbSplit ) { char *xx=NULL;*xx=0; }
+	//if ( doIndexdbSplit ) { gbassert(false); }
 
 	// reset the list they passed us
 	list->reset();
@@ -148,7 +148,7 @@ bool Msg0::getList ( int64_t hostId      , // host to ask (-1 if none)
 	m_ks = getKeySizeFromRdbId ( rdbId );
 	// if startKey > endKey, don't read anything
 	//if ( startKey > endKey ) return true;
-	if ( KEYCMP(startKey,endKey,m_ks)>0 ) { char *xx=NULL;*xx=0; }//rettrue
+	gbassert_false( KEYCMP(startKey,endKey,m_ks)>0 );//rettrue
 	// . reset hostid if it is dead
 	// . this is causing UOR queries to take forever when we have a dead
 	if ( hostId >= 0 && g_hostdb.isDead ( hostId ) ) hostId = -1;
@@ -157,7 +157,7 @@ bool Msg0::getList ( int64_t hostId      , // host to ask (-1 if none)
 		g_errno = EBADENGINEER;
 		log(LOG_LOGIC,
 		    "net: msg0: Negative minRecSizes no longer supported.");
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 		return true;
 	}
 
@@ -262,7 +262,7 @@ bool Msg0::getList ( int64_t hostId      , // host to ask (-1 if none)
 		isLocal  = false;
 		//m_numSplit = INDEXDB_SPLIT;
 		m_numSplit = g_hostdb.m_indexSplits;
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 	*/
 	/*
@@ -449,7 +449,7 @@ skip:
 	*(int32_t      *) p = startFileNum     ; p += 4;
 	*(int32_t      *) p = numFiles         ; p += 4;
 	*(int32_t      *) p = maxCacheAge      ; p += 4;
-	if ( p - m_request != RDBIDOFFSET ) { char *xx=NULL;*xx=0; }
+	gbassert_false( p - m_request != RDBIDOFFSET );
 	*p               = m_rdbId          ; p++;
 	*p               = addToCache       ; p++;
 	*p               = doErrorCorrection; p++;
@@ -717,9 +717,9 @@ void gotMulticastReplyWrapper0 ( void *state , void *state2 ) {
 // . we are responsible for freeing reply/replySize
 void Msg0::gotSplitReply ( ) {
 	// sanity check
-	if ( m_numSplit <= 1 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( m_numSplit <= 1 );
 	// i don't think we use this, otherwise need to update for posdb
-	char *xx=NULL;*xx=0;
+	gbassert(false);
 	// get all the split lists
 	int32_t totalSize = 0;
 	RdbList lists[MAX_SHARDS];
@@ -1642,7 +1642,7 @@ bool addDocIdToTermListCache ( int64_t docId , char *coll ) {
 				     1 );
 	if ( ! status ) return false;
 	// sanity!
-	//if ( ! isDocIdInTermListCache ( docId , coll)){char *xx=NULL;*xx=0;}
+	//if ( ! isDocIdInTermListCache ( docId , coll)){gbassert(false);}
 	return true;
 }
 */

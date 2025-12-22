@@ -210,7 +210,7 @@ int32_t Tag::setFromBuf ( char *p , char *pend ) {
 	// convert to number
 	m_type = getTagTypeFromStr ( type , typeLen );
 	// panic?
-	if ( m_type == -1 ) { char *xx=NULL;*xx=0;}
+	gbassert_false( m_type == -1 );
 	// now the user, skip comma and quote
 	p+=2;
 
@@ -314,7 +314,7 @@ int32_t Tag::setFromBuf ( char *p , char *pend ) {
 
 	// . sanity check
 	// . all tags must be NULL terminated now
-	if ( m_buf[m_bufSize-1] != '\0' ) {char *xx=NULL; *xx=0; }
+	gbassert_false( m_buf[m_bufSize-1] != '\0' );
 
 	// we reset this since we now require that all tags are NULL terminated
 	// strings
@@ -342,7 +342,7 @@ int32_t Tag::setDataFromBuf ( char *p , char *pend ) {
 	// should be end delimter
 	char c = m_buf[m_bufSize-1];
 	// sanity check
-	if ( c && ! isspace(c) ) { char *xx=NULL;*xx=0; }
+	gbassert_false( c && ! isspace(c) );
 	// strings are always NULL terminated, the datasize should
 	// include the NULL termination
 	m_buf[m_bufSize-1]='\0';
@@ -356,19 +356,19 @@ int32_t Tag::setDataFromBuf ( char *p , char *pend ) {
 	// print as decimal if just 1 byte
 	if ( m_dataSize == 1 ) {
 		int32_t v = atoi(p);
-		if ( v > 256 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( v > 256 );
 		m_data[0] = v;
 		// skip till whitespace or end
 		while ( p < pend && isdigit(*p) ) p++;
 		return p - start;
 	}
 	// skip 0x
-	if ( *p!='0' || *(p+1)!='x' ) { char *xx=NULL;*xx=0; }
+	if ( *p!='0' || *(p+1)!='x' ) { gbassert(false); }
 	p += 2;
 	// convert hexadecimal string into binary
 	int32_t bytesStored = hexToBinary ( p , pend , m_data , false );
 	// sanity check
-	if ( bytesStored != m_dataSize ) { char*xx=NULL;*xx=0;}
+	gbassert_false( bytesStored != m_dataSize );
 	// advance p, each byte is two characters
 	p += bytesStored * 2;
 	// return # of bytes in "p" we scanned
@@ -389,13 +389,13 @@ int32_t hexToBinary ( char *src , char *srcEnd , char *dst , bool decrement ) {
 		else if ( v >= '0' && v <= '9' ) v = v - '0';
 		else break;
 		// sanity check
-		if ( v >= 16 ) { char *xx=NULL;*xx=0;}
+		gbassert_false( v >= 16 );
 		// next character
 		src++;
 		// store it in the destination
 		*dst = v;
 		// sanity check, need one more char FOR SURE!
-		if ( src >= srcEnd ) { char*xx=NULL;*xx=0;}
+		gbassert_false( src >= srcEnd );
 		// get the SECOND hex digit of this byte
 		v = *(unsigned char *)src;
                 if      ( v >= 'a' && v <= 'f' ) v = v - 'a' + 10;
@@ -403,7 +403,7 @@ int32_t hexToBinary ( char *src , char *srcEnd , char *dst , bool decrement ) {
 		else if ( v >= '0' && v <= '9' ) v = v - '0';
 		else break;
 		// sanity check
-		if ( v >= 16 ) { char *xx=NULL;*xx=0;}
+		gbassert_false( v >= 16 );
 		// next character
 		src++;
 		// shift last guy up 4 bits
@@ -786,8 +786,7 @@ bool TagRec::addTag ( char        *tagTypeStr,
 	}
 	// sanity check -- no binary chars allowed, must all be strings!
 	// BUT they can have an empty string (i.e. just \0)
-	if ( dataSize == 1 && data[0] < 9 && data[0] >= 0 && data[0] ) { 
-		char *xx=NULL;*xx=0; }
+	gbassert_false( dataSize == 1 && data[0] < 9 && data[0] >= 0 && data[0] );
 	// make a tag
 	char buf[MAX_TAGREC_SIZE];
 	Tag *tag = (Tag *)buf;
@@ -833,9 +832,9 @@ bool TagRec::addTag ( Tag *TAG ) {
 	// . do not allow empty user
 	// . but "del tags" i.e. "negative tags" can have no user
 	if ( TAG->m_dataSize>0 && (!TAG->m_user || TAG->m_user[0] == '\0') ) { 
-		char *xx=NULL;*xx=0;}
+		gbassert(false);}
 	// sanity check
-	if ( TAG->m_tagId == 0 ) { char *xx=NULL;*xx=0;}
+	gbassert_false( TAG->m_tagId == 0 );
 	// come back up here if we did a remove operation
  loop:
 	// start at the first tag
@@ -882,7 +881,7 @@ bool TagRec::addTag ( Tag *TAG ) {
 		log("tagdb: no room to add tag to buf. tagtype=%s "
 		    "tagsize=%" INT32 " site=%s",  
 		    getTagStrFromType ( TAG->m_type ) , need , site );
-		//char *xx=NULL;*xx=0;
+		//gbassert(false);
 		return false;
 	}
 	// store it
@@ -901,11 +900,11 @@ bool TagRec::addTag ( Tag *TAG ) {
 	char *site = TAG->m_data;
 	int32_t  size = TAG->m_dataSize;
 	// sanity check
-	if ( site[size-1] != '\0' ) { char *xx=NULL;*xx=0; }
+	gbassert_false( site[size-1] != '\0' );
 	// do not start with http:// ! wastes space!!
 	if (size>=8 && strncmp(site,"http://",7)==0 ) {
 		log("tagdb: don't sotre http:// in tags!");
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 	// do not include the NULL
 	u.set ( site , size - 1 );
@@ -968,7 +967,7 @@ bool TagRec::removeTag ( Tag *rmTag ) {
 		m_dataSize -= size;
 	}
 	// sanity check
-	if ( m_numTags != oldn - 1 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_numTags != oldn - 1 );
 	// success, return true
 	return true;
 }
@@ -1323,7 +1322,7 @@ int32_t TagRec::setFromBuf ( char *p , char *pend ) {
 	//p += 8 + 8;
 	//hexToBinary ( p , pend , ((char *)&m_key.n0)+7 , true );
 	// test it
-	//if ( m_key.n1 != k.n1 || m_key.n0 != k.n0 ) { char *xx=NULL; *xx=0; }
+	//if ( m_key.n1 != k.n1 || m_key.n0 != k.n0 ) { gbassert(false); }
 
 	//p = strstr ( p , " version=");
 	// error?
@@ -1743,7 +1742,7 @@ int32_t getTagTypeFromStr( char *tagname , int32_t tagnameLen ) {
 	// sanity check, make sure it is a supported tag!
 	if ( ! s_ht.getValue ( &tagType ) ) { 
 		log("tagdb: unsupported tagname \"%s\"",tagname);
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 		return -1;
 	}
 	return tagType;
@@ -1755,7 +1754,7 @@ char *getTagStrFromType ( int32_t tagType ) {
 	if ( ! s_initialized ) g_tagdb.setHashTable();
 	TagDesc **ptd = (TagDesc **)s_ht.getValue ( &tagType );
 	// sanity check
-	if ( ! ptd ) { char *xx=NULL;*xx=0; }
+	gbassert(ptd);
 	// return it
 	return (*ptd)->m_name;
 }
@@ -1810,7 +1809,7 @@ bool Tagdb::init ( ) {
 	// snity test
 	//if ( TAGREC_CURRENT_VERSION >= 30 ) {
 	//	log("tagdb: fix call to convert()");
-	//	char *xx = NULL; *xx = 0; 
+	//	gbassert(false); 
 	//}
 
 	// force it now
@@ -2188,7 +2187,7 @@ bool Tagdb::convert ( char *coll ) {
 		// sanity check
 		//Url s; s.set ( old_site, old_siteLen );
 		//key_t newk = g_tagdb.makeKey ( &s , false );
-		//if ( k != newk ) { char *xx=NULL;*xx=0; }
+		//if ( k != newk ) { gbassert(false); }
 		// . without any tags, what is our dataSize?
 		// . version(1 byte)+site(X bytes)+NULLTerm(1 byte)+
 		//   #Tags(2 bytes)
@@ -2376,7 +2375,7 @@ bool Tagdb::convert ( char *coll ) {
 				      newgr.getDataSize()  ,
 				      MAX_NICENESS         )) {
 			log("tagdb: convert: %s",mstrerror(g_errno));
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 
 		// do a blocking dump of tree if it's 90% full now
@@ -2531,8 +2530,7 @@ Msg8a::~Msg8a ( ) {
 	
 void Msg8a::reset() {
 	// do no free if in progress, reply may come in and corrupt the mem
-	if ( m_replies != m_requests && ! g_process.m_exiting ) { 
-		char *xx=NULL;*xx=0; }
+	gbassert_false( m_replies != m_requests && ! g_process.m_exiting );
 	//for ( int32_t i = 0 ; i < m_replies ; i++ ) 
 	//	m_lists[i].reset();
 	m_replies  = 0;
@@ -2568,12 +2566,12 @@ bool Msg8a::getTagRec ( Url   *url ,
 	tagRec->reset();//m_numListPtrs = 0;
 
 	// sanity check
-	if ( rdbId != RDB_TAGDB ) {char *xx=NULL;*xx=0;}
+	gbassert_false( rdbId != RDB_TAGDB );
 	// save it
 	m_rdbId = rdbId;
 
 	// in use? need to wait before reusing
-	if ( m_replies != m_requests ) {char *xx=NULL;*xx=0; }
+	gbassert_false( m_replies != m_requests );
 	// then we gotta free the lists if any
 	reset();
 
@@ -2920,7 +2918,7 @@ void Msg8a::gotAllReplies ( ) {
 		if ( list->m_listSize >= 10000000 ) {
 			log("tagdb: CAUTION!!! cutoff tagdb list!");
 			log("tagdb: CAUTION!!! will lost useful info!!");
-			char *xx=NULL;*xx=0;
+			gbassert(false);
 		}
 		// otherwise, add to array
 		m_tagRec->m_listPtrs[m_tagRec->m_numListPtrs] = list;
@@ -3060,7 +3058,7 @@ void TagRec::gotAllReplies ( ) {
 			//char *site = gr->getString(ST_SITE,NULL);
 			char *site = gr->getString("site",NULL);
 			// sanity check
-			if ( ! site ) { char *xx=NULL;*xx=0; }
+			gbassert(site);
 			// make it a url
 			Url u;
 			u.set ( site , gbstrlen(site) );
@@ -3152,7 +3150,7 @@ void TagRec::gotAllReplies ( ) {
 		char *us = m_url->getUrl();
 		bool st=siteGetter.getSite(us,gr,timestamp,m_coll,m_niceness );
 		// sanity check, not allowed to block since state is NULL!
-		if ( ! st ) { char *xx=NULL;*xx=0; }
+		gbassert(st);
 		// are we independent subsite? if so, do not inherit
 		// from that. this is used to prevent www.geocities.com/~mark/
 		// from gaining the benefits of being on the www.geocities.com
@@ -3190,7 +3188,7 @@ void TagRec::gotAllReplies ( ) {
 		//if ( tagType == ST_SITE ) goto tagLoop;
 		if ( tag->isType("site") ) goto tagLoop;
 		// sanity check
-		//if ( tagType >= ST_LAST_TAG ) { char *xx=NULL;*xx=0;}
+		//if ( tagType >= ST_LAST_TAG ) { gbassert(false);}
 		// for getting the next tag, remember this
 		last = tag;
 		// . have we added this yet?
@@ -3244,14 +3242,14 @@ void TagRec::gotAllReplies ( ) {
 	}
 
 	// sanity!
-	//if ( size > 32000                   ) { char *xx=NULL;*xx=0; }
-	//if ( size + 2 + 2 > MAX_TAGREC_SIZE ) { char *xx=NULL;*xx=0; }
+	//if ( size > 32000                   ) { gbassert(false); }
+	//if ( size + 2 + 2 > MAX_TAGREC_SIZE ) { gbassert(false); }
 	// then copy the tags into the buffer
 	//for ( int32_t i = 0 ; i < numTags ; i++ )
 	//	m_tagRec->addTag ( tags[i] );
 
 	// sanity check
-	//if ( p - m_tagRec > MAX_TAGREC_SIZE ) { char *xx=NULL;*xx=0;}
+	//if ( p - m_tagRec > MAX_TAGREC_SIZE ) { gbassert(false);}
 
 	// free the mem
 	reset();
@@ -3277,8 +3275,7 @@ Msg9a::~Msg9a() { reset(); }
 
 void Msg9a::reset() {
 	// guard against not waiting for all replies to come in
-	if ( m_requests != m_replies && ! g_process.m_exiting ) {
-		char *xx=NULL;*xx=0; }
+	gbassert_false( m_requests != m_replies && ! g_process.m_exiting );
 	if ( ! m_requestBuf ) return;
 	mfree ( m_requestBuf , m_requestBufSize , "msg9a" );
 	m_requestBuf = NULL;
@@ -3315,16 +3312,16 @@ bool Msg9a::addTags ( char    *sites                  ,
 	g_errno = 0;
 
 	// sanity check, one or the other
-	if ( sites && sitePtrs ) { char *xx=NULL;*xx=0; }
+	gbassert_false( sites && sitePtrs );
 
 	// ipVector only used with sitePtrs for now
-	if ( ! sitePtrs && ipVector ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! sitePtrs && ipVector );
 
 	// when we add the "site" tag to it use the timestamp from one
 	// of the tags we are adding... therefore we must require there be
 	// some tags! we do this to insure injection consistency into the
 	// "qatest123" collection.
-	if ( ! tagRec || tagRec->getNumTags() <= 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( ! tagRec || tagRec->getNumTags() <= 0 );
 
 	// use the first timestamp
 	int32_t timestamp = tagRec->getFirstTag()->m_timestamp;
@@ -3483,13 +3480,13 @@ bool Msg9a::addTags ( char    *sites                  ,
 	// reset ptr to request to launch
 	m_p = m_requestBuf;
 	// sanity check
-	if ( p - m_requestBuf > need ) { char *xx=NULL;*xx=0; }
+	gbassert_false( p - m_requestBuf > need );
 	// all done
 	m_pend = p;
 	// launch them
 	if ( ! launchAddRequests () ) return false;
 	// hey that should always block!
-	if ( ! g_errno ) { char *xx=NULL; *xx=0; }
+	gbassert(g_errno);
 	// show erroer
 	log("tagdb: msg9a: %s",mstrerror(g_errno));
 	// free the allocated mem
@@ -3550,10 +3547,10 @@ bool Msg9a::addTags ( char    *dumpFile               ,
 		//ht.addKey ( count , size );
 		count++;
 		// sanity check
-		if ( size > MAX_TAGREC_SIZE ) { char *xx=NULL;*xx=0;}
+		gbassert_false( size > MAX_TAGREC_SIZE );
 		// sanity check
 		char *site = gr.getString("site",NULL);
-		if ( ! site ) { char *xx=NULL;*xx=0;}
+		gbassert(site);
 		// then request header size
 		size += 4 + 1 + collLen + 1 + 1;
 		// increment total size
@@ -3608,9 +3605,9 @@ bool Msg9a::addTags ( char    *dumpFile               ,
 		}
 		// test it
 		//int32_t slot = ht.getSlot ( count );
-		//if ( slot < 0 ) { char *xx=NULL;*xx=0; }
+		//if ( slot < 0 ) { gbassert(false); }
 		//int32_t shouldbe = ht.getValueFromSlot ( slot );
-		//if ( size != shouldbe ) { char *xx=NULL;*xx=0; }
+		//if ( size != shouldbe ) { gbassert(false); }
 		count++;
 		//logf(LOG_DEBUG,"tagdb: tag %" INT32 " size=%" INT32 "",count++,size);
 		// increment storage ptr
@@ -3620,10 +3617,10 @@ bool Msg9a::addTags ( char    *dumpFile               ,
 		// launchRequests() below.
 		*requestSizePtr = (t - a);
 		// sanity check
-		if ( *requestSizePtr > 10000 ) { char*xx=NULL;*xx=0;}
+		gbassert_false( *requestSizePtr > 10000 );
 	}
 	// sanity check
-	if ( t - m_requestBuf != sum ) { char *xx=NULL;*xx=0; }
+	gbassert_false( t - m_requestBuf != sum );
 	// use their ptrs for adding these tag recs
 	m_p    = m_requestBuf;
 	m_pend = m_requestBuf + m_requestBufSize ;
@@ -3787,7 +3784,7 @@ void handleRequest9a ( UdpSlot *slot , int32_t niceness ) {
 	//char *site = tagRec->getString(ST_SITE,NULL);
 	char *site = tagRec->getString("site",NULL);
 	// this is a no-no
-	if ( ! site ) { char *xx=NULL;*xx=0;}
+	gbassert(site);
 
 	// no tail after us
 	//st->m_tail = NULL;
@@ -3890,7 +3887,7 @@ void handleRequest9a ( UdpSlot *slot , int32_t niceness ) {
 	// log that for debug
 	//log("tagdb: msg5 call did not block. st=%" UINT32 "",(int32_t)st);
 	// sanity check - why not block if it had corruption?
-	if ( st->m_msg5.m_msg3.m_hadCorruption ) { char *xx=NULL;*xx=0; }
+	gbassert_false( st->m_msg5.m_msg3.m_hadCorruption );
 	// it did not block...
 	gotList( st , NULL , NULL );
 }
@@ -4015,7 +4012,7 @@ int32_t getY ( int64_t X , int64_t *x , int64_t *y , int32_t n ) {
 	// error if x1 less than x0
 	if ( x1 <= x0 ) {
 		log("tagdb: X coordinates are not in ascending order for map");
-		char *xx=NULL;*xx=0;
+		gbassert(false);
 	}
 	// otherwise we have a sloping line
 	return  y0 + ( ((int64_t)X - x0) * (y1-y0) ) /(x1-x0) ;
@@ -4883,7 +4880,7 @@ bool isTagTypeUnique ( int32_t tt ) {
 		return true;
 	}
 	// if none, that is crazy
-	if ( ! td ) { char *xx=NULL;*xx=0; }
+	gbassert(td);
 	// return 
 	if ( td->m_flags & TDF_ARRAY) return false;
 	return true;
@@ -4909,7 +4906,7 @@ bool isTagTypeIndexable ( int32_t tt ) {
 		return false;
 	}
 	// if none, that is crazy MDW coring here:
-	if ( ! td ) { char *xx=NULL;*xx=0; }
+	gbassert(td);
 	// return false if we should not index it
 	if ( td->m_flags & TDF_NOINDEX ) return false;
 	// otherwise, index it
@@ -4923,7 +4920,7 @@ bool isTagTypeString ( int32_t tt ) {
 	// look up in hash table
 	TagDesc *td = (TagDesc **)s_ht.getValue ( tt );
 	// if none, that is crazy
-	if ( ! td ) { char *xx=NULL;*xx=0; }
+	gbassert(td);
 	// return 
 	return (td->m_flags & TDF_STRING);
 }
@@ -5145,7 +5142,7 @@ int32_t Tagdb::getMinSiteInlinks ( uint32_t hostHash32 ) {
 
 	if ( m_siteBuf1.length() <= 0 ) { 
 		log("tagdb: load not called");
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
 
 	// first check buf1 doing bstep

@@ -443,7 +443,7 @@ class Spiderdb {
 	/*
 	inline uint32_t getShardNum ( int32_t firstIp ) {
 		// must be valid
-		if ( firstIp == 0 || firstIp == -1 ) {char *xx=NULL;*xx=0; }
+		gbassert_false( firstIp == 0 || firstIp == -1 );
 		// mix it up
 		uint32_t h = (uint32_t)hash32h ( firstIp, 0x123456 );
 		// get it
@@ -1111,8 +1111,8 @@ class Doledb {
 			int64_t urlHash48  ,
 			bool      isDelete   ) {
 		// sanity checks
-		if ( priority  & 0xffffff00           ) { char *xx=NULL;*xx=0;}
-		if ( urlHash48 & 0xffff000000000000LL ) { char *xx=NULL;*xx=0;}
+		gbassert_false( priority  & 0xffffff00           );
+		gbassert_false( urlHash48 & 0xffff000000000000LL );
 		key_t k;
 		k.n1 = (255 - priority);
 		k.n1 <<= 24;

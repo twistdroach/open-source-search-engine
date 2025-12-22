@@ -225,7 +225,7 @@ void repairWrapper ( int fd , void *state ) {
 		// saved as essentially an empty file at this point. 
 		saveAddsInProgress ( NULL );
 		// sanity check
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 		// hey, everyone is done "writing"
 		g_repairMode = 3;
 		// not eit
@@ -1431,8 +1431,7 @@ bool Repair::scanRecs ( ) {
 	    (int32_t)m_collnum,
 	    (int32_t)base->getNumFiles());//,m_fn,nf);
 	// sanity check
-	if ( m_msg5InUse ) {
-		char *xx = NULL; *xx = 0; }
+	gbassert_false( m_msg5InUse );
 	// when building anything but tfndb we can get the rec
 	// from the twin in case of data corruption on disk
 	bool fixErrors = true;
@@ -1714,8 +1713,7 @@ bool Repair::gotScanRecList ( ) {
 	uk2 = g_tfndb.makeMaxKey ( docId );
 
 	// sanity check
-	if ( m_msg5InUse ) {
-		char *xx = NULL; *xx = 0; }
+	gbassert_false( m_msg5InUse );
 	// . get the list of url recs for this docid range
 	// . this should not block, tfndb SHOULD all be in memory all the time
 	// . use 500 million for min recsizes to get all in range
@@ -1754,7 +1752,7 @@ bool Repair::gotTfndbList ( ) {
 		log("repair: Got error reading tfndb list: %s.",
 		    mstrerror(g_errno));
 	// sanity check
-	if ( m_rebuildTfndb && ! m_isDelete ) { char *xx=NULL;*xx=0;}
+	gbassert_false( m_rebuildTfndb && ! m_isDelete );
 	// just in case
 	m_ulist.resetListPtr();
 	// did we have a matchf or our docid?
@@ -1877,7 +1875,7 @@ void doneWithIndexDoc ( XmlDoc *xd ) {
 		if ( ! s_inUse[i] ) continue;
 		if ( xd == &s_docs[i] ) break;
 	}
-	if ( i >= MAX_OUT_REPAIR ) { char *xx=NULL;*xx=0; }
+	gbassert_false( i >= MAX_OUT_REPAIR );
 	// reset it i guess
 	xd->reset();
 	// give back the tr
@@ -1937,7 +1935,7 @@ bool Repair::injectTitleRec ( ) {
 		// placedb entries for it...
 		char *rec = m_scanList.getCurrentRec();
 		int32_t  recSize = m_scanList.getCurrentRecSize();
-		if ( recSize <= 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( recSize <= 0 );
 		if ( ! m_msg4.addMetaList ( rec ,
 					    recSize ,
 					    m_coll ,
@@ -2106,7 +2104,7 @@ bool Repair::injectTitleRec ( ) {
 		// core until we find a way to preserve the old discovery
 		// date from the old linkdb!
 		//log("repair: fix linkdb rebuild. coring.");
-		//char *xx=NULL;*xx=0;
+		//gbassert(false);
 	}
 
 	if ( ! g_conf.m_rebuildRecycleLinkInfo ) {
@@ -2178,13 +2176,13 @@ bool Repair::addToTfndb2 ( ) {
 
 	// . this is broken!!! figure out why the rebuild doesn't work...
 	// . seems like the tfns are off...
-	//char *xx = NULL; *xx = 0;
+	//gbassert(false);
 
 	QUICKPOLL(MAX_NICENESS);
 
 	// sanity check, must have a valid m_ext
-	//if ( m_ext == -1 ) { char *xx = NULL; *xx = 0; }
-	if ( ! m_uh48 ) { char *xx = NULL; *xx = 0; }
+	//if ( m_ext == -1 ) { gbassert(false); }
+	gbassert(m_uh48);
 
 	// m_docId should already have been set!
 	m_tfndbKey = g_tfndb.makeKey ( m_docId    , // tr->getDocId()
@@ -2705,7 +2703,7 @@ bool saveAllRdbs ( void *state , void (* callback)(void *state) ) {
 		//log("db: Already saving all.");
 		// let them know their callback will not be called even 
 		// though we returned false
-		if ( callback ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( callback );
 		return false;
 	}
 	// set it

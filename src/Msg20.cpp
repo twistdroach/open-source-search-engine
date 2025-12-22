@@ -46,7 +46,7 @@ void Msg20::reset() {
 	//log("msg20: resetting msg20=0x%"PTRFMT" reply=0x%"PTRFMT"",
 	//    (PTRTYPE)this,(PTRTYPE)m_r);
 
-	if ( ! m_owningParent ) { char *xx=NULL;*xx=0; }
+	gbassert(m_owningParent);
 
 	// not allowed to reset one in progress
 	if ( m_inProgress ) { 
@@ -56,7 +56,7 @@ void Msg20::reset() {
 			return;
 		}
 		// otherwise core
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
 	m_launched = false;
 	if ( m_request && m_request   != m_requestBuf )
@@ -125,7 +125,7 @@ bool Msg20::getSummary ( Msg20Request *req ) {
 	// reset ourselves in case recycled
 	reset();
 
-	if ( ! m_owningParent ) { char *xx=NULL;*xx=0; }
+	gbassert(m_owningParent);
 
 	// consider it "launched"
 	m_launched = true;
@@ -238,7 +238,7 @@ bool Msg20::getSummary ( Msg20Request *req ) {
 	// . TODO: fix the urldb cache preload logic
 	int32_t hostNum = (probDocId % (128LL*1024*1024)) / sectionWidth;
 	if ( hostNum < 0 ) hostNum = 0; // watch out for negative docids
-	if ( hostNum >= nc ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( hostNum >= nc );
 	int32_t firstHostId = cand [ hostNum ]->m_hostId ;
 
 	// . make buffer m_request to hold the request
@@ -322,7 +322,7 @@ void Msg20::gotReply ( UdpSlot *slot ) {
 	// no longer in progress, we got a reply
 	m_inProgress = false;
 	// sanity check
-	if ( m_r ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( m_r );
 
 	// free our serialized request buffer to save mem
 	if ( m_request && m_request   != m_requestBuf ) {
@@ -362,13 +362,13 @@ void Msg20::gotReply ( UdpSlot *slot ) {
 	// slot's m_readBuf... we need to own it.
 	if ( freeit ) {
 		log(LOG_LOGIC,"query: msg20: gotReply: Bad engineer.");
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 		return;
 	}
 	// see if too small for a getSummary request
 	if ( m_replySize < (int32_t)sizeof(Msg20Reply) ) { 
 		log("query: Summary reply is too small.");
-		//char *xx = NULL; *xx = 0;
+		//gbassert(false);
 		m_errno = g_errno = EREPLYTOOSMALL; return; }
 
 	// cast it
@@ -422,7 +422,7 @@ void handleRequest20 ( UdpSlot *slot , int32_t netnice ) {
 	// . this is "destructive" on "request"
 	int32_t nb = req->deserialize();
 	// sanity check
-	if ( nb != slot->m_readBufSize ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( nb != slot->m_readBufSize );
 
 	// sanity check, the size include the \0
 	if ( req->m_collnum < 0 ) {
@@ -430,7 +430,7 @@ void handleRequest20 ( UdpSlot *slot , int32_t netnice ) {
 		    "from ip=%s port=%i",iptoa(slot->m_ip),(int)slot->m_port);
 	        g_udpServer.sendErrorReply ( slot , ENOTFOUND );
 		return; 
-		//char *xx =NULL; *xx = 0; 
+		//gbassert(false); 
 	}
 	// if it's not stored locally that's an error
 	if ( req->m_docId >= 0 && ! g_titledb.isLocal ( req->m_docId ) ) {
@@ -441,7 +441,7 @@ void handleRequest20 ( UdpSlot *slot , int32_t netnice ) {
 	}
 
 	// sanity
-	if ( req->m_docId == 0 && ! req->ptr_ubuf ) { //char *xx=NULL;*xx=0; }
+	if ( req->m_docId == 0 && ! req->ptr_ubuf ) { //gbassert(false); }
 		log("query: Got msg20 request for docid of 0 and no url for "
 		    "collnum=%" INT32 " query %s",(int32_t)req->m_collnum,req->ptr_qbuf);
 	        g_udpServer.sendErrorReply ( slot , ENOTFOUND );
@@ -524,9 +524,9 @@ bool gotReplyWrapperxd ( void *state ) {
 	// this should not block now
 	Msg20Reply *reply = xd->getMsg20Reply ( );
 	// sanity check, should not block here now
-	if ( reply == (void *)-1 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( reply == (void *)-1 );
 	// NULL means error, -1 means blocked. on error g_errno should be set
-	if ( ! reply && ! g_errno ) { char *xx=NULL;*xx=0;}
+	gbassert_false( ! reply && ! g_errno );
 	// send it off. will send an error reply if g_errno is set
 	return reply->sendReply ( xd );
 }
@@ -594,11 +594,11 @@ bool Msg20Reply::sendReply ( XmlDoc *xd ) {
 	int32_t used = serialize ( buf , need );
 
 	// sanity
-	if ( used != need ) { char *xx=NULL;*xx=0; }
+	gbassert_false( used != need );
 
 	// sanity check, no, might have been banned/filtered above around
 	// line 956 and just called sendReply directly
-	//if ( st->m_memUsed == 0 ) { char *xx=NULL;*xx=0; }
+	//if ( st->m_memUsed == 0 ) { gbassert(false); }
 
 	// use blue for our color
 	int32_t color = 0x0000ff;
@@ -608,7 +608,7 @@ bool Msg20Reply::sendReply ( XmlDoc *xd ) {
 	//Msg20Reply *tt = (Msg20Reply *)buf;
 
 	// sanity check
-	if ( ! xd->m_utf8ContentValid ) { char *xx=NULL;*xx=0; }
+	gbassert(xd->m_utf8ContentValid);
 	// for records
 	int32_t clen = 0;
 	if ( xd->m_utf8ContentValid ) clen = xd->size_utf8Content - 1;
@@ -695,7 +695,7 @@ int32_t Msg20Reply::serialize ( char *buf , int32_t bufSize ) {
 	             &retSize,
 	             buf, bufSize,
 	             false);
-	if ( retSize > bufSize ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( retSize > bufSize );
  	// return it
 	return retSize;
 }
@@ -715,7 +715,7 @@ int32_t Msg20Reply::deserialize ( ) {
 		log("xmldoc: deserialize msg20 reply corruption error");
 		log("xmldoc: DO YOU NEED TO NUKE CACHEDB.DAT?????");
 		return -1;
-		char *xx=NULL;*xx=0; 
+		gbassert(false); 
 	}
 
 	// return how many bytes we used

@@ -322,7 +322,7 @@ bool AutoBan::incRequestCount ( int32_t ch , int32_t bytesRead ) {
 	CodeVal *cv = m_ht.getValuePointer ( ch );
 	if ( ! cv ) return false;
 	// sanity check
-	if ( bytesRead < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( bytesRead < 0 );
 	// inc his count
 	cv->m_outstanding++;
 	cv->m_bytesRead += bytesRead;
@@ -338,7 +338,7 @@ void AutoBan::decRequestCount ( int32_t ch , int32_t bytesSent ) {
 	CodeVal *cv = m_ht.getValuePointer ( ch );
 	if ( ! cv ) return;
 	// sanity check
-	if ( bytesSent < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( bytesSent < 0 );
 	// dec the count
 	cv->m_outstanding--;
 	cv->m_bytesSent += bytesSent;
@@ -575,7 +575,7 @@ bool AutoBan::hasPerm(int32_t ip,
  doTuringTest:
 
 	// sanity!
-	if ( justCheck ) { char *xx=NULL;*xx=0; }
+	gbassert_false( justCheck );
 
 	if( raw == 0 ) {
 		// did we get a good response from the turing test?
@@ -649,7 +649,7 @@ bool AutoBan::hasPerm(int32_t ip,
 checkSubstr:
 
 	// sanity!
-	if ( justCheck ) { char *xx=NULL;*xx=0; }
+	gbassert_false( justCheck );
 
 	// Look for regular expressions that may serve as a signature of 
 	// a botnet attack

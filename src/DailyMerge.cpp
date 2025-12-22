@@ -136,7 +136,7 @@ void DailyMerge::dailyMergeLoop ( ) {
 			    (int)todayDOW,cr->m_coll);
 			return;
 		}
-		//if ( todayDOW > 6 ) { char *xx=NULL;*xx=0; }
+		//if ( todayDOW > 6 ) { gbassert(false); }
 		// skip if not a dayofweek to merge on
 		if ( dowCounts [ todayDOW ] == 0 ) continue;
 

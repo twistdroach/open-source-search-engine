@@ -421,7 +421,7 @@ bool Summary::set2 ( Xml      *xml                ,
 		if ( maxi == -1 ) break;
 
 		// sanity check
-		//if ( maxa == -1 || maxb == -1 ) { char *xx = NULL; *xx = 0; }
+		//if ( maxa == -1 || maxb == -1 ) { gbassert(false); }
 		if ( maxa == -1 ) break;
 		if ( maxb == -1 ) break;
 
@@ -440,7 +440,7 @@ bool Summary::set2 ( Xml      *xml                ,
 			      maxa, maxb, ww->m_numWords );
 			maxa = ww->m_numWords - 1;
 			maxb = ww->m_numWords;
-			//char *xx = NULL; *xx = 0;
+			//gbassert(false);
 		}
 
 		// assume we do not preceed with ellipsis "..."
@@ -620,7 +620,7 @@ bool Summary::set2 ( Xml      *xml                ,
 	// set length
 	m_summaryLen = p - m_summary;
 
-	if ( m_summaryLen > 50000 ) { char*xx=NULL;*xx=0; }
+	gbassert_false( m_summaryLen > 50000 );
 
 	// it may not have all query terms if rat=0 (Require All Terms=false)
 	// so use Matches::m_matchesQuery instead of Matches::m_hasAllQTerms
@@ -931,7 +931,7 @@ int64_t Summary::getBestWindow ( Matches *matches       ,
 		// which query word # does it match
 		int32_t qwn = next->m_qwordNum;
 
-		if ( qwn < 0 || qwn >= m_q->m_numWords ){char*xx=NULL;*xx=0;}
+		gbassert_false( qwn < 0 || qwn >= m_q->m_numWords );
 
 		// undo old score
 		score -= t;
@@ -1136,7 +1136,7 @@ bool Summary::getDefaultSummary ( Xml    *xml,
 		if ( m_numDisplayLines > 0 )
 			m_displayLen = m_summaryLen;
 
-		if ( m_summaryLen > 50000 ) { char*xx=NULL;*xx=0; }
+		gbassert_false( m_summaryLen > 50000 );
 		return true;
 	}
 	return true;
@@ -1194,7 +1194,7 @@ bool Summary::scanForLocations ( ) {
 	// sanity check - should have same # of locs as loc pops
 	if (m_summaryLocs.length()/sizeof(uint64_t) !=
 	    m_summaryLocsPops.length()/sizeof(int32_t)) {
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 
 	return true;

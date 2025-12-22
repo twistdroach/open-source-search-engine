@@ -199,7 +199,7 @@ bool CatRec::set ( Url *url , char *data , int32_t dataSize , bool gotByIp ) {
 		      "ignoring tagdb record.",
 		      (int32_t)(p - m_data), m_dataSize , url->getUrl() );
 		return false;
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 
 	// if hostname is same as url we can use the ip from url
@@ -276,8 +276,7 @@ bool CatRec::set ( Url *site ,
 	//}
 
 	// sanity check
-	if ( m_version > CATREC_CURRENT_VERSION ) {
-		char *xx = NULL; *xx = 0; }
+	gbassert_false( m_version > CATREC_CURRENT_VERSION );
 	// catids and numcatids
 	//if (rdbId == RDB_CATDB)
 	m_dataSize += 1 + (numCatids * 4);
@@ -295,7 +294,7 @@ bool CatRec::set ( Url *site ,
 	//m_numTypes = numTypes;
 	//sanity check:
 	//if(m_numTypes > MAX_SITE_TYPES) {
-	//	char *xx = NULL; *xx = 0;}
+	//	gbassert(false);}
 
 	// store numCatids and catids if exist
 	m_numCatids = numCatids;
@@ -417,7 +416,7 @@ bool CatRec::set ( Url *site ,
 	if ( p - m_data != m_dataSize ) {
 		log ( "catrec: Serialized datasize %" INT32 " != %" INT32 "",
 		      (int32_t)(p - m_data), (int32_t)m_dataSize );
-		char *xx = NULL; *xx = 0;
+		gbassert(false);
 	}
 	// set our member vars correctly in addition to the site rec
 	m_site.set ( site->getUrl(), site->getUrlLen(), false/*addwww?*/);
@@ -803,7 +802,7 @@ void CatRec::addSiteType ( uint8_t type, uint32_t score ) {
 	// score of 0 means none i guess? a reserved value!
 	if ( score == 0 ) {
 		log("build: adding site type with zero score!");
-		char *xx = NULL; *xx = 0; 
+		gbassert(false); 
 	}
 	m_siteTypes[m_numTypes].m_type  = type;
 	m_siteTypes[m_numTypes].m_score = score;

@@ -37,7 +37,7 @@ bool Syncdb::gotMetaListRequest ( char *req , int32_t reqSize , uint32_t sid ) {
 	// point to it
 	uint64_t zid = *(uint64_t *)(req + 4);
 	// sanity check
-	if ( sid < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( sid < 0 );
 	// get the key of the request. use 0 for tid.
 	key128_t k = makeKey ( 0,0,1,0,tid,sid,zid,1);
 
@@ -85,13 +85,13 @@ bool Syncdb::gotMetaListRequest ( char *req , int32_t reqSize , uint32_t sid ) {
 	// . it should initiate a dump of the tree to make room
 	// . Msg4 handlerRequest() should send back ETRYAGAIN
 	key128_t k2 = makeKey (0,0,1,0,tid,sid,zid,1);
-	if ( m_qt.addKey ( &k2 ) < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_qt.addKey ( &k2 ) < 0 );
 
 	// . ADD THE D KEY
 	// . and a key with the "d" set to indicate we need to delete the meta
 	//   list (after we got all requests, replies and added it ourselves)
 	key128_t k3 = makeKey (0,0,0,1,tid,sid,zid,1);
-	if ( m_qt.addKey ( &k3 ) < 0 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( m_qt.addKey ( &k3 ) < 0 );
 
 	// . add the individiual checkoff keys
 	// . 1 key per hostid in our mirror group
@@ -115,7 +115,7 @@ bool Syncdb::gotMetaListRequest ( char *req , int32_t reqSize , uint32_t sid ) {
 		// . i think g_errno is usually ETRYAGAIN
 		// . it should initiate a dump of the tree to make room
 		// . Msg4 handlerRequest() should send back ETRYAGAIN
-		if ( m_qt.addKey ( &k4 ) < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( m_qt.addKey ( &k4 ) < 0 );
 
 		// . if we already did recv the check off request, delete it!
 		key128_t ck = makeKey ( 0,1,0,0,tid2,sid,zid,0 );
@@ -125,7 +125,9 @@ bool Syncdb::gotMetaListRequest ( char *req , int32_t reqSize , uint32_t sid ) {
 		if ( dn >= 0 ) m_qt.deleteNode3 ( dn , false );
 		// . ADD the B KEY
 		// . we did not annihilate with a negative key
-		else if ( m_qt.addKey ( &k5 ) < 0 ) { char *xx=NULL;*xx=0; }
+		else {
+			gbassert_false( m_qt.addKey ( &k5 ) < 0 );
+		}
 	}
 
 	logf(LOG_DEBUG,"syncdb: added a b c and d keys to quick tree "
@@ -178,7 +180,7 @@ key128_t Syncdb::makeKey ( char     a      ,
 	// set it
 	k.n1 = n1;
 	// sanity check, low bit must be reserved for del bit
-	if ( (zid & 0x01) && ! delBit ) { char *xx=NULL;*xx=0; }
+	gbassert_false( (zid & 0x01) && ! delBit );
 	// lowest 63 bits of zid
 	k.n0 = zid ;
 	// and del bit
@@ -252,7 +254,7 @@ void Syncdb::loop1 ( ) {
 			// undo the m_qt.getNextNode(nn) we call in for loop
 			nn = m_qt.getPrevNode ( 0 , (char *)&nk );
 			// sanity check
-			if ( nn < 0 ) { char *xx=NULL; *xx=0; }
+			gbassert_false( nn < 0 );
 			// get next key from this new sid
 			continue;
 		}
@@ -299,7 +301,7 @@ bool Syncdb::sentAllCheckoffRequests ( uint32_t sid , uint64_t zid ) {
 // . returns false if blocked, sets g_errno on error and returns true
 bool Syncdb::loop2 ( ) {
 	// sanity check
-	if ( ! m_calledLoop1 ) { char *xx=NULL;*xx=0; }
+	gbassert(m_calledLoop1);
  loop:
 	// breathe just in case
 	QUICKPOLL ( MAX_NICENESS );
@@ -321,7 +323,7 @@ bool Syncdb::loop2 ( ) {
 		// get zid from request
 		uint64_t zid2 = *(uint64_t *)(req+4);
 		// must match!
-		if ( zid1 != zid2 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( zid1 != zid2 );
 		// . add away using Msg4.cpp
 		// . return with g_errno set on error
 		if ( ! addMetaList ( req ) ) return true;
@@ -389,7 +391,7 @@ bool Syncdb::gotList ( ) {
 	// get key
 	key128_t k = *(key128_t *)rec;
 	// sanity check
-	if ( k != m_addMe[m_ia] ) { char *xx=NULL;*xx=0;}
+	gbassert_false( k != m_addMe[m_ia] );
 	// . add it using msg4.cpp::addMetaList()
 	// . sets g_errno and returns false on error
 	if ( ! addMetaList ( rec ) ) return false;
@@ -442,7 +444,7 @@ void Syncdb::loop3 ( ) {
 			// undo the m_qt.getNextNode(nn) we call in for loop
 			nn = m_qt.getPrevNode ( 0 , (char *)&nk );
 			// sanity check
-			if ( nn < 0 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( nn < 0 );
 			// get next key from this new sid
 			continue;
 		}
@@ -457,7 +459,7 @@ void Syncdb::loop3 ( ) {
 		// key successfully to syncdb
 		int32_t dn = m_qt.getNode ( 0, (char *)&k );
 		// must be there!
-		if ( ! dn ) { char *xx=NULL;*xx=0; }
+		gbassert(dn);
 		// nuke it
 		m_qt.deleteNode3 ( dn , true );
 	}
@@ -549,7 +551,7 @@ bool Syncdb::loop4 ( ) {
 			// undo the m_qt.getNextNode(nn) we call in for loop
 			nn = m_qt.getPrevNode ( 0 , (char *)&nk );
 			// sanity check
-			if ( nn < 0 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( nn < 0 );
 			// get next key from this new sid
 			continue;
 		}
@@ -580,7 +582,7 @@ bool Syncdb::loop4 ( ) {
 			// undo the m_qt.getNextNode(nn) we call in for loop
 			nn = m_qt.getPrevNode ( 0 , (char *)&nk );
 			// sanity check
-			if ( nn < 0 ) { char *xx=NULL;*xx=0; }
+			gbassert_false( nn < 0 );
 			// get next key from this new sid
 			continue;
 		}
@@ -779,7 +781,7 @@ bool Syncdb::addedList5 ( ) {
 	// . make a fake list
 	if ( ! m_qt.deleteKeys ( 0 , (char *)m_keys , m_nk ) ) {
 		// sanity check - must all be in quicktree
-		char *xx=NULL; *xx=0; }
+		gbassert(false); }
 	// success
 	return true;
 }
@@ -789,7 +791,7 @@ void handleRequest5d ( UdpSlot *slot , int32_t netnice ) {
 	// get the sending hostid
 	int32_t sid = slot->m_hostId;
 	// sanity check
-	if ( sid < 0 ) { char *xx=NULL; *xx=0; }
+	gbassert_false( sid < 0 );
 	// get the request buffer
 	//key128_t *keys = (key128_t *)slot->m_readBuf;
 	int32_t      nk   = slot->m_readBufSize / 16;
@@ -804,7 +806,7 @@ void handleRequest5d ( UdpSlot *slot , int32_t netnice ) {
 		// get the key
 		key128_t k = g_syncdb.m_keys[i];
 		// sanity check. must be a negative key.
-		if ( (k.n0 & 0x1) != 0x0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( (k.n0 & 0x1) != 0x0 );
 		// get the anti key. the "need to recv checkoff request"
 		// key which is the positive
 		key128_t pk = k;
@@ -819,7 +821,7 @@ void handleRequest5d ( UdpSlot *slot , int32_t netnice ) {
 		}
 		// . otherwise, add right to the tree
 		// . should always succeed!
-		if ( g_syncdb.m_qt.addKey(&k)<0) { char *xx=NULL;*xx=0; }
+		gbassert_false( g_syncdb.m_qt.addKey(&k)<0);
 	}
 	// return empty reply to mean success
 	us->sendReply_ass ( NULL , 0 , NULL , 0 , slot );

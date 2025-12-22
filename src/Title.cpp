@@ -109,7 +109,7 @@ bool Title::setTitle ( XmlDoc   *xd            ,
 	m_titleTagEnd   = -1;
 
 	// if we are a json object
-	if ( ! xd->m_contentTypeValid ) { char *xx=NULL;*xx=0; }
+	gbassert(xd->m_contentTypeValid);
 	char *val = NULL;
 	// look for the "title:" field in json then use that
 	SafeBuf jsonTitle;
@@ -581,7 +581,7 @@ bool Title::setTitle4 ( XmlDoc   *xd            ,
 	// allow up to 4 tags from each type
 	char table[512];
 	// sanity check
-	if ( getNumXmlNodes() > 512 ) { char *xx=NULL;*xx=0; }
+	gbassert_false( getNumXmlNodes() > 512 );
 	// clear table counts
 	memset ( table , 0 , 512 );
 	// ignore "titles" in script or style tags
@@ -771,7 +771,7 @@ bool Title::setTitle4 ( XmlDoc   *xd            ,
 	*/
 
 	// sanity check
-	if ( ! xd->m_contentTypeValid ) { char *xx=NULL;*xx=0; }
+	gbassert(xd->m_contentTypeValid);
 	// to handle text documents, throw in the first line of text
 	// as a title candidate, just make the score really low
 	bool textDoc = false;
@@ -880,7 +880,7 @@ bool Title::setTitle4 ( XmlDoc   *xd            ,
 		// error?
 		if ( ! px ) return false;
 		// should never block! should be set from title rec basically
-		if ( px == (void *)-1 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( px == (void *)-1 );
 		// point to list of \0 separated titles
 		rootTitleBuf    = *px;
 		rootTitleBufEnd =  *px + xd->m_filteredRootTitleBufSize;
@@ -1169,7 +1169,7 @@ bool Title::setTitle4 ( XmlDoc   *xd            ,
 		// reset our array
 		//int32_t found[512];
 		// sanity check
-		//if ( nw1 > 512 ) { char *xx=NULL;*xx=0; };
+		//if ( nw1 > 512 ) { gbassert(false); };
 		//memset ( found , 0 , 4*512);
 		// reset some flags
 		char localFlag1 = 0;
@@ -1501,7 +1501,7 @@ bool Title::setTitle4 ( XmlDoc   *xd            ,
 	// point to the words class of the winner
 	Words *w = cptrs[winner];
 	// skip if got nuked above
-	if ( ! w ) { char *xx=NULL;*xx=0; }
+	gbassert(w);
 
 	// make the Pos class of the winner, and point "pp" to it
 	Pos    *pp = POS;
@@ -1521,7 +1521,7 @@ bool Title::setTitle4 ( XmlDoc   *xd            ,
 	int32_t a = as[winner];
 	int32_t b = bs[winner];
 	// sanity check
-	if ( a < 0 || b > w->getNumWords() ) { char*xx=NULL;*xx=0; }
+	gbassert_false( a < 0 || b > w->getNumWords() );
 	// save the title
 	if ( ! copyTitle ( w , pp , a , b , sections ) ) 
 		return false;
@@ -1800,8 +1800,8 @@ float Title::getSimilarity ( Words  *w1 , int32_t i0 , int32_t i1 ,
 	// do not divide by zero
 	if ( sum == 0.0 ) return 0.0;
 	// sanity check
-	//if ( found > sum              ) { char *xx=NULL;*xx=0; }
-	if ( found < 0.0 || sum < 0.0 ) { char *xx=NULL;*xx=0; }
+	//if ( found > sum              ) { gbassert(false); }
+	gbassert_false( found < 0.0 || sum < 0.0 );
 	// . return the percentage matched
 	// . will range from 0.0 to 1.0
 	return found / sum;
@@ -1821,7 +1821,7 @@ bool Title::copyTitle ( Words *w , Pos *pos ,
 	int32_t        nw        = w->m_numWords;
 
 	// sanity check
-	if ( t1 < t0 ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( t1 < t0 );
 
 	// don't breech number of words
 	if ( t1 > nw ) t1 = nw;

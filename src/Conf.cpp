@@ -444,7 +444,7 @@ bool Conf::init ( char *dir ) { // , int32_t hostId ) {
 	// sanity check
 	if ( g_hostdb.m_indexSplits > MAX_SHARDS ) {
 		log("db: Increase MAX_SHARDS");
-		char *xx = NULL; *xx = 0; 
+		gbassert(false); 
 	}
 	// and always keep a decent site quality cache of at least 3M
 	if ( g_conf.m_siteQualityMaxCacheMem < 3000000 )

@@ -293,7 +293,7 @@ class Linkdb {
 		// convert into days
 		date /= 86400;
 		// sanity
-		if ( date > 0x3fff || date < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( date > 0x3fff || date < 0 );
 		// clear old bits
 		((key224_t *)k)->n1 &= 0xffffffff03ffffLL;
 		// scale us into it
@@ -321,7 +321,7 @@ class Linkdb {
 		// convert into days
 		date /= 86400;
 		// sanity
-		if ( date > 0x3fff || date < 0 ) { char *xx=NULL;*xx=0; }
+		gbassert_false( date > 0x3fff || date < 0 );
 		// clear old bits
 		((key224_t *)k)->n1 &= 0xffffffffffff0003LL;
 		// scale us into it

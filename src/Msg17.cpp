@@ -141,7 +141,7 @@ bool Msg17::getFromCache ( char   cacheId,
 	// . this is a sanity check now because we should never be returned
 	//   the hostId of a dead host
 	//if ( g_hostdb.isDead ( h ) ) return true;
-	if ( g_hostdb.isDead ( host ) ) { char *xx = NULL; *xx = 0; }
+	gbassert_false( g_hostdb.isDead ( host ) );
 	// make request
 	char *p = m_request;
 	*(key_t *)p = m_key; p += sizeof(key_t);
@@ -265,7 +265,7 @@ bool Msg17::gotReply ( UdpSlot *slot , char *cbuf , int32_t cbufSize ,
 				   "ZG_ERRNO=%i", m_cacheId, err);
 		}
 		// sanity check
-		if ( ubufSize != recSize ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( ubufSize != recSize );
 		if ( m_recPtr  ) *m_recPtr  = ubuf;
 		if ( m_recSize ) *m_recSize = ubufSize;
 	}
@@ -465,7 +465,7 @@ bool Msg17::storeInCache ( char   cacheId ,
 		// uncompressed size
 		*(int32_t *)p = recSize; p += 4;
 		// sanity check
-		if ( recSize < 0 ) { char *xx = NULL; *xx = 0; }
+		gbassert_false( recSize < 0 );
 		// how much left over
 		int32_t avail = pend - p;
 		// save it
