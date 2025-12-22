@@ -8,3 +8,4 @@
 *.conf
 /diskusage
 *.cache
+.DS_Store
