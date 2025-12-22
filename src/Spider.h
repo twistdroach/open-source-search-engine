@@ -13,6 +13,7 @@
 #include "RdbTree.h"
 #include "HashTableX.h"
 #include <time.h>
+#include <string.h>
 #include "Msg5.h"      // local getList()
 #include "Msg4.h"
 #include "Msg1.h"
@@ -467,6 +468,13 @@ extern class Spiderdb g_spiderdb2;
 class SpiderRequest {
 
  public:
+	SpiderRequest() = default;
+	SpiderRequest ( const SpiderRequest &rhs ) { copyFrom(rhs); }
+	SpiderRequest &operator=( const SpiderRequest &rhs ) {
+		if ( this == &rhs ) return *this;
+		copyFrom(rhs);
+		return *this;
+	}
 
 	// we now define the data so we can use this class to cast
 	// a SpiderRec outright
@@ -819,7 +827,7 @@ class SpiderRequest {
 	static int32_t getNeededSize ( int32_t urlLen ) {
 		return sizeof(SpiderRequest) - (int32_t)MAX_URL_LEN + urlLen; };
 
-	int32_t getRecSize () { return m_dataSize + 4 + sizeof(key128_t); }
+	int32_t getRecSize () const { return m_dataSize + 4 + sizeof(key128_t); }
 
 	// how much buf will we need to serialize ourselves?
 	//int32_t getRecSize () { 
@@ -885,6 +893,22 @@ class SpiderRequest {
 	bool setFromInject ( char *url ) ;
 
 	bool isCorrupt ( );
+
+ private:
+	void copyFrom ( const SpiderRequest &rhs ) {
+		int32_t recSize = rhs.getRecSize();
+		if ( recSize < 0 ) recSize = 0;
+		if ( recSize > (int32_t)sizeof(SpiderRequest) )
+			recSize = (int32_t)sizeof(SpiderRequest);
+		const char *src = (const char *)&rhs;
+		char *dst = (char *)this;
+		for ( int32_t i = 0 ; i < recSize ; ++i )
+			dst[i] = src[i];
+		if ( recSize < (int32_t)sizeof(SpiderRequest) ) {
+			memset ( dst + recSize , 0 ,
+				 sizeof(SpiderRequest) - recSize );
+		}
+	}
 } __attribute__((packed, aligned(4)));
 
 // . XmlDoc adds this record to spiderdb after attempting to spider a url

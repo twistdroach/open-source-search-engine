@@ -1414,7 +1414,7 @@ bool XmlDoc::set4 ( SpiderRequest *sreq      ,
 	m_sreqValid    = true;
 
 	// store the whole rec, key+dataSize+data, in case it disappears.
-	gbmemcpy ( &m_sreq , sreq , sreq->getRecSize() );
+	m_sreq = *sreq;
 
 	// set m_collnum etc.
 	if ( ! setCollNum ( coll ) ) 
@@ -1572,7 +1572,7 @@ bool XmlDoc::set2 ( char    *titleRec ,
 
 	// store the whole rec, key+dataSize+data, in case it disappears.
 	if ( sreq ) {
-		gbmemcpy ( &m_sreq , sreq , sreq->getRecSize() );
+		m_sreq = *sreq;
 		m_sreqValid = true;
 	}
 
@@ -2332,7 +2332,7 @@ void XmlDoc::getRevisedSpiderRequest ( SpiderRequest *revisedReq ) {
 	gbassert( m_sreq.m_fakeFirstIp );
 
 	// copy it over from our current spiderrequest
-	gbmemcpy ( revisedReq , &m_sreq , m_sreq.getRecSize() );
+	*revisedReq = m_sreq;
 
 	// this must be valid for us of course
 	gbassert( m_firstIpValid );
@@ -6615,8 +6615,9 @@ Dates *XmlDoc::getSimpleDates ( ) {
 	Sections *sections = getExplicitSections();
 	if (!sections||sections==(Sections *)-1) return (Dates *)sections;
 	// link info (this is what we had the problem with)
-	LinkInfo *info1 = getLinkInfo1(); 
-	if ( ! info1 || info1 == (LinkInfo *)-1 ) return (Dates *)info1;
+	LinkInfo *info1 = getLinkInfo1();
+	if ( ! info1 ) return NULL;
+	if ( info1 == (LinkInfo *)-1 ) return (Dates *)-1;
 	//int32_t *sv = getPageSampleVector();
 	//if ( ! sv || sv == (int32_t *)-1 ) return (Dates *)sv;
 	Xml *xml = getXml();
@@ -9059,8 +9060,9 @@ HashTableX *XmlDoc::getCountTable ( ) {
 	if ( ! bits || bits == (Bits *)-1 ) return (HashTableX *)bits;
 	Sections *sections = getSections(); 
 	if ( !sections||sections==(Sections *)-1) return(HashTableX *)sections;
-	LinkInfo *info1    = getLinkInfo1(); 
-	if ( ! info1 || info1 == (LinkInfo *)-1 ) return (HashTableX *)info1;
+	LinkInfo *info1    = getLinkInfo1();
+	if ( ! info1 ) return NULL;
+	if ( info1 == (LinkInfo *)-1 ) return (HashTableX *)-1;
 
 	// . reduce score of words in badly repeated fragments to 0 so we do
 	//   not count them here!
@@ -11432,7 +11434,8 @@ Url **XmlDoc::getRedirUrl() {
 	// get local link info
 	LinkInfo   *info1 = getLinkInfo1();
 	// error or blocked
-	if ( ! info1 || info1 == (LinkInfo *)-1 ) return (Url **)info1;
+	if ( ! info1 ) return NULL;
+	if ( info1 == (LinkInfo *)-1 ) return (Url **)-1;
 	// get remote link info
 	LinkInfo  **pinfo2 = getLinkInfo2();
 	// error or blocked
@@ -16742,7 +16745,8 @@ SafeBuf *XmlDoc::getDiffbotReply ( ) {
 
 	// now include referring link anchor text, etc.
 	LinkInfo  *info1    = getLinkInfo1 ();
-	if ( ! info1 || info1 == (LinkInfo *)-1 ) return (SafeBuf *)info1;
+	if ( ! info1 ) return NULL;
+	if ( info1 == (LinkInfo *)-1 ) return (SafeBuf *)-1;
 
 
 	setStatus("getting diffbot reply");
@@ -18193,7 +18197,8 @@ Url **XmlDoc::getCanonicalRedirUrl ( ) {
 
 	// if this page has an inlink, then let it stand
 	LinkInfo  *info1 = getLinkInfo1 ();
-	if ( ! info1 || info1 == (LinkInfo *)-1 ) return (Url **)info1;
+	if ( ! info1 ) return NULL;
+	if ( info1 == (LinkInfo *)-1 ) return (Url **)-1;
 	if ( info1->getNumGoodInlinks() > 0 ) {
 		m_canonicalRedirUrlValid = true;
 		return &m_canonicalRedirUrlPtr;
@@ -24018,7 +24023,7 @@ char *XmlDoc::getMetaList ( bool forDelete ) {
 			log("build: doing query reindex but diffbot api "
 			    "url is not set in spider controls");
 		// just copy original request
-		gbmemcpy ( &ksr , &m_sreq , m_sreq.getRecSize() );
+		ksr = m_sreq;
 		// do not spider links, it's a page reindex of a multidoc url
 		ksr.m_avoidSpiderLinks = 1;
 		// avoid EDOCUNCHANGED
@@ -40325,7 +40330,8 @@ char **XmlDoc::getTitleBuf ( ) {
 	// get link info first
 	LinkInfo   *info1  = getLinkInfo1();
 	// error or blocked
-	if ( ! info1 || info1 == (LinkInfo *)-1 ) return (char **)info1;
+	if ( ! info1 ) return NULL;
+	if ( info1 == (LinkInfo *)-1 ) return (char **)-1;
 
 	// sanity check
 	Xml *xml = getXml();
@@ -43588,8 +43594,9 @@ SafeBuf *XmlDoc::getTermInfoBuf ( ) {
 
 	Words *ww = getWords();
 	if ( ! ww || ww == (Words *)-1 ) return (SafeBuf *)ww;
-	LinkInfo *info1 = getLinkInfo1(); 
-	if ( ! info1 || info1 == (LinkInfo *)-1 ) return (SafeBuf *)info1;
+	LinkInfo *info1 = getLinkInfo1();
+	if ( ! info1 ) return NULL;
+	if ( info1 == (LinkInfo *)-1 ) return (SafeBuf *)-1;
 	uint8_t *langId = getLangId();
 	if ( ! langId || langId == (uint8_t *)-1 ) return (SafeBuf *)langId;
 
@@ -46097,8 +46104,10 @@ SafeBuf *XmlDoc::getMatchingQueriesScoredForFullQuery ( ) {
 	if ( m_numMsg3aRequests >= maxFullQueries ) exhausted = true;
 	// if client closed browser connection by hitting the stop sign
 	// then stop here!
-	if ( clientClosedConnection() )
-	    m_hadMatchError = (int)ESOCKETCLOSED;
+	if ( clientClosedConnection() ) {
+		if ( ! g_errno ) g_errno = ESOCKETCLOSED;
+		m_hadMatchError = true;
+	}
 
 	if ( m_hadMatchError ) exhausted = true;
 
