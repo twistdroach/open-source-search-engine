@@ -194,7 +194,7 @@ void Speller::test ( char *ff ) {
 		return;
 	}
 
-	char buf[1026];
+	char buf[MAX_FRAG_SIZE];
 	//char dst[1026];
 	// go through the words in dict/words
 	while ( fgets ( buf , MAX_FRAG_SIZE , fd ) ) {
@@ -2223,7 +2223,7 @@ void Speller::dictLookupTest ( char *ff ){
 		return;
 	}
 	int64_t start = gettimeofdayInMilliseconds();
-	char buf[1026];
+	char buf[MAX_FRAG_SIZE];
 	int32_t count = 0;
 	// go through the words
 	while ( fgets ( buf , MAX_FRAG_SIZE , fd ) ) {
