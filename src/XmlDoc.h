@@ -2556,6 +2556,7 @@ public:
 		// by the checksum and not docid to avoid having to do a 
 		// gbchecksum:xxxxx search on ALL shards. much more efficient.
 		m_shardByTermId = false;
+		m_linkerSiteRank = 0;
 		//m_useWeights              = false;
 		m_useSynonyms             = false;
 		m_hashGroup = -1;
@@ -2672,4 +2673,3 @@ inline int32_t XmlDoc::getProbSpam(int32_t *profile, int32_t plen, int32_t step)
 }
 
 #endif
-

@@ -46,7 +46,26 @@ class TcpServer {
 	void reset();
 
 	// . constructor
-	TcpServer() { m_port = -1; m_sock = -1; m_useSSL = false; m_ctx = NULL; };
+	TcpServer()
+		: m_sock(-1),
+		  m_port(-1),
+		  m_lastFilled(0),
+		  m_numUsed(0),
+		  m_numIncomingUsed(0),
+		  m_dummy(0),
+		  m_maxSocketsPtr(NULL),
+		  m_doReadRateTimeouts(false),
+		  m_getMsgSize(NULL),
+		  m_getMsgPiece(NULL),
+		  m_useSSL(false),
+		  m_ctx(NULL),
+		  m_ready(false),
+		  m_numOpen(0),
+		  m_numClosed(0) {
+		m_requestHandler = NULL;
+		for ( int32_t i = 0 ; i < MAX_TCP_SOCKS ; i++ )
+			m_tcpSockets[i] = NULL;
+	};
 
 	// . creates a tcp socket which listens on port "port"
 	// . will close unused sockets to ensure we stay under "maxSockets"

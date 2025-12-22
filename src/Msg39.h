@@ -55,15 +55,18 @@ class Msg39Request {
 		m_useSeoResultsCache      = false;
 		
 		ptr_readSizes             = NULL;
+		ptr_termFreqWeights       = NULL;
 		ptr_query                 = NULL; // in utf8?
 		ptr_whiteList             = NULL;
 		//ptr_coll                  = NULL;
 		m_forSectionStats         = false;
 		size_readSizes            = 0;
+		size_termFreqWeights      = 0;
 		size_query                = 0;
 		size_whiteList            = 0;
 		m_sameLangWeight          = 20.0;
 		m_maxFacets = -1;
+		m_nqt = 0;
 		//size_coll                 = 0;
 
 		m_getDocIdScoringInfo = 1;
@@ -79,6 +82,7 @@ class Msg39Request {
 		m_minSerpDocId = 0LL;
 
 		m_makeReply = true;
+		m_nowUTC = 0;
 
 		// . search results knobs
 		// . accumulate the top 10 term pairs from inlink text. lower

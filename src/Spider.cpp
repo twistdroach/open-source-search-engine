@@ -909,7 +909,7 @@ SpiderCache g_spiderCache;
 
 SpiderCache::SpiderCache ( ) {
 	//m_numSpiderColls   = 0;
-	//m_isSaving = false;
+	m_isSaving = false;
 }
 
 // returns false and set g_errno on error
@@ -1205,6 +1205,39 @@ CollectionRec *SpiderColl::getCollectionRec ( ) {
 }
 
 SpiderColl::SpiderColl () {
+	m_msg4Start = 0;
+	m_useTree = false;
+	m_lastReplyValid = false;
+	memset(m_lastReplyBuf, 0, sizeof(m_lastReplyBuf));
+	m_didRead = false;
+	m_siteListHasNegatives = false;
+	m_siteListIsEmpty = false;
+	m_tailIp = 0;
+	m_tailPriority = -1;
+	m_tailTimeMS = 0;
+	m_tailUh48 = 0;
+	m_tailHopCount = 0;
+	m_minFutureTimeMS = 0;
+	for ( int32_t i = 0 ; i < MAX_SPIDER_PRIORITIES ; i++ )
+		m_priorityToUfn[i] = -1;
+	m_collnum = 0;
+	m_isTestColl = false;
+	m_countingPagesIndexed = false;
+	m_lastReqUh48a = 0;
+	m_lastReqUh48b = 0;
+	m_lastRepUh48 = 0;
+	m_waitingTreeKeyValid = false;
+	m_scanningIp = 0;
+	m_gotNewDataForScanningIp = 0;
+	m_lastListSize = -1;
+	m_lastScanningIp = 0;
+	m_totalBytesScanned = 0;
+	m_didRound = false;
+	m_totalNewSpiderRequests = 0;
+	m_lastSreqUh48 = 0;
+	memset(m_cblocks, 0, sizeof(m_cblocks));
+	m_pageNumInlinks = 0;
+	m_lastCBlockIp = 0;
 	m_overflowList = NULL;
 	m_lastOverflowFirstIp = 0;
 	m_lastPrinted = 0;
@@ -6197,6 +6230,31 @@ SpiderLoop g_spiderLoop;
 
 SpiderLoop::SpiderLoop ( ) {
 	m_crx = NULL;
+	m_sreq = NULL;
+	m_collnum = 0;
+	m_content = NULL;
+	m_contentLen = 0;
+	m_contentHasMime = 0;
+	m_doledbKey = NULL;
+	m_state = NULL;
+	m_callback = NULL;
+	m_isRegistered = false;
+	m_numSpidersOut = 0;
+	m_launches = 0;
+	m_maxUsed = -1;
+	m_sc = NULL;
+	m_outstanding1 = 0;
+	m_gettingDoledbList = false;
+	m_activeList = NULL;
+	m_bookmark = NULL;
+	m_activeListValid = false;
+	m_activeListModified = false;
+	m_activeListCount = 0;
+	m_recalcTime = 0;
+	m_recalcTimeValid = false;
+	m_lastCallTime = 0;
+	m_doleStart = 0;
+	m_processed = 0;
 	// clear array of ptrs to Doc's
 	memset ( m_docs , 0 , sizeof(XmlDoc *) * MAX_SPIDERS );
 }
@@ -8692,8 +8750,26 @@ void gotLockReplyWrapper ( void *state , UdpSlot *slot ) {
 }
 
 Msg12::Msg12 () {
+	m_lockRequest = LockRequest();
+	m_confirmRequest = ConfirmRequest();
+	m_doledbKey.setMin();
+	m_lockKeyUh48 = 0;
+	m_lockSequence = 0;
+	m_origUh48 = 0;
 	m_numRequests = 0;
 	m_numReplies  = 0;
+	m_grants = 0;
+	m_removing = false;
+	m_confirming = false;
+	m_url = NULL;
+	m_state = NULL;
+	m_callback = NULL;
+	m_gettingLocks = false;
+	m_hasLock = false;
+	m_collnum = 0;
+	m_sameIpWaitTime = 0;
+	m_maxSpidersOutPerIp = 0;
+	m_firstIp = 0;
 }
 
 // . returns false if blocked, true otherwise.

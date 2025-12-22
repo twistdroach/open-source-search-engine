@@ -86,7 +86,7 @@ class Json {
 
 	JsonItem *addNewItem ();
 
-	Json() { m_stackPtr = 0; m_prev = NULL; };
+	Json() { m_stackPtr = 0; m_prev = NULL; memset(m_stack,0,sizeof(m_stack)); };
 	
 	static bool prependKey(SafeBuf& jsonString, char* newKey);
 

@@ -820,6 +820,11 @@ class DocIdScore {
 	DocIdScore ( ) { reset(); }
 
 	void reset ( ) {
+		m_docId = 0;
+		m_finalScore = 0.0;
+		m_siteRank = 0;
+		m_docLang = 0;
+		m_numRequiredTerms = 0;
 		m_numPairs = m_numSingles = 0;
 		m_pairsOffset = m_singlesOffset = -1;
 		m_pairScores = NULL;
