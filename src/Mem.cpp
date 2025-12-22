@@ -38,11 +38,11 @@ bool g_inMemFunction = false;
 // make UNDERPAD and OVERPAD PAGE bytes, although the overrun could still write
 // to another allocated area of memory and we can never catch it.
 #if defined(EFENCE) || defined(EFENCE_SIZE)
-#define UNDERPAD 0
-#define OVERPAD  0
+static const int32_t UNDERPAD = 0;
+static const int32_t OVERPAD  = 0;
 #else
-#define UNDERPAD alignof(int64_t)
-#define OVERPAD  alignof(int64_t)
+static const int32_t UNDERPAD = (int32_t)alignof(int64_t);
+static const int32_t OVERPAD  = (int32_t)alignof(int64_t);
 #endif
 
 #define MAGICCHAR 0xda
