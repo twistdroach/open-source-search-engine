@@ -91,7 +91,7 @@ bool RdbList::copyList ( RdbList *listSrc ) {
 	// sanity
 	gbassert_false( listSrc->m_listSize < 0 );
 	// basically just copy
-	gbmemcpy ( this , listSrc , sizeof(RdbList) );
+	*this = *listSrc;
 	// null out our crap in case the copy fails or list is empty
 	m_list      = NULL;
 	m_listSize  = 0;
@@ -3610,5 +3610,4 @@ void RdbList::setFromPtr ( char *p , int32_t psize , char rdbId ) {
 	resetListPtr();
 
 }
-
 

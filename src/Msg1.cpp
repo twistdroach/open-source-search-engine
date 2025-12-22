@@ -136,7 +136,7 @@ bool Msg1::addList ( RdbList      *list              ,
 			goto skip; 
 		}
 		// steal the list, we don't want caller to free it
-		gbmemcpy ( &Y->m_ourList , list , sizeof(RdbList) );
+		Y->m_ourList = *list;
 		
  		QUICKPOLL(niceness);
 		

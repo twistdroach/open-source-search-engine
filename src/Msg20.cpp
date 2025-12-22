@@ -94,7 +94,8 @@ bool Msg20::registerHandler ( ) {
 
 // copy "src" to ourselves
 void Msg20::copyFrom ( Msg20 *src ) {
-	gbmemcpy ( this , src , sizeof(Msg20) );
+	// use the default copy-assignment to keep C++ semantics intact
+	*this = *src;
 	// if the Msg20Reply was actually in src->m_replyBuf[] we have to
 	// re-serialize into our this->m_replyBuf[] in order for the ptrs
 	// to be correct
