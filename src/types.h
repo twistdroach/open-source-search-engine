@@ -40,7 +40,7 @@ class u_int96_t {
 	uint64_t n0; // the low  int64_t
 	uint32_t      n1; // the high int32_t 
 
-	u_int96_t (                ) { };
+	u_int96_t (                ) : n0(0), n1(0) { };
 	u_int96_t ( uint32_t i ) {	n0 = i; n1 = 0; };
 
 	bool isNegativeKey ( ) { 
@@ -202,7 +202,7 @@ class u_int128_t {
 	uint64_t n0; // the low  int64_t
 	uint64_t n1; // the high int32_t 
 
-	u_int128_t (                ) { };
+	u_int128_t (                ) : n0(0), n1(0) { };
 	u_int128_t ( uint32_t i ) {	n0 = i; n1 = 0; };
 
 	bool isNegativeKey ( ) { 

@@ -77,7 +77,18 @@ class Msg4 {
 
 	bool addMetaList2 ( );
 
-	Msg4() { m_inUse = false; };
+	Msg4()
+		: m_callback(NULL)
+		, m_state(NULL)
+		, m_rdbId(0)
+		, m_inUse(false)
+		, m_collnum(-1)
+		, m_niceness(0)
+		, m_shardOverride(-1)
+		, m_metaList(NULL)
+		, m_metaListSize(0)
+		, m_currentPtr(NULL)
+		, m_next(NULL) {};
 	// why wasn't this saved in addsinprogress.dat file?
 	~Msg4() { if ( m_inUse ) log("BAD: MSG4 in use!!!!!!"); };
 

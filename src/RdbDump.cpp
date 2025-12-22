@@ -1,5 +1,7 @@
 #include "gb-include.h"
 
+#include <cstring>
+
 #include "RdbDump.h"
 #include "Rdb.h"
 #include "Collectiondb.h"
@@ -12,6 +14,59 @@ extern void dumpPosdb    ( char *coll,int32_t sfn,int32_t numFiles,bool includeT
 
 void doneReadingForVerifyWrapper ( void *state ) ;
 //void gotTfndbListWrapper ( void *state , RdbList *list, Msg5 *msg5 ) ;
+
+RdbDump::RdbDump()
+	: m_isDumping(false)
+	, m_writing(false)
+	, m_tree(NULL)
+	, m_buckets(NULL)
+	, m_map(NULL)
+	, m_cache(NULL)
+	, m_maxBufSize(0)
+	, m_orderedDump(false)
+	, m_dedup(false)
+	, m_state(NULL)
+	, m_callback(NULL)
+	, m_offset(0)
+	, m_file(NULL)
+	, m_id2(0)
+	, m_list(NULL)
+	, m_buf(NULL)
+	, m_verifyBuf(NULL)
+	, m_verifyBufSize(0)
+	, m_bytesToWrite(0)
+	, m_bytesWritten(0)
+	, m_addToMap(0)
+	, m_lastKeyInQueue(NULL)
+	, m_nextNode(0)
+	, m_rolledOver(false)
+	, m_fd(-1)
+	, m_niceness(0)
+	, m_useHalfKeys(false)
+	, m_hacked(false)
+	, m_hacked12(false)
+	, m_totalPosDumped(0)
+	, m_totalNegDumped(0)
+	, m_t1(0)
+	, m_numPosRecs(0)
+	, m_numNegRecs(0)
+	, m_isTitledb(false)
+	, m_rdb(NULL)
+	, m_collnum(-1)
+	, m_doCollCheck(false)
+	, m_tried(false)
+	, m_isSuspended(false)
+	, m_ks(0)
+	, m_deduped1(0)
+	, m_deduped2(0)
+	, m_deduped3(0)
+	, m_unforced(0) {
+	memset ( m_firstKeyInQueue , 0 , sizeof(m_firstKeyInQueue) );
+	memset ( m_prevLastKey , 0 , sizeof(m_prevLastKey) );
+	memset ( m_nextKey , 0 , sizeof(m_nextKey) );
+	memset ( m_tkey , 0 , sizeof(m_tkey) );
+	memset ( &m_fstate , 0 , sizeof(m_fstate) );
+}
 
 // . return false if blocked, true otherwise
 // . sets g_errno on error

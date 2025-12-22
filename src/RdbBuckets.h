@@ -31,7 +31,13 @@
 class RdbBuckets;
 class RdbBucket {
 public:
-	RdbBucket() {};
+	RdbBucket() 
+		: m_endKey(NULL)
+		, m_keys(NULL)
+		, m_parent(NULL)
+		, m_numKeys(0)
+		, m_lastSorted(0)
+		, m_collnum(0) {}
 	~RdbBucket();
 	bool set(RdbBuckets *parent, char *newbuf );
 	void reset();

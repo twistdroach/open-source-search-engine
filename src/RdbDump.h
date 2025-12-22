@@ -22,7 +22,7 @@ class RdbDump {
 
  public:
 
-        RdbDump() { m_isDumping = false; };
+        RdbDump();
 
 	void reset ( ) ;
 
