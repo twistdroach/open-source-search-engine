@@ -92,21 +92,59 @@ void HttpRequest::reset() {
 
 // returns false with g_errno set on error
 bool HttpRequest::copy ( class HttpRequest *r , bool stealBuf ) {
-	gbmemcpy ( this , r , sizeof(HttpRequest) );
-	// do not copy this over though in that way
-	m_reqBuf.m_capacity = 0;
-	m_reqBuf.m_length = 0;
-	//m_reqBuf.m_buf = NULL;
-	m_reqBuf.m_usingStack = false;
-	m_reqBuf.m_encoding = csUTF8;
+	if ( ! r ) return false;
+	if ( this == r ) return true;
+
+	m_reqBufValid       = r->m_reqBufValid;
+	m_replyFormatValid  = r->m_replyFormatValid;
+	m_replyFormat       = r->m_replyFormat;
+	m_isSquidProxyRequest = r->m_isSquidProxyRequest;
+	m_squidProxiedUrl     = r->m_squidProxiedUrl;
+	m_squidProxiedUrlLen  = r->m_squidProxiedUrlLen;
+	m_requestType       = r->m_requestType;
+	m_filenameLen       = r->m_filenameLen;
+	gbmemcpy ( m_filename , r->m_filename , sizeof(m_filename) );
+	m_origUrlRequest    = r->m_origUrlRequest;
+	m_origUrlRequestLen = r->m_origUrlRequestLen;
+	gbmemcpy ( m_host , r->m_host , sizeof(m_host) );
+	m_hostLen           = r->m_hostLen;
+	m_isLocal           = r->m_isLocal;
+	m_isMSIE            = r->m_isMSIE;
+	m_cgiBuf            = r->m_cgiBuf;
+	m_cgiBufLen         = r->m_cgiBufLen;
+	m_cgiBufMaxLen      = r->m_cgiBufMaxLen;
+	m_fileOffset        = r->m_fileOffset;
+	m_fileSize          = r->m_fileSize;
+	gbmemcpy ( m_fields , r->m_fields , sizeof(m_fields) );
+	gbmemcpy ( m_fieldLens , r->m_fieldLens , sizeof(m_fieldLens) );
+	gbmemcpy ( m_fieldValues , r->m_fieldValues , sizeof(m_fieldValues) );
+	m_numFields         = r->m_numFields;
+	m_userIP            = r->m_userIP;
+	m_isSSL             = r->m_isSSL;
+	m_path              = r->m_path;
+	m_plen              = r->m_plen;
+	gbmemcpy ( m_redir , r->m_redir , sizeof(m_redir) );
+	m_redirLen          = r->m_redirLen;
+	gbmemcpy ( m_ref , r->m_ref , sizeof(m_ref) );
+	m_refLen            = r->m_refLen;
+	gbmemcpy ( m_userAgent , r->m_userAgent , sizeof(m_userAgent) );
+	m_ucontent          = r->m_ucontent;
+	m_ucontentLen       = r->m_ucontentLen;
+	m_cookiePtr         = r->m_cookiePtr;
+	m_cookieLen         = r->m_cookieLen;
+	m_metaCookie        = r->m_metaCookie;
+	m_cgiBuf2           = r->m_cgiBuf2;
+	m_cgiBuf2Size       = r->m_cgiBuf2Size;
+
+	// drop any existing buffer before copying over the request payload
+	m_reqBuf.purge();
 
 	if ( stealBuf ) {
 		// if he's on the stack, that's a problem!
-		gbassert_false( r->m_reqBuf.m_usingStack );
-		// copy the safebuf member var directly
-		gbmemcpy ( &m_reqBuf , &r->m_reqBuf , sizeof(SafeBuf) );
+		gbassert_false ( r->m_reqBuf.m_usingStack );
+		m_reqBuf = r->m_reqBuf;
 		// do not let it free anything
-	        r->m_reqBuf.m_usingStack = true;
+		r->m_reqBuf.m_usingStack = true;
 		// that's it!
 		return true;
 	}
