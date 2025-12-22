@@ -4849,7 +4849,7 @@ int32_t Language::spellcheckDict(){
 
 	int32_t notFound = 0;
 
-	char buf[1026];
+	char buf[MAX_FRAG_SIZE];
 	//char dst[1026];
 	// go through the words in dict/words
 	while ( fgets ( buf , MAX_FRAG_SIZE , fd ) ) {
@@ -4965,12 +4965,16 @@ int32_t Language::spellcheckDict(){
 		// if no reco is found (even though it is a phrase) OR
 		// if phrase popularity is 4x  the recommendation popularity
 		// if score is less than 99.
-		if ( isInWiki || !reco || wordPop * 4 > pop || score > 99 ){
-			char tmp[MAX_FRAG_SIZE];
-			
-			sprintf(tmp,"%s\t%s\t%s\n",buf, tuple, 
-				tuple + gbstrlen(tuple) + 1);
-			uint32_t wn = write ( fdw , tmp , gbstrlen(tmp) );
+			if ( isInWiki || !reco || wordPop * 4 > pop || score > 99 ){
+				char tmp[MAX_FRAG_SIZE];
+				int32_t tmplen = snprintf(tmp, sizeof(tmp), "%s\t%s\t%s\n",
+						buf, tuple, tuple + gbstrlen(tuple) + 1);
+				if ( tmplen < 0 || tmplen >= (int32_t)sizeof(tmp) ) {
+					log("spell: spellCheckDict: output line too long for %s",
+					    buf);
+					gbassert(false);
+				}
+				uint32_t wn = write ( fdw , tmp , tmplen );
 			if ( (int32_t)wn != gbstrlen(tmp) )
 				return log("spell: spellCheckDict: write: "
 					   "%s",strerror(errno));
@@ -4988,4 +4992,3 @@ int32_t Language::spellcheckDict(){
 	fclose(fd);
 	return notFound;
 }
-

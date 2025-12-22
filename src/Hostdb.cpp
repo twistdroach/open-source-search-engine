@@ -1207,8 +1207,22 @@ bool Hostdb::init ( int32_t hostIdArg , char *netName ,
 	// set m_dir to THIS host's working dir
 	strcpy ( m_dir , h->m_dir );
 	// likewise, set m_htmlDir to this host's html dir
-	sprintf ( m_httpRootDir , "%shtml/" , m_dir );
-	sprintf ( m_logFilename , "%slog%03" INT32 "", m_dir , m_hostId );
+	int32_t wrote = snprintf ( m_httpRootDir , sizeof(m_httpRootDir) ,
+			      "%shtml/" , m_dir );
+	if ( wrote < 0 || wrote >= (int32_t)sizeof(m_httpRootDir) ) {
+		log("conf: http root dir path too long for host %" INT32
+		    " (dir=%s)",
+		    m_hostId , m_dir );
+		gbassert(false);
+	}
+	wrote = snprintf ( m_logFilename , sizeof(m_logFilename) ,
+			       "%slog%03" INT32 "", m_dir , m_hostId );
+	if ( wrote < 0 || wrote >= (int32_t)sizeof(m_logFilename) ) {
+		log("conf: log filename too long for host %" INT32
+		    " (dir=%s)",
+		    m_hostId , m_dir );
+		gbassert(false);
+	}
 
 	if ( ! g_conf.m_runAsDaemon &&
 	     ! g_conf.m_logToFile )
