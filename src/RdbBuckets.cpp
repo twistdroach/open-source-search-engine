@@ -768,9 +768,7 @@ bool RdbBuckets::resizeTable(int32_t numNeeded) {
 		//will now be contiguous and consistent
 		//with the ptrs array.
 		tmpBucketPtrs[i] = &tmpBucketSpace[i];
-		gbmemcpy(&tmpBucketSpace[i],
-		       m_buckets[i],
-		       sizeof(RdbBucket));
+		tmpBucketSpace[i] = *m_buckets[i];
 		tmpBucketSpace[i].reBuf(bucketMemPtr);
 		bucketMemPtr += (BUCKET_SIZE * m_recSize);
 	}

@@ -11987,7 +11987,7 @@ void dumpSectiondb(char *coll,int32_t startFileNum,int32_t numFiles,
 		// no longer a first key
 		firstKey = false;
 		// copy it
-		gbmemcpy ( &lastk , k , sizeof(key128_t) );
+		lastk = *k;
 		int32_t shardNum =  getShardNum (RDB_SECTIONDB,k);
 		//int32_t groupNum = g_hostdb.getGroupNum ( gid );
 		// point to the data
@@ -12111,7 +12111,7 @@ void dumpRevdb(char *coll,int32_t startFileNum,int32_t numFiles, bool includeTre
 		// no longer a first key
 		firstKey = false;
 		// copy it
-		gbmemcpy ( &lastk , k , sizeof(key_t) );
+		lastk = *k;
 		// point to the data
 		char  *p       = data;
 		char  *pend    = data + size;
