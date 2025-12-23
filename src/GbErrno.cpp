@@ -202,6 +202,8 @@ case EDIFFBOTTOOMANYTEXTNODES: return "The selected pages contains too many Text
 case EDIFFBOTCURLYREPLY: return "Diffbot reply was {}";
 case EDIFFBOTTOKENUNAUTHORIZED: return "Diffbot token was unauthorized";
 case EDIFFBOTPLAINERROR: return "Diffbot error code was 500";
+// MacOS returns "Unknown Error" for 0, Linux returns "Success"
+case 0: return "Success";
 	}
 	// if the remote error bit is clear it must be a regulare errno
 	//if ( ! ( errnum & REMOTE_ERROR_BIT ) ) return strerror ( errnum );
