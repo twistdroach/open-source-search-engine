@@ -11,6 +11,9 @@
 #include <signal.h>
 #include <fcntl.h>      // fcntl()
 #include <sys/poll.h>   // POLLIN, POLLPRI, ...
+#ifdef __APPLE__
+#include <sys/event.h>
+#endif
 #ifndef F_SETSIG
 #define F_SETSIG 10     // F_SETSIG
 #endif
@@ -183,6 +186,7 @@ class Loop {
 	void enableTimer();
 
 	void quickPoll(int32_t niceness, const char* caller = NULL, int32_t lineno = 0);
+	void wakeup();
 
 	// called when sigqueue overflows and we gotta do a select() or poll()
 	void doPoll ( );
@@ -225,6 +229,23 @@ class Loop {
 	Slot *m_slots;
 	Slot *m_head;
 	Slot *m_tail;
+
+#ifdef __APPLE__
+	int  m_kq;
+	bool m_kqReadEnabled[MAX_NUM_FDS];
+	bool m_kqWriteEnabled[MAX_NUM_FDS];
+	bool registerKqueueEvent(int fd, bool forReading);
+	void unregisterKqueueEvent(int fd, bool forReading);
+	bool initKqueue();
+	void closeKqueue();
+	bool addKqueueTimer(uintptr_t ident, int intervalMs);
+	void deleteKqueueTimer(uintptr_t ident);
+	int  m_kqQuickInterval;
+	int  m_kqRealInterval;
+	bool m_kqQuickTimerEnabled;
+	bool m_kqRealTimerEnabled;
+	bool m_kqUserEventEnabled;
+#endif
 };
 
 extern class Loop g_loop;

@@ -7,6 +7,12 @@
 #include "Process.h"
 #include "PageParser.h"
 
+#ifdef __APPLE__
+static const uintptr_t KQ_TIMER_QUICK = (uintptr_t)(MAX_NUM_FDS + 100);
+static const uintptr_t KQ_TIMER_REAL  = (uintptr_t)(MAX_NUM_FDS + 101);
+static const uintptr_t KQ_EVENT_WAKE  = (uintptr_t)(MAX_NUM_FDS + 200);
+#endif
+
 // raised from 5000 to 10000 because we have more UdpSlots now and Multicast
 // will call g_loop.registerSleepCallback() if it fails to get a UdpSlot to
 // send on.
@@ -28,7 +34,11 @@
 
 // . set this to false to disable async signal handling
 // . that will make our udp servers less responsive
+#ifdef __APPLE__
+bool g_isHot = false;
+#else
 bool g_isHot = true;
+#endif
 
 // extern this for all to use
 bool g_inSigHandler = false ;
@@ -76,6 +86,9 @@ static struct timespec* s_sigWaitTimePtr ;
 // use this in case we unregister the "next" callback
 static Slot *s_callbacksNext;
 
+static void quickpollTimerCore ( int x , siginfo_t *info , void *y );
+static void realTimerCore      ( int x , siginfo_t *info , void *y );
+
 // set it from milliseconds
 void Loop::setSigWaitTime ( int32_t ms ) {
 	int32_t secs = ms / 1000;
@@ -91,6 +104,14 @@ void Loop::reset() {
 		mfree ( m_slots , MAX_SLOTS * sizeof(Slot) , "Loop" );
 	}
 	m_slots = NULL;
+#ifdef __APPLE__
+	closeKqueue();
+	memset(m_kqReadEnabled , 0 , sizeof(m_kqReadEnabled ));
+	memset(m_kqWriteEnabled, 0 , sizeof(m_kqWriteEnabled));
+	m_kqQuickTimerEnabled = false;
+	m_kqRealTimerEnabled  = false;
+	m_kqUserEventEnabled  = false;
+#endif
 }
 
 static void sigbadHandler ( int x , siginfo_t *info , void *y ) ;
@@ -189,6 +210,10 @@ void Loop::unregisterCallback ( Slot **slots , int fd , void *state ,
 					    (int32_t)s_numWriteFds);
 			 	break;
 			}
+#ifdef __APPLE__
+			if ( forReading ) unregisterKqueueEvent(fd,true);
+			else              unregisterKqueueEvent(fd,false);
+#endif
 		}
 		// revert back to old min if this is the Slot we're removing
 		min = lastMin;
@@ -230,9 +255,21 @@ bool Loop::registerReadCallback  ( int fd,
 				   void *state, 
 				   void (* callback)(int fd,void *state ) ,
 				   int32_t  niceness ) {
+#ifdef __APPLE__
+	bool needKqueue = false;
+	if ( fd >= 0 && fd < MAX_NUM_FDS && ! m_readSlots[fd] )
+		needKqueue = true;
+#endif
 	// the "true" answers the question "for reading?"
-	if ( addSlot ( true, fd, state, callback, niceness ) ) return true;
-	return log("loop: Unable to register read callback.");
+	if ( ! addSlot ( true, fd, state, callback, niceness ) )
+		return log("loop: Unable to register read callback.");
+#ifdef __APPLE__
+	if ( needKqueue && ! registerKqueueEvent(fd,true) ) {
+		unregisterReadCallback ( fd, state, callback , true );
+		return log("loop: Unable to register read callback.");
+	}
+#endif
+	return true;
 }
 
 
@@ -240,9 +277,21 @@ bool Loop::registerWriteCallback ( int fd,
 				   void *state, 
 				   void (* callback)(int fd, void *state ) ,
 				   int32_t  niceness ) {
+#ifdef __APPLE__
+	bool needKqueue = false;
+	if ( fd >= 0 && fd < MAX_NUM_FDS && ! m_writeSlots[fd] )
+		needKqueue = true;
+#endif
 	// the "false" answers the question "for reading?"
-	if ( addSlot ( false, fd, state, callback, niceness ) )return true;
-	return log("loop: Unable to register write callback.");
+	if ( ! addSlot ( false, fd, state, callback, niceness ) )
+		return log("loop: Unable to register write callback.");
+#ifdef __APPLE__
+	if ( needKqueue && ! registerKqueueEvent(fd,false) ) {
+		unregisterWriteCallback ( fd, state, callback );
+		return log("loop: Unable to register write callback.");
+	}
+#endif
+	return true;
 }
 
 // tick is in milliseconds
@@ -353,7 +402,12 @@ bool Loop::setNonBlocking ( int fd , int32_t niceness ) {
 		return log("loop: fcntl(F_GETFL): %s.",strerror(errno));
 	}
  retry9:
-	if ( fcntl ( fd, F_SETFL, flags|O_NONBLOCK|O_ASYNC) < 0 ) {
+#ifdef __APPLE__
+	int newFlags = flags | O_NONBLOCK;
+#else
+	int newFlags = flags | O_NONBLOCK | O_ASYNC;
+#endif
+	if ( fcntl ( fd, F_SETFL, newFlags ) < 0 ) {
 		// valgrind
 		if ( errno == EINTR ) goto retry9;
 		g_errno = errno;
@@ -455,6 +509,16 @@ Loop::Loop ( ) {
 		m_writeSlots[i] = NULL;
 	}
 	m_slots = NULL;
+#ifdef __APPLE__
+	m_kq = -1;
+	memset(m_kqReadEnabled , 0 , sizeof(m_kqReadEnabled ));
+	memset(m_kqWriteEnabled, 0 , sizeof(m_kqWriteEnabled));
+	m_kqQuickInterval    = QUICKPOLL_INTERVAL;
+	m_kqRealInterval     = 1;
+	m_kqQuickTimerEnabled = false;
+	m_kqRealTimerEnabled  = false;
+	m_kqUserEventEnabled  = false;
+#endif
 }
 
 // free all slots from addSlots
@@ -479,6 +543,90 @@ void Loop::returnSlot ( Slot *s ) {
 	s->m_nextAvail = m_head;
 	m_head = s;
 }
+
+#ifdef __APPLE__
+bool Loop::initKqueue() {
+	if ( m_kq >= 0 ) return true;
+	m_kq = kqueue();
+	if ( m_kq < 0 ) {
+		log("loop: kqueue(): %s", mstrerror(errno));
+		return false;
+	}
+	memset(m_kqReadEnabled , 0 , sizeof(m_kqReadEnabled ));
+	memset(m_kqWriteEnabled, 0 , sizeof(m_kqWriteEnabled));
+	return true;
+}
+
+void Loop::closeKqueue() {
+	if ( m_kq < 0 ) return;
+	close ( m_kq );
+	m_kq = -1;
+	m_kqQuickTimerEnabled = false;
+	m_kqRealTimerEnabled  = false;
+	m_kqUserEventEnabled  = false;
+}
+
+bool Loop::registerKqueueEvent(int fd, bool forReading) {
+	if ( fd < 0 || fd >= MAX_NUM_FDS ) return true;
+	if ( m_kq < 0 ) return false;
+	bool *enabled = forReading ? m_kqReadEnabled : m_kqWriteEnabled;
+	if ( enabled[fd] ) return true;
+	struct kevent kev;
+	EV_SET(&kev, fd, forReading ? EVFILT_READ : EVFILT_WRITE,
+	       EV_ADD | EV_CLEAR, 0, 0, NULL);
+	if ( kevent(m_kq, &kev, 1, NULL, 0, NULL) < 0 ) {
+		log("loop: kevent add fd=%i: %s", fd, mstrerror(errno));
+		return false;
+	}
+	enabled[fd] = true;
+	return true;
+}
+
+void Loop::unregisterKqueueEvent(int fd, bool forReading) {
+	if ( fd < 0 || fd >= MAX_NUM_FDS ) return;
+	if ( m_kq < 0 ) return;
+	bool *enabled = forReading ? m_kqReadEnabled : m_kqWriteEnabled;
+	if ( ! enabled[fd] ) return;
+	struct kevent kev;
+	EV_SET(&kev, fd, forReading ? EVFILT_READ : EVFILT_WRITE,
+	       EV_DELETE, 0, 0, NULL);
+	if ( kevent(m_kq, &kev, 1, NULL, 0, NULL) < 0 && errno != ENOENT )
+		log("loop: kevent delete fd=%i: %s", fd, mstrerror(errno));
+	enabled[fd] = false;
+}
+
+bool Loop::addKqueueTimer(uintptr_t ident, int intervalMs) {
+	if ( m_kq < 0 ) return false;
+	struct kevent kev;
+	EV_SET(&kev, ident, EVFILT_TIMER, EV_ADD | EV_CLEAR,
+	       0, intervalMs, NULL);
+	if ( kevent(m_kq, &kev, 1, NULL, 0, NULL) < 0 ) {
+		log("loop: kevent timer add id=%" PRIuPTR ": %s",
+		    ident, mstrerror(errno));
+		return false;
+	}
+	if ( ident == KQ_TIMER_QUICK ) {
+		m_kqQuickTimerEnabled = true;
+		m_kqQuickInterval    = intervalMs;
+	}
+	else if ( ident == KQ_TIMER_REAL ) {
+		m_kqRealTimerEnabled = true;
+		m_kqRealInterval     = intervalMs;
+	}
+	return true;
+}
+
+void Loop::deleteKqueueTimer(uintptr_t ident) {
+	if ( m_kq < 0 ) return;
+	struct kevent kev;
+	EV_SET(&kev, ident, EVFILT_TIMER, EV_DELETE, 0, 0, NULL);
+	if ( kevent(m_kq, &kev, 1, NULL, 0, NULL) < 0 && errno != ENOENT )
+		log("loop: kevent timer delete id=%" PRIuPTR ": %s",
+		    ident, mstrerror(errno));
+	if ( ident == KQ_TIMER_QUICK ) m_kqQuickTimerEnabled = false;
+	else if ( ident == KQ_TIMER_REAL ) m_kqRealTimerEnabled = false;
+}
+#endif
 
 
 // . come here when we get a GB_SIGRTMIN+X signal etc.
@@ -530,6 +678,27 @@ bool Loop::init ( ) {
 	FD_ZERO(&s_selectMaskRead);
 	FD_ZERO(&s_selectMaskWrite);
 	FD_ZERO(&s_selectMaskExcept);
+#ifdef __APPLE__
+	if ( ! initKqueue() ) return false;
+	if ( ! addKqueueTimer(KQ_TIMER_QUICK, m_kqQuickInterval ) ) return false;
+	if ( ! addKqueueTimer(KQ_TIMER_REAL , m_kqRealInterval  ) ) return false;
+	struct kevent wakeKev;
+	EV_SET(&wakeKev, KQ_EVENT_WAKE, EVFILT_USER, EV_ADD | EV_CLEAR, 0, 0, NULL);
+	if ( kevent(m_kq, &wakeKev, 1, NULL, 0, NULL) < 0 ) {
+		log("loop: kevent add wakeup: %s", mstrerror(errno));
+		return false;
+	}
+	m_kqUserEventEnabled = true;
+	int sigsToWatch[] = { SIGHUP, SIGTERM, SIGINT };
+	for ( size_t i = 0 ; i < sizeof(sigsToWatch)/sizeof(int) ; i++ ) {
+		struct kevent sigKev;
+		EV_SET(&sigKev, sigsToWatch[i], EVFILT_SIGNAL,
+		       EV_ADD | EV_CLEAR, 0, 0, NULL);
+		if ( kevent(m_kq, &sigKev, 1, NULL, 0, NULL) < 0 )
+			log("loop: kevent add signal %i: %s",
+			    sigsToWatch[i], mstrerror(errno));
+	}
+#endif
 
 	// redhat 9's NPTL doesn't like our async signals
 	if ( ! g_conf.m_allowAsyncSignals ) g_isHot = false;
@@ -753,132 +922,83 @@ void sigbadHandler ( int x , siginfo_t *info , void *y ) {
 	g_process.shutdown ( true );
 }
 
-void sigvtalrmHandler ( int x , siginfo_t *info , void *y ) {
-
+static void quickpollTimerCore ( int x , siginfo_t *info , void *y ) {
 #ifdef PTHREADS
-	// do not allow threads
-	// this call is very fast, can be called like 400M times per second
 	if ( g_threads.amThread() ) return;
 #endif
 
-	// stats
 	g_numVTAlarms++;
 
-	// see if a niceness 0 algo is hogging the cpu
 	if ( g_callSlot && g_niceness == 0 ) {
-		// are we handling the same request or callback?
 		if ( g_callSlot->m_transId == g_lastTransId ) g_transIdCount++;
 		else                                          g_transIdCount=1;
-		// set it
 		g_lastTransId = g_callSlot->m_transId;
-		bool logIt = false;
-		if ( g_transIdCount >= 4 ) logIt = true;
-		// do not spam for msg99 handler so much
+		bool logIt = (g_transIdCount >= 4);
 		if ( g_callSlot->m_msgType == 0x99 && g_transIdCount != 50 )
 			logIt = false;
-		// it's not safe to call fprintf() even with 
-		// mutex locks for sig handlers with pthreads
-		// going on!!!
 #ifdef PTHREADS
 		logIt = false;
 #endif
-		// panic if hogging
 		if ( logIt ) {
 			if ( g_callSlot->m_callback )
-				log("loop: msg type 0x%hhx reply callback "
-				    "hogging cpu for %" INT32 " ticks", 
-				    g_callSlot->m_msgType,
-				    g_transIdCount);
+				log("loop: msg type 0x%hhx reply callback hogging cpu for %" INT32 " ticks",
+				    g_callSlot->m_msgType, g_transIdCount);
 			else
-				log("loop: msg type 0x%hhx handler "
-				    "hogging cpu for %" INT32 " ticks", 
-				    g_callSlot->m_msgType,
-				    g_transIdCount);
+				log("loop: msg type 0x%hhx handler hogging cpu for %" INT32 " ticks",
+				    g_callSlot->m_msgType, g_transIdCount);
 		}
 	}
 
-	g_nowApprox += QUICKPOLL_INTERVAL; // 10 ms
+	g_nowApprox += QUICKPOLL_INTERVAL;
 
-	// sanity check
-	if ( g_loop.m_inQuickPoll && 
+	if ( g_loop.m_inQuickPoll &&
 	     g_niceness != 0 &&
-	     // seems to happen a lot when doing a qa test because we slow
-	     // things down a lot when that happens
 	     ! g_conf.m_testParserEnabled &&
 	     ! g_conf.m_testSpiderEnabled &&
 	     ! g_conf.m_testSearchEnabled &&
-	     // likewise if doing a page parser test...
 	     ! g_inPageParser &&
-	     ! g_inPageInject     ) {
+	     ! g_inPageInject ) {
 #ifndef PTHREADS
-		// i guess sometimes niceness 1 things call niceness 0 things?
 		log("loop: crap crap crap!!!");
 #endif
-		//gbassert(false); }
 	}
-	// basically ignore this alarm if already in a quickpoll
 	if ( g_loop.m_inQuickPoll ) return;
-
 	if ( ! g_conf.m_useQuickpoll ) return;
 
 	g_loop.m_needsToQuickPoll = true;
-
-	// another missed quickpoll
 	if ( g_niceness == 1 ) g_missedQuickPolls++;
-	// reset if niceness is 0
 	else if ( g_niceness == 0 ) g_missedQuickPolls = 0;
 
-	// if we missed to many, then dump core
 	if ( g_niceness == 1 && g_missedQuickPolls >= 4 ) {
-		//g_inSigHandler = true;
-		// NOT SAFE for pthreads cuz we're in sig handler
 #ifndef PTHREADS
 		log("loop: missed quickpoll. Dumping stack.");
 		printStackTrace( x , info , y );
 #endif
-		//g_inSigHandler = false;
-		// seems to core a lot in gbcompress() we need to
-		// put a quickpoll into zlib deflate() or
-		// deflat_slot() or logest_match() function
-		// for now do not dump core --- re-enable this later
-		// mdw TODO
-		//gbassert(false); 
 	}
 
-	// if it has been a while since heartbeat (> 10000ms) dump core so
-	// we can see where the process was... we are in a long niceness 0
-	// function or a niceness 1 function without a quickpoll, so that
-	// heartbeatWrapper() function never gets called.
 	if ( g_process.m_lastHeartbeatApprox == 0 ) return;
 	if ( g_conf.m_maxHeartbeatDelay <= 0 ) return;
-	if ( g_nowApprox - g_process.m_lastHeartbeatApprox > 
+	if ( g_nowApprox - g_process.m_lastHeartbeatApprox >
 	     g_conf.m_maxHeartbeatDelay ) {
 #ifndef PTHREADS
 		logf(LOG_DEBUG,"gb: CPU seems blocked. Dumping stack.");
 		printStackTrace( x , info , y );
 #endif
-		//gbassert(false); 
-
 	}
+}
 
-	//logf(LOG_DEBUG, "xxx now: %" INT64 "! approx: %" INT64 "", g_now, g_nowApprox);
-
+void sigvtalrmHandler ( int x , siginfo_t *info , void *y ) {
+	quickpollTimerCore ( x , info , y );
 }
 
 float g_cpuUsage = 0.0;
 
-void sigalrmHandler ( int x , siginfo_t *info , void *y ) {
-
+static void realTimerCore ( int x , siginfo_t *info , void *y ) {
 #ifdef PTHREADS
-	// do not allow threads
-	// this call is very fast, can be called like 400M times per second
 	if ( g_threads.amThread() ) return;
 #endif
 
-	// so we don't call gettimeofday() thousands of times a second...
 	g_clockNeedsUpdate = true;
-
-	// stats
 	g_numAlarms++;
 
 	if ( ! g_inWaitState )
@@ -888,8 +1008,10 @@ void sigalrmHandler ( int x , siginfo_t *info , void *y ) {
 
 	if ( g_profiler.m_realTimeProfilerRunning )
 		g_profiler.getStackFrame(0);
+}
 
-	return;
+void sigalrmHandler ( int x , siginfo_t *info , void *y ) {
+	realTimerCore ( x , info , y );
 }
 
 // shit, we can't make this realtime!! RdbClose() cannot be called by a
@@ -976,6 +1098,99 @@ bool Loop::runLoop ( ) {
 // . this handles high priority fds first (lowest niceness)
 void Loop::doPoll ( ) {
 	m_needToPoll = false;
+#ifdef __APPLE__
+	if ( m_kq >= 0 ) {
+		if ( g_conf.m_logDebugLoop) log(LOG_DEBUG,"loop: Entered doPoll.");
+		if ( g_log.needsPrinting() ) g_log.printBuf();
+		if ( g_someAreQueued ) g_someAreQueued = false;
+		if(g_udpServer.needBottom()) g_udpServer.makeCallbacks_ass ( 1 );
+
+		const int MAX_KQUEUE_EVENTS = 128;
+		struct kevent eventList[MAX_KQUEUE_EVENTS];
+		const struct timespec *timeoutPtr = NULL;
+		struct timespec ts;
+		if ( m_inQuickPoll ) {
+			ts.tv_sec  = 0;
+			ts.tv_nsec = 0;
+			timeoutPtr = &ts;
+		}
+
+		g_inWaitState = true;
+		int nev;
+againKq:
+		nev = kevent(m_kq, NULL, 0, eventList, MAX_KQUEUE_EVENTS,
+			     timeoutPtr);
+		if ( nev < 0 && errno == EINTR ) goto againKq;
+		g_inWaitState = false;
+		if ( nev < 0 ) {
+			log("loop: kevent: %s", mstrerror(errno));
+			return;
+		}
+		if ( g_conf.m_logDebugLoop )
+			log("loop: out kevent n=%" INT32 "", (int32_t)nev);
+
+		g_now = gettimeofdayInMilliseconds();
+		g_threads.timedCleanUp(-3,0);
+
+		int readFds [MAX_KQUEUE_EVENTS];
+		int writeFds[MAX_KQUEUE_EVENTS];
+		int numRead = 0;
+		int numWrite = 0;
+		for ( int32_t i = 0 ; i < nev ; i++ ) {
+			if ( eventList[i].filter == EVFILT_READ ) {
+				if ( numRead < MAX_KQUEUE_EVENTS )
+					readFds[numRead++] = (int)eventList[i].ident;
+			}
+			else if ( eventList[i].filter == EVFILT_WRITE ) {
+				if ( numWrite < MAX_KQUEUE_EVENTS )
+					writeFds[numWrite++] = (int)eventList[i].ident;
+			}
+			else if ( eventList[i].filter == EVFILT_TIMER ) {
+				if ( eventList[i].ident == KQ_TIMER_QUICK )
+					quickpollTimerCore ( 0 , NULL , NULL );
+				else if ( eventList[i].ident == KQ_TIMER_REAL )
+					realTimerCore ( 0 , NULL , NULL );
+			}
+			else if ( eventList[i].filter == EVFILT_SIGNAL ) {
+				int signo = (int)eventList[i].ident;
+				if ( signo == SIGHUP || signo == SIGTERM )
+					sighupHandler ( signo , NULL , NULL );
+				else if ( signo == SIGINT )
+					g_loop.m_shutdown = 1;
+			}
+			else if ( eventList[i].filter == EVFILT_USER ) {
+				// nothing to do; event merely wakes the loop
+			}
+		}
+
+		for ( int32_t i = 0 ; i < numRead ; i++ )
+			callCallbacks_ass ( true , readFds[i] , g_now , 0 );
+		for ( int32_t i = 0 ; i < numWrite ; i++ )
+			callCallbacks_ass ( false, writeFds[i], g_now , 0 );
+
+		g_threads.timedCleanUp(-3,0);
+
+		if ( ! m_inQuickPoll ) {
+			for ( int32_t i = 0 ; i < numRead ; i++ )
+				callCallbacks_ass ( true , readFds[i] , g_now , 1 );
+			for ( int32_t i = 0 ; i < numWrite ; i++ )
+				callCallbacks_ass ( false, writeFds[i], g_now , 1 );
+		}
+
+		g_threads.timedCleanUp(-4,MAX_NICENESS);
+
+		g_now = gettimeofdayInMilliseconds();
+		int32_t elapsed = g_now - s_lastTime;
+		if ( elapsed < 0 ) elapsed = m_minTick;
+		if ( elapsed >= m_minTick ) {
+			callCallbacks_ass ( true , MAX_NUM_FDS , g_now );
+			s_lastTime = g_now;
+			g_threads.timedCleanUp(-4,MAX_NICENESS);
+		}
+		if ( g_conf.m_logDebugLoop ) log(LOG_DEBUG,"loop: Exited doPoll.");
+		return;
+	}
+#endif
 	// debug msg
 	if ( g_conf.m_logDebugLoop) log(LOG_DEBUG,"loop: Entered doPoll.");
 	// print log
@@ -1180,6 +1395,10 @@ void Loop::doPoll ( ) {
 
 // call this when you don't want to be interrupted
 void Loop::interruptsOff ( ) {
+#ifdef __APPLE__
+	g_interruptsOn = false;
+	return;
+#else
 	// . debug
 	// . until we have our own malloc, don't turn them on
 	if ( ! g_isHot ) return; 
@@ -1196,9 +1415,14 @@ void Loop::interruptsOff ( ) {
 		return;
 	}
 	g_interruptsOn = false;
+#endif
 }
 // and this to resume being interrupted
 void Loop::interruptsOn ( ) {
+#ifdef __APPLE__
+	g_interruptsOn = true;
+	return;
+#else
 	// . debug
 	// . until we have our own malloc, don't turn them on
 	if ( ! g_isHot ) return; 
@@ -1216,6 +1440,7 @@ void Loop::interruptsOn ( ) {
 		log("loop: interruptsOn: sigprocmask: %s.", strerror(errno));
 		return;
 	}
+#endif
 }
 
 void Loop::startBlockedCpuTimer() {
@@ -1303,8 +1528,13 @@ void Loop::canQuickPoll(int32_t niceness) {
 
 void Loop::disableTimer() {
 	m_canQuickPoll = false;
+#ifdef __APPLE__
+	deleteKqueueTimer(KQ_TIMER_QUICK);
+	deleteKqueueTimer(KQ_TIMER_REAL);
+#else
 	setitimer(ITIMER_VIRTUAL, &m_noInterrupt, NULL);
 	setitimer(ITIMER_REAL, &m_noInterrupt, NULL);
+#endif
 }
 
 int gbsystem(char *cmd ) {
@@ -1318,8 +1548,26 @@ int gbsystem(char *cmd ) {
 
 void Loop::enableTimer() {
 	m_canQuickPoll = true;
+#ifdef __APPLE__
+	if ( ! m_kqQuickTimerEnabled )
+		addKqueueTimer(KQ_TIMER_QUICK, m_kqQuickInterval);
+	if ( ! m_kqRealTimerEnabled )
+		addKqueueTimer(KQ_TIMER_REAL , m_kqRealInterval );
+#else
 	setitimer(ITIMER_VIRTUAL, &m_quickInterrupt, NULL);
 	setitimer(ITIMER_REAL, &m_realInterrupt, NULL);
+#endif
+}
+
+void Loop::wakeup() {
+#ifdef __APPLE__
+	if ( m_kq < 0 ) return;
+	struct kevent kev;
+	EV_SET(&kev, KQ_EVENT_WAKE, EVFILT_USER, NOTE_TRIGGER, 0, 0, NULL);
+	kevent(m_kq, &kev, 1, NULL, 0, NULL);
+#else
+	// no-op on other platforms; existing signal handlers wake the loop
+#endif
 }
 
 

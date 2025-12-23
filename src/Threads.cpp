@@ -3061,10 +3061,14 @@ int startUp ( void *state ) {
 	// on 64bit arch pthread_t is 64bit and pid_t is 32bit
 	// i dont think this makes sense with pthreads any more, they don't
 	// use pid_t they use pthread_t
+#if defined(__APPLE__)
+	g_loop.wakeup();
+#else
 #ifndef PTHREADS
 	sigqueue ( (pid_t)(int64_t)s_pid, SIGCHLD, svt ) ;
 #else
 	pthread_kill ( s_pid , SIGCHLD );
+#endif
 #endif
 
 
