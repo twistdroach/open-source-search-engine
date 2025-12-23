@@ -2112,6 +2112,11 @@ int32_t TcpServer::connectSocket ( TcpSocket *s ) {
 		goto connected;
 		*/
 	}
+	// if the socket reports it is already connected treat as success
+	if ( g_errno == EISCONN ) {
+		g_errno = 0;
+		goto connected;
+	}
 	// we blocked with the EINPROGRESS g_errno
 	if ( g_errno == EINPROGRESS ) { 
 		g_errno = 0;
