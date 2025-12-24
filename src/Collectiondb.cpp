@@ -2225,8 +2225,24 @@ bool CollectionRec::rebuildUrlFilters2 ( ) {
 
 
 	// leave custom profiles alone
-	if ( !strcmp(s,"custom" ) )
+	if ( !strcmp(s,"custom" ) ) {
 		rebuild = false;
+		int32_t nf = 0;
+		for ( int32_t i = 0 ; i < MAX_FILTERS ; i++ ) {
+			SafeBuf *sb = &m_regExs[i];
+			char *p = sb->getBufStart();
+			if ( ! p || ! p[0] ) break;
+			nf++;
+		}
+		m_numRegExs   = nf;
+		m_numRegExs2  = nf;
+		m_numRegExs3  = nf;
+		m_numRegExs10 = nf;
+		m_numRegExs5  = nf;
+		m_numRegExs6  = nf;
+		m_numRegExs8  = nf;
+		m_numRegExs7  = nf;
+	}
 
 	
 
