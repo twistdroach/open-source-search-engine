@@ -19,7 +19,7 @@ docker run -p 8000:8000 -it --rm -v $(pwd)/data:/var/gigablast/data0 moldybits/o
 * Stubbed out some testing functionality for building tests if this ever gets cleaned up enough to start making "real" changes.
 
 # Building
-This does not build on ARM and does not work correctly on modern versions of MacOS, though it looks like there once was support at one point in time.
+The recommended environment is still x86_64 Linux. An experimental macOS path now exists (tested on Apple Silicon) that replaces the legacy Linux signal loop with a kqueue-driven event loop so you can run the crawler natively. There might be rough edges, but it is usable for local development and testing.
 
 ### Install Catch2
 ```
@@ -55,4 +55,3 @@ Tests can be put in the tests directory.  I have written a few simple examples j
 
 # Documentation
 There are various docs located in the html directory.  The FAQ & developer.html are particularly interesting.
-

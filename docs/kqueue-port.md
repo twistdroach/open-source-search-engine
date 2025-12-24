@@ -52,3 +52,18 @@ Tracking checklist for replacing the Linux-specific signal/select loop with a kq
 
 - [ ] Consider adding an epoll backend for Linux (optional) so both platforms share the same evented design, leaving the signal/select code as a fallback only.
 - [ ] Update developer docs (README or `html/developer.html`) to mention macOS support status and the new event loop architecture.
+
+## Linux epoll Backend Plan
+
+Tracking tasks to migrate the Linux build off the legacy select/signal loop to an epoll-based backend that mirrors the macOS kqueue implementation.
+
+- [ ] Audit the existing select/signal code path to identify all touch points (fd registration, timers, SIG handlers, cross-thread wakeups) that need epoll equivalents.
+- [ ] Introduce an epoll descriptor (`m_epollFd`) and supporting data structures in `Loop` under a `#ifdef __linux__` guard, similar to the `m_kq` additions.
+- [ ] Change `setNonBlocking` for Linux to skip `O_ASYNC` and rely purely on non-blocking sockets, matching the epoll model.
+- [ ] Update `registerReadCallback`/`registerWriteCallback` and the unregister logic to add/remove `EPOLLIN`/`EPOLLOUT` events with edge-triggering, storing the `Slot` pointer in `epoll_event.data`.
+- [ ] Implement the Linux `doPoll()` branch using `epoll_wait`, dispatching niceness level callbacks the same way the kqueue path does, and honoring `g_udpServer.needBottom()`/`g_someAreQueued` before sleeping.
+- [ ] Replace the quickpoll/CPU timers with `timerfd` or `eventfd` sources monitored by epoll, so we can drop `setitimer` for Linux as well.
+- [ ] Rework cross-thread wakeups (currently via sigqueue/SIGCHLD) to use an `eventfd` or pipe watched by epoll, mirroring the kqueue `EVFILT_USER` solution.
+- [ ] Register SIGHUP/SIGTERM/SIGINT via `signalfd` or a small signal-handling shim that writes to the epoll wakeup fd, so the main loop no longer relies on signal handlers interrupting `select`.
+- [ ] Ensure `Loop::interruptsOn/Off` become no-ops on Linux once the signal dependency is removed, just as we did on macOS.
+- [ ] Test the epoll backend on a Linux build: verify spidering, HTTPS fetches, admin UI, Ctrl-C handling, and any timer-driven tasks operate correctly; keep the old select path behind a build flag for fallback.
