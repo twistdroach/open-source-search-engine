@@ -85,6 +85,7 @@ static bool getWordPosVec ( Words *words ,
 			    int32_t niceness ,
 			    SafeBuf *wpos ) ;
 
+static void delayWrapper ( int fd , void *state ) ;
 static void getMetaListWrapper ( void *state ) ;
 
 char *getFirstJSONObject ( char *p , 
@@ -200,6 +201,12 @@ void XmlDoc::reset ( ) {
 	m_oldDocExistedButHadError = false;
 
 	m_addedStatusDocId = 0;
+
+	// Cancel any pending delay callback to avoid stale wakeups after reset.
+	if ( m_didDelay && ! m_didDelayUnregister ) {
+		g_loop.unregisterSleepCallback ( m_masterState, delayWrapper );
+		m_didDelayUnregister = true;
+	}
 
 	if ( m_diffbotProxyReplyValid && m_diffbotProxyReply ) {
 		mfree ( m_diffbotProxyReply , sizeof(ProxyReply) , "dprox" );
@@ -38718,7 +38725,7 @@ bool XmlDoc::printMenu ( SafeBuf *sb ) {
 static void printDocForProCogWrapper ( void *state ) {
 	XmlDoc *THIS = (XmlDoc *)state;
 	// make sure has not been freed from under us!
-	gbassert( THIS->m_freed );
+	gbassert(! THIS->m_freed );
 	// note it
 	THIS->setStatus ( "in print doc for pro cog wrapper" );
 	// get it
