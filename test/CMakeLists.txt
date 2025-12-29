@@ -18,3 +18,7 @@ catch_discover_tests(Linkdb)
 add_executable(HashTableX src/HashTableXTest.cpp)
 target_link_libraries(HashTableX PRIVATE Catch2::Catch2 osse)
 catch_discover_tests(HashTableX)
+
+add_executable(ArchiveParser src/ArchiveParserTest.cpp)
+target_link_libraries(ArchiveParser PRIVATE Catch2::Catch2 osse)
+catch_discover_tests(ArchiveParser)
